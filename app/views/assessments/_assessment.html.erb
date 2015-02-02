@@ -1,0 +1,6 @@
+<div id = '<%=div_id_for(assessment)%>'>
+  <p>
+    <%= button_destroy_association(assessment) unless assessment.trainees.any? %>
+    <%= assessment.name %>
+  </p>
+</div>

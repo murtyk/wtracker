@@ -1,0 +1,25 @@
+<%= simple_form_for(klass_certificate, remote: true) do |f| %>
+
+  <hr>
+  <h4>Enter New certificate Information</h4>
+
+  <%= f.error_notification %>
+
+    <%= f.hidden_field :klass_id %>
+    <%= f.input :name %>
+    <%= f.input :description %>
+    <div class="form-actions">
+      <%= ajax_cancel_and_submit_buttons(f) %>
+    </div>
+<% end %>
+
+<script type="text/javascript">
+  $('#new_klass_certificate').submit(function() {
+    if ($('#klass_certificate_name').val() == ""){
+      alert("Please enter certificate name");
+      return false;
+    }
+  });
+</script>
+
+<%= ajax_form_cancel_script(klass_certificate) %>

@@ -1,0 +1,42 @@
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Class</th>
+    <th>College</th>
+    <th>End Date</th>
+    <th>Status</th>
+    <th>Notes</th>
+    <th>Employers Interested</th>
+    <th>#Job Leads</th>
+  </tr>
+
+  <% report.trainee_activities.each do |trainee_activity| %>
+    <tr>
+
+      <td>
+          <%= link_to(trainee_activity.name, trainee_activity) %>
+      </td>
+
+      <td>
+        <%= name_and_link(trainee_activity.klass) %>
+      </td>
+      <td><%= trainee_activity.college_name_location%></td>
+      <td><%= trainee_activity.klass_end_date %></td>
+      <td><%= trainee_activity.status %></td>
+      <td>
+        <% trainee_activity.notes.each do |trainee_note| %>
+          <p><%= trainee_note.date_and_notes %></p>
+        <% end %>
+      </td>
+      <td>
+          <% trainee_activity.employer_interactions.each do |employer_interaction| %>
+          <p>
+              <%= link_to(employer_interaction.employer_name, employer_interaction.employer) %>  - <%=employer_interaction.status_name %>
+          </p>
+          <% end %>
+      </td>
+
+      <td><%= trainee_activity.job_lead_count%> </td>
+    </tr>
+  <% end %>
+</table>

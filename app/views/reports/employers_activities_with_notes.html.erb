@@ -1,0 +1,42 @@
+<h1>Employers with Notes</h1>
+
+<div class = 'row-fluid filters-div' style='margin-bottom: 10px'>
+  <%= simple_form_for :filters, url: reports_path(report: Report::EMPLOYERS_ACTIVITIES_WITH_NOTES), html: { class: 'form-search'} do |f| %>
+    <div class='span2'>
+      From
+	    <%= f.input :start_date, label: false, required: false, as: :string, input_html: {value: @report.start_date, data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
+    </div>
+    <div class='span2'>
+      To
+      <%= f.input :end_date, label: false, required: false, as: :string, input_html: {value: @report.end_date, data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
+    </div>
+    <div class='span2'>
+      <br>
+	    <%= f.input :include_all_dates, label: false, inline_label: true, as: :boolean, input_html: {checked: @report.include_all_dates}%>
+    </div>
+    <div class='span2'>
+      <br>
+      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white"></i>Find
+      </button>
+    </div>
+<% end %>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  })
+</script>
+<script type="text/javascript">
+  $('.btn-spinner').button();
+  $('.form-search').submit(function() {
+    $('#submit-button').button('loading');
+  });
+</script>
+
+<%= @report.render_counts %>
+<%= @report.download_button %>
+<%= render 'shared_employers_activities_with_notes.html.erb', report: @report %>
+<%= render 'shared/export_table.js.erb' %>

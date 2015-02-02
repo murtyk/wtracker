@@ -1,0 +1,15 @@
+<%= simple_form_for(trainee_assessment, remote: true) do |f| %>
+  <hr>
+  <%= f.hidden_field :trainee_id %>
+  <%= f.association :assessment %>
+  <% if current_grant.assessments_include_score? %>
+    <%= f.input :score %>
+  <% end %>
+  <% if current_grant.assessments_include_pass? %>
+    <%= f.input :pass, label: false, inline_label: 'Passed'%>
+  <% end %>
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(trainee_assessment) %>
+<% end %>

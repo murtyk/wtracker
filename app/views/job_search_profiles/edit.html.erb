@@ -1,0 +1,84 @@
+<div class='row-fluid'>
+  <div class ='span8 offset2'>
+    <% if @edit_opt_out %>
+
+      <h1>Opt Out from job leads</h1>
+      <%= simple_form_for(@job_search_profile, html: { class: "form-horizontal", id: 'form_profile'} ) do |f| %>
+        <%= f.hidden_field :key %>
+        <%= f.hidden_field :opted_out %>
+        <%= f.input :opt_out_reason_code, label: 'Status', collection: job_leads_opt_out_reasons, include_blank: false %>
+        <div id = 'employment_details' style='display: <%= [nil, 1].include?(@job_search_profile.opt_out_reason_code) ? "show" : "none"%>'>
+
+          <%= f.input :company_name %>
+          <%= f.input :title %>
+          <%= f.input :start_date, input_html: { data: { behaviour: "datepicker" }, value: @job_search_profile.start_date }, as: :string %>
+        </div>
+        <%#= f.input :salary %>
+        <div id = 'reason_description', style='display: <%= @job_search_profile.opt_out_reason_code ==2 ? "show" : "none"%>'>
+          <%= f.input :opt_out_reason, label: 'Reason', input_html: { style: 'width:90%'} %>
+        </div>
+
+        <div class="form-actions">
+          <%= submit_button(f) %>
+        </div>
+      <% end %>
+    <% else %>
+      <% if current_trainee %>
+      <% else %>
+      <p style='font-weight: bold'>
+      Thank you for using OPERO.  This application works best when you do not duplicate terms and you limit your input to 420 characters for Skills Profile below.
+      </p>
+      <p style='font-weight: bold'>
+      Consider editing your Skills Profile to be concise in 420 characters or less and limiting total words to 15 or less.
+      </p>
+      <% end %>
+
+      <h2>Please enter your preferences for job leads</h2>
+      <%= simple_form_for(@job_search_profile, html: { class: "form-horizontal", id: 'form_profile' }) do |f| %>
+        <%= f.hidden_field :key %>
+        <%= f.input :skills, input_html: {style: 'width: 80%; height: 110px'}, placeholder: 'Java, Project Lead, XML', hint: 'The skills should be separated by commas. Example: J2EE, SWING, Tech Lead, AJAX' %>
+        <%= f.input :location, class: "inline" do %>
+          <%= f.input_field :location, placeholder: 'Edison, NJ' %> OR <%= f.input_field :zip, placeholder: '08817', style: 'width: 100px;' %>
+          <%= @job_search_profile.location_error_messages %>
+        <% end %>
+
+        <%= f.input :distance, input_html: { style: 'width: 50px;' }, wrapper: :append, class: "inline" do %>
+          <%= f.input_field :distance, placeholder: '20', style: 'width: 50px;' %>
+          <%= content_tag :span, "Miles", class: "add-on abbn" %>
+        <% end %>
+
+        <div class="form-actions">
+          <%= submit_button(f) %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  })
+</script>
+
+<script type="text/javascript">
+  $('#job_search_profile_opt_out_reason_code').change(function() {
+    opt_out_reason_code = $('#job_search_profile_opt_out_reason_code :selected').val();
+    if (opt_out_reason_code == 1)
+    {
+      $('#employment_details').show();
+    }
+    else
+    {
+      $('#employment_details').hide();
+    };
+    if (opt_out_reason_code == 2)
+    {
+      $('#reason_description').show();
+    }
+    else
+    {
+      $('#reason_description').hide();
+    };
+  });
+</script>

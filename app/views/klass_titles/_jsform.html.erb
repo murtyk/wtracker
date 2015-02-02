@@ -1,0 +1,9 @@
+<%= simple_form_for(klass_title, remote: true) do |f| %>
+  	<hr>
+    <%= f.hidden_field :klass_id %>
+    <%= f.input :title, label: 'Job Title(search key words)' %>
+    <div class="form-actions">
+      <%= ajax_cancel_and_submit_buttons(f) %>
+    </div>
+  <%= ajax_form_cancel_script(klass_title) %>
+<% end %>

@@ -1,0 +1,61 @@
+<h1><%= "Trainees - Search by Skills" %></h1>
+<div class = 'row-fluid filters-div'>
+  <%= simple_form_for :filters, method: :get, url: [:search_by_skills, :trainees], html: { class: 'form-search', style: 'margin-bottom: 0px' } do |f| %>
+
+    Skills
+    <%= f.input_field :skills, style: 'width: 350px', value: params[:filters] && params[:filters][:skills] %>
+    <button type='submit' id='submit-button' class="btn btn-flat btn-primary btn-small btn-spinner" data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Processing...">
+      <i class='icon-search icon-white'></i> Find
+    </button>
+  <% end %>
+</div>
+
+<% unless @results.empty? %>
+  <div class = 'row-fluid' style='margin-top: 10px'>
+    <div class='span8'>
+      <table id="table_trainees" class="table table-condensed table-bordered table-striped table-hover">
+        <tr>
+          <th>Name</th>
+          <th>Skills</th>
+        </tr>
+        <% @results.each do |result| %>
+          <tr>
+            <td><%= name_and_link result.trainee %></td>
+            <td><%= highlight(result.all_skills, @filter_info[:skills].split) %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class='span4' style='background-color: #eee; padding:10px'>
+      <b>Send Email(BCC) to:</b><br> <%= @trainee_email.trainee_names.join(';') %><hr>
+      <%= simple_form_for @trainee_email do |f| %>
+        <%= f.hidden_field :use_job_leads_email, value: true %>
+        <%= f.hidden_field :klass_id %>
+        <%= f.hidden_field :trainee_ids %>
+        <%= f.input :subject, input_html: { style: 'width: 90%'} %>
+        <%= f.input :content, input_html: { style: 'width: 90%; height: 100px'} %>
+        <%= submit_button(f, 'Send') %>
+      <% end %>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $('.new_trainee_email').submit(function() {
+      subject = $('#trainee_email_subject').val();
+      if (subject.length < 5){
+        alert('subject should be minimum 5 characters');
+        return false;
+      }
+      content = $('#trainee_email_content').val();
+      if (content.length < 5){
+        alert('content should be minimum 5 characters');
+        return false;
+      }
+    });
+  </script>
+<% end %>
+
+<script type="text/javascript">
+  $('.form-search').submit(function() {
+    $('#submit-button').button('loading');
+  });
+</script>

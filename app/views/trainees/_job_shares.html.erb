@@ -1,0 +1,19 @@
+<% if job_shares.any? %>
+  <div class ='vertical-scroll-div'>
+    <table id = 'trainee_job_leads' class="table table-condensed table-bordered" >
+      <tr>
+        <th>Sent On</th>
+        <!-- <th>From</th> -->
+        <th>Company</th>
+        <th>Title</th>
+        <% if current_account.track_trainee_status? %>
+          <th>Status</th>
+        <% end %>
+      </tr>
+      <% trainee.job_shares.each do |job_share|%>
+        <%= render job_share.shared_jobs, trainee: trainee%>
+      <% end %>
+    </table>
+  </div>
+  <br>
+<% end %>

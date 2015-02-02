@@ -1,0 +1,909 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=101%20College%20Rd%20E,%20Princeton,%20NJ,%2008540&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 15 Apr 2014 18:41:33 GMT
+      Expires:
+      - Wed, 16 Apr 2014 18:41:33 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "101",
+                       "short_name" : "101",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "College Road East",
+                       "short_name" : "College Rd E",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08540",
+                       "short_name" : "08540",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "101 College Road East, Princeton, NJ 08540, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.3569769,
+                          "lng" : -74.6065251
+                       },
+                       "southwest" : {
+                          "lat" : 40.3569658,
+                          "lng" : -74.6065364
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3569769,
+                       "lng" : -74.6065251
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3583203302915,
+                          "lng" : -74.60518176970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.3556223697085,
+                          "lng" : -74.6078797302915
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 15 Apr 2014 18:41:32 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=102%20College%20Rd%20E,%20Princeton,%20NJ,%2008540&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 15 Apr 2014 18:41:36 GMT
+      Expires:
+      - Wed, 16 Apr 2014 18:41:36 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "102",
+                       "short_name" : "102",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "College Road East",
+                       "short_name" : "College Rd E",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08540",
+                       "short_name" : "08540",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "102 College Road East, Princeton, NJ 08540, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.3559013,
+                          "lng" : -74.59726359999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3558942,
+                          "lng" : -74.5972795
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3558942,
+                       "lng" : -74.5972795
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3572467302915,
+                          "lng" : -74.59592256970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.3545487697085,
+                          "lng" : -74.59862053029151
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 15 Apr 2014 18:41:35 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=103%20College%20Rd%20E,%20Princeton,%20NJ,%2008540&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 15 Apr 2014 18:41:38 GMT
+      Expires:
+      - Wed, 16 Apr 2014 18:41:38 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "103",
+                       "short_name" : "103",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "College Road East",
+                       "short_name" : "College Rd E",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08540",
+                       "short_name" : "08540",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "103 College Road East, Princeton, NJ 08540, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.3598228,
+                       "lng" : -74.60225459999999
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.36117178029151,
+                          "lng" : -74.6009056197085
+                       },
+                       "southwest" : {
+                          "lat" : 40.35847381970851,
+                          "lng" : -74.60360358029151
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 15 Apr 2014 18:41:37 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=princeton,nj,08540&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 02 Jul 2014 01:57:42 GMT
+      Expires:
+      - Thu, 03 Jul 2014 01:57:42 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Princeton, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.3917548,
+                          "lng" : -74.61750789999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3048718,
+                          "lng" : -74.722177
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3572976,
+                       "lng" : -74.6672226
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3917548,
+                          "lng" : -74.61750789999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3048718,
+                          "lng" : -74.722177
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "point_of_interest", "establishment" ]
+                    },
+                    {
+                       "long_name" : "Princeton Airport",
+                       "short_name" : "Princeton Airport",
+                       "types" : [ "establishment" ]
+                    },
+                    {
+                       "long_name" : "Montgomery",
+                       "short_name" : "Montgomery",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Somerset County",
+                       "short_name" : "Somerset County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08540",
+                       "short_name" : "08540",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Princeton (PCT), Princeton Airport, Montgomery, NJ 08540, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.3973795,
+                       "lng" : -74.660118
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3987284802915,
+                          "lng" : -74.65876901970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.3960305197085,
+                          "lng" : -74.66146698029151
+                       }
+                    }
+                 },
+                 "types" : [ "airport", "transit_station", "point_of_interest", "establishment" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 02 Jul 2014 01:57:42 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=40.3572976,-74.6672226&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 02 Jul 2014 01:57:42 GMT
+      Expires:
+      - Thu, 03 Jul 2014 01:57:42 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "American Taxi Airports Luxury Limo Car Service",
+                       "short_name" : "American Taxi Airports Luxury Limo Car Service",
+                       "types" : [ "point_of_interest", "establishment" ]
+                    },
+                    {
+                       "long_name" : "55",
+                       "short_name" : "55",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Searing St",
+                       "short_name" : "Searing St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Dover",
+                       "short_name" : "Dover",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "07801",
+                       "short_name" : "07801",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "American Taxi Airports Luxury Limo Car Service, 55 Searing St, Dover, NJ 07801, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.357009,
+                       "lng" : -74.66720500000001
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3583579802915,
+                          "lng" : -74.66585601970851
+                       },
+                       "southwest" : {
+                          "lat" : 40.3556600197085,
+                          "lng" : -74.66855398029152
+                       }
+                    }
+                 },
+                 "types" : [ "airport", "transit_station", "point_of_interest", "establishment" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "31",
+                       "short_name" : "31",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Race Street",
+                       "short_name" : "Race St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08542",
+                       "short_name" : "08542",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "31 Race Street, Princeton, NJ 08542, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.35658,
+                       "lng" : -74.667146
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3579289802915,
+                          "lng" : -74.66579701970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.3552310197085,
+                          "lng" : -74.6684949802915
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "08542",
+                       "short_name" : "08542",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Princeton, NJ 08542, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.3627119,
+                          "lng" : -74.6498989
+                       },
+                       "southwest" : {
+                          "lat" : 40.347974,
+                          "lng" : -74.669899
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3542647,
+                       "lng" : -74.6620003
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3627119,
+                          "lng" : -74.6498989
+                       },
+                       "southwest" : {
+                          "lat" : 40.347974,
+                          "lng" : -74.669899
+                       }
+                    }
+                 },
+                 "types" : [ "postal_code" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Princeton, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.3917548,
+                          "lng" : -74.61750789999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3048718,
+                          "lng" : -74.722177
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3572976,
+                       "lng" : -74.6672226
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3917548,
+                          "lng" : -74.61750789999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3048718,
+                          "lng" : -74.722177
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Mercer County, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.424156,
+                          "lng" : -74.481202
+                       },
+                       "southwest" : {
+                          "lat" : 40.136843,
+                          "lng" : -74.94290909999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3028533,
+                       "lng" : -74.7337069
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.424156,
+                          "lng" : -74.481202
+                       },
+                       "southwest" : {
+                          "lat" : 40.136843,
+                          "lng" : -74.94290909999999
+                       }
+                    }
+                 },
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "New Jersey, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.357423,
+                          "lng" : -73.9024391
+                       },
+                       "southwest" : {
+                          "lat" : 38.9286252,
+                          "lng" : -75.5597921
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.0583238,
+                       "lng" : -74.4056612
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.357423,
+                          "lng" : -73.9024391
+                       },
+                       "southwest" : {
+                          "lat" : 38.9286252,
+                          "lng" : -75.5597921
+                       }
+                    }
+                 },
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "United States",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 71.389888,
+                          "lng" : -66.94976079999999
+                       },
+                       "southwest" : {
+                          "lat" : 18.9110642,
+                          "lng" : 172.4546967
+                       }
+                    },
+                    "location" : {
+                       "lat" : 37.09024,
+                       "lng" : -95.712891
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 49.38,
+                          "lng" : -66.94
+                       },
+                       "southwest" : {
+                          "lat" : 25.82,
+                          "lng" : -124.39
+                       }
+                    }
+                 },
+                 "types" : [ "country", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 02 Jul 2014 01:57:42 GMT
+recorded_with: VCR 2.9.0

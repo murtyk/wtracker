@@ -1,0 +1,283 @@
+<h1><%= "Employers - Locations" %></h1>
+<div class = 'row-fluid filters-div' >
+
+  <%= simple_form_for :filters, method: :get, url: [:mapview, :employers], html: {class: 'form-search' } do |f| %>
+
+    <div class='span3'>
+      Counties<br>
+      <%= f.input_field :county_ids, label: 'County', collection: employer_counties_for_selection, selected: @employer_map.selected_county_ids, class: "search-query input-block-level", style: 'height: 90px', multiple: true, include_blank: true %>
+    </div>
+
+    <div class='span5'>
+    	<div class = 'row-fluid' style='margin-left: 10px'>
+        <div class = 'span4'>
+          Sector
+        </div>
+        <div class = 'span8'>
+          <%= f.input_field :sector_id, label: 'Sector', collection: employer_sectors_for_selection, selected: @employer_map.sector_id, include_blank: true, class: "search-query input-block-level" %>
+        </div>
+      </div>
+      <div class = 'row-fluid' style='margin-left: 10px'>
+        <div class = 'span4'>
+          Trainees of Class
+        </div>
+        <div class = 'span8'>
+          <%= f.input_field :klass_id, collection: Klass.all, selected: @employer_map.klass_id, include_blank: true, class: "search-query input-block-level" %>
+        </div>
+      </div>
+
+      <div class = 'row-fluid' style='margin-left: 10px'>
+        <div class = 'span4'>
+          Name starting with
+        </div>
+        <div class = 'span8'>
+          <%= f.input_field :name, value: @employer_map.name, class: "search-query input-block-level" %>
+        </div>
+      </div>
+
+      <%= f.check_box :show_colleges, checked: @employer_map.show_colleges?, style: 'margin: 0 5px 0 10px'%><span class="lbl" style='padding-top: 0px'>Show Colleges</span>
+    </div>
+
+    <div class='span3' style = 'margin-top: 10px'>
+      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+        <i class="icon-search icon-white"></i>Find
+      </button>
+
+      <button type = 'button' id ='help-button' class="btn btn-flat btn-small btn-info pull-right">
+        <i class="icon-question-sign icon-white icon-2x"></i>
+      </button>
+
+      <br><br>
+
+      <button type="button" id='clear-button' class="btn btn-flat btn-primary">
+        Clear Filters
+      </button>
+    </div>
+
+  <% end %>
+
+</div>
+
+<div class = 'row-fluid' style = 'margin-top:5px;background-color: #eee; padding: 10px 5px 10px 10px'>
+
+  <div class='span2'><a href="#list" class='btn-link'>
+    Employers: <b> <%= @employer_map.employers_addresses.count%></b></a>
+  </div>
+
+  <div class='span8'>
+    <% unless @employer_map.searched_county_names.blank? %>
+      <div class='span6'>
+        Counties:<strong><%= @employer_map.searched_county_names %></strong>
+      </div>
+    <% end %>
+    <% unless @employer_map.searched_sector_name.blank? %>
+      <div class='span2'>
+        <strong>Sector:<%= @employer_map.searched_sector_name %></strong>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="span2">
+    <%= render 'shared/circles_legend' if @employer_map.circles %>
+  </div>
+
+</div>
+
+<%= render 'mapview_help' %>
+
+<%= gmaps(@employer_map.map) if @employer_map.map %>
+
+<br>
+
+<div class='row-fluid'>
+
+  <div class='span4'>
+    <h4>Employers List</h4>
+  </div>
+
+  <div class='span8'>
+    <button type="button" id = 'btnExport' class="btn btn-flat btn-small btn-primary pull-right" style='margin-left:20px' name='export'>
+      <i class="icon-cloud-download icon-2x"></i>
+    </button>
+  </div>
+
+</div>
+
+<table class="table table-condensed table-bordered table-striped table-hover" id ='companies-table'>
+
+  <tr>
+    <th>Employer</th>
+    <th>Address</th>
+    <th>County</th>
+    <th>Contacts</th>
+  </tr>
+
+  <% @employer_map.employers.each do |employer| %>
+    <tr>
+      <td><%= name_and_link(employer) %></td>
+      <td><%= employer.address.gmaps4rails_address %></td>
+      <td><%= employer.address.county %></td>
+      <td>
+        <p><%= employer.phone_no %></p>
+        <% employer.contacts.each do |contact| %>
+          <div style='border-top: 1px solid #ddd'>
+            <b><%= contact.name %></b>
+            <%= contact.land_no %>
+            <%= contact.mobile_no %>
+            <%= contact.email %>
+          </div>
+        <% end %>
+      </td>
+   </tr>
+  <% end %>
+
+</table>
+
+<script type="text/javascript">
+
+  var selected = new Array();
+
+  $('.form-search').submit(function() {
+    counties_count = $('#filters_county_ids option:selected').length;
+    sector_id = $('#filters_sector_id :selected').text();
+    name = $('#filters_name').val();
+    if (name == '' && sector_id == 0 && counties_count == 0){
+      alert("Please select a county and/or a sector. OR enter name.");
+      return false;
+    }
+    $('#submit-button').button('loading');
+  });
+
+  $('#help-button').click(function() {
+    $('#helpModal').modal();
+  });
+
+  $('#clear-button').click(function() {
+    $('#filters_name').val('');
+    $('#filters_sector_id').val('');
+    $('#filters_klass_id').val('');
+    $("#filters_county_ids").val([]);
+  });
+
+</script>
+
+<script type="text/javascript">
+  $('.btn-spinner').button();
+</script>
+
+<script type="text/javascript">
+
+  function CustomMethodToExport(tblId){
+
+    var html;
+    var trhtml = "";
+    var gTable = document.getElementById(tblId);
+    var numofRows = gTable.rows.length-1;
+    var numofCells =  gTable.rows[0].cells.length-1  ;
+    for ( r = 0; r <= numofRows; r++)
+    {
+      var c =0;
+      var tdhtml =  "" ;
+      var node;
+
+      for (c = 0; c<=numofCells; c++)
+      {
+        node = gTable.rows[r].cells[c].childNodes[1];
+        if (node != null && node.nodeName == 'OL')
+        {
+          tokens = node.id.split('_');
+          job_search_id = tokens[1];
+          company_num = tokens[2];
+          checkbox_id = job_search_id + ':' + company_num
+          titles = '';
+          $("input[type='checkbox'][id*='" + checkbox_id + "']").each(function(){
+          	titles += '<li>' + this.name + '</li>';
+          });
+          tdhtml = tdhtml + "<td><ol>" + titles + "</ol></td>";
+        }
+        else if(gTable.rows[r].cells[c].childNodes[0].nodeName == 'A')
+        {
+          tdhtml = tdhtml + '<td>' + gTable.rows[r].cells[c].textContent + '</td>'
+        }
+        else
+        {
+          if(gTable.rows[r].cells[c].innerHTML.indexOf("Add</a>") != -1)
+          {
+            tdhtml = tdhtml + "<td></td>";
+          }
+          else
+          {
+            tdhtml = tdhtml + gTable.rows[r].cells[c].outerHTML;
+          }
+        }
+      }
+
+      trhtml = trhtml + "<tr>" + tdhtml + "</tr>";
+    }
+
+    html = "<table border='1'>"+trhtml+"</table>";
+
+        // MS OFFICE 2003  : data:application/vnd.ms-excel
+        window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+
+        // MS OFFICE 2007  : application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        // window.open('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' + encodeURIComponent(html));
+  }
+
+</script>
+
+<script type="text/javascript">
+
+  $('#btnExport').click(function(e){
+    // window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#dvData').html()));
+    CustomMethodToExport("companies-table");
+    e.preventDefault();
+  });
+
+</script>
+
+<script type="text/javascript">
+
+  function attachPolygonInfoWindow(polygon, html)
+  {
+    polygon.infoWindow = new google.maps.InfoWindow({
+      content: html
+    });
+
+    google.maps.event.addListener(polygon, 'click', function(e){
+      var latLng = e.latLng;
+      console.log(latLng);
+      this.setOptions({fillOpacity:0.3, strokeColor: "#F00"});
+      polygon.infoWindow.setPosition(latLng);
+      polygon.infoWindow.open(Gmaps.map.serviceObject);
+    });
+
+    google.maps.event.addListener(polygon, 'mouseout', function() {
+      this.setOptions({fillOpacity:0.15, strokeColor: "#383838"});
+      polygon.infoWindow.close();
+    });
+  }
+
+</script>
+
+<% content_for :scripts do %>
+<script type="text/javascript">
+
+  Gmaps.map.callback = function(){
+    console.log("map callback");
+    console.log(Gmaps.map.polygons.length);
+
+    county_polygons = <%= raw @employer_map.state_county_polygons.to_json %>;
+    county_names = <%= raw @employer_map.state_county_names.to_json %>;
+    county_count = county_polygons.length;
+
+    for (c = 0; c < county_count; c++)
+    {
+      polygon = Gmaps.map.create_polygon(county_polygons[c]);
+      polygon.setOptions({clickable: true, fillColor: "#88F",strokeColor: "#383838",fillOpacity: 0.15, strokeWeight: 1});
+      attachPolygonInfoWindow(polygon, '<strong>' + county_names[c] + '</strong>');
+    }
+  }
+
+</script>
+<% end %>

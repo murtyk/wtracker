@@ -1,0 +1,45 @@
+<h1>Users</h1>
+<div class = 'row-fluid filters-div' >
+  <%= simple_form_for :filters, method: :get, url: url_for([:admin, :users]),html: {class: 'form-search'} do |f| %>
+    <div class = 'row-fluid'>
+      Account<%= f.input_field :account_id, collection: accounts_collection, selected: @account_id, include_blank: true, class: "search-query" %>
+      Online Only? <%= f.input_field :online_only, as: :boolean, checked: @online_only, class: "search-query" %>
+      <button type="submit" class="btn btn-flat btn-small btn-primary">
+        <i class="icon-search icon-white"></i> Find
+      </button>
+    </div>
+  <% end %>
+</div>
+
+<% if @users.any? %>
+  <div class = 'row-fluid'>
+    <div align="center">
+      <%= will_paginate @users%>
+    </div>
+  </div>
+<% end %>
+
+<table id="table_user" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>email</th>
+    <th>Role</th>
+    <th>Account</th>
+    <th>online?</th>
+    <th>Last Signed</th>
+    <th></th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= user.email %></td>
+    <td><%= user.role %></td>
+    <td><%= user.account_name %></td>
+    <td><%= user.last_activity_at && (user.last_activity_at > 5.minutes.ago) ? 'Yes' : ''%></td>
+    <td><%= user.current_sign_in_at ? distance_of_time_in_words_to_now(user.current_sign_in_at) + ' ago': '<b style="color:red">never</b>'.html_safe%>
+    <td>
+    </td>
+  </tr>
+<% end %>
+</table>

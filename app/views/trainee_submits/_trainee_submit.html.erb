@@ -1,0 +1,4 @@
+<p>
+    <b><%= trainee_submit.by_trainee? ? '*' : '-' %></b>
+    <%= trainee_submit.applied_on ? trainee_submit.applied_on.to_s : ''%> : <%= link_to trainee_submit.employer_name, trainee_submit.employer %> : <%= trainee_submit.title %>
+</p>

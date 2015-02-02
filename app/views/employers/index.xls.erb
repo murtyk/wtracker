@@ -1,0 +1,70 @@
+<table border="1">
+  <tr>
+  <td>company:name</td>
+  <td>company:source</td>
+  <td>company:phone_no</td>
+  <td>address:line1</td>
+  <td>address:city</td>
+  <td>address:state</td>
+  <td>address:zip</td>
+  <td>address:county</td>
+  <td>company:sectors</td>
+  <td>company:notes</td>
+  <td>company:create_date</td>
+  <td>contact1:first_name</td>
+  <td>contact1:last_name</td>
+  <td>contact1:land_no</td>
+  <td>contact1:ext</td>
+  <td>contact1:mobile_no</td>
+  <td>contact1:email</td>
+  <td>contact2:first_name</td>
+  <td>contact2:last_name</td>
+  <td>contact2:land_no</td>
+  <td>contact2:ext</td>
+  <td>contact2:mobile_no</td>
+  <td>contact2:email</td>
+  <td>contact3:first_name</td>
+  <td>contact3:last_name</td>
+  <td>contact3:land_no</td>
+  <td>contact3:ext</td>
+  <td>contact3:mobile_no</td>
+  <td>contact3:email</td>
+  </tr>
+  <% @employers.each do |employer| %>
+  <tr>
+    <td><%= employer.name %></td>
+    <td><%= employer.source %></td>
+    <td><%= format_phone_no employer.phone_no %></td>
+    <td><%= employer.line1 %></td>
+    <td><%= employer.city %></td>
+    <td><%= employer.state %></td>
+    <td><%= employer.zip %></td>
+    <td><%= employer.county %></td>
+    <td>
+        <% sectors = ""%>
+        <% employer.sectors.each {|s| sectors += (s.name + ";")}%>
+        <% sectors[-1] = "" if sectors.size > 0%>
+        <%= sectors %>
+    </td>
+    <td>
+        <% notes = ""%>
+        <% employer.employer_notes.each {|n| notes += (n.note + ";")}%>
+        <% notes[-1] = "" if notes.size > 0%>
+        <%= notes %>
+    </td>
+    <td><%= employer.created_at.to_date.to_s %></td>
+    <% (0..2).each do |i| %>
+      <% contact = employer.contacts[i] %>
+      <td><%= contact && contact.first%></td>
+      <td><%= contact && contact.last%></td>
+      <td><%= contact && format_phone_no(contact.land_no)%></td>
+      <td><%= contact && contact.ext %></td>
+      <td><%= contact && format_phone_no(contact.mobile_no)%></td>
+      <td><%= contact && contact.email%></td>
+    <% end %>
+  </tr>
+  <% end %>
+
+</table>
+
+

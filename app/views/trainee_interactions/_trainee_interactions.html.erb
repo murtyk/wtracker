@@ -1,0 +1,8 @@
+<% object.trainee_interactions_by_status.each do |status, trainee_interactions| %>
+  <% ti = trainee_interactions.first %>
+  <div id = '<%="trainees_#{ti.status_name}"%>'>
+    <br>
+    <p><b><%="#{ti.status_name} (#{trainee_interactions.count})"%></b></p>
+    <%= render trainee_interactions, trainee_page: object.trainee? %>
+  </div>
+<% end %>

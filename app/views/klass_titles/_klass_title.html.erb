@@ -1,0 +1,16 @@
+<div id = "klass_title_<%=klass_title.id%>">
+  <p>
+    <%= button_destroy_association(klass_title, title: 'Delete title') %>
+    <% if klass_title.valid_job_search_count? %>
+        <% display_text = "<b style='color: blue'>".html_safe %>
+        <% display_text += "#{klass_title.title} (#{klass_title.jobs_count} - #{distance_of_time_in_words_to_now(klass_title.job_search.updated_at)} ago)" %>
+        <% display_text += '</b>'.html_safe %>
+    <% else %>
+        <% display_text =  "<b style='color: blue'>".html_safe %>
+        <% display_text +=  klass_title.title  %>
+        <% display_text += "<span id='job_count_#{klass_title.id}'>".html_safe %>
+        <% display_text +=  "<i class='icon-spinner icon-spin icon-large'></i></span></b>".html_safe %>
+    <% end %>
+    <%= link_to display_text.html_safe, {controller: "job_searches", action: "create", job_search: {klass_title_id: klass_title.id}}, {method: :post} %>
+  </p>
+</div>

@@ -1,0 +1,46 @@
+<%= simple_form_for(@klass_event, remote: true) do |f| %>
+  <%= f.error_notification %>
+
+    <h4>Add New Event</h4>
+
+    <%= f.hidden_field :klass_id %>
+    <%= f.input :name, required: true %>
+    <%= f.input :event_date, required: true, input_html: { data: {behaviour: "datepicker"}}, as: :string %>
+    <%= f.input :notes %>
+    From: <%=f.number_field :start_time_hr, style: 'width: 40px'%>
+          <%=f.number_field :start_time_min, style: 'width: 40px'%>
+          <%=f.text_field :start_ampm, style: 'width: 20px'%>
+    To: <%=f.number_field :end_time_hr, style: 'width: 40px'%>
+        <%=f.number_field :end_time_min, style: 'width: 40px'%>
+        <%=f.text_field :end_ampm, style: 'width: 20px'%>
+
+    <div class="form-actions">
+      <button type="submit" id='event_submit-button' class="btn btn-flat btn-primary btn-spinner" data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Adding...">
+        Add
+      </button>
+    </div>
+<% end %>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  $('.btn-spinner').button();
+
+})
+</script>
+
+<script type="text/javascript">
+  $('#new_klass_event').submit(function() {
+    if ($('#klass_event_name').val() == ""){
+      alert("Please enter event name");
+      return false;
+    }
+    if ($('#klass_event_event_date').val() == ""){
+      alert("Please enter event date");
+      return false;
+    }
+
+    $('#event_submit-button').button('loading');
+
+  });
+</script>

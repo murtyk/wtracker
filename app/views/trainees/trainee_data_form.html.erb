@@ -1,0 +1,27 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h2>This information is required to proceed. SS# will be encrypted to protect identity.</h2>
+    </div>
+    <%= simple_form_for(@trainee, html: { id: 'trainee_form', class: 'form-horizontal' }) do |f| %>
+      <div class = 'row-fluid'>
+        <%= f.error_notification %>
+        <div class="form-inputs offset1">
+          <%= f.input :trainee_id, label: 'Social Security Number', required: true %>
+          <%= f.input :dob, label: 'Date of Birth', value: @trainee.dob.to_s, as: :string, required: true %>
+        </div>
+        <div class="form-actions">
+          <div class='offset1'>
+          <%= submit_button(f, 'Next') %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+jQuery(function($){
+  $("#trainee_dob").mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
+  $("#trainee_trainee_id").mask("999-99-9999");
+});
+</script>

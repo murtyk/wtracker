@@ -1,0 +1,11 @@
+<% if import_status.errors? %>
+  <h4 style = 'color: brown'>Errors encountered:</h4>
+  <ol>
+  <% import_status.import_fails.each do |import_fail| %>
+    <li>
+      <%= "Row:#{import_fail.row_no} #{import_fail.error_message}" %>
+    </li>
+  <% end %>
+  </ol>
+  <br>
+<% end %>

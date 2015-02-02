@@ -1,0 +1,83 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1><%="#{user.new_record? ? 'New' : 'Edit'} User"%></h1>
+    </div>
+    <%= simple_form_for(user, html: { class: "form-horizontal"}) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+        <%= f.input :first %>
+        <%= f.input :last %>
+        <%= f.input :location %>
+
+        <% roles = current_user.director? ? { "Admin" => 2 } : {}  %>
+        <% roles = roles.merge({ "Navigator" => 3, "Instructor" => 4 }) %>
+
+        <% if current_user != user %>
+          <%= f.input :role, collection: roles, include_blank: false%>
+          <%= f.input :status, collection: user_statuses, include_blank: false%>
+        <% end %>
+
+        <%= f.input :land_no, label: 'Phone Number(w)'%>
+        <%= f.input :ext, label: 'Extension' %>
+        <%= f.input :mobile_no, label: 'Mobile Number'%>
+        <%= f.input :email %>
+        <% if current_user == user || user.new_record?%>
+          <%= f.input :password, required: true %>
+        <% end %>
+        <%= f.input :comments %>
+        <% display = user.navigator? ? 'show' : 'none' %>
+        <div id='navigator_options' style='display: <%=display%>'>
+          <%= f.association :counties, label: 'Assign to Counties',
+                                       collection: current_account.state.counties %>
+          <%= f.association :grants, label: 'Assign class administration access in grants',
+                                     collection: current_account.active_grants %>
+        </div>
+
+      </div>
+      <div class="form-actions">
+        <%= render 'shared/cancel_link' %>
+        <%= f.button :submit, class: 'btn btn-flat btn-primary' do %>
+          <i class="icon-ok icon-ok"></i>Save
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var current_role = <%= user.role.to_i %>;
+  $('#user_role').change(function() {
+    new_role = $('#user_role :selected').val();
+    if (current_role != new_role){
+      if (current_role == 3){
+        if (new_role == 4)
+        {
+          alert('This user will be removed as Navigator from assigned classes and will be assigned as Instructor to the same classes');
+        }
+        else
+        {
+          alert('This user will be removed as Navigator from assigned classes.');
+        }
+      }
+      else if(current_role == 4){
+        if (new_role == 3)
+        {
+          alert('This user will be removed as Instructor from assigned classes and will be assigned as Navigator to the same classes.');
+        }
+        else
+        {
+          alert('This user will be removed as Instructor from assigned classes.');
+        }
+
+      }
+    }
+    if (new_role == 3){
+      $('#navigator_options').show();
+    }
+    else{
+      $('#navigator_options').hide();
+    }
+  });
+</script>

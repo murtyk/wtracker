@@ -1,0 +1,5 @@
+<% if current_grant.auto_job_leads? %>
+  <%= render 'auto_job_leads_metrics' %>
+<% else %>
+  <%= render 'common.html.erb' %>
+<% end %>

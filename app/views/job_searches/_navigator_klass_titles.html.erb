@@ -1,0 +1,19 @@
+<% if current_user.navigator? %>
+	<% current_user.klasses.each do |klass| %>
+		<div class = 'row-fluid' style='margin-top: 5px;border: thin solid rgb(221, 221, 221)'>
+			<div class = 'row-fluid' style='background-color: #eeeeee;'>
+				<p style='color: blue;margin-left:10px'> <%= klass.to_label%></p>
+			</div>
+			<div class = 'row-fluid' style='margin-bottom: 5px;'>
+				<% klass.klass_titles.each do |kt| %>
+					<div class = 'span2' style='margin-top:5px;padding: 5px 0px 5px 5px;text-align: center;background-color: rgb(135, 184, 127);'>
+					<%= link_to "<b style='color: white'>#{kt.title} <span style='color: blue'>#{kt.get_job_search.count}</span></b>".html_safe, {controller: "job_searches", action: "create", job_search: {klass_title_id: kt.id}}, {method: :post}%>
+					<br>
+					<%= distance_of_time_in_words_to_now(kt.get_job_search.created_at)%> ago
+					</div>
+				<% end %>
+			</div>
+		</div>
+
+	<% end %>
+<% end %>

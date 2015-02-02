@@ -1,0 +1,75 @@
+<div class = 'row-fluid'>
+  <div class = "opero-widget-box">
+    <div class = "opero-widget-header">
+      <h4><%= "#{grant.new_record? ? 'New' : 'Edit'} Grant"%></h4>
+    </div>
+    <div class= 'opero-widget-body'>
+      <div class="widget-main no-padding">
+        <%= simple_form_for([:admin, grant]) do |f| %>
+          <div class="form-inputs">
+            <h1>Account:<%= grant.account_name%></h1>
+            <div class='row-fluid'>
+              <div class = 'span3 offset1'>
+                <%= f.hidden_field :account_id%>
+                <%= f.input :name %>
+                <%= f.input :start_date, required: true, input_html: { data: { behaviour: "datepicker" }, value: grant.start_date.to_s }, as: :string %>
+                <%= f.input :end_date, required: true, input_html: { data: { behaviour: "datepicker" }, value: grant.end_date.to_s }, as: :string %>
+                <%= f.input :status, collection: grant_statuses, include_blank: false%>
+                <%= f.input :spots, label: "Trainee Spots"%>
+                <%= f.input :amount, label: "Grant $ Amount"%>
+              </div>
+              <div class = 'span6'>
+                <%= f.input :trainee_applications, as: :boolean, label: false, inline_label: true %>
+                <% if grant.applicant_logo_file %>
+                  Applicant Logo <img alt="Missing" src='<%= grant.applicant_logo %>'>
+                <% else %>
+                  <%= f.input :applicant_logo_file, as: :file %>
+                <% end %>
+
+                <%= f.input :auto_job_leads, as: :boolean, label: false, inline_label: true %>
+
+                <%= f.fields_for :profile_request_subject do |ff| %>
+                  <%= ff.input :content, as: :string, label: 'Profile Request Subject', input_html: {style: 'width: 500px'} %>
+                <% end %>
+                <%= f.fields_for :profile_request_content do |ff| %>
+                  <%= ff.input :content, label: 'Profile Request Content', input_html: {style: 'width: 500px'} %>
+                <% end %>
+                <%= f.fields_for :job_leads_subject do |ff| %>
+                  <%= ff.input :content, as: :string, label: 'Job Leads Subject', input_html: {style: 'width: 500px'} %>
+                <% end %>
+                <%= f.fields_for :job_leads_content do |ff| %>
+                  <%= ff.input :content, label: 'Job Leads Content', input_html: {style: 'width: 500px'} %>
+                <% end %>
+                <%= f.fields_for :optout_message_one do |ff| %>
+                  <%= ff.input :content, label: 'Employed message', input_html: {style: 'width: 500px'} %>
+                <% end %>
+                <%= f.fields_for :optout_message_two do |ff| %>
+                  <%= ff.input :content, label: 'No longer looking message', input_html: {style: 'width: 500px'} %>
+                <% end %>
+                <%= f.fields_for :optout_message_three do |ff| %>
+                  <%= ff.input :content, label: 'Moved out message', input_html: {style: 'width: 500px'} %>
+                <% end %>
+              </div>
+              <div class = 'span2'>
+                <h2>PLACE HOLDERS</h2>
+                <% AutoMailer::PLACEHOLDERS.each do |token| %>
+                  <%= token %><br>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class = 'form-actions'>
+            <%= submit_button(f) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // $.mask.definitions['~']='[+-]';
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+})
+</script>

@@ -1,0 +1,6 @@
+<% if @trainee_page %>
+  $('#klass_trainees').html('<%= j render("klass_trainees", object: @klass_trainee.trainee) %>');
+<% else %>
+  $('#klass_trainees').html('<%= j render("klass_trainees", object: @klass_trainee.klass) %>');
+  $("#trainees_header").html("Trainees(<%=@klass_trainee.klass.trainees.count%>)");
+<% end %>

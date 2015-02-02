@@ -1,0 +1,99 @@
+<div class = 'row-fluid page-caption-div'>
+  <h1 style='margin-top:0; margin-bottom:0'><%= "Class Information - #{@klass.name}" %></h1>
+</div>
+<div class = 'row-fluid'>
+  <div class = 'span4 left-panel'>
+    <%= render 'klass_basic_panel', klass: @klass %>
+  </div>
+  <div class = 'span4', style = 'border-right:1px solid #EEE;' id = 'events_panel'>
+    <%= render 'klass_events_panel', klass: @klass %>
+  </div>
+  <div class = 'span4' id = 'trainees_panel'>
+    <%= render 'klass_trainees_panel', klass: @klass %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  })
+</script>
+
+<script type="text/javascript">
+$('#expandcollapse').click(function () {
+    ind = $(this).text().search('Expand');
+    if (ind > -1) {
+        $('#accordion2').find('.collapse:not(.in)').each(function (index) {
+            $(this).collapse("toggle");
+        });
+        $(this).html("<i class='icon-white icon-minus-sign'></i> Collapse All");
+    }
+    else {
+        $('#accordion2').find('.collapse.in').each(function (index) {
+            $(this).collapse("toggle");
+        });
+        $(this).html("<i class='icon-white icon-plus-sign'></i> Expand All");
+    };
+});
+
+$('#trainees_more_info_show').click(function () {
+  ind = $(this).text().search('Show More');
+  if (ind > -1)
+  {
+    $(this).html('Show Less');
+  }
+  else
+  {
+    $(this).html('Show More');
+  }
+  $('#klass_trainees').find('.trainee_details').each(function (index) {
+
+      div_id = $(this).attr('id');
+      klass_trainee_id = div_id.split('_')[3];
+      button_id = 'Klass_trainee_show_more_' + klass_trainee_id;
+
+      if (ind > -1)
+      {
+        $(this).show();
+        $('#' + button_id + " i").removeClass("icon-arrow-down").addClass("icon-arrow-up");
+      }
+      else
+      {
+        $(this).hide();
+        $('#' + button_id + " i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
+      }
+  });
+
+});
+
+$('#klass_trainees').on('click', '.klass-trainee-info', function() {
+  button_id = $(this).attr('id');
+  klass_trainee_id = button_id.split('_')[4];
+  div_id = '#klass_trainee_details_' + klass_trainee_id;
+  if ($(div_id).is(':hidden'))
+  {
+    $(div_id).show();
+    $('#' + button_id + " i").removeClass("icon-arrow-down").addClass("icon-arrow-up");
+  }
+  else
+  {
+    $(div_id).hide();
+    $('#' + button_id + " i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
+  }
+});
+
+
+</script>
+<script type="text/javascript">
+  $(function(){
+    $("#brief_calendar_table tr td").click(function(event) {
+      event_id = $(this).attr('id');
+      if (event_id != undefined)
+      {
+        event_id = event_id.split('_')[2];
+        // alert(event_id);
+        location.href = '/klass_events/' + event_id + '/edit';
+      }
+    });
+  });
+</script>

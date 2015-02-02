@@ -1,0 +1,22 @@
+<table class="table table-condensed table-striped table-hover">
+  <tr>
+    <td>Total Leads</td>
+    <td><%= job_search_profile.job_leads_count %></td>
+  </tr>
+  <tr>
+    <td><%= link_to 'Not Viewed', jsp_path(job_search_profile, status: 'Not Viewed') %></td>
+    <td><span id='not_viewed_count'><%= job_search_profile.not_viewed_job_leads_count %></span></td>
+  </tr>
+  <tr>
+    <td><%= link_to 'Viewed', jsp_path(job_search_profile, status: 'Viewed', show_all: true) %></td>
+    <td><span id='viewed_count'><%= job_search_profile.viewed_job_leads_count %></span></td>
+  </tr>
+  <tr>
+    <td><%= link_to 'Applied', jsp_path(job_search_profile, status: 'Applied', show_all: true) %></td>
+    <td><span id='applied_count'><%= job_search_profile.applied_job_leads_count %></span></td>
+  </tr>
+  <tr>
+    <td><%= link_to 'Not Interested', jsp_path(job_search_profile, status: 'Not Interested', show_all: true) %></td>
+    <td><span id='not_interested_count'><%= job_search_profile.not_interested_job_leads_count %></span></td>
+  </tr>
+</table>

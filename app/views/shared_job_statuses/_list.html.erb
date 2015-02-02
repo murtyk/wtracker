@@ -1,0 +1,49 @@
+<% if request.format.xls? %>
+<table border="1">
+<% else %>
+<table class="table table-bordered table-striped table-hover table-condensed">
+<% end %>
+  <tr>
+    <th>Date</th>
+    <th>Title(s)</th>
+    <th>Company</th>
+    <th>Location</th>
+    <th>Comment</th>
+    <th>Sent To</th>
+    <th>Status</th>
+    <th>Feedback</th>
+    <% unless request.format.xls? %>
+    <th></th>
+    <% end %>
+  </tr>
+
+  <% shared_job_statuses.each do |shared_job_status| %>
+  <tr>
+    <td><%= shared_job_status.created_at.to_date.to_s %></td>
+    <td><%= shared_job_status.title %></td>
+    <td><%= shared_job_status.company %></td>
+    <td><%= shared_job_status.location %></td>
+    <td><%= shared_job_status.comment %></td>
+    <td>
+      <% if request.format.xls? %>
+        <%= shared_job_status.trainee_name %>
+      <% else %>
+        <%= link_to shared_job_status.trainee_name, shared_job_status.trainee %>
+      <% end %>
+    </td>
+    <td><%= shared_job_status.status_name %></td>
+    <td><%= shared_job_status.feedback %></td>
+    <% unless request.format.xls? %>
+
+    <td>
+      <% if shared_job_status.need_status_feedback? %>
+        <%= link_to enquire_shared_job_status_path(shared_job_status), class: "btn btn-flat btn-mini btn-primary", id: 'enquiry_link', remote: true, rel:"tooltip", title:"Send a message to trainee to update the status" do %>
+          <i class="icon-question-sign white"></i>
+        <% end %>
+      <% end %>
+    </td>
+    <% end %>
+  </tr>
+  <% end %>
+
+</table>

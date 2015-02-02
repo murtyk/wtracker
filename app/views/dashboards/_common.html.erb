@@ -1,0 +1,131 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Program Summary</h1>
+</div>
+<% unless request.format.xls? %>
+  <div class='row-fluid'>
+      <div class='span11'>
+        <span class='pull-right'>
+          <% filter_btn_class = 'klass_filter btn btn-flat btn-small btn-primary' %>
+          <button type = 'button' id = '1_scheduled_klasses_button' class = '<%=filter_btn_class%>'>Scheduled</button>
+          <button type = 'button' id = '2_ongoing_klasses_button'   class = '<%=filter_btn_class%>'>Ongoing</button>
+          <button type = 'button' id = '3_completed_klasses_button' class = '<%=filter_btn_class%>'>Completed</button>
+          <button type = 'button' id = '0_all_klasses_button'       class = '<%=filter_btn_class%>'>All</button>
+        </span>
+      </div>
+      <div class='span1'>
+          <%= download_button if Klass.any? %>
+      </div>
+  </div>
+<% end %>
+
+<div id = 'all_programs'>
+  <% Program.all.each do |program| %>
+    <h2><%=program.name%></h2>
+    <% if request.format.xls? %>
+    <table border="1">
+    <% else %>
+
+    <table class="table table-condensed table-bordered table-striped table-hover">
+    <% end %>
+      <tr class='info'>
+        <th>Class</th>
+        <th>College</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Enrolled</th>
+        <th>Dropped</th>
+        <th>Completed</th>
+        <th>Continuing</th>
+        <th>Not Placed</th>
+        <th>Placed</th>
+        <th>Placement Rate</th>
+      </tr>
+
+      <% ['scheduled_classes', 'ongoing_classes', 'completed_classes'].each do |klass_state| %>
+        <% klasses = program.send(klass_state) %>
+        <% if klasses.any? %>
+          <% n_enrolled, n_completed, n_dropped, n_continuing, n_not_placed, n_placed = 0, 0, 0, 0, 0, 0 %>
+          <% klasses.each do |klass| %>
+            <tr class = '<%= klass_state%>'>
+              <% status_counts = klass.trainees_status_counts %>
+
+              <td><%= request.format.xls? ? klass.name : link_to(klass.name, klass) %></td>
+              <td><%= klass.college_name %></td>
+              <td><%= klass.start_date.to_s%></td>
+              <td><%= klass.end_date.to_s%></td>
+              <td><%= klass.enrolled_count%></td>
+              <td><%= klass.dropped_count%></td>
+              <td><%= klass.completed_count %></td>
+              <td><%= klass.continuing_education_count%></td>
+              <td><%= klass.not_placed_count%></td>
+              <td><%= klass.placed_count %></td>
+              <td><%= klass.placement_rate%></td>
+            </tr>
+          <% end %>
+          <tr class = '<%= klass_state%> info'>
+            <td><b>Totals for <%= klass_state.humanize.titleize%></b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><%= program.enrolled_count(klass_state)%></td>
+            <td><%= program.dropped_count(klass_state)%></td>
+            <td><%= program.completed_count(klass_state) %></td>
+            <td><%= program.continuing_education_count(klass_state)%></td>
+            <td><%= program.not_placed_count(klass_state)%></td>
+            <td><%= program.placed_count(klass_state) %></td>
+            <td><%= program.placement_rate(klass_state)%></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+    <% unless request.format.xls? %>
+      <hr>
+    <% end %>
+  <% end %>
+</div>
+
+<% unless request.format.xls? %>
+  <script type="text/javascript">
+    $('.klass_filter').click(function (){
+      button_id = $(this).attr('id');
+      klass_type = button_id.split('_')[0]
+      f_show_scheduled = klass_type == '1' || klass_type == '0';
+      f_show_ongoing   = klass_type == '2' || klass_type == '0';
+      f_show_completed = klass_type == '3' || klass_type == '0';
+
+      $('#all_programs').find('.scheduled_classes').each(function (index) {
+        if (f_show_scheduled)
+        {
+          $(this).show();
+        }
+        else
+        {
+          $(this).hide();
+        }
+      });
+
+      $('#all_programs').find('.ongoing_classes').each(function (index) {
+        if (f_show_ongoing)
+        {
+          $(this).show();
+        }
+        else
+        {
+          $(this).hide();
+        }
+      });
+
+      $('#all_programs').find('.completed_classes').each(function (index) {
+        if (f_show_completed)
+        {
+          $(this).show();
+        }
+        else
+        {
+          $(this).hide();
+        }
+      });
+
+    });
+  </script>
+<% end %>

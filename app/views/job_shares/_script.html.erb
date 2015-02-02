@@ -1,0 +1,110 @@
+<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-header"  style='background-color: #ddd'>
+    <h4>emailing job lead...</h4>
+  </div>
+  <div class="modal-body">
+    <div class="progress progress-success progress-striped">
+      <div class="bar" style="width: 0;"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  var job_info = <%= raw job_share.to_json %>;
+  var job_ids = <%= raw job_share.job_ids.to_json %>;
+</script>
+<script type="text/javascript">
+  jQuery(function() {
+    return $('#select_klass').change(function() {
+      klass_id = $('#select_klass :selected').val();
+      $.ajax({
+            url: "/klasses/" + klass_id + "/trainees",
+            beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader('accept', "text/javascript");
+              }
+            });
+    });
+
+    $('#select_klass').change();
+  });
+</script>
+<script type="text/javascript">
+  function send_to_trainees(job_share_id, trainee_ids) {
+    params = {};
+    params['job_share_id'] = job_share_id;
+    trainees_count = trainee_ids.length;
+    count = 0;
+    interval = setInterval(function()
+    {
+      spliced_id = trainee_ids.splice(0,1)
+      if (spliced_id.length > 0)
+      {
+        trainee_id = spliced_id[0];
+      }
+      else
+      {
+        trainee_id = -1
+      }
+      if (trainee_id > -1)
+      {
+        params["trainee_id"] = trainee_id;
+        $.get("/job_shares/send_to_trainee", params, function(data)
+        {
+          console.log(data["message"]);
+          count = count + 1;
+          $('.bar').width((100 * count /trainees_count) + "%");
+          if (count == trainees_count)
+          {
+            location.href = "/job_shares/" + job_share_id;
+          }
+        }, "json")
+        .fail(function(jqXHR, textStatus, errorThrown)
+        {
+          alert("error in send_to_trainees js = " + errorThrown);
+        });
+      }
+      else
+      {
+          clearInterval(interval);
+      }
+    }, 300);
+  }
+  function process_submit()
+  {
+    var count = $('#select_trainees option:selected').length;
+    if (count == 0){
+      alert("Please select at least one trainee");
+      return false;
+    }
+    var selected_options = $('#select_trainees').val();
+    var all_index = jQuery.inArray("0", selected_options); // "0" is the index for All option
+
+    if (all_index > -1) {
+      selected_options = $.map($('#select_trainees option'), function(ele) { return ele.value; });
+      all_index = jQuery.inArray("0", selected_options);
+      selected_options.splice(all_index, 1); //remove the '0'
+    }
+
+    job_info['comment'] = $('#job_share_comment').val();
+    $("#pleaseWaitDialog").modal();
+    $.post("/job_shares", {job_share: job_info, job_ids: job_ids}, function(data)
+    {
+      send_to_trainees(data["job_share_id"], selected_options);
+    }, "json")
+    .fail(function(jqXHR, textStatus, errorThrown)
+    {
+      alert("error in process_submit js");
+    });
+    return false;
+  }
+</script>
+<script type="text/javascript">
+  $(document).ready(function() // DOM is ready...
+  {
+    $('#new_job_share').submit(function(e)
+    {
+      e.preventDefault();
+      process_submit();
+      return false;
+    });
+  });
+</script>

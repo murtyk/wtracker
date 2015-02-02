@@ -1,0 +1,22 @@
+<div class="row-fluid">
+  <div class="position-relative">
+    <div id="login-box" class="span3 offset7 visible opero-widget-box no-border" style = 'margin-top: 150px'>
+      <div class="opero-widget-body">
+        <div class="opero-widget-main" style = '-moz-box-shadow: 0 0 10px rgb(0,0,0);-webkit-box-shadow: 0 0 10px rgb(0,0,0);background-color: #438EB9;padding-left:30px;padding-top:20px'>
+
+          <h4 style='color: white;'>Forgot your password?</h4>
+          <%= simple_form_for(resource, as: resource_name, url:  password_path(resource_name), html: { method: :post }) do |f| %>
+            <%= f.error_notification %>
+
+            <div class="form-inputs">
+              <%= f.input :login_id, label: 'Login ID', required: true, autofocus: true %>
+            </div>
+
+            <%= f.button :submit, "Send me reset instructions", class: 'btn btn-flat btn-primary' %>
+          <% end %>
+
+          <%= render "users/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

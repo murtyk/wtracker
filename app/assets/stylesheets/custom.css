@@ -1,0 +1,283 @@
+#map img {
+  max-width: none;
+}
+#map label {
+  width: auto; display:inline;
+}
+
+h1{
+  text-align:  center;
+  color: blue;
+  font-size: 1.5em;
+}
+
+h2{
+  color: blue;
+  font-weight: normal;
+  font-size: 1.3em;
+}
+
+
+h4{
+  color: blue;
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.lighter { font-weight:lighter; }
+
+.opero-widget-box {
+ padding:0;
+ box-shadow:none;
+ margin:3px 0;
+
+ border:1px solid #CCC;
+}
+
+.opero-widget-header {
+ position:relative;
+ min-height:38px;
+
+ background: #F2F2F2;
+ background: -webkit-linear-gradient(top,  #FFFFFF 0%, #EEEEEE 100%);
+ background: -o-linear-gradient(     top,  #FFFFFF 0%, #EEEEEE 100%);
+ background: -moz-linear-gradient(   top,  #FFFFFF 0%, #EEEEEE 100%);
+ background: -ms-linear-gradient(    top,  #FFFFFF 0%, #EEEEEE 100%);
+ background: linear-gradient(  to bottom,  #FFFFFF 0%, #EEEEEE 100%);
+ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#EEEEEE', GradientType=0);
+
+ color:#669FC7;
+
+ /*border:1px solid #CCC;*/
+ border-bottom:1px solid #DDD;
+
+ padding-left:12px;
+ margin-bottom: 20px;
+ text-align:center;
+}
+
+.opero-widget-header > h1{
+  margin-top:0;
+  margin-bottom:0;
+}
+
+.opero-widget-body {
+ border:1px solid #CCC;
+ border-top:none;
+ background-color:#FFF;
+}
+
+.opero-widget-main {
+ padding:12px;
+}
+
+/* opero-nav > user's top menu */
+.opero-nav {
+ height:100%;
+}
+.opero-nav > li {
+ line-height:45px;
+ background-color:#2E6589;
+
+ border-left:1px solid #DDD;
+ padding:0;
+
+ position:relative;
+}
+
+.opero-nav > li  > a > [class*="icon-"] {
+ font-size:16px;
+ color:#EEE;
+}
+
+.opero-nav > li  > a  , .opero-nav > li > span{
+ position:relative;
+ color:#EEE;
+
+ display:block;
+ height:100%;
+
+ padding:0 8px !important;
+ background-color: transparent;
+}
+.opero-nav > li:first-child{
+ border-left:none;
+}
+
+.opero-nav > li  > a > .badge{
+ position:relative;
+
+ top:-4px; left:2px;
+ padding-right:5px; padding-left:5px;
+}
+
+.nav-user-photo {
+ margin:-4px 8px 0 0;
+
+ border-radius:24px;
+ border:2px solid #FFF;
+
+ max-width:36px !important;
+}
+
+/*
+.opero-nav > li.grey{
+ background:#555;
+}
+.opero-nav > li.purple {
+ background:#892E65;
+}
+.opero-nav  > li.green{
+ background:#2E8965;
+}
+.opero-nav  > li.light-blue{
+ background:#62A8D1;
+}
+.opero-nav  > li.red{
+ background:#B74635;
+}
+
+.opero-nav  > li.light-green{
+ background:#9ABC32;
+}
+
+.opero-nav  > li.light-purple{
+ background:#CB6FD7;
+}
+.opero-nav  > li.light-orange{
+ background:#F79263;
+}
+.opero-nav  > li.dark{
+ background:#404040;
+}
+.opero-nav  > li.light-blue2{
+ background:#42A8E1;
+}
+.opero-nav  > li.white-pink{
+ background:#F4DAE5;
+}
+
+.opero-nav > li.no-border {
+ border-left:none;
+}
+.opero-nav > li.margin-1 {
+ margin-left:1px;
+}
+.opero-nav > li.margin-2 {
+ margin-left:1px;
+ margin-right:1px;
+}
+
+*/
+
+/*for dashboard*/
+.jobcount {
+ font-size:20px;
+ color:#00F;
+}
+
+.pagination{
+  margin-top: 5px;
+  margin-bottom: 5px
+}
+
+.map-image{
+  background-image: url('login-background-nj.png');
+}
+
+.red-circle {
+  background: transparent;
+  width: 50px;
+  height: 50px;
+  border-radius: 50% !important;
+  border:1px solid #f00 !important;
+  -moz-border-radius: 50% !important;
+  color: black;
+  text-align: center;
+}
+
+.green-circle {
+  background: transparent;
+  width: 50px;
+  height: 50px;
+  border-radius: 50% !important;
+  border:1px solid #0f0 ;
+
+  -moz-border-radius: 50% !important;
+  color: black;
+  text-align: center;
+}
+
+.highlight{
+ font-size:14px;
+ color:#00F;
+}
+
+.left-panel {
+  padding-left:5px;
+  border-right:1px solid #EEE;
+  background-color:#EEE;
+}
+
+.page-caption-div{
+  background-color: #EEE;
+  border-style: solid;
+  border-color: #eee;
+  border-width: thin;
+  margin-bottom:10px;
+  margin-top: 5px;
+  padding: 0;
+}
+
+.page-caption-div > h1{
+  margin-top:0;
+  margin-bottom:0;
+}
+
+.filters-div{
+  background-color: #CCC;
+  padding: 10px 5px 10px 10px;
+}
+
+.filters-div-compact{
+  background-color: #CCC;
+  padding: 0px;
+  margin-bottom: 20px;
+}
+
+.filters-div > .form-search{
+  margin-bottom: 0px;
+}
+
+.right-border{
+  border-right:1px solid #ccc;
+}
+
+.vertical-scroll-div{
+  border: thin solid grey;
+  max-height: 250px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.footer {
+  bottom: 0;
+  padding-top:20px;
+  height: 40px;
+  background-color: #000;
+  text-align: center;
+  border-top: 5px solid #26294D;
+}
+
+
+mark {
+background-color: khaki;
+color: inherit;
+}
+
+body {
+     padding-right: 0; /*15px in bootstrap.css*/
+     padding-left: 0;  /*idem*/
+     margin-right: auto;
+     margin-left: auto;
+}

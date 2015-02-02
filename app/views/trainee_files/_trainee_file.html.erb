@@ -1,0 +1,8 @@
+<div id = '<%=div_id_for(trainee_file)%>'>
+    <p>
+        <%= button_destroy_association(trainee_file, title: 'Delete file') %>
+        <%= link_to trainee_file, class: 'btn-link', target: "_blank" do %>
+            <%= trainee_file.created_at.to_date.to_s %> : <%= trainee_file.name %> : <%= trainee_file.notes %>
+        <% end %>
+    </p>
+</div>

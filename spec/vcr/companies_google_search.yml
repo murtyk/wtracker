@@ -1,0 +1,945 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/place/textsearch/json?key=<googleapis_key>&query=Munich%20Re%20near%20Princeton,NJ&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 07 May 2014 14:51:14 GMT
+      Expires:
+      - Wed, 07 May 2014 14:56:14 GMT
+      Cache-Control:
+      - public, max-age=300
+      Vary:
+      - Accept-Language
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "html_attributions" : [],
+           "next_page_token" : "CvQB4QAAANJHJj7ugcNeJkKJh3Y4HLY013u8aVlc4Zc6FW3m5YcM0T7L3RLioHisJUND0dcZQTAQK5Ttdp_5oL6qp71sM5GGmptEBDCaD8TcgaWDJeAE6B1W0weQ_IMTndfoUHJ2qFzz7Can3XwFec_BF9VUz4EEbGd7WamL6mpeQMu-tnAHvZsGtTpujZ1Bbwm7nN-i1x6HzQIhjzZ4sUYkE5drYRROW_tShdf_y5jDeeh1kLxjfSHfgA3RS6HGVQKrHlOhxVBwUobJdzkJ_sF5TokiHJ6JBJbEMWwA06zoJ2DvntJRg_Hai1NdJ1kBM5XlRBoP6RIQAft9OKYlILXASVCmjLBcTRoUTp2CtdAjq7XKGtzj_vF_3dVtL_E",
+           "results" : [
+              {
+                 "formatted_address" : "555 College Rd E, Princeton, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.350303,
+                       "lng" : -74.592834
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "148cb7216d466488f3c247a85eb2474fcdfd9bf8",
+                 "name" : "Munich Reinsurance America, Inc",
+                 "reference" : "CpQBggAAAPowUbcEwxOenFJP8cRX96NIEiNKhB97DTbU5z7kFuJX1Gl5EQe7-8JDWZSLtTUtunqMVL4wRA04YBDK4A7Q6ydDtHXzBdJ1BRw6yePEJmovYNxoKtje2aRk0ciQqjlTieMWDcr77H_XqTX6Bi-HMbfzWnfuAI51lPbncoFm5MRSAw-9HAliEHYCfVpiyG4tkBIQDASejUKvlQYAvDIaxa4_lRoUzQOuDdEW49Qzibge7iQGb4eDV-Q",
+                 "types" : [ "insurance_agency", "health", "establishment" ]
+              },
+              {
+                 "formatted_address" : "685 College Rd E, Princeton, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.343925,
+                       "lng" : -74.59334200000001
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "655683a183c426f22984268dcb50b186688da4a1",
+                 "name" : "Munich Re America Brokers Inc",
+                 "reference" : "CoQBfwAAAFy3tDjF1IjjjsW4LsOiFttEgWoApJFFUlYdnAALGpTGpme4V6_7-XKsPJJykC5W5cDBabMs-lEwDrVsEP_cr5AIagHW0dIRV7rvb-06BhNYi2wVKrEpl3-qxIAqej0QankeiM6HLMZ12eUEjnlQ7und5rXCoknMcS-kVOCA4hiZEhD3zjJQ5_-xOorgtLeapChpGhTPrvilrcFhOnPyA54hjuRuWJ521Q",
+                 "types" : [ "insurance_agency", "finance", "establishment" ]
+              },
+              {
+                 "formatted_address" : "685 College Rd E, Princeton, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.343925,
+                       "lng" : -74.59334200000001
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "5a28ef08c229f428ad03bfb9d55d4822bce91acd",
+                 "name" : "Munich Reinsurance America Inc",
+                 "reference" : "CpQBgQAAANMPIEDbWbsWOybqYw9Cimg3hWK9pePs9KCS2pS1tZkZTZiXTV_6y224zyzvncHzKW7r4QKV8Rv4rpDUpOzS1gFQUdqIRNDSFh2BrECx5fciUraKnsI5Hj2kCASbwVO_L6arZuWiXmYbKrdgBeetidaYgRQVXfRCzzhfccw4oZTLYYUZY4NU--2TfNLCeqP_vhIQqR28JL59IP4V8xK5UhRK9xoUBnZO9Or5hViwZy7eMKcFXdUC4C0",
+                 "types" : [ "insurance_agency", "establishment" ]
+              },
+              {
+                 "formatted_address" : "2 Crossroads Dr, Bedminster Township, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.650398,
+                       "lng" : -74.643989
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "c41ff64fd672f2fb9b85f65bf5598b260208e863",
+                 "name" : "Hartford Steam Boiler",
+                 "reference" : "CoQBdwAAALDpFPYB8HB-DG2XFkLtxNeN1H8OytFtnyLNhdRcVVc2EdwdSjpu8oCTU2UPZs_Jvb8-zXPL2_otZxt-SGzIL_kDfZ4vNrN1vBqRo-riJr21qhRryizrt4LDoLIXsJoZnlsfGGAkMid3iOHfD42XjyPqcexV5y2SAhElYTDurCllEhDuxjNlTrw0VqFoQQzsKP0SGhRMfIVpOCl6-0Y5BIePvNmTKB5PPg",
+                 "types" : [ "natural_feature", "establishment" ]
+              },
+              {
+                 "formatted_address" : "188 Mt Airy Rd, Basking Ridge, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.694685,
+                       "lng" : -74.57553299999999
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "5866ec7344c1acb91bab533d02bea5e6b893916f",
+                 "name" : "The Hartford Steam Boiler Inspection",
+                 "reference" : "CpQBhwAAAABh6Gq37sTUeqILr13hj3UE5C11MvJqjajG91A0uw9YHIvg8Ky6vyiNpOF_VjtvjaR5Be8MEYR8fXjcxYuu9Y1-1dnJdfIvuc3ekzmJgvl-zMqofODmr9ZIlduE_A3fPTN8OSVyKk92tQIBkOuslCaNKcWsUW44ZRqaqATs7laDfLtdgK3-er2eT4cCKiSlUxIQlgPtKt4_7iooR0N7RoTgTBoU-eQE4doU24jLsrAlCaPF_lkwUSQ",
+                 "types" : [ "insurance_agency", "establishment" ]
+              },
+              {
+                 "formatted_address" : "595 E Swedesford Rd, Wayne, PA, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.079945,
+                       "lng" : -75.416859
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "482e3c96930d18b4b3399d4d3ea2f3002f523ae8",
+                 "name" : "Hartford Steam Boiler",
+                 "opening_hours" : {
+                    "open_now" : true
+                 },
+                 "reference" : "CoQBeAAAAOcz7nISuIqOABsAzJrrbDt8lc7EVtQHpehIdrVQhBtKyqkZ_AAdJryW9VZbH7wgWbxK3Z6OqKNu_iW8vIn8OzUMLfdh1kRgM-bTbzHQqLAtMSf4MtpEKaRR5aaPRSZrEKHeFrXi0J3q2wdOcV7Euqh9NoY6AHsz8NmGkQC-TVT_EhBKC1vq4BI7feXbqC3xjIoBGhQwxPm1B55l98Moy81kxb_yfAvhxw",
+                 "types" : [ "insurance_agency", "establishment" ]
+              },
+              {
+                 "formatted_address" : "100 Wall St #605, New York, NY, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.70522,
+                       "lng" : -74.00660499999999
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "1f166ee29a3b1a194e17cabba60d53cc156288c5",
+                 "name" : "Hartford Steam Boiler",
+                 "opening_hours" : {
+                    "open_now" : true
+                 },
+                 "reference" : "CoQBeAAAALOIXX-1gOSYyvX3uhlO-TwS_kqsizFb7wbj2UPMNHe5AMd7kjxicNqtWnxi1HQ8b84pxqgBRBoki3psYl_83qsuXaaRd9O6iAhCXfVQU4hg16WF2hckkowx1JhVS3HG135AOmcq82kSC0E9XANWkOZ9zEwMQLRvvd3qN6sqj36HEhBQV3mA5KYH2ATOEvW3-LviGhRv0RUquBR3GgGwQmUHjdMJA6yJZg",
+                 "types" : [ "establishment" ]
+              },
+              {
+                 "formatted_address" : "545 8th Ave # 401, New York, NY, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.754505,
+                       "lng" : -73.992186
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "4da9b45662069eb1a72827aca1d31f8f4f4039cf",
+                 "name" : "Finsbury Solutions",
+                 "reference" : "CoQBdQAAAOCJi95B0E8EDPF0SmxUqQ5P5CtH7woZtYisdqfGx1LqSwEDPOcwg_G6KBYcIkyPlSsKazLIgbul4IbAo3pzPg8BdM0rQQDZMRgErmhHVIfRQlWjXkCiL-lv35T-XNgkN-feSKtefFmvIV9Nbq8myNZiikwa-f3cmG5fMqNigHOrEhDAf_f9tdDUC0_wFi6j_EF0GhQnNzEL-59Gyw3W4qjHkSX0Gek_oQ",
+                 "types" : [ "establishment" ]
+              },
+              {
+                 "formatted_address" : "2 Research Way, Princeton, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.354499,
+                       "lng" : -74.59443
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "672aa4b14ab928cbaad6eec09357dd0160a5bd73",
+                 "name" : "DataCede LLC",
+                 "photos" : [
+                    {
+                       "height" : 1365,
+                       "html_attributions" : [
+                          "\u003ca href=\"https://plus.google.com/117137148578909467695\"\u003eJoe Zarandona\u003c/a\u003e"
+                       ],
+                       "photo_reference" : "CoQBcwAAAAKoiXibry7yyUBvCljWee_vpaBxo1BEACDFItJJIqpDTTOdhB45WQHH90-m__1yCMIlSvjXdp4JFpWv2A1L5I40oHXpPmI8zG4EEsxKYvDrowPW_Q5b3tmQRlxKZ2yzkDrNMzTXo2jVe9Lq70FQQaOHU4qWQNQkosZrVGmvk9LaEhAiGQjdbQLYTZOrGBAgXGt4GhS72wTz8bO3o8-De6HqDXS7NJxYcw",
+                       "width" : 2048
+                    }
+                 ],
+                 "reference" : "CnRvAAAAJjQeeAYTrHk6Qtf-7H6nVGPHQ_n4T_dqyEG1VG7RWuFzIR4shrPa5g4hohKOzqNbk_swtcDkreTMpbpsz5pmuKLuXN5pOFDjTqhqlqeE_E9EUd3A7uuURzflvc-8Kte3_UIyCocHXRB024y9J4k-vBIQ2J_-OMhSEFL02TKUOTXNghoUQvkMhv9U2SVF55p28UisfVq8tPg",
+                 "types" : [ "establishment" ]
+              },
+              {
+                 "formatted_address" : "777 Alexander Rd, Princeton, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.319569,
+                       "lng" : -74.633539
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "2fff754ad319bd53a72e0a3f8523eac5f6113467",
+                 "name" : "Van Note-Harvey Associates, P.C.",
+                 "opening_hours" : {
+                    "open_now" : true
+                 },
+                 "photos" : [
+                    {
+                       "height" : 1542,
+                       "html_attributions" : [],
+                       "photo_reference" : "CnRnAAAApXa2Kvq_W2GspC2Vr9CBNmqSrvbvL-Am1qpDld8T3lGNSq9TVLSituQXcR3731D8NVJWWLwMaUPALFPQW5uD2ohRJ2YJa41UOKodFhYGCRP1zZXBKkCRPKu11rZQCNh1aQHlhUQsaakdNEI98UzjURIQtyO86mGo01sL0gV8F89V7BoUR0MrKZoYav3Ga8tjNiNNy4gWEII",
+                       "width" : 2048
+                    }
+                 ],
+                 "reference" : "CpQBgwAAACIRiV_1IJFxdZ3WNMTOLlwOsISMDqBdCP_ch61O7BrkRpkbE4G4j5Ku2Ld0kUiQqzxdWUtk5M4DmomOrx3tnfB4UMzsZmtOD95UWll1yB2M6_IN3kBk0vDsVuCwNMeVjh4-S9eENAMq1vNOfGxQC5t5z2Qx1JZlWvmMTZEaMDnCRQ3YxsTSvOdYJMUf0YI5IhIQ76gk0KhALFOMB11MOCXLdhoUVp6E7tyIP72UZUcd_5rnoIvXRO4",
+                 "types" : [ "establishment" ]
+              },
+              {
+                 "formatted_address" : "115 Andover Dr, Kendall Park, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.402973,
+                       "lng" : -74.581329
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "9afd39e098e678623faf0a0adad6ade27b158311",
+                 "name" : "Datacede",
+                 "reference" : "CnRqAAAA1h1KCLqjr5X9xenHhk02MAO6tworhHpbf2z6X-ybOwKYo2V85i3-SIoD-h49U5yseGMqnfW5tz-oy3MD_mB0OxE8IWdpk_g8wSr06HYm_xyCE-4temCgNJupdaIOl5jEeyP_WuMzcKa8tSovmEDefhIQBYrNyS3HHEYqPKhptHXONhoUNN7bQl0VJURCuQrT0E4Iwi4V0Z4",
+                 "types" : [ "finance", "establishment" ]
+              },
+              {
+                 "formatted_address" : "116 Tamarack Cir, Skillman, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.407258,
+                       "lng" : -74.646259
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "5e1b0c0c9823f3a6f470eb71e134a5a1972aa24f",
+                 "name" : "K.J. Clinic",
+                 "opening_hours" : {
+                    "open_now" : true
+                 },
+                 "photos" : [
+                    {
+                       "height" : 233,
+                       "html_attributions" : [],
+                       "photo_reference" : "CnRnAAAAwZlVN8o8K9Rv1zMqG6Lh3XMCIgUKD7_rQrBsvA1kJvldNOOEo267xbcWyPCOGmdz0Dmw-M1elXbMfn9MYxdFiYwfdq_gocFb7bo8PvZEqi0tAUadePHx6-0Q0JjzATS6O_TkcVVhd1jgNSCGxEXcehIQSBB0OqFglGMRHtX8lvT_AxoUJ563OthJFBVUhI1QFnlFXHR7BVY",
+                       "width" : 310
+                    }
+                 ],
+                 "reference" : "CnRuAAAANnf5mn9Dv9pYn_s1tUIpUc5JgeS5s_YnPMgiJSWvqqVeJdd2l8YZSPvXGtBlz5krQqP73SlSjGmADLhatSLBAORW-7yNhiDITDtqVzSeGznSPWnqJKZeYaPudH77LFqtAqkN6zWqvXM_9oOQ-0RpSxIQSOo3W3V4Qqsuhsi5spXeChoUPv8CC4ufOeUVC41F1qZxgMokjOg",
+                 "types" : [ "health", "establishment" ]
+              },
+              {
+                 "formatted_address" : "350 Hudson St, New York, NY, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.727556,
+                       "lng" : -74.007034
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "157970469ee84beccf7903b9f2b21fc4b8ab1891",
+                 "name" : "Hedge Fund Insurance",
+                 "photos" : [
+                    {
+                       "height" : 313,
+                       "html_attributions" : [],
+                       "photo_reference" : "CnRnAAAA3U2AKhk5ZBEN9qd6Pz3voilv7RCo364u2sIWIK8lXeMyaeha8BtiNtfmQuzsRkYuKdn5pvQJZKLOUbXDf-XUPMUkbnPFRwGt1OjxcPtM0b8pHrxyssSDPSCdQwTP1_S7Y3uixYRNDCUr1hUaphSHfhIQ4CTSVSjK7FWGP8eFSde3sxoUcgb-Mc607Nk4UDOqGf53WFVnbGc",
+                       "width" : 861
+                    }
+                 ],
+                 "reference" : "CoQBdgAAAG53lTbhYveZnl8bFIqrndV_tU3uGhFtmwdhTMDGlx6RcTJ4cLqp8HmMCkfhaS5Z8vIsSPPuMcgoYZR5sV5PIoQyt2wMoczYOZelnIpFcijBy06k7lOnW7u8psFPy9S6Bs0k9rQ7jcA6p3yWxHjBUj-S_kb27TZ4uaZ0B7PGSe4wEhBo7WyigZ4SvF2RNIHOUeQsGhQJTGenU3gPSG2JUfOM_9zsi9-QUg",
+                 "types" : [ "insurance_agency", "establishment" ]
+              },
+              {
+                 "formatted_address" : "65 E Elizabeth Ave #408, Bethlehem, PA, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.630932,
+                       "lng" : -75.375612
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "def55e36b7cc74a16b7944141515c6af846eebfb",
+                 "name" : "Sterling Insurance",
+                 "photos" : [
+                    {
+                       "height" : 765,
+                       "html_attributions" : [],
+                       "photo_reference" : "CnRnAAAAXshgSIkp5jc5SW8q-cO7cYugsUIGeMHW6QaO9elycbSYSZDAzvEpL62gCNp_sUwf9MoJrAFgW20zoCLmzSCmrKgHVR6Wueh6xM9L7aLjQuGe4dpySkmvRUtmSYajdwYRIL3OfyNXmNsnVXH1KSF8whIQGNIjTPhMFPuAqcNY64Rk_hoUWKALZT8ldcNzZw-KnFJqiLN2E5M",
+                       "width" : 892
+                    }
+                 ],
+                 "reference" : "CoQBdAAAAAzJeRhgXWhHpfXhaplS9q1bnMTpuw9sfaN9wYdbLLuWzux2j3KM2PBELIl78KEOAgrlao_jb5P8Y-ObjP6hppekJV2Ac26_23bR9RQGhfWBXl7sPOUKR3qQidOrfgrCexMX8bDbwaswSrVZzNvGyoOEO84Jdy2pwUFDdIauJl6mEhBOWbbd200fBwndl1h-Uua-GhRoc4HvuBWx9w2XyjIfh0VfyJiUTg",
+                 "types" : [ "insurance_agency", "health", "establishment" ]
+              },
+              {
+                 "formatted_address" : "31 Madison St, New York, NY, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.711919,
+                       "lng" : -73.99924799999999
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "38c917a9d728bcfa27b314b85469d9b1071afc0a",
+                 "name" : "The Lost Agency",
+                 "reference" : "CoQBcQAAALhEz0Ux8FJQnN2ba7TmvB790AymlQQl48NDU53FckiJvrTC0y9_aVE8iKHaLXfqqyNLmZoiyosmVdkHjF6MxXU9Vdpc1g8wKR34p7a9acSgdLTAnOSax88ap_wl1QqtfkJ9jlQ8_-rkcuCEDRIE_HKikvaPoKU4rQQwyutjKIO9EhDI-zOr84OmoPPtGDETK6i9GhQaPgu2DvBkON_-4VSBtPw8ZCP8CQ",
+                 "types" : [ "establishment" ]
+              },
+              {
+                 "formatted_address" : "27 Terminal B, Newark, NJ, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.690475,
+                       "lng" : -74.17649
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "8b6da02c541b538047ad50c074c9025c911eede5",
+                 "name" : "Singapore Airlines",
+                 "reference" : "CoQBdAAAAOAZFCmS2s6SGR0O3m4neUHSTUYM3PDJTxm3MRwkIoz3X-bjv521z_tu3hipquoFV5RxNHxyKXV1Tp4rKjzAvAY8a4yBPyBML9c_s0x27DEgYKbfristKpDBqhxM40nbmFcx139XWoUj51diFDbVXnU9ylHdAnhqJe_InyTnKpzmEhAZvf2fSQVzep-BqjucGdkIGhRFuK5gHJ3HIhlBVTVj1ZBouyFQHQ",
+                 "types" : [ "establishment" ]
+              },
+              {
+                 "formatted_address" : "39 Grove St, New York, NY, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.732883,
+                       "lng" : -74.004475
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/bar-71.png",
+                 "id" : "6788736e517659cbdc7669780994633a691e6291",
+                 "name" : "Lederhosen",
+                 "opening_hours" : {
+                    "open_now" : false
+                 },
+                 "photos" : [
+                    {
+                       "height" : 440,
+                       "html_attributions" : [],
+                       "photo_reference" : "CnRnAAAALLeCYdFmrdWKIJhoDBxAFtz2KR9j9cYkaJn3ncFGlPIvnX-7299vBVr9q4Q93LPdDAwBrBruUgmtqqsz7CS07Y3_fZfC6RCFbySF7QJLXCFknCzwT3VhnYgjtMuEwwbZDqEcHKF8Pag96T-Sw68fURIQf1WQjVuKOkq6Cl47TrFZShoUWzhtCiUC-yFXmRVGyQzZ1ih9gyw",
+                       "width" : 659
+                    }
+                 ],
+                 "price_level" : 2,
+                 "rating" : 3.9,
+                 "reference" : "CnRsAAAAVloB0s7NE7Q5RRl2Zyiv-rrFVUtQ_y4Ysz9K-SCn-nU5JPy7slGSx75bZ5oVuvl9VbXex3eqdryEhwSchLekG6i3WlZkuviJHBXPu82T11ZJ5X43N6u_p6SS9AKnD8j4Lpl5W9-YolgZ5X42D6VnOxIQU_5XQtTe4QGgClPJ2Pml1BoU1zzdYtlEqxsGyoUmnNuNK-Kil5Q",
+                 "types" : [ "bar", "restaurant", "food", "establishment" ]
+              },
+              {
+                 "formatted_address" : "113 N 3rd St, New York, NY, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.716676,
+                       "lng" : -73.961414
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/bar-71.png",
+                 "id" : "0bfabb8e65a133adfa012b9f4e552685d23d5a0f",
+                 "name" : "Radegast Hall & Biergarten",
+                 "opening_hours" : {
+                    "open_now" : false
+                 },
+                 "photos" : [
+                    {
+                       "height" : 636,
+                       "html_attributions" : [
+                          "\u003ca href=\"https://plus.google.com/105258260831831181046\"\u003eIvan K\u003c/a\u003e"
+                       ],
+                       "photo_reference" : "CnRqAAAAtRnpsI_VmHPPXEMUC7gxuD81oGbX5uz0Fcd50DvKIqQn8Pob_dDHflc7t4bOfqwqbTD5Pm7Rqy_djEubJ1NmFTth2j0fOH1jWlcMB8iovsAKNl_XKEEL9qoorWBh8Z2repqkr3YRMdEXbKT57FBPMRIQA4oBKZ_tVVit-vc0f7fwsBoU8pCh1o7FwBAia1hr29i9fwCF7IA",
+                       "width" : 1015
+                    }
+                 ],
+                 "price_level" : 2,
+                 "rating" : 4.1,
+                 "reference" : "CoQBfQAAAECgxgTWx_Hh0G0Swx8_GlUoqYnjEDET30U5fANkHTwzbsGMfd40G0BZu-PUzHFAYUnJSGGyE_0OSvfvAikjNiwDtYKEmqyTXxwYUU2J4hSJyLaCOojX1SqciPM0JZLWfsWXz1DRCDJUQaSZNEE5jo58_do_enJariLrBsGz0PRPEhDzafACX7ZBM5_rdUuU3tkQGhS_wz7X3hi03unSE0YihPuoZImH2g",
+                 "types" : [ "night_club", "bar", "restaurant", "food", "establishment" ]
+              },
+              {
+                 "formatted_address" : "848 Washington St, New York, NY, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.740884,
+                       "lng" : -74.00782100000001
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/lodging-71.png",
+                 "id" : "ad160d37cdfb89cc50f54d986eda783630e87263",
+                 "name" : "The Standard, High Line",
+                 "opening_hours" : {
+                    "open_now" : true
+                 },
+                 "photos" : [
+                    {
+                       "height" : 352,
+                       "html_attributions" : [],
+                       "photo_reference" : "CrQBrgAAAKOYxhTW0TB8VwsH3xa8ov612wfBChPvg9MSDTsquWVianJK_sACydavggxCdZehR7D-Ad-_emdmekyPDIDF2jxHuVORVMIQ6_fxiUKPjlwBRMGcffE2MauejLjGhPy5_AXEnDW03X49rnnyjkkTj4t03BSpr47dcH79dsEeTcgTR0uBEzdGVaHw-EKbGsyTEK3ZDNruVTU30iKLDPFwVBgYzgO74xi5E2TFCyICwDffEhDA0XFUDcSFxWcerPCpUu3HGhSminneXs8R8a-bsOawspBAHbkipg",
+                       "width" : 351
+                    }
+                 ],
+                 "rating" : 4,
+                 "reference" : "CoQBeQAAAMqnRkDcRJyEHWZbIWfdCNbSeM6kEc8c3qUuwIR_Kn98E43_N5RjVuEtx8Nd0bNiVL9QhdNLlQDpRmKRibrIEDSzDlscxD3qwHmDd5t3zSm7wYIKU75H_mSTCff7Rq0mokPVaHlrAO_ygWunoO4aTCG0U2K34bgjRXLFAnUCWJqvEhARDxWhUl53xeDG6A6f5pWRGhTVwNGVSwx2YORhRVZELAvyZAUjaA",
+                 "types" : [ "lodging", "establishment" ]
+              },
+              {
+                 "formatted_address" : "204 S 41st St, Philadelphia, PA, United States",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 39.953781,
+                       "lng" : -75.205423
+                    }
+                 },
+                 "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+                 "id" : "3e299f192a481ba7cf048993454836b63b7f8afa",
+                 "name" : "iBR magazine at Wharton",
+                 "photos" : [
+                    {
+                       "height" : 100,
+                       "html_attributions" : [],
+                       "photo_reference" : "CnRmAAAAQrXkBQT53ZLkSveO_vY6ShudrJdAfNRHgTlAZ5asof4MPDDxYbJbAM6QjxVYhmKD1ncUSxrBOAW8Nc3wbi0qF85FSoZaTb7ZBRWVFmvNmpISc4zAoZIYXH0S9qtcqsiP198-zcX_Pc8Xo6LKCX_GLhIQUrHLAYFLCd_UyK34undGTBoU3Ha5l3EFU5wCwBphBL3r44qawCA",
+                       "width" : 250
+                    }
+                 ],
+                 "reference" : "CoQBegAAAH8FtCombm8dqlluAtD-gjIjkcwTBnxEZoj7MsYw4a1EDh8NlvG_b6Rh-axpNFTqoGQ3blyEPlBZ5TsU8cJUbT5296eSD4kR2D6XCL2Y7Td4ho7FcGaAX3ItzlFy4RM1sRSiL1KCTC8zp2hisXSovSqV-FqMvVxbJQ9bNSPhMEgREhDNFwGzYBMhH9PL8d_RxWyfGhTYLrAhzU8H1m0LNsSIUYMGyEOLjg",
+                 "types" : [ "establishment" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 07 May 2014 14:51:13 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=princeton,nj&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 02 Jul 2014 18:27:31 GMT
+      Expires:
+      - Thu, 03 Jul 2014 18:27:31 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Princeton, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.3917548,
+                          "lng" : -74.61750789999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3048718,
+                          "lng" : -74.722177
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3572976,
+                       "lng" : -74.6672226
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3917548,
+                          "lng" : -74.61750789999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3048718,
+                          "lng" : -74.722177
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 02 Jul 2014 18:27:30 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=40.3572976,-74.6672226&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 02 Jul 2014 18:27:31 GMT
+      Expires:
+      - Thu, 03 Jul 2014 18:27:31 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "American Taxi Airports Luxury Limo Car Service",
+                       "short_name" : "American Taxi Airports Luxury Limo Car Service",
+                       "types" : [ "point_of_interest", "establishment" ]
+                    },
+                    {
+                       "long_name" : "55",
+                       "short_name" : "55",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Searing St",
+                       "short_name" : "Searing St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Dover",
+                       "short_name" : "Dover",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "07801",
+                       "short_name" : "07801",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "American Taxi Airports Luxury Limo Car Service, 55 Searing St, Dover, NJ 07801, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.357009,
+                       "lng" : -74.66720500000001
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3583579802915,
+                          "lng" : -74.66585601970851
+                       },
+                       "southwest" : {
+                          "lat" : 40.3556600197085,
+                          "lng" : -74.66855398029152
+                       }
+                    }
+                 },
+                 "types" : [ "airport", "transit_station", "point_of_interest", "establishment" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "31",
+                       "short_name" : "31",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Race Street",
+                       "short_name" : "Race St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08542",
+                       "short_name" : "08542",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "31 Race Street, Princeton, NJ 08542, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.35658,
+                       "lng" : -74.667146
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3579289802915,
+                          "lng" : -74.66579701970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.3552310197085,
+                          "lng" : -74.6684949802915
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "08542",
+                       "short_name" : "08542",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Princeton, NJ 08542, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.3627119,
+                          "lng" : -74.6498989
+                       },
+                       "southwest" : {
+                          "lat" : 40.347974,
+                          "lng" : -74.669899
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3542647,
+                       "lng" : -74.6620003
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3627119,
+                          "lng" : -74.6498989
+                       },
+                       "southwest" : {
+                          "lat" : 40.347974,
+                          "lng" : -74.669899
+                       }
+                    }
+                 },
+                 "types" : [ "postal_code" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Princeton",
+                       "short_name" : "Princeton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Princeton, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.3917548,
+                          "lng" : -74.61750789999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3048718,
+                          "lng" : -74.722177
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3572976,
+                       "lng" : -74.6672226
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3917548,
+                          "lng" : -74.61750789999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.3048718,
+                          "lng" : -74.722177
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Mercer County, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.424156,
+                          "lng" : -74.481202
+                       },
+                       "southwest" : {
+                          "lat" : 40.136843,
+                          "lng" : -74.94290909999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3028533,
+                       "lng" : -74.7337069
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.424156,
+                          "lng" : -74.481202
+                       },
+                       "southwest" : {
+                          "lat" : 40.136843,
+                          "lng" : -74.94290909999999
+                       }
+                    }
+                 },
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "New Jersey, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.357423,
+                          "lng" : -73.9024391
+                       },
+                       "southwest" : {
+                          "lat" : 38.9286252,
+                          "lng" : -75.5597921
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.0583238,
+                       "lng" : -74.4056612
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.357423,
+                          "lng" : -73.9024391
+                       },
+                       "southwest" : {
+                          "lat" : 38.9286252,
+                          "lng" : -75.5597921
+                       }
+                    }
+                 },
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "United States",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 71.389888,
+                          "lng" : -66.94976079999999
+                       },
+                       "southwest" : {
+                          "lat" : 18.9110642,
+                          "lng" : 172.4546967
+                       }
+                    },
+                    "location" : {
+                       "lat" : 37.09024,
+                       "lng" : -95.712891
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 49.38,
+                          "lng" : -66.94
+                       },
+                       "southwest" : {
+                          "lat" : 25.82,
+                          "lng" : -124.39
+                       }
+                    }
+                 },
+                 "types" : [ "country", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 02 Jul 2014 18:27:30 GMT
+recorded_with: VCR 2.9.0

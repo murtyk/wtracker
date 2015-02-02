@@ -1,0 +1,4 @@
+$('#new_trainee_file').remove();
+<% s = "#{@trainee_file.created_at.to_date.to_s}:#{@trainee_file.name}:#{@trainee_file.notes} "%>
+$('#files').append(<%= ('"<p>'+ s +'</p>"').html_safe %>);
+$('#new_trainee_file_link').show();

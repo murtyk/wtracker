@@ -1,0 +1,57 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Import Classes</h1>
+</div>
+<% if Program.count == 0 %>
+  <h4 style='color: brown'>At least one Program should be defined before importing classes.</h4>
+<% elsif College.count == 0 %>
+  <h4 style='color: brown'>At least one College should be defined before importing classes.</h4>
+<% else %>
+  <div class = 'row-fluid'>
+    <div class = 'span4'>
+    <%= form_tag import_statuses_path(resource: 'klasses'), id: 'form-import', multipart: true do %>
+
+      <p><strong>Find A File To Upload:</strong></p>
+        <%= file_field_tag :file %>
+        <br><br>
+      <p><strong>Program:</strong></p>
+      <%= select_tag "program_id", options_for_select(Program.selection_list)%>
+      <br>
+      <p><strong>College:</strong></p>
+      <%= select_tag "college_id", options_for_select(College.selection_list)%>
+      <br>
+        <div class='form-actions'>
+          <%= import_button %>
+        </div>
+    <% end %>
+    </div>
+    <div class = 'span8'>
+
+      <b style='color: blue'><%= link_to "Click here to download the file template", "/documents/classes_import_template.xlsx"%></b>
+
+      <h4>Guide Lines</h4>
+      <ol>
+        <li>Download and open the excel file from the link above</li>
+        <li>Take a look at the header that describes the required column names</li>
+        <li>Name field is mandatory</li>
+        <li>Each row of the data should be for one unique class</li>
+        <li>After loading data into the file, save the file in excel format and import</li>
+        <li>Important: Delete the example class rows from the file before import</li>
+      </ol>
+
+    </div>
+
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $('#form-import').submit(function() {
+    if ($('#file').val() == ""){
+      alert("Please select a file");
+      return false;
+    }
+      $('#submit-button').button('loading');
+  });
+</script>
+<script type="text/javascript">
+  $('.btn-spinner').button();
+</script>

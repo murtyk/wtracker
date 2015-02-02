@@ -1,0 +1,69 @@
+<div class="row-fluid">
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1><%= "#{account.new_record? ? "New Account" : 'Edit Account'}" %></h1>
+    </div>
+    <div class="opero-widget-body">
+     <div class="opero-widget-main no-padding">
+      <%= simple_form_for([:admin, account],html: { class: "form-horizontal" }) do |f| %>
+       <ol>
+       <% account.errors.messages.each do |k,v|%>
+        <font color=red><%= "#{k} - #{v}" %></font>
+       <% end %>
+       </ol>
+        <div class="form-inputs">
+          <% if account.new_record? %>
+            <%= f.input :demo, label: false, inline_label: 'Create Demo Data', as: :boolean, checked_value: true, unchecked_value: false%>
+          <% else %>
+            <%= account.demo ? 'Demo Account' : '' %>
+          <% end %>
+          <%= f.input :name %>
+          <%= f.input :description %>
+          <%= f.input :subdomain %>
+          <%= f.input :client_type, collection: account_types, label: 'Client Type' %>
+          <%= f.input :status, collection: account_statuses %>
+          <hr>
+          <% if account.new_record? %>
+            <div class='row-fluid'>
+              <h2>Director/Dean Information:</h2>
+              <%= f.simple_fields_for :users do |u| %>
+                <div class = 'span10'>
+                  <div class = 'span5'>
+                    <%= u.input :first, label: 'First Name'%>
+                  </div>
+                  <div class = 'span5'>
+                    <%= u.input :last, label: 'Last Name'%>
+                  </div>
+                </div>
+                <div class = 'span10'>
+                  <div class = 'span5'>
+                    <%= u.input :email%>
+                  </div>
+                  <div class = 'span5'>
+                    <%= u.input :password%>
+                  </div>
+                </div>
+                <div class = 'span10'>
+                  <div class = 'span5'>
+                    <%= u.input :location%>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="form-actions">
+          <%= submit_button(f, 'Save') %>
+        </div>
+      <% end %>
+     </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // $.mask.definitions['~']='[+-]';
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+})
+</script>

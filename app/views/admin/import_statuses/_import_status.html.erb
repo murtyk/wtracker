@@ -1,0 +1,10 @@
+<p>Account: <%= import_status.account_name %></p>
+<p>When: <%= import_status.created_at.to_s %></p>
+<p>User: <%= import_status.user_name %></p>
+<p>What: <%= import_status.type.to_s %></p>
+<p>Success Count: <%= import_status.rows_successful %></p>
+<p>Fail Count: <%= import_status.rows_failed %></p>
+<p><%= import_status.params && import_status.params.map{ |k,v| "#{k}: #{v}" }.join('<br>').html_safe %></p>
+<hr>
+<p>File: <%= link_to import_status.file_name, import_status.file_url.to_s %></p>
+<hr>

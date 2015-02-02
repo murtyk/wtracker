@@ -1,0 +1,37 @@
+<table border="1">
+      <tr>
+        <th>Date</th>
+        <th>Title</th>
+        <th>Comment</th>
+        <th>Company</th>
+        <th>Location</th>
+        <!-- <th>Excerpt</th> -->
+        <th>Sent To</th>
+      </tr>
+
+    <% @job_shares.each do |job_share| %>
+        <tr>
+        <td><%= job_share.created_at.to_date.to_s %></td>
+        <td>
+            <% if job_share.shared_jobs.any? %>
+                <ol>
+                <% job_share.shared_jobs.each do |shared_job|%>
+                    <li><%= shared_job.title%></li>
+                <% end %>
+                </ol>
+            <% else %>
+                <%= job_share.title%>
+            <% end %>
+        </td>
+        <td><%= job_share.comment %></td>
+        <td><%= job_share.company %></td>
+        <td><%= job_share.location %></td>
+        <!-- <td><%#= job_share.excerpt.length > 40 ? (job_share.excerpt[0..36] + "...") : job_share.excerpt%></td> -->
+        <% sent_to = ""%>
+        <% job_share.trainees.each {|t| sent_to += (t.name + ";")}%>
+        <% sent_to[-1] = ""%>
+        <td><%= sent_to %></td>
+      </tr>
+    <% end %>
+
+</table>

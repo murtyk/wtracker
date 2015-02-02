@@ -1,0 +1,7 @@
+<p>
+  <b><%=user.name%></b>
+  <%= button_destroy_association(user, title: 'Remove') %>
+</p>
+<p><%= user.email%></p>
+<%= ('<p>' + "#{format_phone_no(user.land_no, user.ext)}(w)" + '</p>').html_safe if user.land_no?%>
+<%= ('<p>' + "#{format_phone_no(user.mobile_no)}(m)" + '</p>').html_safe if user.mobile_no?%>

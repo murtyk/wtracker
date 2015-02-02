@@ -1,0 +1,22 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>College Information</h1>
+</div>
+<p>
+  <b>Name:</b>
+  <%= @college.name %>
+</p>
+
+<p>
+  <b>Address:</b>
+</p>
+
+<% if @college.address%>
+  <%= render 'shared/display_address', address: @college.address %>
+  County: <strong><%= @college.county%></strong></p>
+<% else %>
+  <p>Not Entered</p>
+<% end %>
+<hr>
+<h4>Classes</h4>
+
+<%= render 'klasses', klasses: @college.klasses %>

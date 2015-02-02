@@ -1,0 +1,31 @@
+<div class='row-fluid'>
+  <div class='span6'>
+    <h2>Following trainees have not updated job search profile yet</h2>
+    <div class='row-fluid'>
+      <%= link_to 'Send a Reminder to All', remind_job_search_profiles_path,
+                  class: 'btn btn-flat btn-small btn-primary pull-right' %>
+    </div>
+    <table class="table table-condensed table-bordered table-striped table-hover">
+      <tr>
+        <th>Name</th>
+        <th>Profile request sent on</th>
+        <th></th>
+      </tr>
+      <% @trainees.each do |trainee| %>
+      <tr>
+        <td><%= name_and_link trainee %></td>
+        <td><%= trainee.job_search_profile && trainee.job_search_profile.created_at.to_date.to_s %></td>
+        <td>
+          <%=
+              if trainee.email.blank?
+                "<b style='color: red'>email missing or invalid</b>"
+              else
+                link_to 'Send Reminder', remind_job_search_profiles_path(trainee_id: trainee.id)
+              end
+          %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

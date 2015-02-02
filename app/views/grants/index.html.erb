@@ -1,0 +1,79 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Grants</h1>
+</div>
+
+<% @grants.each do |grant| %>
+  <div class="row-fluid">
+    <div class = 'span3 left-panel' id = '<%="left_#{grant.id}"%>'>
+      <h4>
+        <%= edit_button(grant) %>
+        <%= name_and_link(grant)%>
+      </h4>
+      <p>Status: <b><%= grant.status %></b> </p>
+      <p>Start:  <b><%= grant.start_date.to_s %></b></p>
+      <p>End:    <b><%= grant.end_date.to_s %></b></p>
+      <p>Spots:  <b><%= grant.spots %></b></p>
+      <p>Amount: <b><%= grant.amount %></b></p>
+    </div>
+
+    <div class = 'span9' id = '<%="right_#{grant.id}"%>'>
+      <div class = 'row-fluid'>
+        <div class = 'span4'>
+          <h4> Programs</h4>
+        </div>
+        <div class = 'span8'>
+          <%= new_button(Program) if current_grant == grant%>
+        </div>
+      </div>
+      <table class="table table-condensed table-bordered table-striped table-hover" >
+        <tr>
+          <th>Name</th>
+          <th>Classes</th>
+          <th>Trainees</th>
+          <th></th>
+        </tr>
+        <% grant.grant_programs.each do |program| %>
+        <tr>
+          <td><%= current_grant == grant ? name_and_link(program) : program.name %></td>
+          <td>
+            <ul>
+              <%=
+                klasses = program.program_klasses
+                if current_grant == grant
+                  klasses.map{|k| "<li>#{name_and_link(k)}</li>" }.join('').html_safe
+                else
+                  klasses.map{|k| "<li>#{k.name}</li>" }.join('').html_safe
+                end
+              %>
+            </ul>
+          </td>
+          <td><%= program.trainees_count %></td>
+          <td>
+            <% if current_grant == grant %>
+              <%= show_button(program) %>
+              <%= edit_button(program) %>
+            <% else %>
+              <%= program.name %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+  <hr>
+<% end %>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var grant_ids = <%= raw @grants.map{ |grant| grant.id } %>;
+
+  $.each(grant_ids, function( index, value ){
+    leftHeight = $('#left_' + value).height();
+    rightHeight = $('#right_' + value).height();
+    if (leftHeight < rightHeight){
+      $('#left_' + value).css({'height':rightHeight});
+    }
+  });
+});
+</script>

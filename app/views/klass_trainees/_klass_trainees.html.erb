@@ -1,0 +1,29 @@
+<!-- Klass Page -->
+<% if object.is_a? Klass %>
+  <% object.trainees_by_status.each do |status_n_trainees| %>
+    <div id = '<%=status_n_trainees.div_id%>'>
+      <p><b><%= status_n_trainees.status_name %></b></p>
+      <% status_n_trainees.klass_trainees.each do |klass_trainee| %>
+        <%= render('klasses/klass_trainee', klass_trainee: klass_trainee) %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<!-- Trainee Page -->
+<% if object.is_a? Trainee %>
+  <% object.klass_trainees.each do |kt|%>
+    <p>
+      <% if policy(kt.klass).show? %>
+        <div id = "<%=div_id_for(kt)%>">
+          <%= button_edit_association(kt, from: 1, title: 'Edit Status') %>
+          <%= button_destroy_association(kt, from: 1, title: 'Remove from class') %>
+          <b><%= link_to kt.klass.to_label,kt.klass %></b>
+        </div>
+      <% else %>
+        <b><%= kt.klass.to_label %></b>
+      <% end %>
+    </p>
+    <p>Status: <%= kt.status %></p>
+  <% end %>
+<% end %>

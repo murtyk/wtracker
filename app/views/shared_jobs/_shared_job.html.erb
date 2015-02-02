@@ -1,0 +1,8 @@
+<tr>
+  <td><%= shared_job.created_at.to_date.to_s%></td>
+  <td><%= shared_job.company%></td>
+  <td><%= link_to shared_job.title.truncate(30), shared_job.job_share%></td>
+  <% if current_account.track_trainee_status? %>
+    <td><%= shared_job.trainee_status(trainee)%></td>
+  <% end %>
+</tr>

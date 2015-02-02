@@ -1,0 +1,38 @@
+<div id='main-navbar' class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="brand hidden-phone" href="#">
+        <small><%=current_account.name%></small>
+      </a>
+      <a class="brand visible-phone" href="#">
+        <small><%=current_account.subdomain%></small>
+      </a>
+      <b class='pull-right' style='color: white'>Welcome, <%=@job_search_profile.name%></b>
+    </div><!--/.container-fluid-->
+  </div><!--/.navbar-inner-->
+</div> <!--/.navbar-->
+
+<script type="text/javascript">
+  function change_layout(){
+    if ($(window).width() < 980){
+      $('body').css('padding-top', '0px');
+      $('body').css('padding-left', '0px');
+      $('body').css('padding-right', '0px');
+    } else {
+      $('body').css('padding-top', '60px');
+    }
+    if($(window).width() < 756){
+      $('#left_panel').css('margin-left', '0px');
+      $('#right_panel').css('margin-left', '0px');
+    } else {
+      $('#left_panel').css('margin-left', '10px');
+      $('#right_panel').css('margin-left', '10px');
+    }
+  }
+  $(window).resize(function(){
+    change_layout();
+  });
+  $(document).ready(function() {
+    change_layout();
+  })
+</script>

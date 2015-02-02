@@ -1,0 +1,28 @@
+<h4>
+  <%= employer.name %>
+  <%= edit_button(employer) %>
+  <%= employer.website_link %>
+</h4>
+
+<p><%= employer.source_with_label %></p>
+<p><%= employer.created_date %></p>
+
+<%= employer.address_details %>
+<%= employer.phone_no %>
+<hr>
+
+<%= employer.contacts_header %>
+
+<div id='contacts'%>
+  <%= render employer.contacts %>
+</div>
+<hr>
+
+<h4>
+  Sectors
+  <%= button_new_association(EmployerSector, employer_id:  employer.id, title: 'Add Sector') %>
+</h4>
+<div id='<%=div_id_for_collection(EmployerSector)%>'>
+  <%= render employer.sectors %>
+</div>
+<hr>

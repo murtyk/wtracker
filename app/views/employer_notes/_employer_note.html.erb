@@ -1,0 +1,17 @@
+<div class='employer_note' id = 'employer_note_<%=employer_note.id%>' >
+  <p>
+    <button type = 'button' id = 'employer_note_show_more_<%= employer_note.id%>' class = 'btn btn-flat btn-mini btn-primary employer-note-show-more-or-less'>
+      <i class="icon-arrow-down white"></i>
+    </button>
+
+    <%= button_edit_association(employer_note, title: 'Edit note') %>
+    <%= button_destroy_association(employer_note, title: 'Delete note') %>
+    <%= employer_note.created_at.to_date %>
+    <div class = 'short_notes' id='short_notes_<%=employer_note.id%>'>
+      <%= employer_note.note.truncate(40)%>
+    </div>
+    <div class = 'full_notes' id = 'full_notes_<%=employer_note.id%>' style='display: none;'>
+      <%= employer_note.note%>
+    </div>
+  </p>
+</div>

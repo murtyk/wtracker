@@ -1,0 +1,6 @@
+<div id = '<%=div_id_for(special_service)%>'>
+  <p>
+    <%= button_destroy_association(special_service) if special_service.applicants.empty? %>
+    <%= special_service.name %>
+  </p>
+</div>

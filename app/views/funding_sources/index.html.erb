@@ -1,0 +1,11 @@
+<% if policy(FundingSource).index? %>
+  <h1>Funding Sources</h1>
+  <div id='funding_sources'>
+    <%= render @funding_sources %>
+  </div>
+    <% if policy(FundingSource).create? %>
+    <%= link_to new_funding_source_path, class: "btn btn-flat btn-small btn-primary", id: 'new_funding_source_link', remote: true, rel:"tooltip", title:"Add Funding Source" do%>
+      <i class="icon-plus"></i> New
+    <% end %>
+  <% end %>
+<% end %>

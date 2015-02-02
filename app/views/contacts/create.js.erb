@@ -1,0 +1,7 @@
+$('#new_contact').remove();
+<% if @contact.errors.any? %>
+  $('#new_contact_link').hide().after('<%= j render("jsform", contact: @contact) %>');
+<% else %>
+  $('#new_contact_link').show();
+  $('#contacts').html('<%= j render @contact.contactable.contacts.decorate %>');
+<% end %>

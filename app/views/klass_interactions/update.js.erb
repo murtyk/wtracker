@@ -1,0 +1,8 @@
+<% if @from_page == 1 %>
+	$('#edit_klass_interaction_<%=@klass_interaction.id%>').remove();
+	$('#accordion2').html('<%= j render("klasses/klass_events", klass: @klass_interaction.klass.decorate)%>');
+	$('#klass_interaction_<%=@klass_interaction.id%>').show();
+<% else %>
+	$('#edit_klass_interaction_<%=@klass_interaction.id%>').remove();
+	$('#klass_interaction_<%=@klass_interaction.id%>').html('<%= j render("jsshow", klass_interaction: @klass_interaction) %>').show();
+<% end %>

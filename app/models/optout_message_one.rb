@@ -1,0 +1,2 @@
+class OptoutMessageOne < AutoLeadEmailText
+end

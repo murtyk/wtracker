@@ -1,0 +1,5 @@
+<% if @contact.errors.any? %>
+  $('#contact_<%=@contact.id%>').hide().after('<%= j render("jsform", contact: @contact) %>');
+<% else %>
+  $('#contacts').html('<%= j render @contact.contactable.contacts.decorate %>');
+<% end %>

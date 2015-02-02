@@ -1,0 +1,22 @@
+# data for trainees not placed report
+class TraineesNotPlacedReport < Report
+  def post_initialize(params)
+    return unless params
+
+    kts = KlassTrainee.includes(:trainee, :klass)
+                      .where(klass_trainees: { status: [2, 3] })
+                      .where(klasses: { id: klass_ids })
+                      .references(:trainees)
+    kts.to_a.sort! { |a, b| a.trainee.name <=> b.trainee.name }
+
+    @trainees_not_placed = kts.map { |kt| TraineeNotPlaced.new(kt) }
+  end
+
+  def trainees_not_placed
+    @trainees_not_placed || []
+  end
+
+  def count
+    trainees_not_placed.count
+  end
+end

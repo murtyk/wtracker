@@ -1,0 +1,40 @@
+<h1>Email Details </h1>
+<table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
+<tr>
+  <td><b>Subject</b></td>
+  <td><%= @email.subject %></td>
+</tr>
+<tr>
+  <td><b>Content</b></td>
+  <td>
+      <div style='max-height: 200px; overflow: auto;'>
+      <% paragraphs = @email.content.split(/\r\n/) %>
+      <% paragraphs = paragraphs.map{ |p| ''.html_safe + p } %>
+      <% content = paragraphs.join('<br>') %>
+      <%= content.html_safe %>
+    </div>
+  </td>
+</tr>
+<tr>
+  <td><b>Documents Attached</b></td>
+  <td>
+    <% @email.attachment_names.each do |attachment| %>
+      <%= attachment %><br>
+    <% end %>
+  </td>
+</tr>
+<tr>
+  <td><b>Sent On</b></td>
+  <td><%= @email.created_at.in_time_zone('Eastern Time (US & Canada)').strftime('%m/%e/%Y %I:%M %p')%></td>
+</tr>
+<tr>
+  <td><b>Sent To</b></td>
+  <td>
+    <ol>
+    <% @email.contacts.each do |c| %>
+      <li><%=c.name_for_selection%></li>
+    <% end %>
+    </ol>
+  </td>
+</tr>
+</table>

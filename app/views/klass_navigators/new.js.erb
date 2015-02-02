@@ -1,0 +1,5 @@
+<% if @navigators.any? %>
+	$('#new_klass_navigator_link').hide().after('<%= j render("jsform", klass_navigator: @klass_navigator, navigators: @navigators) %>');
+<% else %>
+	alert("Add a navigator user and assign to class")
+<% end %>

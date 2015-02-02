@@ -1,0 +1,29 @@
+<div class='row-fluid'>
+  <div class='span10'>
+    <h2>Following trainees have updated job search profile </h2>
+  </div>
+  <div class='span2' style='margin-top:10px'>
+    <%= link_to 'Map View', trainees_by_auto_lead_status_program_path(@program, status: :NOT_PENDING, map: true) %>
+  </div>
+</div>
+
+<table class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Updated on</th>
+    <th>Skills</th>
+    <th>Location</th>
+    <th>Distance</th>
+    <th>Leads Count</th>
+  </tr>
+  <% @trainees.each do |trainee| %>
+  <tr>
+    <td><%= name_and_link trainee %></td>
+    <td><%= trainee.job_search_profile && trainee.job_search_profile.updated_at.to_date.to_s%></td>
+    <td><%= trainee.job_search_profile && trainee.job_search_profile.skills%></td>
+    <td><%= trainee.job_search_profile && trainee.job_search_profile.location%></td>
+    <td><%= trainee.job_search_profile && trainee.job_search_profile.distance%></td>
+    <td><%= trainee.auto_shared_jobs.count%></td>
+  </tr>
+  <% end %>
+</table>

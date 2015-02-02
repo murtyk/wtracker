@@ -1,0 +1,41 @@
+<%= employer.job_openings_header %>
+<div id='<%=div_id_for_collection(JobOpening)%>'>
+  <%= render employer.job_openings %>
+</div>
+<hr>
+
+<%= employer.notes_header %>
+<div id='<%=div_id_for_collection(EmployerNote)%>'>
+  <%= render employer.employer_notes %>
+</div>
+<hr>
+
+<%= employer.klass_interactions_header %>
+
+<div id = 'klass_interactions'>
+  <% employer.klasses.each do |klass| %>
+    <div class='row-fluid'>
+      <div class='span9'>
+        <b><%= name_and_link(klass, true) %> </b>
+      </div>
+      <div class='span3'>
+        <button type ='button' id='klass_events_expand_<%=klass.id%>' class ='btn btn-flat btn-small btn-primary pull-right klass_events_expand'>
+          Expand
+        </button>
+      </div>
+    </div>
+    <div class='events_details' id = 'klass_events_<%=klass.id%>' style="display: none;">
+      <% employer.klass_events(klass).each do |klass_event|%>
+        <%= klass_event.date_and_name %>
+        <p style='margin-left: 20px'>
+          <span id = <%="klass_interaction_#{klass_event.klass_interaction_id}"%>>
+            <%= klass_event.klass_interaction_status %>
+            <%= button_edit_association(klass_event.klass_interaction) %>
+          </span>
+        </p>
+        <hr>
+      <% end %>
+    </div>
+    <hr>
+  <% end %>
+</div>

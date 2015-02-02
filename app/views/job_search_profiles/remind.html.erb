@@ -1,0 +1,4 @@
+<h2>Reminders will be sent to the following:</h2>
+<ol>
+  <%= @trainees.map{ |t| "<li>#{t.first} #{t.last}</li>"}.join('').html_safe %>
+</ol>

@@ -1,0 +1,9 @@
+<% if trainees.any? %>
+	<option value="0">All</option>
+<% end %>
+
+<% trainees.each do |t| %>
+	<option value="<%=t.id%>">
+	    <%= t.name %>
+	</option>
+<% end %>

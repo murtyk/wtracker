@@ -1,0 +1,47 @@
+<h1>Trainees Activities</h1>
+
+<div class = 'row-fluid filters-div'>
+  <%= simple_form_for :filters, url: reports_path(report: Report::TRAINEES_ACTIVITY), html: { class: 'form-search form-horizontal'} do |f| %>
+
+  	<div class='span6' style='margin-left: -120px'>
+  	    <%= f.input :klass_ids, label: 'Class', required: false, collection: current_user.klasses_for_selection(true), selected: @report.klass_ids, input_html: {class: "search-query", style: 'width: 350px;'} %>
+      	<%= f.input :status, required: false, collection: klass_trainee_statuses, selected: @report.status, include_blank: 'All', input_html: {class: "search-query", style: 'width: 150px;'} %>
+    </div>
+
+  	<div class='span4'>
+  	    <%= f.input :start_date, label: 'From', required: false, as: :string, input_html: {value: @report.start_date, data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
+
+  	    <%= f.input :end_date, label: 'To', required: false, as: :string, input_html: {value: @report.end_date, data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
+
+  	    <%= f.input :include_all_dates, label: false, inline_label: true, as: :boolean, input_html: {checked: @report.include_all_dates}%>
+    </div>
+
+    <div class = 'span2'>
+      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white"></i>Find
+      </button>
+    </div>
+
+  <% end %>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  })
+</script>
+<script type="text/javascript">
+  $('.btn-spinner').button();
+  $('.form-search').submit(function() {
+    $('#submit-button').button('loading');
+  });
+</script>
+
+<strong style='font-color: blue'>Found: <%= @report.trainee_activities.count %></strong>
+<%= @report.download_button %>
+<br><br>
+<%= render 'shared_trainees_activity.html.erb', report: @report %>
+<%= render 'shared/export_table.js.erb' %>
+
+

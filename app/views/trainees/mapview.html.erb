@@ -1,0 +1,179 @@
+<h1><%= "Trainees - Locations" %></h1>
+<div class = 'row-fluid filters-div'>
+  <%= simple_form_for :filters, method: :get, url: [:mapview, :trainees], html: { class: 'form-search', style: 'margin-bottom: 0px' } do |f| %>
+
+    Class
+    <%= f.input_field :klass_id, collection: Klass.all, selected: @trainees_map.klass_id, style: 'width: 350px', include_blank: true %>
+    Trainee
+    <%= f.input_field :trainee_id, collection: @trainees_map.klass_trainees, selected: @trainees_map.trainee_id, include_blank: 'All'%>
+    <button type='submit' id='submit-button' class="btn btn-flat btn-primary btn-small btn-spinner" data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Processing...">
+      <i class='icon-search icon-white'></i> Find
+    </button>
+    <button type = 'button' id ='help-button' class='btn btn-flat btn-small btn-info' style='margin-left: 20px'>
+      <i class='icon-question-sign icon-white icon-2x'></i>
+    </button>
+    <br><br>
+    <%= f.check_box :near_by_employers, checked: @trainees_map.near_by_employers?, style: 'margin: 0 5px 0 0;'%> Search Near By Employers
+    in Sector <%= f.input_field :sector_id, collection: employer_sectors_for_selection, selected: @trainees_map.sector_id%>
+    within <%=f.number_field :radius, value: @trainees_map.radius, step: 1, in: 5..30, style: 'width: 40px'%> miles
+
+  <% end %>
+</div>
+
+<%= render 'mapview_help' %>
+
+<div class = 'row-fluid' style = 'background-color: #eee; padding: 10px 5px 10px 10px'>
+    <% if @trainees_map.error %>
+      <div style = 'text-align: center;color: red;'>
+        <%= @trainees_map.error %>
+      </div>
+    <% else %>
+      <div class='span3'>
+        <a href="#list" class='btn-link'>
+          <%= "Trainees: <b>#{@trainees_map.addresses.count} of #{@trainees_map.trainees.count}</b>".html_safe unless @trainees_map.near_by_employers? %>
+        </a>
+      </div>
+      <div class='span7'>
+        <%= @trainees_map.klass && "Class: #{@trainees_map.klass.to_label}" %>
+      </div>
+      <div class='span2'>
+        <%= render 'shared/circles_legend' if @trainees_map.near_by_employers? %>
+      </div>
+    <% end %>
+</div>
+
+<%= gmaps(@trainees_map.map) if @trainees_map.map %>
+
+<br>
+<% if @trainees_map.show_near_by_employers? %>
+
+  <table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
+    <tr>
+      <th>Name</th>
+      <th>City</th>
+      <th>County</th>
+      <th>Notes</th>
+    </tr>
+
+  	<% @trainees_map.employers.each do |employer| %>
+  		<tr>
+  		    <td><%= link_to employer.name, employer %></td>
+  		    <td><%= employer.city%></td>
+  		    <td><%= "#{employer.county} - #{employer.state}" %></td>
+  		    <td>
+  		      <ol>
+  		      <% employer.employer_notes.each do |notes|%>
+  		        <li><%= notes.note %></li>
+  		      <% end %>
+  		      </ol>
+  		    </td>
+  		</tr>
+  	<% end %>
+  </table>
+
+<% elsif @trainees_map.trainees && !@trainees_map.error%>
+
+	<!-- list view -->
+	<a name="list"></a>
+	<h4>Trainees List</h4>
+
+	<table class="table table-condensed table-bordered table-striped table-hover">
+		<tr>
+			<th>Name</th>
+			<th>Address</th>
+			<th>County</th>
+		</tr>
+		<% @trainees_map.trainees.each do |t| %>
+		<tr>
+			<td><%= link_to t.name, t %></td>
+			<td><%= t.home_address && t.home_address.gmaps4rails_address %></td>
+			<td><%= t.home_address && t.home_address.county %></td>
+		</tr>
+
+		<% end %>
+	</table>
+<% end %>
+
+<script type="text/javascript">
+  var selected = new Array();
+  $('.form-search').submit(function() {
+    klass_id = $('#filters_klass_id :selected').text();
+    if (klass_id == 0 ){
+      alert("Please select a class");
+      return false;
+    }
+    if ($('#filters_near_by_employers').is(':checked'))
+    {
+      trainee_id = $('#filters_trainee_id :selected').val();
+      if (trainee_id == 0 ){
+        alert("Please select ONE trainee to find near by employers");
+        return false;
+      }
+      sector_id = $('#filters_sector_id :selected').val();
+      if (sector_id == 0 ){
+        alert("Please select a sector to find near by employers");
+        return false;
+      }
+    }
+    $('#submit-button').button('loading');
+  });
+</script>
+
+<script type="text/javascript">
+  $('.btn-spinner').button();
+</script>
+<script type="text/javascript">
+  jQuery(function() {
+    	return $('#filters_klass_id').change(function(e) {
+      	klass_id = $('#filters_klass_id :selected').val();
+
+      	if (klass_id > 0){
+  	    	$.get("/klasses/" + klass_id + "/trainees", function(data) {
+  	            populateDropdown($("#filters_trainee_id"), data);
+  	      	}, "json");
+
+  	    	e.preventDefault();
+      	}
+      	else{
+      		$("#filters_trainee_id").html('');
+  			$('#filters_near_by_employers').prop("checked", false);
+      	}
+    	});
+  });
+</script>
+
+<script type="text/javascript">
+  function populateDropdown(select, data) {
+    select.html('');
+    select.append($('<option></option>').val(0).html('All'));
+    var name = ""
+    $.each(data, function(id, option) {
+      if (!option.middle)
+      {
+      name = option.first + " " + option.last;
+      }
+      else
+      {
+      name = option.first + " " + option.middle + " " + option.last;
+      }
+      select.append($('<option></option>').val(option.id).html(name));
+    });
+  }
+</script>
+<script type="text/javascript">
+
+  $('#filters_trainee_id').change(function(e){
+    trainee_id = $('#filters_trainee_id :selected').val();
+    if (trainee_id > 0 ){
+      $('#filters_near_by_employers').prop("checked", true);
+    }
+    else{
+      $('#filters_near_by_employers').prop("checked", false);
+    }
+  });
+
+  $('#help-button').click(function() {
+    $('#helpModal').modal();
+  });
+
+</script>

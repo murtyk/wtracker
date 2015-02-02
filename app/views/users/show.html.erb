@@ -1,0 +1,47 @@
+<h1>User Information</h1>
+<div class='row-fluid'>
+  <div class='span5'>
+    <p><b>Name:       </b><%= @user.name %></p>
+    <p><b>email:      </b><%= @user.email %></p>
+    <p><b>Land No:    </b><%= @user.land_no %></p>
+    <p><b>Mobile No:  </b><%= @user.mobile_no %></p>
+    <p><b>Location:   </b><%= @user.location %></p>
+    <p><b>Status:     </b><%= @user.status %></p>
+  </div>
+  <div class='span5'>
+    <table class="table table-bordered table-striped table-hover table-condensed">
+      <tr>
+        <td>Assigned Classes</td>
+        <td>
+          <ol>
+          <% @user.assigned_klasses.each do |klass| %>
+            <li><%= link_to klass.to_label, klass%></li>
+          <% end %>
+          </ol>
+        </td>
+      </tr>
+      <% if @user.navigator? %>
+        <tr>
+          <td>Assigned Counties</td>
+          <td>
+            <ol>
+              <% @user.counties.each do |county| %>
+                <li><%= county.name %></li>
+              <% end %>
+            </ol>
+          </td>
+        </tr>
+        <tr>
+          <td>Class Administration</td>
+          <td>
+            <ol>
+              <% @user.grant_admins.each do |ga| %>
+                <li><%= ga.grant.name %></li>
+              <% end %>
+            </ol>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

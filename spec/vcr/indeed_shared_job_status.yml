@@ -1,0 +1,157 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Edison,NJ&limit=25&publisher=5675970181406859&q=cnc&radius=10&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 29 Jan 2015 17:14:26 GMT
+      Set-Cookie:
+      - BIGipServerjob_iad=!O9C1WgahbWu9mpvnj+SL47ecq6aoxZdVjt1qXhbtapJ4l92+02/EeF4IkIaf5Z2ky3U93vl+jdlbB58=;
+        path=/
+      - CTK=19cravk7q0nji12k; Domain=.indeed.com; Expires=Tue, 03-Feb-2032 12:02:57
+        GMT; Path=/
+      - DCT=4; Expires=Thu, 29-Jan-2015 19:14:26 GMT; Path=/
+      - JSESSIONID=ADF0C3625F9B17DA3A922D7AC6346B7D.jasxA_iad-job10; Path=/; HttpOnly
+      - TS0115ce5c=0160a2beff8b541882ef488f14623503bf6ab3b05f21a2d9e454c7ac14eb08243b0bd964f8b736bfbe60330c1bafb69baa3378be5b;
+        path=/; domain=.indeed.com
+      - TS016080f8=0160a2beffb12838153d44727da9e253fa599a903149e13e86072a9b8a1a0edb2b3218c178b3cc304e771279fc22c3e9dc63342cc0fa83032141d7ac3cc12448b22ba673c8cf69afd93f21672ba45f4c63244cb6baccfd5400e616059f189fdf77b1726993;
+        Path=/
+      - ctkgen=1; Expires=Thu, 29-Jan-2015 17:17:26 GMT; Path=/
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store, no-cache, must-revalidate, private
+      Expires:
+      - Thu, 29 Jan 2015 17:13:26 GMT
+      Content-Length:
+      - '2939'
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - User-Agent,Accept-Encoding
+      Content-Type:
+      - application/javascript;charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n {\n\n    \"version\" : 2,\n
+        \   \"query\" : \"cnc\",\n    \"location\" : \"Edison,NJ\",\n    \n    \"dupefilter\"
+        : true,\n     \n    \"highlight\" : true,\n    \n    \"radius\" : 10,\n    \n
+        \   \n    \"start\" : 1,\n    \"end\" : 2,\n    \"totalResults\" : 2,\n     \n
+        \   \"pageNumber\" : 0,\n    \n    \n    \n    \n    \n\n     \n\n    \n\n
+        \   \n\n    \"results\" : [\n        \n            \n                {\n                    \"jobtitle\"
+        : \"ASST INSTRMNT MAKER\",\n                    \"company\" : \"Rutgers University\",\n
+        \                   \"city\" : \"New Brunswick\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"New Brunswick, NJ\",\n                    \"source\" : \"Rutgers University\",\n
+        \                   \"date\" : \"Wed, 28 Jan 2015 19:39:03 GMT\",\n                    \"snippet\"
+        : \"Also requires a minimum of five years of relevant professional experience,
+        proficient with <b>CNC</b> G-Code programming, setup and operations for <b>CNC</b>
+        lathes and mills...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=66d79b5e3b7672f5&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeykIF7IoI325HCb8-t-JWhyAFe5Y_xjZHV8LaL9S5pMUxccf_zpmamxXWbws5ISvA0M&indpubnum=5675970181406859&atk=19cravk8d0nji1qg\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '6939');\",\n                    \"jobkey\"
+        : \"66d79b5e3b7672f5\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"New Brunswick, NJ\",\n                    \"formattedRelativeTime\" :
+        \"21 hours ago\"                \n}\n\n            ,\n        \n            \n
+        \               {\n                    \"jobtitle\" : \"Warehouse Maintenance
+        Manager\",\n                    \"company\" : \"Select Staffing\",\n                    \"city\"
+        : \"New Brunswick\",\n                    \"state\" : \"NJ\",\n                    \"country\"
+        : \"US\",\n                    \"formattedLocation\" : \"New Brunswick, NJ\",\n
+        \                   \"source\" : \"Select Staffing\",\n                    \"date\"
+        : \"Thu, 22 Jan 2015 22:02:26 GMT\",\n                    \"snippet\" : \"Machine,
+        <b>CNC</b>, EMD ISO, Surf. Contact providers to solve technical questions.
+        CAM, Metal, machine operator, lathe, mill, manager, quality, supervisor,...\",\n
+        \                   \"url\" : \"http://www.indeed.com/viewjob?jk=dd5eb1048a2cbd6f&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeykIF7IoI325HCb8-t-JWhyAFe5Y_xjZHV8LaL9S5pMUxccf_zpmamxXWbws5ISvA0M&indpubnum=5675970181406859&atk=19cravk8d0nji1qg\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '6939');\",\n                    \"jobkey\"
+        : \"dd5eb1048a2cbd6f\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"New Brunswick, NJ\",\n                    \"formattedRelativeTime\" :
+        \"6 days ago\"                \n}\n\n            \n        \n    ]\n}\n\n"
+    http_version: 
+  recorded_at: Thu, 29 Jan 2015 17:14:25 GMT
+- request:
+    method: get
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Edison,NJ&limit=25&publisher=5675970181406859&q=cnc&radius=10&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 29 Jan 2015 17:14:27 GMT
+      Set-Cookie:
+      - BIGipServerjob_iad=!wEqW0gNcZeMdtWDnj+SL47ecq6aoxXGzX7hv50b8bJVvi3TQOzVbamxWfhuHDOq8UIwMMljOAHlQ4b8=;
+        path=/
+      - CTK=19cravkd20kd2150; Domain=.indeed.com; Expires=Tue, 03-Feb-2032 12:02:58
+        GMT; Path=/
+      - DCT=4; Expires=Thu, 29-Jan-2015 19:14:27 GMT; Path=/
+      - JSESSIONID=BE640B1E8DB3F7A548E5099DBBF88AD3.jasxA_iad-job26; Path=/; HttpOnly
+      - TS0115ce5c=0160a2beffb389fd9a6f9878495c84b5164f88bbc3cf71b69883fec6a5f605a2b27ddf71e516aaf33271e9e4f134519acc323b8f60;
+        path=/; domain=.indeed.com
+      - TS016080f8=0160a2beffe8cfb8f7c8fd13c3c33f32ef573ecda83a272c1e9ec1a16aa3c83862df070b02516cf4d67237d9d872bb87dfa3a7fae2fa9a47a8769e9410e28c867d54f74c3f52edaa381a30705f5efe74094480194c0f84e93be182e44f76f6b5ca259b1931;
+        Path=/
+      - ctkgen=1; Expires=Thu, 29-Jan-2015 17:17:27 GMT; Path=/
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store, no-cache, must-revalidate, private
+      Expires:
+      - Thu, 29 Jan 2015 17:13:27 GMT
+      Content-Length:
+      - '2939'
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - User-Agent,Accept-Encoding
+      Content-Type:
+      - application/javascript;charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n {\n\n    \"version\" : 2,\n
+        \   \"query\" : \"cnc\",\n    \"location\" : \"Edison,NJ\",\n    \n    \"dupefilter\"
+        : true,\n     \n    \"highlight\" : true,\n    \n    \"radius\" : 10,\n    \n
+        \   \n    \"start\" : 1,\n    \"end\" : 2,\n    \"totalResults\" : 2,\n     \n
+        \   \"pageNumber\" : 0,\n    \n    \n    \n    \n    \n\n     \n\n    \n\n
+        \   \n\n    \"results\" : [\n        \n            \n                {\n                    \"jobtitle\"
+        : \"ASST INSTRMNT MAKER\",\n                    \"company\" : \"Rutgers University\",\n
+        \                   \"city\" : \"New Brunswick\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"New Brunswick, NJ\",\n                    \"source\" : \"Rutgers University\",\n
+        \                   \"date\" : \"Wed, 28 Jan 2015 19:39:03 GMT\",\n                    \"snippet\"
+        : \"Also requires a minimum of five years of relevant professional experience,
+        proficient with <b>CNC</b> G-Code programming, setup and operations for <b>CNC</b>
+        lathes and mills...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=66d79b5e3b7672f5&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeykIF7IoI325HCb8-t-JWhyAFe5Y_xjZHV8LaL9S5pMUxa36JQZurz8w24lKqzuaAks&indpubnum=5675970181406859&atk=19cravkdn0kd21s8\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '7107');\",\n                    \"jobkey\"
+        : \"66d79b5e3b7672f5\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"New Brunswick, NJ\",\n                    \"formattedRelativeTime\" :
+        \"21 hours ago\"                \n}\n\n            ,\n        \n            \n
+        \               {\n                    \"jobtitle\" : \"Warehouse Maintenance
+        Manager\",\n                    \"company\" : \"Select Staffing\",\n                    \"city\"
+        : \"New Brunswick\",\n                    \"state\" : \"NJ\",\n                    \"country\"
+        : \"US\",\n                    \"formattedLocation\" : \"New Brunswick, NJ\",\n
+        \                   \"source\" : \"Select Staffing\",\n                    \"date\"
+        : \"Thu, 22 Jan 2015 22:02:26 GMT\",\n                    \"snippet\" : \"Machine,
+        <b>CNC</b>, EMD ISO, Surf. Contact providers to solve technical questions.
+        CAM, Metal, machine operator, lathe, mill, manager, quality, supervisor,...\",\n
+        \                   \"url\" : \"http://www.indeed.com/viewjob?jk=dd5eb1048a2cbd6f&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeykIF7IoI325HCb8-t-JWhyAFe5Y_xjZHV8LaL9S5pMUxa36JQZurz8w24lKqzuaAks&indpubnum=5675970181406859&atk=19cravkdn0kd21s8\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '7107');\",\n                    \"jobkey\"
+        : \"dd5eb1048a2cbd6f\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"New Brunswick, NJ\",\n                    \"formattedRelativeTime\" :
+        \"6 days ago\"                \n}\n\n            \n        \n    ]\n}\n\n"
+    http_version: 
+  recorded_at: Thu, 29 Jan 2015 17:14:25 GMT
+recorded_with: VCR 2.9.2

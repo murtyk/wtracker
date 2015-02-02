@@ -1,0 +1,10 @@
+$("ul.errors").html("");
+<% if @employer.errors.any? %>
+	<% @employer.errors.full_messages.each do |message| %>
+		$("ul.errors").append($("<li />").html("<%= message.html_safe %>"));
+	<% end %>
+<% else %>
+	$("#modal_new_employer").modal("hide");
+	$("#trainee_interaction_employer_name").val('<%= @employer.name%>');
+	$("#button-getemployers").click();
+<% end %>

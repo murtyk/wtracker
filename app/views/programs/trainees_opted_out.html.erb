@@ -1,0 +1,23 @@
+<h2>Following trainees opted out from auto job leads</h2>
+<table class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Reason</th>
+    <th>Notes</th>
+    <th>Company</th>
+    <th>Title</th>
+    <th>Start Date</th>
+  </tr>
+  <% @trainees.each do |trainee| %>
+  <tr>
+    <td><%= name_and_link trainee %></td>
+    <td><%= trainee.opted_out_date %></td>
+    <td><%= trainee.opted_out_reason %></td>
+    <td><%= trainee.opted_out_reason_desc %></td>
+    <td><%= trainee.opted_out_new_employer %></td>
+    <td><%= trainee.opted_out_title %></td>
+    <td><%= trainee.opted_out_start_date %></td>
+  </tr>
+  <% end %>
+</table>

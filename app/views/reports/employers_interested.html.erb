@@ -1,0 +1,6 @@
+<h1>Employers Interested in Trainees Not Placed</h1>
+<%= render "class_selection", report: Report::EMPLOYERS_INTERESTED_TRAINEES, klass_ids: @report.klass_ids%>
+<%= @report.render_counts %>
+<%= @report.download_button %>
+<%= render 'shared_employers_interested_trainees.html.erb', report: @report %>
+<%= render 'shared/export_table.js.erb' %>

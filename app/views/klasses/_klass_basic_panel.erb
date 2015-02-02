@@ -1,0 +1,103 @@
+<h4>
+  Details
+  <%= edit_button(klass) %>
+</h4>
+
+<p>
+  <b>Description:</b>
+  <%= klass.description %>
+</p>
+
+<p>
+  <b>College:</b>
+  <%= klass.college_name %>
+</p>
+
+<p>
+  <b>Training hours:</b>
+  <%= klass.training_hours %>
+</p>
+
+<p>
+  <b>Credits:</b>
+  <%= klass.credits %>
+</p>
+
+<p>
+  <b>Start date:</b>
+  <%= klass.start_date %>
+</p>
+
+<p>
+  <b>End date:</b>
+  <%= klass.end_date %>
+</p>
+
+<p>
+  <b>Program:</b>
+  <%= klass.program_name %>
+</p>
+
+<div class="accordion" id="accordion1">
+      <% collapse_id = "collapse_schedule" %>
+      <div class="accordion-group" id = "accordion-group-schedule">
+        <div class="accordion-heading" style='background-color: #DDDDFF'>
+          <strong>
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href=<%= '#' + collapse_id %>>
+            Schedule
+          </a>
+          </strong>
+        </div>
+        <div id= <%= collapse_id %> class="accordion-body collapse">
+          <div class="accordion-inner">
+            <table>
+            <% klass.scheduled_days.each do |ks| %>
+              <tr>
+                <td><strong><%= ks.day_name %></strong></td>
+                <td><%= ks.start_time %></td>
+                <td>-- <%= ks.end_time %></td>
+              </tr>
+            <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
+</div>
+
+<hr>
+
+<h4>
+  Certificates
+  <%= button_new_association(KlassCertificate, klass_id: klass.id, title: 'New Certificate') %>
+</h4>
+<div id="certificates">
+  <%= render klass.klass_certificates %>
+</div>
+<hr>
+
+<%= render 'job_counts_script.js.erb' %>
+<h4>
+  Relevant Job Titles
+  <%= button_new_association(KlassTitle, klass_id: klass.id, title: 'New Job Title') %>
+</h4>
+<div id="titles">
+  <%= render 'klass_titles/list', klass_titles: klass.klass_titles%>
+</div>
+<hr>
+
+<h4>
+  Navigators
+  <%= button_new_association(KlassNavigator, klass_id: klass.id, title: 'Add Navigator') %>
+</h4>
+<div id="navigators">
+  <%= render klass.klass_navigators_sorted %>
+</div>
+<hr>
+
+<h4>
+  Instructors
+  <%= button_new_association(KlassInstructor, klass_id: klass.id, title: 'Add Instructor') %>
+</h4>
+<div id="instructors">
+  <%= render klass.klass_instructors_sorted %>
+</div>

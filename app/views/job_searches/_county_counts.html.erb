@@ -1,0 +1,16 @@
+<div class = 'row-fluid'>
+  <div class = 'span5'>
+    <table class="table table-bordered table-striped table-hover table-condensed">
+      <tr>
+        <th>County</th>
+        <th>Jobs</th>
+      </tr>
+      <% county_counts.each do |k,v| %>
+      <tr>
+        <td><%= k %></td>
+        <td><%= v %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

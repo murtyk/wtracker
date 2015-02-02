@@ -1,0 +1,30 @@
+1. Funding Source: change grant id. make a note of existing data.
+Trainee.unscoped.where.not(funding_source_id: nil).pluck(:funding_source_id, :account_id, :grant_id).uniq
+[[15, 1, 1], [17, 3, 4], [10, 3, 4], [13, 3, 4], [12, 3, 4], [16, 3, 4], [11, 3, 4], [7, 11, 12], [9, 12, 13]]
+
+2. Unemployment Proofs: change account_id and grant_id
+3. Special services: change account_id and grant_id
+4. trainee email:
+5. Race data
+6. Sectors: data. check any one using Consumer Goods, Insurance, "Utilities & Energy"
+7. Education
+
+-------------------------------------------------------
+
+STAGING:
+
+1. Funding Sources: No trainees with funding source.
+2. Education: positions
+3.
+
+PRODUCTION:
+
+DONE:
+1. FUNDING SOURCES
+
+
+PENDING
+
+Race data
+Sectors: data. check any one using Consumer Goods, Insurance, "Utilities & Energy"
+Education

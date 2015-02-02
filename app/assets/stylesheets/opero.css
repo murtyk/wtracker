@@ -1,0 +1,38 @@
+.navbar {
+ margin-bottom:0;
+}
+
+.navbar-inverse .navbar-inner {
+ border:none;
+ box-shadow:none;
+ border-radius:0;
+
+ margin:0;
+ padding-left:0;
+ padding-right:0;
+
+ min-height:45px;
+ position:relative;
+}
+
+.navbar-inverse  {
+ padding-left:0;
+ padding-right:0;
+ margin-left:0;
+ margin-right:0;
+}
+
+.navbar-inverse .brand,
+.navbar-inverse .navbar-text,
+.navbar-inverse .navbar-link,
+.navbar-inverse .brand, .navbar-inverse .nav > li > a
+{
+ color:#DDD;
+}
+.navbar-inverse .brand {
+ font-size:24px;
+}
+
+/*.navbar-inverse .nav-collapse .nav > li > a, .navbar-inverse .nav-collapse .dropdown-menu a {
+  color: #FFF;
+}*/

@@ -1,0 +1,25 @@
+<h4>Events Calendar</h4>
+
+<div class='row-fluid' id='brief_calendar' style='margin-top:10px;margin-bottom:30px;max-height: 300px;'>
+  <%= render 'brief_calendar', calendar: klass.calendar %>
+</div>
+
+<div class='row-fluid' >
+  <%= full_calendar_link(klass.calendar) %>
+</div>
+
+<h4>
+  <%= "Events & Employer Interactions"%>
+  <%= plus_button(KlassEvent, { klass_id: klass.id }, 'New Event') %>
+</h4>
+
+<button type = 'button' id = 'expandcollapse' class = 'btn btn-flat btn-primary pull-left'>
+  <i class="icon-white icon-plus-sign"></i> Expand All
+</button>
+<br><br>
+
+<div class="accordion" id="accordion2">
+  <%= render 'klass_events', klass: klass%>
+</div>
+
+<hr>

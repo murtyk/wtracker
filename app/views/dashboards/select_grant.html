@@ -1,0 +1,17 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Change Current Grant</h1>
+</div>
+
+<div class = 'row-fluid'>
+  <h4> Your working context is set to Grant: <%= current_grant.name %></h4>
+  <hr>
+  <div class = 'span3'>
+    <%= simple_form_for :grant, { url: grantselected_dashboards_path } do |f| %>
+      <%= f.input :id, collection: @grants, include_blank: false, label: 'Change Current Grant To' %>
+      <div class='form-actions'>
+        <%= submit_button(f, "Set Grant") %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

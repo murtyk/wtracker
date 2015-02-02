@@ -1,0 +1,15 @@
+<div class = 'row-fluid'>
+  <div class = 'span9 offset3'>
+    <% if @job_search_profile.opted_out %>
+      <h2><%= @job_search_profile.opted_out_confirmation_message %></h2>
+    <% else %>
+      <h2>
+        Your profile has been updated.<br>
+        You will begin receiving e-mails with job postings that match your skills and geographic preference.
+      </h2>
+    <% end %>
+    <% unless @job_search_profile.auto_shared_jobs.empty? %>
+      <%= link_to 'Click here to return to your job listings.', job_search_profile_path(@job_search_profile, key: @job_search_profile.key) %>
+    <% end %>
+  </div>
+</div>

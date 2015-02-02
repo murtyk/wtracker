@@ -1,0 +1,7 @@
+$('#new_trainee_assessment').remove();
+<% if @trainee_assessment.errors.any? %>
+  $('#<%=new_link_id("trainee_assessment")%>').hide().after('<%= j render("form", trainee_assessment: @trainee_assessment) %>');
+<% else %>
+  $('#trainee_assessments').append('<%= j render @trainee_assessment.decorate %>');
+  $('#new_trainee_assessment_link').show();
+<% end %>

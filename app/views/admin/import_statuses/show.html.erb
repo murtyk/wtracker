@@ -1,0 +1,31 @@
+<h1>Import Status Details</h1>
+<p>Account: <%= @import_status.account_name %></p>
+<p><%= @import_status.created_at.to_s %></p>
+<p><%= @import_status.user_name %></p>
+<p><%= @import_status.type.to_s %></p>
+<p><%= @import_status.rows_successful %></p>
+<p><%= @import_status.rows_failed %></p>
+<p><%= @import_status.sector_ids.to_s %></p>
+<p><%= @import_status.klass_id %></p>
+<p><%= @import_status.params.to_s %></p>
+
+
+<table id="table_import_fails" class="table table-bordered table-striped table-hover">
+<tr>
+  <th>Row No</th>
+  <th>Data</th>
+  <th>geocoderfail?</th>
+  <th>can retry?</th>
+  <th>error message</th>
+</tr>
+
+<% @import_status.import_fails.each do |import_fail| %>
+<tr>
+  <td><%= import_fail.row_no %></td>
+  <td><%= import_fail.row_data %></td>
+  <td><%= import_fail.geocoder_fail %></td>
+  <td><%= import_fail.can_retry %></td>
+  <td><%= import_fail.error_message %></td>
+</tr>
+<% end %>
+</table>

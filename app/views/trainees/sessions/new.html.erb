@@ -1,0 +1,26 @@
+<div class="row-fluid">
+  <div class="span3 offset7 no-border" style = 'margin-top: 150px;-moz-box-shadow: 0 0 10px rgb(0,0,0);-webkit-box-shadow: 0 0 10px rgb(0,0,0);background-color: #438EB9;padding:20px'>
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+
+      <%= f.input :login_id, required: false, autofocus: true, label: false,
+                             placeholder: 'login_id', style: 'width: 80%' %>
+
+      <%= f.input :password, required: false, label: false, wrapper: :append  do%>
+        <%= f.input_field :password, placeholder: 'password', style: 'width: 85%' %>
+        <span class="add-on"><i class="icon-key"></i></span>
+      <% end %>
+
+      <div class="row-fluid">
+        <label class="span9">
+          <%= f.check_box :remember_me, style: 'margin-top: 0px'%><span class="lbl"> Remember Me</span>
+        </label>
+        <%= f.button :submit, "Sign in", class: 'btn btn-primary' %>
+        </div>
+
+      <%= render "users/shared/links" %>
+
+    <% end %>
+
+  </div>
+</div>
+

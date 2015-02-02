@@ -1,0 +1,42 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Program Information</h1>
+</div>
+<div class = 'row-fluid'>
+  <div class = 'span4'>
+    <p><b><%=@program.name%></b><%= edit_button(@program) %></p>
+    <p>Description: <b><%=@program.description%></b></p>
+    <p>Grant: <b><%=@program.grant_name%></b></p>
+  </div>
+
+  <div class = 'span8'>
+
+    <div class = 'row-fluid'>
+      <h4>
+        Classes
+        <%= new_button(Klass, {program_id: @program.id}, "New Class") %>
+      </h4>
+    </div>
+
+    <table id="program_klasses" class="table table-bordered table-condensed table-hover">
+      <tr>
+        <th>Name    </th>
+        <th>College </th>
+        <th>Start   </th>
+        <th>End     </th>
+        <th>Trainees</th>
+        <th>View    </th>
+      </tr>
+
+      <% @program.klasses.each do |k|%>
+      <tr>
+        <td><%= name_and_link k %>  </td>
+        <td><%= k.college_name %>   </td>
+        <td><%= k.start_date %>     </td>
+        <td><%= k.end_date %>       </td>
+        <td><%= k.enrolled_count %> </td>
+        <td><%= show_button(k) %>   </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

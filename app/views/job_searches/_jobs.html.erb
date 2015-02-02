@@ -1,0 +1,29 @@
+<% jobs.each do |job| %>
+    <div class = 'row-fluid'>
+      <div class = 'span5'>
+        <strong>
+          <%= link_to job.title || 'Missing Title', details_job_search_path(job_info: job.jobinfo), style: 'color: blue', target: '_blank'%>
+        </strong><br>
+      </div>
+      <div class = 'span3'>
+        <strong><%=job.company%></strong><br>
+      </div>
+      <div class = 'span2'>
+        <strong><%=job.location%></strong><br>
+      </div>
+      <div class = 'span1'>
+          <strong><%=job.date_posted.to_date.to_s%></strong><br>
+      </div>
+      <div class = 'span1'>
+        <%= link_to new_job_share_path(job_info: job.jobinfo_for_share), class: 'btn btn-flat btn-mini btn-info', rel:"tooltip", title:"Forward", target: "_blank" do%>
+                <i class="icon-share-alt icon-white"></i>
+        <% end %>
+      </div>
+    </div>
+    <div class = 'row-fluid'>
+      <div class = 'span'>
+        Excerpt:<%= job.excerpt %>
+      </div>
+    </div>
+    <hr>
+<% end %>

@@ -1,0 +1,63 @@
+<h1>Trainees</h1>
+<div class = 'row-fluid filters-div' >
+<%= simple_form_for :filters, method: :get, url: '/trainees', html: { class: 'form-search', style: 'margin-bottom: 0px' } do |f| %>
+
+  Select a Class
+  <%= f.input_field :klass_id, collection: current_user.klasses, selected: @filter_info[:klass_id], class: "search-query", style: 'width: 350px' %>
+  <strong style='margin-left: 10px; margin-right: 10px'>OR</strong> Last Name Starting With
+  <%= f.input_field :last_name, class: "search-query", value: @filter_info[:last_name], style: 'width: 75px' %>
+  <button type="submit" class="btn btn-flat btn-small btn-primary">
+    <i class="icon-search icon-white"></i>Find
+  </button>
+<% end %>
+</div>
+
+
+<div class = 'row' style='margin-top: 30px'>
+  <div class = 'span8'>
+    <h4><i class="icon-user blue"></i><%= "Trainees (#{@trainees.count})" %></h4>
+  </div>
+  <div class = 'span4'>
+    <%= new_button(Trainee) %>
+  </div>
+</div>
+
+<table id="table_trainee" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>email</th>
+    <th>Land No.</th>
+    <th>Mobile</th>
+    <th>Location</th>
+    <th></th>
+  </tr>
+
+  <% @trainees.each do |trainee| %>
+    <tr id='tr_<%=trainee.id%>'>
+      <td><%= name_and_link trainee %></td>
+      <td><%= trainee.email%></td>
+      <td><%= format_phone_no(trainee.land_no)%></td>
+      <td><%= format_phone_no(trainee.mobile_no)%></td>
+      <td><%= trainee.county_name %> </td>
+      <td>
+      </td>
+
+      <td>
+        <%= render('shared/show_edit_destroy_buttons', resource: trainee, confirm_message: "Are your sure you want to delete trainee #{trainee.name}?") %>
+      </td>
+
+    </tr>
+  <% end %>
+</table>
+
+<script type="text/javascript">
+  var selected = new Array();
+  $('.form-search').submit(function() {
+    klass_id = $('#filters_klass_id :selected').text();
+    last_name = $('#filters_last_name').val();
+    if (klass_id == 0 & last_name == 0){
+      alert("Please select a class or enter last name");
+      return false;
+    }
+  });
+</script>

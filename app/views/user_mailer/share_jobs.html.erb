@@ -1,0 +1,8 @@
+<p><b>Company: </b><%=@job_share.company%></p>
+<p><b>Location: </b><%=@job_share.location%></p>
+<p><b>Comment: </b><%=@job_share.comment%></p>
+<% @job_share.shared_jobs.each do |shared_job| %>
+	<b>Title: </b><%=shared_job.title%>
+	<a href= "<%=shared_job.details_url%>">click to apply</a>
+	<br><br>
+<% end %>

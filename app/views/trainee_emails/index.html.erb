@@ -1,0 +1,49 @@
+<div class="row-fluid page-caption-div">
+  <h1>Emails Sent To Trainees</h1>
+</div>
+
+<div class="row-fluid">
+  <div class='span10'>
+    <% if @trainee_emails.any? %>
+      <div align="center"><%= will_paginate @trainee_emails%></div>
+    <% end %>
+  </div>
+  <div class="span2">
+    <%= new_button(TraineeEmail, nil, 'New email to trainees') %>
+  </div>
+</div>
+
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Sent By</th>
+      <th>Class</th>
+      <th>Sent To</th>
+      <th>Subject</th>
+      <th>Content</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @trainee_emails.each do |trainee_email| %>
+      <tr id ='tr_<%=trainee_email.id%>'>
+        <td><%= trainee_email.user.name %></td>
+        <td><%= trainee_email.klass_name %></td>
+        <td><%= trainee_email.trainee_names.join(';') %></td>
+        <td><%= trainee_email.subject %></td>
+        <td><%= trainee_email.content %></td>
+        <td>
+          <%= show_button(trainee_email) %>
+
+          <%= link_to trainee_email, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-flat btn-mini btn-danger", rel:"tooltip", remote: true, title:"Delete"  do %>
+            <i class="icon-trash"></i>
+          <% end %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

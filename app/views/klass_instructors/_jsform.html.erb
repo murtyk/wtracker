@@ -1,0 +1,11 @@
+<%= simple_form_for(klass_instructor,remote: true) do |f| %>
+  <br>
+  <div class="form-inputs">
+    <%= f.association :user, collection: instructors, label: 'Select Instructor', include_blank: false %>
+    <%= f.hidden_field :klass_id%>
+  </div>
+	<div class="form-actions">
+	    <%= ajax_cancel_and_submit_buttons(f) %>
+	</div>
+  <%= ajax_form_cancel_script(klass_instructor) %>
+<% end %>

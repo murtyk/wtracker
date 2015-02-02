@@ -1,0 +1,2002 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=841%20Georges%20Road,North%20Brunswick,NJ,08902&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:33 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:33 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "841",
+                       "short_name" : "841",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Georges Road",
+                       "short_name" : "Georges Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "North Brunswick Township",
+                       "short_name" : "North Brunswick Township",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08902",
+                       "short_name" : "08902",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "3359",
+                       "short_name" : "3359",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "841 Georges Road, North Brunswick Township, NJ 08902, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.4643546,
+                       "lng" : -74.4563077
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4657035802915,
+                          "lng" : -74.4549587197085
+                       },
+                       "southwest" : {
+                          "lat" : 40.4630056197085,
+                          "lng" : -74.45765668029151
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:33 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=841%20Georges%20Road,%20North%20Brunswick%20Township,%20NJ,%2008902&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:34 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:34 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "841",
+                       "short_name" : "841",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Georges Road",
+                       "short_name" : "Georges Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "North Brunswick Township",
+                       "short_name" : "North Brunswick Township",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08902",
+                       "short_name" : "08902",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "3359",
+                       "short_name" : "3359",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "841 Georges Road, North Brunswick Township, NJ 08902, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.4643546,
+                       "lng" : -74.4563077
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4657035802915,
+                          "lng" : -74.4549587197085
+                       },
+                       "southwest" : {
+                          "lat" : 40.4630056197085,
+                          "lng" : -74.45765668029151
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:34 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=2%20Albany%20Street,New%20Brunswick,NJ,08901&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:34 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:34 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "2",
+                       "short_name" : "2",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Albany Street",
+                       "short_name" : "Albany St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08901",
+                       "short_name" : "08901",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1236",
+                       "short_name" : "1236",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "2 Albany Street, New Brunswick, NJ 08901, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.4962247,
+                       "lng" : -74.4411358
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4975736802915,
+                          "lng" : -74.43978681970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.4948757197085,
+                          "lng" : -74.44248478029149
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:34 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=2%20Albany%20Street,New%20Brunswick,NJ,08901&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:34 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:34 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "2",
+                       "short_name" : "2",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Albany Street",
+                       "short_name" : "Albany St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08901",
+                       "short_name" : "08901",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1236",
+                       "short_name" : "1236",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "2 Albany Street, New Brunswick, NJ 08901, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.4962247,
+                       "lng" : -74.4411358
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4975736802915,
+                          "lng" : -74.43978681970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.4948757197085,
+                          "lng" : -74.44248478029149
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:34 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=2%20Albany%20Street,%20New%20Brunswick,%20NJ,%2008901&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:35 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:35 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "2",
+                       "short_name" : "2",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Albany Street",
+                       "short_name" : "Albany St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08901",
+                       "short_name" : "08901",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1236",
+                       "short_name" : "1236",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "2 Albany Street, New Brunswick, NJ 08901, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.4962247,
+                       "lng" : -74.4411358
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4975736802915,
+                          "lng" : -74.43978681970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.4948757197085,
+                          "lng" : -74.44248478029149
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:34 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=2%20Albany%20Street,%20New%20Brunswick,%20NJ,%2008901&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:35 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:35 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "2",
+                       "short_name" : "2",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Albany Street",
+                       "short_name" : "Albany St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08901",
+                       "short_name" : "08901",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1236",
+                       "short_name" : "1236",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "2 Albany Street, New Brunswick, NJ 08901, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.4962247,
+                       "lng" : -74.4411358
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4975736802915,
+                          "lng" : -74.43978681970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.4948757197085,
+                          "lng" : -74.44248478029149
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:35 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=1%20no%20street,What,CC,33333&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:35 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:35 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [],
+           "status" : "ZERO_RESULTS"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:35 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=1%20no%20street,What,CC,33333&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:36 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:36 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [],
+           "status" : "ZERO_RESULTS"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:36 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=1%20no%20street,What,CC,33333&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:39 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:39 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [],
+           "status" : "ZERO_RESULTS"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:39 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=1%20no%20street,What,CC,33333&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:38:40 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:38:40 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [],
+           "status" : "ZERO_RESULTS"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:38:40 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=north%20brunswick%20township,nj,08902&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:39:52 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:39:52 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "North Brunswick Township",
+                       "short_name" : "North Brunswick Township",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "North Brunswick Township, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4779429,
+                          "lng" : -74.41520989999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.4131129,
+                          "lng" : -74.531476
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4525163,
+                       "lng" : -74.4766712
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4779429,
+                          "lng" : -74.41520989999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.4131129,
+                          "lng" : -74.531476
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:39:52 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=40.4525163,-74.4766712&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:39:53 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:39:53 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "2217",
+                       "short_name" : "2217",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Birchwood Court",
+                       "short_name" : "Birchwood Ct",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "North Brunswick Township",
+                       "short_name" : "North Brunswick Township",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08902",
+                       "short_name" : "08902",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "3941",
+                       "short_name" : "3941",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "2217 Birchwood Court, North Brunswick Township, NJ 08902, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.4520341,
+                       "lng" : -74.4762599
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.45338308029149,
+                          "lng" : -74.47491091970851
+                       },
+                       "southwest" : {
+                          "lat" : 40.4506851197085,
+                          "lng" : -74.47760888029151
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "North Brunswick Manor",
+                       "short_name" : "North Brunswick Manor",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "North Brunswick Township",
+                       "short_name" : "North Brunswick Township",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08902",
+                       "short_name" : "08902",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "North Brunswick Manor, North Brunswick Township, NJ 08902, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4565237,
+                          "lng" : -74.47189809999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.4517804,
+                          "lng" : -74.48078149999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.45411550000001,
+                       "lng" : -74.47674139999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4565237,
+                          "lng" : -74.47189809999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.4517804,
+                          "lng" : -74.48078149999999
+                       }
+                    }
+                 },
+                 "types" : [ "neighborhood", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "North Brunswick Township",
+                       "short_name" : "North Brunswick Township",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "North Brunswick Township, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4779429,
+                          "lng" : -74.41520989999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.4131129,
+                          "lng" : -74.531476
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4525163,
+                       "lng" : -74.4766712
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4779429,
+                          "lng" : -74.41520989999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.4131129,
+                          "lng" : -74.531476
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "08902",
+                       "short_name" : "08902",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "North Brunswick Township",
+                       "short_name" : "North Brunswick Township",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "North Brunswick Township, NJ 08902, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4779429,
+                          "lng" : -74.4381339
+                       },
+                       "southwest" : {
+                          "lat" : 40.3950989,
+                          "lng" : -74.531476
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4430064,
+                       "lng" : -74.4818698
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4779429,
+                          "lng" : -74.4381339
+                       },
+                       "southwest" : {
+                          "lat" : 40.3950989,
+                          "lng" : -74.531476
+                       }
+                    }
+                 },
+                 "postcode_localities" : [ "New Brunswick", "North Brunswick Township" ],
+                 "types" : [ "postal_code" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Middlesex County, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.608903,
+                          "lng" : -74.205561
+                       },
+                       "southwest" : {
+                          "lat" : 40.2511219,
+                          "lng" : -74.6301009
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4111363,
+                       "lng" : -74.35874729999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.608903,
+                          "lng" : -74.205561
+                       },
+                       "southwest" : {
+                          "lat" : 40.2511219,
+                          "lng" : -74.6301009
+                       }
+                    }
+                 },
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "New Jersey, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.357423,
+                          "lng" : -73.9024391
+                       },
+                       "southwest" : {
+                          "lat" : 38.9285589,
+                          "lng" : -75.5597921
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.0583238,
+                       "lng" : -74.4056612
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.357423,
+                          "lng" : -73.9024391
+                       },
+                       "southwest" : {
+                          "lat" : 38.9285885,
+                          "lng" : -75.5597921
+                       }
+                    }
+                 },
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "United States",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 71.389888,
+                          "lng" : -66.94539469999999
+                       },
+                       "southwest" : {
+                          "lat" : 18.9110642,
+                          "lng" : 172.4458955
+                       }
+                    },
+                    "location" : {
+                       "lat" : 37.09024,
+                       "lng" : -95.712891
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 49.38,
+                          "lng" : -66.94
+                       },
+                       "southwest" : {
+                          "lat" : 25.82,
+                          "lng" : -124.39
+                       }
+                    }
+                 },
+                 "types" : [ "country", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:39:53 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=new%20brunswick,nj,08901&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:39:53 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:39:53 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "New Brunswick, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.509533,
+                          "lng" : -74.39241179999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.467221,
+                          "lng" : -74.48952389999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4862157,
+                       "lng" : -74.4518188
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.509533,
+                          "lng" : -74.39241179999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.467221,
+                          "lng" : -74.48952389999999
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "New Brunswick Amtrak",
+                       "short_name" : "New Brunswick Amtrak",
+                       "types" : [ "train_station", "transit_station", "establishment" ]
+                    },
+                    {
+                       "long_name" : "Albany Street",
+                       "short_name" : "Albany St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08901",
+                       "short_name" : "08901",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "New Brunswick Amtrak, Albany Street, New Brunswick, NJ 08901, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.498187,
+                          "lng" : -74.4447193
+                       },
+                       "southwest" : {
+                          "lat" : 40.4959966,
+                          "lng" : -74.4470206
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4967651,
+                       "lng" : -74.4462427
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4984407802915,
+                          "lng" : -74.44452096970851
+                       },
+                       "southwest" : {
+                          "lat" : 40.4957428197085,
+                          "lng" : -74.44721893029151
+                       }
+                    }
+                 },
+                 "types" : [ "train_station", "transit_station", "establishment" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:39:53 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=40.4862157,-74.4518188&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 31 Jan 2015 23:39:53 GMT
+      Expires:
+      - Sun, 01 Feb 2015 23:39:53 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.02
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "239-251",
+                       "short_name" : "239-251",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Delavan Street",
+                       "short_name" : "Delavan St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08901",
+                       "short_name" : "08901",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "3019",
+                       "short_name" : "3019",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "239-251 Delavan Street, New Brunswick, NJ 08901, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4871746,
+                          "lng" : -74.4516926
+                       },
+                       "southwest" : {
+                          "lat" : 40.486036,
+                          "lng" : -74.4535219
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.486166,
+                       "lng" : -74.45187229999999
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4879542802915,
+                          "lng" : -74.45125826970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.4852563197085,
+                          "lng" : -74.45395623029151
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Livingston Ave at Comstock St",
+                       "short_name" : "Livingston Ave at Comstock St",
+                       "types" : [ "bus_station", "transit_station", "establishment" ]
+                    },
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08901",
+                       "short_name" : "08901",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Livingston Ave at Comstock St, New Brunswick, NJ 08901, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.486497,
+                       "lng" : -74.45133299999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4878459802915,
+                          "lng" : -74.44998401970848
+                       },
+                       "southwest" : {
+                          "lat" : 40.4851480197085,
+                          "lng" : -74.4526819802915
+                       }
+                    }
+                 },
+                 "types" : [ "bus_station", "transit_station", "establishment" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "08901",
+                       "short_name" : "08901",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "New Brunswick, NJ 08901, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.5092269,
+                          "lng" : -74.393041
+                       },
+                       "southwest" : {
+                          "lat" : 40.46709000000001,
+                          "lng" : -74.48952389999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4861552,
+                       "lng" : -74.45184999999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.5092269,
+                          "lng" : -74.393041
+                       },
+                       "southwest" : {
+                          "lat" : 40.46709000000001,
+                          "lng" : -74.48952389999999
+                       }
+                    }
+                 },
+                 "types" : [ "postal_code" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "New Brunswick",
+                       "short_name" : "New Brunswick",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "New Brunswick, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.509533,
+                          "lng" : -74.39241179999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.467221,
+                          "lng" : -74.48952389999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4862157,
+                       "lng" : -74.4518188
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.509533,
+                          "lng" : -74.39241179999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.467221,
+                          "lng" : -74.48952389999999
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Middlesex County",
+                       "short_name" : "Middlesex County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Middlesex County, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.608903,
+                          "lng" : -74.205561
+                       },
+                       "southwest" : {
+                          "lat" : 40.2511219,
+                          "lng" : -74.6301009
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4111363,
+                       "lng" : -74.35874729999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.608903,
+                          "lng" : -74.205561
+                       },
+                       "southwest" : {
+                          "lat" : 40.2511219,
+                          "lng" : -74.6301009
+                       }
+                    }
+                 },
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "New Jersey, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.357423,
+                          "lng" : -73.9024391
+                       },
+                       "southwest" : {
+                          "lat" : 38.9285589,
+                          "lng" : -75.5597921
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.0583238,
+                       "lng" : -74.4056612
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.357423,
+                          "lng" : -73.9024391
+                       },
+                       "southwest" : {
+                          "lat" : 38.9285885,
+                          "lng" : -75.5597921
+                       }
+                    }
+                 },
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "United States",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 71.389888,
+                          "lng" : -66.94539469999999
+                       },
+                       "southwest" : {
+                          "lat" : 18.9110642,
+                          "lng" : 172.4458955
+                       }
+                    },
+                    "location" : {
+                       "lat" : 37.09024,
+                       "lng" : -95.712891
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 49.38,
+                          "lng" : -66.94
+                       },
+                       "southwest" : {
+                          "lat" : 25.82,
+                          "lng" : -124.39
+                       }
+                    }
+                 },
+                 "types" : [ "country", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 23:39:53 GMT
+recorded_with: VCR 2.9.2

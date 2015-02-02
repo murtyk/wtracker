@@ -1,0 +1,15 @@
+<%= employer.trainee_interactions_header %>
+<div id="trainee_interactions">
+  <%= render("trainee_interactions/trainee_interactions", object: employer) %>
+</div>
+
+<hr>
+<%= employer.trainee_submits_header %>
+<div id = "submits">
+  <% employer.trainee_submits.each do |trainee_submit| %>
+    <p>
+      <%= name_and_link trainee_submit.trainee %>
+      <%= " - #{trainee_submit.title}" %>
+    </p>
+  <% end %>
+</div>

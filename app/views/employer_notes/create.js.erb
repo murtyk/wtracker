@@ -1,0 +1,7 @@
+$('#new_employer_note').remove();
+<% if @employer_note.errors.empty? %>
+  $('#employer_notes').html('<%= j render @employer_note.employer.employer_notes %>');
+  $('#new_employer_note_link').show();
+<% else %>
+  $('#new_employer_note_link').after('<%= j render("jsform", employer_note: @employer_note) %>');
+<% end %>

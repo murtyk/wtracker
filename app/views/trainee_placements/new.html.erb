@@ -1,0 +1,41 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1>New Job Information</h1>
+    </div>
+      <%= simple_form_for(@trainee_placement, html: { class: "form-horizontal"}) do |f| %>
+        <div class="form-inputs">
+        <%= f.hidden_field :trainee_id %>
+        <% @trainee_placement.fields.each do |atr| %>
+          <% required = @trainee_placement.required?(atr) %>
+          <% if @trainee_placement.collection_field?(atr) %>
+            <%= f.input atr, required: required,
+                             collection:  @trainee_placement.field_collection(atr) %>
+          <% elsif @trainee_placement.date_field?(atr) %>
+            <%= f.input atr, required: required,
+                             input_html: { data: { behaviour: "datepicker" },
+                             value: @trainee_placement.send(atr) },
+                             as: :string %>
+          <% else %>
+            <%= f.input atr, label: atr.titleize, required: required %>
+          <% end %>
+        <% end %>
+        </div>
+        <div class="form-actions">
+          <%= submit_button(f) %>
+        </div>
+      <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  })
+</script>
+<script type="text/javascript">
+jQuery(function($){
+  <% @trainee_placement.mask_fields.each do |field, mask, placeholder| %>
+  $("#trainee_placement_<%=field%>").mask("<%=mask%>",{placeholder:"<%=placeholder%>"});
+  <% end %>
+});
+</script>

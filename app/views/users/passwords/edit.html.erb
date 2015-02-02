@@ -1,0 +1,27 @@
+<div class='row'>
+<div class="span3 offset7" style = 'margin-top: 150px'>
+  <div class="opero-widget-body" style = 'background-color: #438EB9'>
+      <div class="opero-widget-main" style = 'background-color: #438EB9'>
+
+<h4 style='color: white;'>Change your password</h4>
+
+<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= f.error_notification %>
+
+  <%= f.input :reset_password_token, :as => :hidden %>
+  <%= f.full_error :reset_password_token %>
+
+  <div class="form-inputs">
+    <%= f.input :password, :label => "New password", :required => true, :autofocus => true %>
+    <%= f.input :password_confirmation, :label => "Confirm your new password", :required => true %>
+  </div>
+
+    <%= f.button :submit, "Change my password", class: 'btn btn-flat btn-primary'  %>
+<% end %>
+
+<%= render "users/shared/links" %>
+
+</div>
+</div>
+</div>
+</div>

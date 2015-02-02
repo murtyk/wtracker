@@ -1,0 +1,13 @@
+<%= simple_form_for(employer_sector,remote: true) do |f| %>
+	<hr>
+	<div class="form-inputs">
+		<%= f.hidden_field :employer_id %>
+		<%= f.association :sector, collection: employer_sector.employer.sectors_for_selection,
+                               label: 'Select a sector:',
+                               include_blank: false%>
+	</div>
+	<div class="form-actions">
+		<%= ajax_cancel_and_submit_buttons(f) %>
+	</div>
+  <%= ajax_form_cancel_script(employer_sector) %>
+<% end %>

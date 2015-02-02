@@ -1,0 +1,30 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Programs</h1>
+</div>
+
+<div class = 'row-fluid'>
+  <%= new_button(Program) %>
+</div>
+
+<table id="table_report" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Classes</th>
+    <th></th>
+  </tr>
+  <% @programs.each do |program| %>
+    <tr>
+      <td><%= name_and_link program %></td>
+      <td><%= program.description %></td>
+      <td>
+        <%= program.klass_count %>
+        <%= plus_button(Klass, {program_id: program.id}) %>
+      </td>
+      <td>
+        <%= show_button(program) %>
+        <%= edit_button(program) %>
+      </td>
+    </tr>
+  <% end %>
+</table>

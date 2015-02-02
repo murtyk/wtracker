@@ -1,0 +1,10 @@
+<%= simple_form_for(employer_note,remote: true, html: {class: 'form_employer_note'}) do |f| %>
+  <hr>
+
+  <%= f.hidden_field :employer_id %>
+  <%= f.input :note, label: 'Enter Notes' %>
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(employer_note) %>
+<% end %>

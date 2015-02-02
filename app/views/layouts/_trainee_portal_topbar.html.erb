@@ -1,0 +1,83 @@
+<div id='main-navbar' class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+       <div class="navbar-header">
+          <div class='row-fluid'>
+          <div class='span3'>
+          <h2 style='margin:0;color: white'><%=current_grant.name%></h2>
+          </div>
+          <div class='span9'>
+          <a class="navbar-brand pull-right" href="#">
+            <img alt="Brand" src='<%= current_grant.applicant_logo %>'>
+          </a>
+          </div>
+          </div>
+      </div>
+    </div><!--/.container-fluid-->
+    <% if current_trainee %>
+      <div class="container-fluid" style ='background-color: #26294D;'>
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="nav-collapse collapse">
+          <ul class="nav pull-right">
+            <% if current_trainee.completed_trainee_data? %>
+            <li>
+              <%= link_to 'Placements', trainee_placements_path %>
+            </li>
+            <li>
+              <%= link_to 'Documents', portal_trainees_path(trainee_files: true) %>
+            </li>
+            <li>
+              <%= link_to 'Jobs', current_trainee.job_search_profile %>
+            </li>
+            <% end %>
+            <li>
+              <%= link_to destroy_trainee_session_path, method: :delete do %>
+                <i class="icon-off"></i> Sign Off
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    <% elsif controller_name == 'applicants' && ['new', 'create'].include?(action_name) %>
+      <div class="container-fluid" style ='background-color: #26294D;'>
+        <h1 style='margin:0;color: white'>Applicant Registration</h1>
+        <div style= 'text-align: center;color: white'>
+          Funding for this grant is provided by the U.S. Department of Labor, Employment & Training Administration and the New Jersey Department of Labor and Workforce Development.
+        </div>
+      </div>
+    <% else %>
+      <div class="container-fluid" style ='min-height: 40px;background-color: #26294D;text-align: center;'>
+        <h2 style='margin:0;color: white'>Sign Into Portal</h2>
+      </div>
+    <% end %>
+  </div><!--/.navbar-inner-->
+</div> <!--/.navbar-->
+
+<script type="text/javascript">
+  function change_layout(){
+    if ($(window).width() < 980){
+      $('body').css('padding-top', '0px');
+      $('body').css('padding-left', '0px');
+      $('body').css('padding-right', '0px');
+    } else {
+      $('body').css('padding-top', '90px');
+    }
+    if($(window).width() < 756){
+      $('#left_panel').css('margin-left', '0px');
+      $('#right_panel').css('margin-left', '0px');
+    } else {
+      $('#left_panel').css('margin-left', '10px');
+      $('#right_panel').css('margin-left', '10px');
+    }
+  }
+  $(window).resize(function(){
+    change_layout();
+  });
+  $(document).ready(function() {
+    change_layout();
+  })
+</script>

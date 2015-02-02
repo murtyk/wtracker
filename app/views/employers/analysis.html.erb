@@ -1,0 +1,76 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Analysis of Employers</h1>
+</div>
+<h4 style='text-align: center'>Total Employers: <%= @analysis.total %></h4>
+<div class = 'row'>
+  <div class = 'span4'>
+    <h4>Employers By County</h4>
+    <table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
+      <thead>
+      <tr>
+        <th>County</th>
+        <th>Number</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @analysis.by_counties.each do |data| %>
+        <tr>
+          <td><%= link_to data.name, employers_path(filters: { county_id: data.id }) %></td>
+          <td><%= data.count %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class = 'span4'>
+    <h4>Employers By Sector</h4>
+    <table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Sector</th>
+        <th>Number</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @analysis.by_sectors.each do |data| %>
+        <tr>
+          <td><%= link_to data.name, employers_path(filters: { sector_id: data.id }) %></td>
+          <td><%= data.count %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class = 'span4'>
+
+    <h4>Employers By Source</h4>
+    <table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Source</th>
+        <th>Number</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @analysis.by_source.each do |data| %>
+        <tr>
+          <td><%= link_to data.name, employers_path(filters: { source: data.name }) %></td>
+          <td><%= data.count %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% if @analysis.address_less.any? %>
+  <div class = 'row-fluid' style='background-color: #CCC;margin-top: 5px;padding: 0px'>
+    <h4 style='text-align: center'>The following <%=@analysis.address_less.count %> do not have address defined:</h4>
+  </div>
+  <ol>
+    <% @analysis.address_less.each do |data| %>
+      <li><%= link_to data.name, employer_path(data.id)%></li>
+    <% end %>
+  </ol>
+<% end %>

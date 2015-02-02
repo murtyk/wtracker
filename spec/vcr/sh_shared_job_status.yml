@@ -1,0 +1,203 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.simplyhired.com/a/jobs-api/xml-v2/q-cnc/l-Edison,NJ/mi-10/fdb-7/ws-25/pn-2?auth=0dc844325fa6c66cfbb186e0979d77648429c700.<simplyhired_pshid>&cflg=r&clip=127.0.0.1&pshid=<simplyhired_pshid>&ssty=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - shw
+      Date:
+      - Sat, 31 Jan 2015 19:15:12 GMT
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '277'
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=20
+      Vary:
+      - Host
+      Set-Cookie:
+      - gc=1; expires=Sun, 01-Feb-2015 19:15:12 GMT; path=/
+      - sh_sess=id%3A1422731712%2Csrc%3Aother%2Cnu%3A1; expires=Sat, 31-Jan-2015 19:45:12
+        GMT; Max-Age=1800; path=/; domain=.simplyhired.com
+      - sh_uid=id%3A111404258354cd29c0a7ec09.04456938; expires=Thu, 30-Jan-2020 19:15:12
+        GMT; Max-Age=157680000; path=/; domain=.simplyhired.com
+      - shup=fvt%3D54cd29c0%26ncs%3D1%26lst%3D54cd29c0; expires=Mon, 02-Mar-2015 19:15:12
+        GMT; path=/
+      Cache-Control:
+      - no-cache, must-revalidate
+      P3p:
+      - CP="CAO DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT"
+    body:
+      encoding: UTF-8
+      string: "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<!DOCTYPE
+        shrs SYSTEM \"http://api.simplyhired.com/c/jobs-api/html/sr2.dtd\">\n\n<sherror>\n
+        \ <error type=\"noresults\" code=\"1.1\">\n  <title></title>\n  <subtitle></subtitle>\n
+        \ <text></text>\n  <base></base>\n </error>\n</sherror>\n "
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 19:15:13 GMT
+- request:
+    method: get
+    uri: http://api.simplyhired.com/a/jobs-api/xml-v2/q-cnc/l-Edison,NJ/mi-10/fdb-7/ws-25/pn-1?auth=0dc844325fa6c66cfbb186e0979d77648429c700.<simplyhired_pshid>&cflg=r&clip=127.0.0.1&pshid=<simplyhired_pshid>&ssty=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - shw
+      Date:
+      - Sat, 31 Jan 2015 19:15:13 GMT
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '7870'
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=20
+      Vary:
+      - Host
+      Set-Cookie:
+      - gc=1; expires=Sun, 01-Feb-2015 19:15:13 GMT; path=/
+      - sh_sess=id%3A1422731713%2Csrc%3Aother%2Cnu%3A1; expires=Sat, 31-Jan-2015 19:45:13
+        GMT; Max-Age=1800; path=/; domain=.simplyhired.com
+      - sh_uid=id%3A106468464254cd29c18499e5.29292997; expires=Thu, 30-Jan-2020 19:15:13
+        GMT; Max-Age=157680000; path=/; domain=.simplyhired.com
+      - shup=fvt%3D54cd29c1%26ncs%3D1%26lst%3D54cd29c1; expires=Mon, 02-Mar-2015 19:15:13
+        GMT; path=/
+      Cache-Control:
+      - no-cache, must-revalidate
+      P3p:
+      - CP="CAO DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT"
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+        <!DOCTYPE shrs SYSTEM "http://api.simplyhired.com/c/jobs-api/html/sr2.dtd">
+
+        <shrs>
+        <rq url="http://api.simplyhired.com/a/jobs-api/xml_v2/q-cnc/l-Edison%2CNJ/mi-10/fdb-7/pn-1/ws-25">
+          <t>Cnc Jobs - Edison, NJ</t>
+          <dt>2015-01-31T19:15:13Z</dt>
+          <si>0</si>
+          <rpd>25</rpd>
+          <tr>11</tr>
+          <tv>9</tv>
+          <em url=""/>
+        <h>
+          <kw pos="1"/>
+        </h>
+        </rq>
+        <rs>
+        <r>
+          <jt>CNC Machine Operator</jt>
+          <cn url="">Unnamed Precision Metal Parts Manufacturer</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/cparm-cF9pZD05NDE2MSZ6b25lPTYmaXA9MTI3LjAuMC4xJmNvdW50PTMmc3RhbXA9MjAxNS0wMS0zMSAxMToxNToxMyZjb3VudHJ5PXVzJnB1Ymxpc2hlcl9jaGFubmVsX2lkcz0mYV9pZD0zMDM2MSZjX2lkPTU1NDg0JmNwYz0wLjA4JnBvcz0xJmhhc2g9MTIzOTc4MzIxMDFlZGUwOTliNjczNTljMGIxMzgyNTc%3D%3Bb9967135d6fc478e7425441fe12c9399/jobkey-44880.8275b4135/rid-vfhphjomleqyeptijduyvhkkktrfntjo/pub_id-<simplyhired_pshid>/cjp-0/hits-11?icsrc=xml&amp;rfr=partner">ZipRecruiter</src>
+          <ty>sponsored</ty>
+          <loc cty="North Brunswick" st="NJ" postal="08902" county="Middlesex County" region="" country="US">North Brunswick, NJ</loc>
+          <ls>2015-01-31T19:04:28Z</ls>
+          <dp>2015-01-27T13:53:28Z</dp>
+          <e>2014-002) Successful machine shop seeking part-time CNC Machine Operator to run lathe and/or milling machines ... At least one to two years of experience operating CNC machines Ability to read blueprints Knowledge of...</e>
+        </r>
+        <r>
+          <jt>CNC MOLDER</jt>
+          <cn url="">Artistic Doors and Windows</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/cparm-cF9pZD05NDE2MSZ6b25lPTYmaXA9MTI3LjAuMC4xJmNvdW50PTMmc3RhbXA9MjAxNS0wMS0zMSAxMToxNToxMyZjb3VudHJ5PXVzJnB1Ymxpc2hlcl9jaGFubmVsX2lkcz0mYV9pZD0yMTM1JmNfaWQ9MTg5NTImY3BjPTAuMDcmcG9zPTImaGFzaD01OThhM2Y3MDhmZDIzMzQ1YzAzMjRjMzQxYzA5YTA4MQ%3D%3D%3Bf3522d38b0ff67e49ed9d69bdad40f90/jobkey-8686.1375994100023800/rid-vfhphjomleqyeptijduyvhkkktrfntjo/pub_id-<simplyhired_pshid>/cjp-1/hits-11?icsrc=xml&amp;rfr=partner">Get Woodworking Jobs</src>
+          <ty>sponsored</ty>
+          <loc cty="Avenel" st="NJ" postal="07001" county="Middlesex County" region="" country="US">Avenel, NJ</loc>
+          <ls>2015-01-28T18:24:27Z</ls>
+          <dp>2015-01-28T18:24:27Z</dp>
+          <e>CUSTOM WOOD WINDOW AND DOOR COMPANY NEEDS A MOLDER FOR A WEINIG MOLDING MACHINEMUST HAVE AT LEAST 5 YEARS EXPERIENCEPLEASE SEND YOUR RESUME TO THE EMAIL LISTED.IMMEDIATE STARTSALARY DEPENDS ON EXPERIENCE</e>
+        </r>
+        <r>
+          <jt>CNC Machinist</jt>
+          <cn url="">Unnamed Precision Metal Parts Manufacturer</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/cparm-cF9pZD05NDE2MSZ6b25lPTYmaXA9MTI3LjAuMC4xJmNvdW50PTMmc3RhbXA9MjAxNS0wMS0zMSAxMToxNToxMyZjb3VudHJ5PXVzJnB1Ymxpc2hlcl9jaGFubmVsX2lkcz0mYV9pZD0zMDM2MSZjX2lkPTU1NDg0JmNwYz0wLjA4JnBvcz0zJmhhc2g9MTIzOTc4MzIxMDFlZGUwOTliNjczNTljMGIxMzgyNTc%3D%3Bbce550c42097b75f9137b79f4b777dd5/jobkey-44880.63b4175e5/rid-vfhphjomleqyeptijduyvhkkktrfntjo/pub_id-<simplyhired_pshid>/cjp-2/hits-11?icsrc=xml&amp;rfr=partner">ZipRecruiter</src>
+          <ty>sponsored</ty>
+          <loc cty="North Brunswick" st="NJ" postal="08902" county="Middlesex County" region="" country="US">North Brunswick, NJ</loc>
+          <ls>2015-01-31T12:52:44Z</ls>
+          <dp>2015-01-27T13:53:28Z</dp>
+          <e>2014-001) Successful machine shop seeking CNC Machinist to run lathe and/or milling machines ... capabilities and other requirements Program (Mazak) CNC machines (including creating, proving and editing...</e>
+        </r>
+        <r>
+          <jt>CNC Operator and Programmer</jt>
+          <cn url="">Ajulia Executive Search</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/jobkey-14453.1989863/rid-vfhphjomleqyeptijduyvhkkktrfntjo/cjp-3/hits-11?icsrc=xml&amp;rfr=partner">Logistics CareerLink</src>
+          <ty>organic</ty>
+          <loc cty="Edison" st="NJ" postal="08817" county="Middlesex County" region="" country="US">Edison, NJ</loc>
+          <ls>2015-01-31T16:19:05Z</ls>
+          <dp>2015-01-29T12:49:18Z</dp>
+          <e>Manufacturing Company in Edison is looking for a Haas CNC operator and programmer. This is a full time contract to hire position for any shift with lots of overtime available. Requirements and Experience Required: 1. How to change &amp;amp; set up...</e>
+        </r>
+        <r>
+          <jt>Forklift Operator</jt>
+          <cn url="">Select Family of Staffing Companies</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/jobkey-49836.0041008488/rid-vfhphjomleqyeptijduyvhkkktrfntjo/cjp-4/hits-11?icsrc=xml&amp;rfr=partner">The Select Family of Staffing Companies</src>
+          <ty>organic</ty>
+          <loc cty="Edison" st="NJ" postal="08817" county="Middlesex County" region="" country="US">Edison, NJ</loc>
+          <ls>2015-01-31T17:45:45Z</ls>
+          <dp>2015-01-30T17:45:03Z</dp>
+          <e>engineer, machinist, plant manager, operations, technician, CNC, purchasing, engineering, production supervisor, mechanical, production manager, plant manager, assembly, general, welder, logistics, chemical, electrical, buyer, autocad,...</e>
+        </r>
+        <r>
+          <jt>Sit Down Forklift Drv 2nd</jt>
+          <cn url="">Select Family of Staffing Companies</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/jobkey-49836.0041005509/rid-vfhphjomleqyeptijduyvhkkktrfntjo/cjp-5/hits-11?icsrc=xml&amp;rfr=partner">The Select Family of Staffing Companies</src>
+          <ty>organic</ty>
+          <loc cty="Avenel" st="NJ" postal="07001" county="Middlesex County" region="" country="US">Avenel, NJ</loc>
+          <ls>2015-01-30T17:44:54Z</ls>
+          <dp>2015-01-27T17:44:07Z</dp>
+          <e>engineer, machinist, plant manager, operations, technician, CNC, purchasing, engineering, production supervisor, mechanical, production manager, plant manager, assembly, general, welder, logistics, chemical, electrical, buyer, autocad,...</e>
+        </r>
+        <r>
+          <jt>Shift Manager Forklift 1st</jt>
+          <cn url="">Select Family of Staffing Companies</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/jobkey-49836.0041005503/rid-vfhphjomleqyeptijduyvhkkktrfntjo/cjp-6/hits-11?icsrc=xml&amp;rfr=partner">The Select Family of Staffing Companies</src>
+          <ty>organic</ty>
+          <loc cty="Avenel" st="NJ" postal="07001" county="Middlesex County" region="" country="US">Avenel, NJ</loc>
+          <ls>2015-01-31T17:44:57Z</ls>
+          <dp>2015-01-27T17:44:07Z</dp>
+          <e>engineer, machinist, plant manager, operations, technician, CNC, purchasing, engineering, production supervisor, mechanical, production manager, plant manager, assembly, general, welder, logistics, chemical, electrical, buyer, autocad,...</e>
+        </r>
+        <r>
+          <jt>Sit Down Forklift Drv 1st</jt>
+          <cn url="">Select Family of Staffing Companies</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/jobkey-49836.0041005505/rid-vfhphjomleqyeptijduyvhkkktrfntjo/cjp-7/hits-11?icsrc=xml&amp;rfr=partner">The Select Family of Staffing Companies</src>
+          <ty>organic</ty>
+          <loc cty="Avenel" st="NJ" postal="07001" county="Middlesex County" region="" country="US">Avenel, NJ</loc>
+          <ls>2015-01-31T17:45:53Z</ls>
+          <dp>2015-01-27T17:44:07Z</dp>
+          <e>engineer, machinist, plant manager, operations, technician, CNC, purchasing, engineering, production supervisor, mechanical, production manager, plant manager, assembly, general, welder, logistics, chemical, electrical, buyer, autocad,...</e>
+        </r>
+        <r>
+          <jt>Asst Instrmnt Maker (Represented by URA-AFT)</jt>
+          <cn url="">Rutgers, the State University of New Jersey</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/jobkey-6464.176013209/rid-vfhphjomleqyeptijduyvhkkktrfntjo/cjp-8/hits-11?icsrc=xml&amp;rfr=partner">HigherEdJobs</src>
+          <ty>organic</ty>
+          <loc cty="New Brunswick" st="NJ" postal="08901" county="Middlesex County" region="" country="US">New Brunswick, NJ</loc>
+          <ls>2015-01-29T09:23:54Z</ls>
+          <dp>2015-01-29T09:23:54Z</dp>
+          <e>Create drawings and Computer Numerical Control (CNC) programs using Computer Aided Drafting/Computer Aided Manufacturing ... years of relevant professional experience, proficient with CNC G-Code programming, setup and operations for CNC lathes...</e>
+        </r>
+        </rs>
+        <pjl>
+        </pjl>
+        </shrs>
+    http_version: 
+  recorded_at: Sat, 31 Jan 2015 19:15:13 GMT
+recorded_with: VCR 2.9.2

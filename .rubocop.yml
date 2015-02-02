@@ -1,0 +1,10 @@
+LineLength:
+  Max: 90
+
+MethodLength:
+  CountComments: false # count full line comments?
+  Max: 20
+
+ClassLength:
+  Max: 150
+

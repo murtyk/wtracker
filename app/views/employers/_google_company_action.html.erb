@@ -1,0 +1,7 @@
+<%# if @info[:duplicate] %>
+	<!-- <strong style='color: green'> Already exists.</strong> -->
+<%# else %>
+	<!-- <span id = 'add-button-<%= @row_number %>'> -->
+	<%#= link_to "Add", add_google_company_employers_path(params: {name_location: @name_location, info: @info, add_company_id: "add-company-#{@row_number}", action_cell_id: @action_cell_id.gsub('#',''), oper_id: @info[:opero_company]}), class: "add-company", id: "add-company-#{@row_number}", remote: true%>
+	<!-- </span> -->
+<%# end %>

@@ -1,0 +1,7 @@
+<% if @trainee_interaction.errors.empty? %>
+  $('#edit_trainee_interaction_<%=@trainee_interaction.id%>').remove();
+  $('#trainee_interactions').html('<%= j render("trainee_interactions", object: @object) %>');
+<% else %>
+  <% messages = '<br><b style="color:red">'  + @trainee_interaction.errors.full_messages.join(";").gsub("'","") + '</b>' %>
+  $('#edit_trainee_interaction_<%=@trainee_interaction.id%>').prepend('<%= messages.html_safe %>');
+<% end %>

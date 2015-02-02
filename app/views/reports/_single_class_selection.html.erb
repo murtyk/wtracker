@@ -1,0 +1,19 @@
+<div class = 'row-fluid filters-div' style='margin-bottom:10px'>
+<%= simple_form_for :filters, url: reports_path(report: report), html: { class: 'form-search'} do |f| %>
+
+    Class
+    <%= f.input_field :klass_id, collection: current_user.klasses_for_selection(false), selected: klass_id, multiple: false, class: "search-query", style: 'width: 350px;', include_blank: false %>
+
+    <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+        <i class="icon-search icon-white"></i>Find
+    </button>
+
+<% end %>
+</div>
+
+<script type="text/javascript">
+  $('.btn-spinner').button();
+  $('.form-search').submit(function() {
+    $('#submit-button').button('loading');
+  });
+</script>

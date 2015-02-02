@@ -1,0 +1,41 @@
+<%= simple_form_for(klass_interaction, html: {class: "form-horizontal" }, remote: true) do |f| %>
+	<% if klass_interaction.from_page == 1 %>
+		<b><%= "Edit information for #{klass_interaction.employer_name}" %></b><br>
+	<% else %>
+		<% klass_interaction.employer_id = klass_interaction.employer.id %>
+	<% end %>
+	<%= f.hidden_field :from_page %>
+	<div style='margin-left:-50px'%>
+		<%= f.input :status, include_blank: false, collection: klass_interaction_statuses %>
+	</div>
+	<%= f.simple_fields_for klass_interaction.klass_event do |event_fields| %>
+		<% klass_event = klass_interaction.klass_event %>
+		<div style='margin-left:-50px'%>
+			<%= event_fields.input :name, label: 'Event Name' %>
+			<%= event_fields.input :notes, label: 'Notes' %>
+			<% klass_event.event_date = klass_event.event_date.to_s%>
+			<%= event_fields.input :event_date, label: 'Date', input_html: { data: {behaviour: "datepicker"}}, as: :string %>
+		</div>
+		<div style='margin-left:80px'%>
+		    From
+		      <%=event_fields.number_field :start_time_hr, style: 'width: 40px; margin-left:15px'%>
+		      <%=event_fields.number_field :start_time_min, style: 'width: 40px'%>
+		      <%=event_fields.select :start_ampm, options_for_ampm_select(klass_event.start_ampm), {},style: 'width: 60px'%>
+		      <br><br>
+		    To
+		      <%=event_fields.number_field :end_time_hr, style: 'width: 40px; margin-left:35px'%>
+		      <%=event_fields.number_field :end_time_min, style: 'width: 40px'%>
+		      <%=event_fields.select :end_ampm, options_for_ampm_select(klass_event.end_ampm), {},style: 'width: 60px'%>
+		</div>
+	<% end %>
+	<div class="form-actions" >
+		<div style='margin-left:-80px'%>
+		    <%= ajax_cancel_and_submit_buttons(f) %>
+		</div>
+	</div>
+<% end %>
+
+<script type="text/javascript">
+	$('#klass_interaction_klass_event_event_date').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+</script>
+<%= ajax_form_cancel_script(klass_interaction) %>

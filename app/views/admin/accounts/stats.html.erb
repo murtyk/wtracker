@@ -1,0 +1,5 @@
+<h1><%= @stats.name %></h1>
+
+<% %w(employers grants programs klasses trainees users).each do |m| %>
+  <p><b><%= m.capitalize + ':' %></b><%= @stats[m] %></p>
+<% end %>

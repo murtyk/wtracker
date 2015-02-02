@@ -1,0 +1,29 @@
+<table border="1">
+	<tr>
+		<th>Company (Job Search)</th>
+		<th>County</th>
+		<th>Job Count</th>
+		<th>Job Titles</th>
+		<!-- <th>Opero DB</th> -->
+	<tr>
+	<% @companies.each do |c|%>
+
+		<tr>
+
+			<td>
+				<%= "#{c.name}(#{c.location||''})"%>
+			</td>
+			<td> <%= c.county %></td>
+			<td>
+				<%= c.job_count %>
+			</td>
+			<td>
+				<% i = 0 %>
+				<% c.titles.each do |s|%>
+					<%= "#{i+=1}.#{s} " %>
+				<% end %>
+			</td>
+		</tr>
+	<% end %>
+</table>
+

@@ -1,0 +1,13 @@
+<div class="row " style = "margin:0; background-size: cover">
+  <div class = 'container' style = "background-color:rgba(248,247,216,0.7); width:100%; min-height:550px;">
+    <% flash.each do |name, msg| %>
+      <% if msg.is_a?(String) %>
+        <div class="alert alert-<%= name == :notice ? "success" : name %>" style = 'margin-bottom: 5px'>
+          <a class="close" data-dismiss="alert">&#215;</a>
+          <%= content_tag :div, msg, :id => "flash_#{name}" %>
+        </div>
+      <% end %>
+    <% end %>
+    <%= yield %>
+  </div>
+</div><!--/row-->

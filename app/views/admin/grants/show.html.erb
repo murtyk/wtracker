@@ -1,0 +1,74 @@
+<h1>Grant: <%= @grant.name %> - <%= @grant.account_name %></h4>
+<div class="row">
+  <div class="span4">
+    <p>Status: <b><%= @grant.status %>     </b></p>
+    <p>Start:  <b><%= @grant.start_date %> </b></p>
+    <p>End:    <b><%= @grant.end_date %>   </b></p>
+    <p>Spots:  <b><%= @grant.spots %>      </b></p>
+    <p>Amount: <b><%= @grant.amount %>     </b></p>
+  </div>
+  <div class="span8">
+    <p>Trainee Can Apply?: <b><%= @grant.trainee_applications? %></b></p>
+    <% if @grant.trainee_applications? %>
+      Applicant Logo <img alt="Missing" src='<%= @grant.applicant_logo %>'>
+      <% if @grant.applicant_logo %>
+        <%= link_to('Delete Logo', admin_grant_path(@grant, delete_applicant_logo: true), method: :put, class: 'btn btn-flat btn-danger') %>
+      <% end %>
+    <% end %>
+    <p>Auto Job Leads: <b><%= @grant.auto_job_leads? %></b></p>
+    <% if @grant.auto_job_leads? %>
+      <p>
+        <b>Profile Request Subject:</b><br>
+        <%= @grant.profile_request_subject && @grant.profile_request_subject.content %>
+      </p>
+      <p>
+        <b>Profile Request Content:</b><br>
+        <%= @grant.profile_request_content && @grant.profile_request_content.content.gsub(/\r\n/, '<br>').html_safe %>
+      </p>
+      <p>
+        <b>Job Leads Subject:</b><br>
+        <%= @grant.job_leads_subject && @grant.job_leads_subject.content %>
+      </p>
+      <p>
+        <b>Job Leads Content:</b><br>
+        <%= @grant.job_leads_content && @grant.job_leads_content.content.gsub(/\r\n/, '<br>').html_safe %>
+      </p>
+      <% if @grant.optout_message_one %>
+        <p><b>Employed message:</b><br> <%= @grant.optout_message_one.content %></p>
+      <% end %>
+      <% if @grant.optout_message_two %>
+        <p><b>No longer looking message:</b><br> <%= @grant.optout_message_two.content %></p>
+      <% end %>
+      <% if @grant.optout_message_three %>
+        <p><b>Moved out message:</b><br> <%= @grant.optout_message_three.content %></p>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div class = 'row-fluid'>
+  <h4><i class="icon-list blue"></i>Programs</h4>
+
+  <table id="table_report" class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>View</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @grant.programs.each do |program| %>
+        <tr>
+          <td><%= program.name%></td>
+          <td><%= program.description%></td>
+          <td>
+            <%= link_to program_path(program), class: "btn btn-flat btn-mini btn-info" do %>
+              <i class="icon-eye-open"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

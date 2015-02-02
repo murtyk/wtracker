@@ -1,0 +1,60 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1><%= "#{klass.new_record? ? "New Class" : 'Edit Class'}" %></h1>
+    </div>
+    <%= simple_form_for(klass, html: { class: "form-horizontal" }) do |f| %>
+      <div class="form-inputs">
+        <div class = 'row-fluid'>
+          <div class = 'span5 right-border'>
+            <%= f.input :name %>
+            <%= f.input :description %>
+            <%= f.input :start_date, input_html: { data: { behaviour: "datepicker" }, value: klass.start_date }, as: :string %>
+            <%= f.input :end_date, input_html: { data: { behaviour: "datepicker" }, value: klass.end_date }, as: :string %>
+            <%= f.input :training_hours, label: 'Hours' %>
+            <%= f.input :credits %>
+            <%= f.association :college, include_blank: false %>
+            <%= f.association :program, include_blank: false %>
+          </div>
+          <div class = 'span7'>
+            <%= f.fields_for :klass_schedules do |k| %>
+              <div class = 'row-fluid'>
+              <div class = 'span2 offset1'>
+                <%= k.check_box :scheduled, style: 'margin-top: 0px'%>
+                <span style='display: inline-block; margin-top: 4px'><%= k.object.day_name %></span>
+                <%=k.hidden_field :dayoftheweek%>
+              </div>
+              <div class ='span9'>
+              From:
+                <%=k.text_field :start_time_hr, style: 'width: 40px'%>
+                <%=k.text_field :start_time_min, style: 'width: 40px'%>
+                <%=k.select :start_ampm, options_for_ampm_select(k.object.start_ampm),{}, {style: 'width: 70px'}%>
+              To:
+                <%=k.text_field :end_time_hr, style: 'width: 40px'%>
+                <%=k.text_field :end_time_min, style: 'width: 40px'%>
+                <%=k.select :end_ampm, options_for_ampm_select(k.object.end_ampm),{}, {style: 'width: 70px'}%>
+                <% k.object.errors.messages.each do |i,v| %>
+                  <% if v[0] %>
+                  <br><span style='color: rgb(185, 74, 72)'><%= "#{i.to_s.gsub('_', ' ').humanize} #{v[0]}" %></span>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <br>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <%= render 'shared/cancel_link' %>
+        <%= submit_button(f, 'Save') %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  })
+</script>

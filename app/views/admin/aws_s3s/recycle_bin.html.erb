@@ -1,0 +1,8 @@
+<h4>S3 - Recycled Bin</h4>
+<%= link_to 'Empty', empty_recycle_bin_admin_aws_s3s_path, class: 'btn btn-flat btn-primary' %>
+<hr>
+<ol>
+<% @s3_files.each do |file| %>
+  <li><%= file %></li>
+<% end %>
+</ol>

@@ -1,0 +1,56 @@
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Class</th>
+    <th>Funding Source</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>College</th>
+    <th>Notes</th>
+    <th>Employer</th>
+    <th>Location</th>
+    <th>Title</th>
+    <th>Start Date</th>
+    <th>Pay</th>
+  </tr>
+
+  <% report.trainees_placed_no_employer.each do |kt| %>
+    <% trainee = kt.trainee %>
+    <% klass = kt.klass %>
+    <tr>
+      <td><%= link_to(trainee.name, trainee)%></td>
+      <td><%= link_to klass.name, klass %></td>
+      <td><%= trainee.funding_source_name %></td>
+      <td><%= klass.start_date.to_s%></td>
+      <td><%= klass.end_date.to_s%></td>
+      <td><%= klass.college_name_location%></td>
+      <td><%= kt.notes %></td>
+      <td><strong style='color:red'>N/A</strong></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  <% end %>
+
+
+  <% report.trainee_interactions.each do |ti| %>
+    <% trainee = ti.trainee %>
+    <% klass = trainee.klasses.first %>
+    <% employer = ti.employer %>
+    <tr>
+      <td><%= link_to(trainee.name, trainee)%></td>
+      <td><%= link_to klass.name, klass %></td>
+      <td><%= trainee.funding_source_name %></td>
+      <td><%= klass.start_date.to_s%></td>
+      <td><%= klass.end_date.to_s%></td>
+      <td><%= klass.college_name_location%></td>
+      <td><%= trainee.klass_trainees.first.notes%></td>
+      <td><%= link_to(employer.name, employer)%></td>
+      <td><%= employer.location%></td>
+      <td><%= (ti.hire_title.blank? || ti.hire_title == 'missing') ? "<b style='color:red'>N/A</b>".html_safe : ti.hire_title %> </td>
+      <td><%= ti.start_date.to_s %></td>
+      <td><%= ti.hire_salary%> </td>
+    </tr>
+  <% end %>
+</table>

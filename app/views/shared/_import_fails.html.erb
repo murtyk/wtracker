@@ -1,0 +1,18 @@
+<% if import_status.errors? %>
+  <h4 style = 'color: brown'>Errors encountered:</h4>
+  <ol>
+  <% import_status.import_fails.each do |import_fail| %>
+      <li>
+        <%= "Row:#{import_fail.row_no} #{import_fail.error_message}" %>
+        <% if import_fail.can_retry %>
+          <div id="import_fail_link_<%=import_fail.id%>">
+            <%= link_to retry_import_statuses_path(import_fail_id: import_fail.id), class: "btn btn-flat btn-mini btn-primary", remote: true do %>
+              <i class="icon-refresh white"> Retry</i>
+            <% end %>
+          </div>
+        <% end %>
+      </li>
+  <% end %>
+  </ol>
+  <br>
+<% end %>

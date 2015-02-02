@@ -1,0 +1,257 @@
+<%= simple_form_for(applicant) do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs">
+    <%= f.hidden_field :salt %>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :first_name, label: 'First Name', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :last_name, label: 'Last Name', required: true %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :address_line1, label: 'Street Address 1', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :address_line2, label: 'Street Address 2' %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :address_city, label: 'City', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :address_state, label: 'State', readonly: true%>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :address_zip, label: 'Zip', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :county_id, label: 'County', required: true,
+                                collection: current_account.state.counties,
+                                include_blank: 'Please Select' %>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :email, required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :mobile_phone_no, label: 'Mobile Phone #', required: true %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :veteran, label: 'Veteran', required: true,
+                              collection: yes_or_no, include_blank: 'Please Select' %>
+      </div>
+      <div class='span3'>
+        <%= f.input :legal_status, label: 'Legal Status',
+                                   required: true,
+                                   collection: trainee_legal_statues,
+                                   include_blank: 'Please Select' %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :gender, required: true, collection: genders,
+                                             include_blank: 'Please Select' %>
+      </div>
+      <div class='span3'>
+        <%= f.input :race_id, label: 'Ethnicity', collection: Race.all,
+                              required: true, include_blank: 'Please Select'%>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :last_employed_on, label: 'Last Date of Full-Time Employment',
+                                       required: true,
+                                       input_html: { data: { behaviour: "datepicker" },
+                                       value: applicant.last_employed_on },
+                                       as: :string %>
+      </div>
+      <div class='span3'>
+        <%= f.input :current_employment_status, label: 'Current Employment Status',
+                                                required: true,
+                                                collection: current_grant.collection_employment_statuses(applicant),
+                                                include_blank: 'Please Select' %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :last_employer_name, label: 'Last or Current Employer', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :sector_id, label: 'Industry',
+                                collection: Sector.all,
+                                required: true,
+                                include_blank: 'Please Select'%>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :last_employer_line1, label: 'Street Address 1', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :last_employer_line2, label: 'Street Address 2' %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :last_employer_city, label: 'City', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :last_employer_state, label: 'State', required: true, collection: State.collection_codes, include_blank: 'Please Select' %>
+      </div>
+      <div class='span3'>
+        <%= f.input :last_employer_zip, label: 'Zip', required: true %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :last_employer_manager_name, label: 'Employer/HR/Supervisor Name', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :last_employer_manager_phone_no, label: 'Employer/HR/Supervisor Phone Number',
+                                                     required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :last_employer_manager_email, label: 'Employer/HR/Supervisor E-mail' %>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :last_job_title, label: 'Last Job Title', required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :last_wages, label: 'Last Annual Salary', required: true %>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :salary_expected, label: "Expected Salary/Wage Range", required: true %>
+      </div>
+      <div class='span3'>
+        <%= f.input :education_level, label: 'Education Level',
+                                      required: true,
+                                      collection: Education.all,
+                                      include_blank: 'Please Select' %>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span6'>
+        <%= f.input :unemployment_proof, collection: UnemploymentProof.collection_options,
+                                         label: 'Proof of Unemployment or Underemployment',
+                                         input_html: { style: 'width: 95%'},
+                                         required: true,
+                                         include_blank: 'Please Select (Must be provided upon Acceptance)' %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span6'>
+        <%= f.association :special_services, label: 'Do you require supportive or specialized services?',
+                                             input_html: { style: 'width: 95%'},
+                                             required: true,
+                                             include_blank: 'Please select one or more' %>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span3'>
+        <%= f.input :transportation, required: true,
+                                     label: 'Do you have reliable transportation?',
+                                     collection: yes_or_no,
+                                     include_blank: 'Please Select' %>
+      </div>
+      <div class='span6'>
+        <%= f.input :computer_access, required: true,
+                                      label: 'Do you have a computer at home with internet connection?',
+                                      collection: yes_or_no,
+                                      include_blank: 'Please Select' %>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span10'>
+        <%= f.input :resume, label: 'Please include your resume(copy and paste text)',
+                             required: true,
+                             input_html: { style: 'width: 98%; height: 110px' } %>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span5'>
+        <%= f.input :source, label: 'How did you hear about this Program?',
+                             required: true,
+                             collection: current_grant.collection_applicant_sources(applicant),
+                             include_blank: 'Please Select' %>
+      </div>
+    </div>
+
+    <div class='row-fluid'>
+      <div class='span6'>
+        <%= f.input :signature, required: true,
+                                inline_label: 'I certify that the above information is true and accurate. By clicking here I agree to provide and share all my information as determined by the grant staff with any funding and partner organizations.' %>
+      </div>
+      <div class='span4' style='padding: 10px; border: solid blue'>
+        Prove you are human.
+        <%= f.input :humanizer_answer, label: applicant.humanizer_question,
+                                       input_html: { style: 'width: 80px;' } %>
+        <%= f.hidden_field :humanizer_question_id %>
+      </div>
+    </div>
+  </div>
+  <div class="form-actions">
+    <%= f.button :submit, 'Submit', class: 'btn btn-flat btn-primary' %>
+  </div>
+<% end %>
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  })
+</script>
+<script type="text/javascript">
+  jQuery(function() {
+    return $('#applicant_source').change(function() {
+      source_text = $('#applicant_source :selected').text();
+      if (source_text == 'Other, Please specify'){
+        other_source = ''
+        while(other_source == ''){
+          other_source = prompt("Please specify", "");
+        }
+        existing_other_source = $("#applicant_source option[value=" + other_source + "]").text();
+        if (existing_other_source == ''){
+          $("#applicant_source").append(new Option(other_source, other_source));
+        }
+        $("#applicant_source").val(other_source);
+      }
+    });
+  });
+</script>
+<script type="text/javascript">
+  jQuery(function() {
+    return $('#applicant_current_employment_status').change(function() {
+      status = $('#applicant_current_employment_status :selected').text();
+      if (status == 'Other, Please specify'){
+        other_status = ''
+        while(other_status == ''){
+          other_status = prompt("Please enter current employment status", "");
+        }
+        existing_other_status = $("#applicant_current_employment_status option[value=" + other_status + "]").text();
+        if (existing_other_status == ''){
+          $("#applicant_current_employment_status").append(new Option(other_status, other_status));
+        }
+        $("#applicant_current_employment_status").val(other_status);
+      }
+    });
+  });
+</script>

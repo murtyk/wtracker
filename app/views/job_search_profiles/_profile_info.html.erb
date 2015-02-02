@@ -1,0 +1,13 @@
+<h2>
+  Job Search Profile
+  <% unless job_search_profile.opted_out %>
+    <%= link_to('Edit',
+                edit_job_search_profile_path(job_search_profile,
+                                     key: job_search_profile.key),
+                class: 'btn btn-flat btn-mini btn-primary applied-status') %>
+  <% end %>
+
+</h2>
+<p>Skills: <%=job_search_profile.skills%></p>
+<p>Location: <%=job_search_profile.location%></p>
+<p>Distance: <%=job_search_profile.distance%> miles</p>

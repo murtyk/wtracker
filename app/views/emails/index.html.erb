@@ -1,0 +1,42 @@
+<div class="row-fluid page-caption-div">
+  <h1>Emails Sent To Employers</h1>
+</div>
+<div class="row-fluid">
+  <div class='span10'>
+    <% if @emails.any? %>
+      <div align="center"><%= will_paginate @emails%></div>
+    <% end %>
+  </div>
+  <div class="span2">
+    <%= new_button(Email) %>
+  </div>
+</div>
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <th>Date</th>
+    <th>From</th>
+    <th>Subject</th>
+    <th>Content</th>
+    <th>Attachments</th>
+    <th></th>
+  </tr>
+
+    <% @emails.each do |email| %>
+      <tr id ='tr_<%=email.id%>'>
+        <td><%= email.created_at.to_date.to_s %></td>
+        <td><%= email.user.name %></td>
+        <td><%= link_to email.subject, email %></td>
+        <td><%= email.content.truncate(100) %></td>
+        <td style='text-align: center;'>
+          <% count = 0 %>
+          <% count += email.trainee_file_ids.count if email.trainee_file_ids%>
+          <%= count += email.attachments.count%>
+        </td>
+        <td>
+          <%= show_button(email) %>
+          <%= button_destroy_association(email) %>
+        </td>
+
+      </tr>
+    <% end %>
+</table>

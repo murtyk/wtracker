@@ -1,0 +1,7 @@
+$('#new_trainee_note').remove(); // remove form
+<% if @trainee_note.errors.any? %>
+  $('#<%=new_link_id("trainee_note", "trainee_#{@trainee_note.trainee.id}_")%>').hide().after('<%= j render("jsform", trainee_note: @trainee_note) %>');
+<% else %>
+  $('#<%=new_link_id("trainee_note", "trainee_#{@trainee_note.trainee.id}_")%>').show();
+  $('#trainee_<%=@trainee.id%>_trainee_notes').html('<%= j render @trainee.trainee_notes %>');
+<% end %>

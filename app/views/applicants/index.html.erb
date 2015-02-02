@@ -1,0 +1,50 @@
+<h1>Applicants</h1>
+
+<div class = 'row-fluid filters-div' >
+  <%= simple_form_for :filters, method: :get, url: '/applicants',
+                                html: { class: 'form-search',
+                                        style: 'margin-bottom: 0px' } do |f| %>
+
+    Navigator
+    <%= f.input_field :navigator_id, collection: current_grant.navigators,
+                                     selected: @filter_info[:navigator_id],
+                                     include_blank: true,
+                                     class: "search-query", style: 'width: 200px' %>
+    Status
+    <%= f.input_field :status, collection: applicant_filter_statuses,
+                               selected: @filter_info[:status],
+                               include_blank: true,
+                               class: "search-query", style: 'width: 120px' %>
+
+    <button type="submit" class="btn btn-flat btn-small btn-primary">
+      <i class="icon-search icon-white"></i>Find
+    </button>
+  <% end %>
+</div>
+
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <th>Name</th>
+    <th>Applied On</th>
+    <th>Email</th>
+    <th>Phone No</th>
+    <th>County</th>
+    <th>Source</th>
+    <th>Sector</th>
+    <th>Employment Status</th>
+    <th>Status</th>
+  </tr>
+  <% @applicants.each do |applicant| %>
+    <tr>
+      <td><%= link_to applicant.name, applicant %></td>
+      <td><%= applicant.created_at.to_date.to_s %></td>
+      <td><%= applicant.email %></td>
+      <td><%= applicant.mobile_phone_number %></td>
+      <td><%= applicant.county.name %></td>
+      <td><%= applicant.source %></td>
+      <td><%= applicant.sector.name %></td>
+      <td><%= applicant.current_employment_status %></td>
+      <td><%= applicant.status %></td>
+    </tr>
+  <% end %>
+</table>

@@ -1,0 +1,4 @@
+<%= address_fields.input :line1, required: required, label: 'Street', placeholder: "number and street name"%>
+<%= address_fields.input :city, required: required, placeholder: "city"%>
+<%= address_fields.input :state, required: required, collection:  State.pluck(:code), include_blank: true, input_html: {style: 'width: 70px'}%>
+<%= address_fields.input :zip, required: required, placeholder: "zip", class: 'span12'%>

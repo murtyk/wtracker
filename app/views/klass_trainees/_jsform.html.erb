@@ -1,0 +1,38 @@
+<%= simple_form_for(klass_trainee, remote: true) do |f| %>
+  <hr>
+  <%= if klass_trainee.klass
+        f.hidden_field :klass_id
+      else
+        f.hidden_field :trainee_id
+      end
+  %>
+  <%= if klass_trainee.klass
+        f.association(:trainee, collection: klass_trainee.klass.trainees_for_selection,
+                                label: 'Select Trainees To Add',
+                                input_html: {multiple: true})
+     else
+        f.association(:klass, collection: klass_trainee.trainee.klasses_for_selection,
+                              label: 'Select A Class',
+                              input_html: {style: 'width: 400px'},
+                              include_blank: false)
+     end
+  %>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(klass_trainee) %>
+
+  <% if klass_trainee.klass %>
+    <script type="text/javascript">
+      $("form.new_klass_trainee").submit(function(e){
+        toid = $('#klass_trainee_trainee_id :selected').text();
+        if (toid == ""){
+          alert("Please select trainees");
+          return false;
+        }
+      });
+    </script>
+  <% end %>
+<% end %>
+

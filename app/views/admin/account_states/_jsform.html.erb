@@ -1,0 +1,11 @@
+<%= simple_form_for([:admin, account_state],remote: true) do |f| %>
+  <%= f.error_notification %>
+    <br>
+    <%= f.hidden_field :account_id %>
+    <%= f.association :state, collection: account_state.account.states_for_selection, label: 'Select a state:', include_blank: false%>
+    <div class="form-actions">
+      <%= ajax_cancel_and_submit_buttons(f) %>
+    </div>
+<% end %>
+
+<%= ajax_form_cancel_script(account_state) %>

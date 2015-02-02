@@ -1,0 +1,10 @@
+<% @job_search_profiles.each do |jsp| %>
+  <p>
+    trainee: <%= jsp.trainee.name %>
+  </p>
+  <p>
+    skills: <%= jsp.skills %>
+  </p>
+  <p>Location: <%= jsp.location %>  - <%= jsp.distance%></p>
+  <hr>
+<% end %>

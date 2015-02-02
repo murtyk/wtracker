@@ -1,0 +1,4 @@
+<h2>Following trainees NOT applied any job lead</h2>
+<ol>
+  <%= @trainees.map{ |t| '<li>' + name_and_link(t) + '</li>' }.join('').html_safe %>
+</ol>

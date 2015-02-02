@@ -1,0 +1,5 @@
+<% if @instructors.any? %>
+	$('#new_klass_instructor_link').hide().after('<%= j render("jsform", klass_instructor: @klass_instructor, instructors: @instructors) %>');
+<% else %>
+	alert("Add an instructor user and assign to class");
+<% end %>

@@ -1,0 +1,7 @@
+<h1>Trainee Options Updated</h1>
+
+<h4>Settings:</h4>
+<% unless Rails.env.production? %>
+	<p><%=  "Status (of shared jobs) is #{'NOT' unless current_account.track_trainee_status?} tracked"%></p>
+<% end %>
+<p><%= "emailing any trainee document to an employer is #{'NOT' unless current_account.mark_jobs_applied?} consided as job applied"%></p>

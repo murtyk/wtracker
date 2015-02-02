@@ -1,0 +1,12 @@
+<%= simple_form_for(trainee_note, remote: true) do |f| %>
+  <hr>
+  <div class="form-inputs">
+      <%= f.hidden_field :trainee_id %>
+      <%= f.input :notes, label: 'Enter Notes'%>
+  </div>
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(trainee_note, "trainee_#{trainee_note.trainee_id}_") %>
+<% end %>
+

@@ -1,0 +1,12 @@
+<%= simple_form_for(klass_navigator,remote: true) do |f| %>
+  <hr>
+
+  <%= f.association :user, collection: navigators, label: 'Select Navigator', include_blank: false %>
+
+  <%= f.hidden_field :klass_id%>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(klass_navigator) %>
+<% end %>

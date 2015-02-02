@@ -1,0 +1,29 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Set Trainee Options</h1>
+</div>
+
+<h4>Current Settings:</h4>
+<% unless Rails.env.production? %>
+  <p><%=  "Status (of shared jobs) is #{'NOT' unless current_account.track_trainee_status?} tracked"%></p>
+<% end %>
+<p><%= "emailing any trainee document to an employer is #{'NOT' unless current_account.mark_jobs_applied?} consided as job applied"%></p>
+
+<hr>
+<h4>Change Preference To</h4>
+
+<%= simple_form_for(current_account, url: update_trainee_options_accounts_path, method: :post) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <% unless Rails.env.production? %>
+      <%= f.input :track_trainee, label: false, as: :radio_buttons, collection: account_track_trainee_options %>
+      <hr>
+    <% end %>
+    <%= f.input :mark_jobs_applied, inline_label: 'Consider emailing trainee document to an employer as job applied', as: :boolean, checked_value: true, unchecked_value: false%>
+  </div>
+
+  <div class="form-actions">
+    <%= render 'shared/cancel_link' %>
+    <%= submit_button(f) %>
+  </div>
+<% end %>

@@ -1,0 +1,561 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=25%20Rembrandt,%20East%20Windsor,%20NJ,%2008520&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 12 Nov 2013 13:08:11 GMT
+      Expires:
+      - Wed, 13 Nov 2013 13:08:11 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: US-ASCII
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "25",
+                       "short_name" : "25",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Rembrandt Way",
+                       "short_name" : "Rembrandt Way",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "East Windsor",
+                       "short_name" : "East Windsor",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer",
+                       "short_name" : "Mercer",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08520",
+                       "short_name" : "08520",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "25 Rembrandt Way, East Windsor, NJ 08520, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.2559784,
+                          "lng" : -74.5427873
+                       },
+                       "southwest" : {
+                          "lat" : 40.2559711,
+                          "lng" : -74.5428031
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.2559711,
+                       "lng" : -74.5428031
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.2573237302915,
+                          "lng" : -74.54144621970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.2546257697085,
+                          "lng" : -74.54414418029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 12 Nov 2013 13:08:08 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=east%20windsor,nj,08520&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 10 Dec 2013 18:48:11 GMT
+      Expires:
+      - Wed, 11 Dec 2013 18:48:11 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: US-ASCII
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "East Windsor",
+                       "short_name" : "East Windsor",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer",
+                       "short_name" : "Mercer",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "East Windsor, NJ, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.301054,
+                          "lng" : -74.481202
+                       },
+                       "southwest" : {
+                          "lat" : 40.216653,
+                          "lng" : -74.5794629
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.2677539,
+                       "lng" : -74.54025059999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.301054,
+                          "lng" : -74.481202
+                       },
+                       "southwest" : {
+                          "lat" : 40.216653,
+                          "lng" : -74.5794629
+                       }
+                    }
+                 },
+                 "types" : [ "locality", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 10 Dec 2013 18:48:07 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=25%20Rembrandt,%20East%20Windsor,%20NJ,%2008520&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 16 Feb 2014 19:20:26 GMT
+      Expires:
+      - Mon, 17 Feb 2014 19:20:26 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "25",
+                       "short_name" : "25",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Rembrandt Way",
+                       "short_name" : "Rembrandt Way",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "East Windsor",
+                       "short_name" : "East Windsor",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer",
+                       "short_name" : "Mercer",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08520",
+                       "short_name" : "08520",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "25 Rembrandt Way, East Windsor, NJ 08520, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.2559784,
+                          "lng" : -74.5427873
+                       },
+                       "southwest" : {
+                          "lat" : 40.2559711,
+                          "lng" : -74.5428031
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.2559711,
+                       "lng" : -74.5428031
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.2573237302915,
+                          "lng" : -74.54144621970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.2546257697085,
+                          "lng" : -74.54414418029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sun, 16 Feb 2014 19:20:24 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=10%20Sussex%20Lane,%20East%20Windsor,%20NJ,%2008520&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 16 Feb 2014 19:38:08 GMT
+      Expires:
+      - Mon, 17 Feb 2014 19:38:08 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "10",
+                       "short_name" : "10",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Sussex Lane",
+                       "short_name" : "Sussex Ln",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "East Windsor",
+                       "short_name" : "East Windsor",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer",
+                       "short_name" : "Mercer",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08520",
+                       "short_name" : "08520",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "10 Sussex Lane, East Windsor, NJ 08520, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.2513549,
+                       "lng" : -74.537661
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.25270388029149,
+                          "lng" : -74.53631201970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.25000591970849,
+                          "lng" : -74.5390099802915
+                       }
+                    }
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sun, 16 Feb 2014 19:38:06 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=25%20Rembrandt,%20East%20Windsor,%20NH,%2008520&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 20 Feb 2014 14:54:43 GMT
+      Expires:
+      - Fri, 21 Feb 2014 14:54:43 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "25",
+                       "short_name" : "25",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Rembrandt Way",
+                       "short_name" : "Rembrandt Way",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "East Windsor",
+                       "short_name" : "East Windsor",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer",
+                       "short_name" : "Mercer",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08520",
+                       "short_name" : "08520",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "25 Rembrandt Way, East Windsor, NJ 08520, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.2559784,
+                          "lng" : -74.5427873
+                       },
+                       "southwest" : {
+                          "lat" : 40.2559711,
+                          "lng" : -74.5428031
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.2559711,
+                       "lng" : -74.5428031
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.2573237302915,
+                          "lng" : -74.54144621970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.2546257697085,
+                          "lng" : -74.54414418029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Thu, 20 Feb 2014 14:54:39 GMT
+recorded_with: VCR 2.8.0

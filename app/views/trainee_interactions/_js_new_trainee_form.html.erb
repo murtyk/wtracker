@@ -1,0 +1,68 @@
+<%= simple_form_for(trainee_interaction, remote: true) do |f| %>
+  <hr>
+  <div class="form-inputs">
+    <%= f.hidden_field :trainee_id %>
+    <p> Employer Name Search</p>
+    <div class = 'row-fluid'>
+        <div class = 'span3'>
+        <%= f.input :employer_name, label: false, input_html: {style: 'width: 50px'} %>
+        </div>
+        <div class ='span9'>
+
+          <button type = "button" id="button-getemployers" class="btn btn-flat btn-primary" style = 'margin-left: 0px'>
+            <i class="icon-search icon-white"></i>Find
+          </button>
+          <%= link_to new_employer_path, class: "btn btn-flat btn-primary", id: 'new_employer', remote: true, data: {toggle: 'modal', target: "#modal_new_employer"}, rel:"tooltip", title:"New Employer" do %>
+              <i class="icon-plus white">New</i>
+          <% end %>
+
+        </div>
+    </div>
+    <%= f.input :employer_id, collection: [], label: false, input_html: {style: 'width: 260px'} %>
+  	<%= f.input :comment, input_html: {style: 'height: 100px'} %>
+  </div>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+
+  $("form.new_trainee_interaction").submit(function(e){
+    console.log('form.new_trainee_interaction.submit');
+    toid = $('#trainee_interaction_employer_id :selected').text();
+    if (toid == ""){
+      alert("Please select an employer");
+      return false;
+    }
+  });
+
+  $("#button-getemployers").click(function(e){
+
+      var name = $("#trainee_interaction_employer_name").val();
+      if (name.length < 1){
+        alert("please enter at least 1 character");
+        return false;
+      }
+
+      var trainee_id = $("#trainee_interaction_trainee_id").val();
+      var hashName = {name: name}
+
+      $.get("/employers/list_for_trainee", {trainee_id: trainee_id, name: name}, function(data) {
+            populateDropdown($("#trainee_interaction_employer_id"), data);
+      }, "json");
+
+      e.preventDefault();
+  });
+
+  function populateDropdown(select, data) {
+      select.html('');
+      $.each(data, function(id, option) {
+          select.append($('<option></option>').val(option.id).html(option.name));
+      });
+  }
+
+</script>
+
+<%= ajax_form_cancel_script(trainee_interaction) %>

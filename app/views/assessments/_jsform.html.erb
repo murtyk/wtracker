@@ -1,0 +1,24 @@
+<%= simple_form_for(assessment, remote: true) do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs">
+    <%= f.input :name %>
+  </div>
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+
+  <%= ajax_form_cancel_script(assessment) %>
+
+<script type="text/javascript">
+  $('#new_assessment').submit(function() {
+    if ($('#assessment_name').val() == ""){
+      alert("Please enter assessment name");
+      return false;
+    }
+    if ($('#assessment_name').val().length < 3){
+      alert("Name should be minimum 3 characters");
+      return false;
+    }
+  });
+</script>
+<% end %>

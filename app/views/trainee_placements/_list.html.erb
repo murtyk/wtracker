@@ -1,0 +1,35 @@
+<h2>Applicant Placements</h2>
+<div class="accordion" id="accordion-placements">
+  <% trainee_placements.each do |tp| %>
+    <div class="accordion-group" id = 'accordion-group-<%= tp.id %>'>
+      <div class="accordion-heading" style='background-color: #DDDDFF'>
+        <strong>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-placements" href='#placement-<%=tp.id%>'>
+          <%= tp.company_name %>
+        </a>
+        </strong>
+      </div>
+      <div id= 'placement-<%=tp.id%>' class="accordion-body collapse">
+        <div class="accordion-inner">
+          <table class="table table-condensed table-bordered table-striped">
+            <tr>
+              <td>Address</td><td><%= tp.address %></td>
+            </tr>
+            <tr>
+              <td>Phone No</td><td><%= tp.phone_number %></td>
+            </tr>
+            <tr>
+              <td>Start Date</td><td><%= tp.start_date %></td>
+            </tr>
+            <tr>
+              <td>Job Title</td><td><%= tp.job_title %></td>
+            </tr>
+            <tr>
+              <td>Salary</td><td><%= tp.salary %></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

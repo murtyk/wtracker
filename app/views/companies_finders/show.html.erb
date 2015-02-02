@@ -1,0 +1,181 @@
+<div class = 'row-fluid'>
+  <div class = 'span4'>
+    <h4>Processed Companies File</h4>
+    <p>File: <strong><%= @status[:file_name] %></strong></p>
+    <p>Companies Found: <strong><%= @status[:success_count] %></strong></p>
+    <p>Not Found: <strong><%= @status[:fail_count] %></strong></p>
+  </div>
+  <div class = 'span8'>
+    <h4>Please enter the information below if you wish to save companies in Employer Database</h4>
+    *Source: <%= text_field_tag 'source' %>
+    *Sectors:<%= select_tag "sector_ids", options_for_select(Sector.selection_list), {multiple: :multiple, size: 6} %>
+  </div>
+</div>
+<hr>
+
+<button type='button' id = 'selectAll' class='btn btn-flat btn-primary' name='add_all'>
+Select All
+</button>
+<button type='button' id = 'addSelected' class='btn btn-flat btn-primary' name='add_selected'>
+<i class='icon-plus'>Add Selected</i>
+</button>
+<button type='button' id = 'btnExport' class='btn btn-flat btn-small btn-primary pull-right' name='export'>
+  <i class='icon-cloud-download icon-2x'></i>
+</button><br><br>
+
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th></th>
+    <th>Status</th>
+    <th>Searched Company</th>
+    <th>Company Found</th>
+    <th>County</th>
+    <th>Match Prob</th>
+  </tr>
+  <% row_no = -1 %>
+  <% @companies.each do |company| %>
+    <% row_no += 1 %>
+    <tr>
+      <td id='<%="td_checkbox_#{row_no}"%>'>
+        <% if company[:employer_id].nil? && (company[:found]  || company[:city_id]) %>
+          <%= check_box_tag row_no.to_s, row_no.to_s, false, class: 'forAdd' %>
+        <% end %>
+      </td>
+      <td id='<%="td_status_#{row_no}"%>'>
+        <% if company[:employer_id] %>
+          <b color: green>Exists</b>
+        <% end %>
+      </td>
+      <td>
+          <%= company[:company] %><br>
+          <%= "#{company[:street]},#{company[:city]} #{company[:state_code]} #{company[:zip]}" %>
+      </td>
+      <td>
+        <% if company[:found] %>
+          <%= company[:company_info].html_safe %><br>
+        <% else %>
+          Not Found
+          <% if company[:error] %>
+            <br>
+            <b style='color:red'><%= company[:error].to_s %></b>
+          <% end %>
+        <% end %>
+      </td>
+      <td><%= company[:county] %></td>
+      <td><%= company[:score]  %></td>
+    </tr>
+  <% end %>
+</table>
+<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-header"  style='background-color: #ddd'>
+    <h4><div id='modal_title'>Adding Selected Companies to Employers database</div></h4>
+  </div>
+  <div class="modal-body">
+    <div class ='row-fluid' style= 'margin-bottom: 20px' >
+      <span id='ADD_SUCCESSFUL' style='padding: 5px; border: solid green; text-weight: bold'>0</span><b> Added Successfully</b>
+    </div>
+    <div class ='row-fluid'>
+      <span id='ADD_FAILED' style='padding: 5px; border: solid red'>0</span><b> Failed to Add </b>
+    </div>
+  </div>
+</div>
+
+
+<%= render 'shared/export_table.js.erb' %>
+<style type="text/css">
+  .pop-content {
+    color: red;
+}
+</style>
+<script type="text/javascript">
+  $("#selectAll").click(function() {
+    $('.forAdd').prop('checked', true);
+  });
+  $("#addSelected").click(function() {
+    companies = <%= raw @companies.to_json %>;
+    process_id = '<%= raw @process_id %>';
+    source = $('#source').val();
+    if (source.length < 3)
+    {
+      alert('source should be minimum 3 characters');
+      return false;
+    }
+    if ($('#sector_ids :selected').length == 0){
+      alert("Please select at least one sector");
+      return false;
+    }
+    sector_ids = $('#sector_ids').val();
+    results = {};
+    var add_success = 0;
+    var add_fail    = 0;
+    jQuery.ajaxSetup({async:false});
+    $("#pleaseWaitDialog").modal();
+    $.each(companies, function( index, value ){
+      id = '#' + index;
+      if($(id).prop('checked')) {
+        url = '/companies_finder/add_employer';
+        params = {process_id: process_id, index: index, source: source, sector_ids: sector_ids};
+        $.post(url, params, function(data){
+          save_add_results(index, data);
+          ++add_success;
+          $('#ADD_SUCCESSFUL').html(add_success);
+        }, "json")
+        .fail(function(jqXHR, textStatus, errorThrown){
+          ++add_fail;
+          $('#ADD_FAILED').html(add_fail);
+          // alert("error in addSelected js");
+        });
+      }
+    });
+    jQuery.ajaxSetup({async:true});
+    $("#pleaseWaitDialog").modal('hide');
+
+    // alert(JSON.stringify(results));
+    process_add_results();
+  });
+  function save_add_results(index, data){
+    var result = { added: false };
+    if(data['employer_id']){
+      result['added'] = true;
+      result['employer_id'] = data['employer_id'];
+    }
+    else{
+      result['error'] = data['error'];
+    }
+    results[index] = result;
+  }
+  function process_add_results(){
+    $.each(results, function(key, value ){
+      td_status_id = '#td_status_' + key;
+      if(value['added']){
+        $(td_status_id).html('<b style="color:green">added</b>');
+      }
+      else{
+
+        html = '<div data-content="error_message" data-placement="top" href="#" class="popover-error-info" style="color:red;margin-left:60%" ><p style="color:red">error</p></div>'
+
+        // html = '<a href="#" data-toggle="tooltip" title="error_message" style="color:red">error</a>'
+
+        error_html = html.replace("error_message", value['error']);
+        $(td_status_id).html(error_html);
+      }
+      td_checkbox_id = '#td_checkbox_' + key;
+      $(td_checkbox_id).html('');
+    });
+    $('.popover-error-info').popover({placement: 'top', html: true});
+  }
+</script>
+<script type="text/javascript">
+  $('[data-toggle="popover"]').popover();
+
+  $('body').on('click', function (e) {
+      $('[data-toggle="popover"]').each(function () {
+          //the 'is' for buttons that trigger popups
+          //the 'has' for icons within a button that triggers a popup
+          if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+              $(this).popover('hide');
+          }
+      });
+  });
+</script>
+

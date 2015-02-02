@@ -1,0 +1,71 @@
+<% if calendar.invalid_dates %>
+  <h4 style='color: red'>Please define start and end dates for the class</h4>
+<% else %>
+
+  <style>
+   table { table-layout: fixed; }
+  </style>
+
+  <div class='row-fluid' style='background-color:#ccf;margin-bottom:5px;'>
+    <div class ='span4' style='min-height:20px;text-align: center;background-color:#92D050'>Class Visits</div>
+    <div class ='span4' style='min-height:20px;text-align: center;background-color:#FFD966;margin-left:0px'>Site Visits</div>
+    <div class ='span4' style='min-height:20px;text-align: center;margin-left:0px'>Others</div>
+  </div>
+
+  <div style='background-color: #ddd;border: thin solid grey;margin-bottom:5px;padding-right:5%'>
+    <table class="table table-bordered" style='margin-bottom:0;'>
+      <thead>
+        <tr>
+          <% ['M','T','W','Th','F','S'].each do |day| %>
+            <th style='text-align: center;color: black;font-weight:normal;'><%= day %></th>
+          <% end %>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <div class='vertical-scroll-div'>
+    <% monday = calendar.first_monday %>
+    <% while monday <= calendar.last_monday %>
+      <table id='brief_calendar_table' class="table table-bordered" style='margin-bottom:0px'>
+        <thead>
+          <tr style = 'background-color: #eee'>
+            <% next_day = monday %>
+            <% (0..5).each do |i| %>
+              <th style='text-align: center;color: black;font-weight:normal;'><%= next_day.strftime("%d-%b").html_safe %></th>
+              <% next_day = next_day.tomorrow %>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% next_day = monday %>
+          <% row_count = calendar.event_rows(next_day) %>
+          <% (1..row_count).each do |row_no| %>
+            <tr style = "height: 40px;">
+              <% (0..5).each do |i| %>
+                <% event = calendar.get_event(next_day, row_no) %>
+                <% if event && !event.cancelled? %>
+                  <% event_type = calendar.visit_type(event) %>
+                  <% color = calendar.event_color(event) %>
+                  <td id = 'event_id_<%=event.id%>' bgcolor= '<%=color%>' style='padding: 4px; word-wrap: break-word'>
+                    <% if event_type < 1 %>
+                      <small><%= event.name%></small><br>
+                    <% elsif event.employers.any? %>
+                      <small><%= event.employers.first.name%></small><br>
+                    <% end %>
+                    <%= calendar.event_time(event) %><br>
+                  </td>
+                <% else %>
+                  <td></td>
+                <% end %>
+                <% next_day = next_day.tomorrow %>
+              <% end %>
+            </tr>
+            <% next_day = monday %>
+          <% end %>
+        </tbody>
+      </table>
+      <% monday = monday.next_week %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+  <title>ManageE2E</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+  <%=  render'layouts/topbar' %>
+  <% if admin_signed_in? || user_signed_in? || trainee_signed_in? %>
+    <div class = 'container' style = "min-height:500px;">
+      <% flash.each do |name, msg| %>
+        <% if msg.is_a?(String) %>
+          <div class="alert alert-<%= name.to_s == 'notice' ? 'success' : name %>" style = 'margin-bottom: 5px'>
+            <a class="close" data-dismiss="alert">&#215;</a>
+            <%= content_tag :div, msg, :id => "flash_#{name}" %>
+          </div>
+        <% end %>
+      <% end %>
+      <%= yield %>
+    </div>
+  <% elsif controller_name == 'shared_job_statuses' %>
+    <%= render 'layouts/job_lead_status' %>
+  <% elsif controller_name == 'job_search_profiles' %>
+    <%= render 'layouts/job_search_profile' %>
+  <% elsif controller_name == 'applicants' && current_user.nil? %>
+    <%= render 'layouts/applicant' %>
+  <% else %>
+    <%= render 'layouts/notsigned' %>
+  <% end %>
+
+  <%=  render'layouts/footer' %>
+
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+<h1>Trainees Got Placed</h1>
+<%= render "class_selection", report: Report::TRAINEES_PLACED, klass_ids: @report.klass_ids %>
+<%= @report.render_counts %>
+<%= @report.download_button %>
+<%= render 'shared_trainees_placed.html.erb', report: @report %>
+<%= render 'shared/export_table.js.erb' %>

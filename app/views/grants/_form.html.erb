@@ -1,0 +1,26 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header ">
+      <h1><%="#{grant.new_record? ? 'New' : 'Edit'} Grant"%></h1>
+    </div>
+     <%= simple_form_for(grant,html: { class: "form-horizontal" }) do |f| %>
+      <div class="form-inputs">
+        <%= f.input :name %>
+        <%= f.input :spots, label: "Trainee Spots"%>
+        <%= f.input :amount, label: "Grant $ Amount"%>
+        <%= f.input :reply_to_email%>
+      </div>
+      <div class="form-actions">
+        <%= render 'shared/cancel_link' %>
+        <%= submit_button(f) %>
+      </div>
+      <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // $.mask.definitions['~']='[+-]';
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+})
+</script>

@@ -1,0 +1,207 @@
+<div class = 'row-fluid'>
+  <h1>New email to Employers</h1>
+</div>
+
+<div class = 'row-fluid filters-div-compact' >
+  <strong> Employer Search: </strong>
+  <strong style='margin-left: 10px'>Sector</strong>
+  <%= select_tag :sector_id, options_for_select(employer_sectors_for_selection), include_blank: true, style: 'margin-top: 10px' %>
+  <strong style='margin-left: 10px'>County</strong>
+  <%= select_tag :county_id, options_for_select(employer_counties_for_selection), include_blank: true, style: 'margin-top: 10px' %>
+  <strong style = 'color: white; margin-left: 5px; margin-right: 5px'>| <strong style = 'color: darkblue'>OR</strong> |</strong>
+  <strong>Name starting with</strong>
+  <%= text_field_tag :name, nil, style: 'margin-top:10px; max-width: 75px;' %>
+
+  <button type = "button" id="button-getcontacts" class="btn btn-flat btn-primary" style = 'margin-left: 0px'>
+    <i class="icon-search icon-white"></i> Find
+  </button>
+</div>
+<div class = 'row-fluid' >
+  <div class = 'span4' style = 'border-right: solid thin lightgrey; margin-left:0px'>
+
+    <div class='row-fluid'>
+      <div class = 'span10'>
+        <p>Select Contacts and Add them to send list</p>
+        <%= select_tag :select_contacts, "", {multiple: true, style: 'width: 100%;height: 370px'} %>
+      </div>
+      <div class = 'span2'>
+        <button type = 'button' id='add-selected-contacts' class='btn btn-flat btn-small btn-primary' style='margin-top: 50px;margin-left: 5px'>
+          <i class=" icon-chevron-right icon-white icon-2x"></i>
+        </button>
+
+        <button type = 'button' id='remove-selected-contacts' class='btn btn-flat btn-small btn-danger' style='margin-left: 5px;margin-top:20px'>
+          <i class="icon-chevron-left icon-red icon-2x"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="span4">
+    <%= simple_form_for(@email) do |f| %>
+      <%= f.error_notification %>
+      <div class="form-inputs">
+        <%= f.hidden_field :trainee_file_ids %>
+        <%= f.hidden_field :klass_id %>
+        <%= f.input :contact_ids, label: 'Send To', required: true, collection: @email.contact_names_for_selection, input_html: {multiple: true, style: 'width: 100%; height: 120px'} %>
+
+        <%= f.input :subject, input_html: {style: 'width: 100%;'} %>
+        <%= f.input :content, input_html: {style: 'width: 100%; height: 110px'} %>
+
+        <div id='attachments'>
+          Attach Documents Below:
+
+          <%= button_tag(type: 'button', class: "btn btn-flat btn-small btn-success", id: "new_attachment") do %>
+          <i class="icon-plus"></i> One More
+          <% end %>
+
+
+          <%= f.fields_for :attachments do |attachment| %>
+            <%= attachment.input :file, as: :file, label: false %>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-actions">
+        <%= submit_button(f, 'Send') %>
+      </div>
+
+    <% end %>
+
+  </div>
+  <div class = 'span4'>
+    <div class='row-fluid'>
+    <p>Attach Trainee Documents</p>
+    Class
+    <%= select_tag "select_klass_id", options_for_select(current_user.klasses_for_selection), include_blank: true, style: 'width: 80%'%>
+    <div id = 'trainees_documents_id'>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+jQuery(function() {
+    return $('#select_klass_id').change(function(e) {
+      klass_id = $('#select_klass_id :selected').val();
+      $('#email_klass_id').val(klass_id);
+      if (klass_id > 0){
+        $.get("/trainees/docs_for_selection?klass_id=" + klass_id, function(data) {
+          check_check_boxes();
+        }, "script");
+        e.preventDefault();
+      }
+      else{
+        $("#trainees_documents_id").html('');
+      }
+    });
+});
+</script>
+<script type="text/javascript">
+  var attachment_number = 1;
+  jQuery(function() {
+    return $('#new_attachment').click(function() {
+      $.ajax({
+            url: "/emails/new_attachment?number=" + attachment_number,
+            beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader('accept', "text/javascript");
+              }
+            });
+      attachment_number = attachment_number + 1;
+    });
+  });
+
+</script>
+
+<script type="text/javascript">
+
+  $(".simple_form").submit(function(e){
+
+    var file_ids = new Array();
+
+    var checkbox_id = 'tf_'
+
+    $("input[type='checkbox'][id*='" + checkbox_id + "']:checked").each(function() {
+      id = this.id.split('_')[1];
+      file_ids.push(id);
+    });
+    // alert(file_ids);
+    if (file_ids.length > 0)
+    {
+      $('#email_trainee_file_ids').val(file_ids.join(':'));
+    }
+
+    $('#email_contact_ids option').prop('selected', true);
+    count = $('#email_contact_ids option:selected').length;
+    if (count == 0){
+      alert("Please add at least one employer contact");
+      return false;
+    }
+
+  });
+
+  $("#button-getcontacts").click(function(e){
+
+      var sector_id = $('#sector_id :selected').val();
+      var county_id = $('#county_id :selected').val();
+      var name = $('#name').val();
+
+      if (sector_id == 0 & county_id == 0 & name == 0){
+        alert("Please select a sector or county. Or enter employer name to search");
+        return false;
+      }
+
+      $.get("/employers/contacts_search", {filters: {county_id: county_id, sector_id: sector_id, name: name}}, function(data) {
+            populateDropdown($("#select_contacts"), data);
+      }, "json");
+
+      e.preventDefault();
+
+  });
+
+
+  function populateDropdown(select, data) {
+      select.html('');
+      $.each(data, function(id, option) {
+          select.append($('<option></option>').val(option.id).html(option.name));
+      });
+  }
+
+  $("#add-selected-contacts").click(function(){
+    var str = '';
+    var e_option;
+     $( "#select_contacts option:selected" ).each(function() {
+        e_option = $(this);
+        if ($("#email_contact_ids option[value="+e_option.val()+"]").length == 0){
+          $("#email_contact_ids").append($('<option></option>').val(e_option.val()).html(e_option.text()));
+        }
+        str += $( this ).text() + " ";
+      });
+     // alert(str);
+  });
+
+  $("#remove-selected-contacts").click(function(){
+     $("#email_contact_ids option:selected").remove();
+  });
+
+  var tf_ids = [];
+
+  function check_check_boxes() {
+    tf_ids.forEach(function(tf_id) {
+      id = '#tf_' + tf_id;
+      console.log(id);
+      $(id).prop('checked', 'true');
+    });
+    tf_ids = [];
+  }
+
+</script>
+<% if @email.klass_id.to_i > 0 && @email.trainee_file_ids.any? %>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    tf_ids = <%= raw @email.trainee_file_ids.to_json%>;
+    klass_id = <%= @email.klass_id.to_i %>;
+    $('[name=select_klass_id]').val(klass_id);
+    $('#select_klass_id').trigger('change');
+  });
+
+</script>
+<% end %>

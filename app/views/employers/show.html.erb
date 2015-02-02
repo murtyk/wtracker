@@ -1,0 +1,121 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Employer Information</h1>
+</div>
+
+<div class = 'row-fluid'>
+
+  <div class = 'span4 left-panel', id='basic_panel'>
+    <%= render 'panel_basic_info', employer: @employer %>
+  </div>
+
+  <div class = 'span4'>
+    <%= render 'panel_trainee_info', employer: @employer %>
+  </div>
+
+  <div class='span4'>
+    <%= render 'panel_notes_and_klass_info', employer: @employer %>
+  </div>
+
+</div>
+
+<div id="modal_ti_details" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <b>Employer-Trainee Interaction Details</b>
+    <button id="modal_close" class="btn btn-flat btn-mini btn-warning pull-right" data-dismiss="modal" aria-hidden="true"><i class='icon-remove white'></i> </button>
+  </div>
+  <div class="modal-body">
+  <!-- gets filled by js response -->
+  </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // $.mask.definitions['~']='[+-]';
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+});
+
+$('.klass_events_expand').click(function () {
+  id = $(this).attr('id');
+  klass_id = id.split('_')[3];
+  div_id= '#klass_events_' + klass_id;
+
+  ind = $(this).text().search('Expand');
+
+  if (ind > 1)
+  {
+    $(this).html('Collapse');
+    $(div_id).show();
+  }
+  else
+  {
+    $(this).html('Expand');
+    $(div_id).hide();
+  }
+
+});
+</script>
+
+<script type="text/javascript">
+$('#employers_more_info_show').click(function () {
+  ind = $(this).text().search('Show More');
+  if (ind > -1)
+  {
+    $(this).html('Show Less');
+  }
+  else
+  {
+    $(this).html('Show More');
+  }
+
+  $('#employer_notes').find('.employer_note').each(function (index) {
+
+      div_id = $(this).attr('id');
+      employer_note_id = div_id.split('_')[2];
+      button_id = 'employer_note_show_more_' + employer_note_id;
+
+      div_short_notes_id = '#short_notes_' + employer_note_id;
+      div_full_notes_id = '#full_notes_' + employer_note_id;
+
+      if (ind > -1)
+      {
+        $(div_short_notes_id).hide();
+        $(div_full_notes_id).show();
+
+        $('#' + button_id + " i").removeClass("icon-arrow-down").addClass("icon-arrow-up");
+      }
+      else
+      {
+        $(div_short_notes_id).show();
+        $(div_full_notes_id).hide();
+        $('#' + button_id + " i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
+      }
+  });
+
+
+});
+$('#employer_notes').on('click', '.employer-note-show-more-or-less', function() {
+// $('.employer-note-show-more-or-less').click(function () {
+  button_id = $(this).attr('id');
+  employer_note_id = button_id.split('_')[4];
+  div_short_notes_id = '#short_notes_' + employer_note_id;
+  div_full_notes_id = '#full_notes_' + employer_note_id;
+  f_show = $(div_full_notes_id).is(':hidden');
+
+  if (f_show)
+  {
+    $(div_short_notes_id).hide();
+    $(div_full_notes_id).show();
+
+    $('#' + button_id + " i").removeClass("icon-arrow-down").addClass("icon-arrow-up");
+  }
+  else
+  {
+    $(div_short_notes_id).show();
+    $(div_full_notes_id).hide();
+    $('#' + button_id + " i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
+  }
+});
+
+
+</script>

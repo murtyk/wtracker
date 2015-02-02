@@ -1,0 +1,31 @@
+<h1>Imported Cities</h1>
+
+<%= render 'import_status', import_status: @import_status %>
+<%= render 'import_fails', import_status: @import_status %>
+
+<h4>Following <%= @import_status.cities.count %> Cities were imported successfully</h4>
+
+<table id="table_cities" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>ID</th>
+    <th>State</th>
+    <th>City</th>
+    <th>Zip</th>
+    <th>County</th>
+    <th>Longitude</th>
+    <th>Latitude</th>
+    <th></th>
+  </tr>
+
+  <% @import_status.cities.each do |city| %>
+    <tr id='tr_<%=city.id%>'>
+      <td><%= city.id %></td>
+      <td><%= city.state_code%></td>
+      <td><%= city.name%></td>
+      <td><%= city.zip%></td>
+      <td><%= city.county_name %></td>
+      <td><%= city.longitude %></td>
+      <td><%= city.latitude %></td>
+    </tr>
+  <% end %>
+</table>

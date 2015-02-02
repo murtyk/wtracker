@@ -1,0 +1,17 @@
+<% if policy(ApplicantSource).index? %>
+	<h1>Applicant Sources</h1>
+	<div id='applicant_sources'>
+		<%= render @applicant_sources %>
+	</div>
+    <%=
+      if policy(ApplicantSource).create?
+		    link_to(new_applicant_source_path, class: 'btn btn-flat btn-small btn-primary',
+                                           id: 'new_applicant_source_link',
+                                           remote: true,
+                                           rel: 'tooltip',
+                                           title: 'Add Applicant Source') do
+			       '<i class="icon-plus"></i> New'.html_safe
+		    end
+	    end
+    %>
+<% end %>

@@ -1,0 +1,21 @@
+<table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
+	<tr>
+		<th>Trainee</th>
+		<th>Documents</th>
+	</tr>
+	<% @trainees.each do |trainee| %>
+	<tr>
+		<td><%=trainee.name%></td>
+		<td>
+			<ol>
+			<% trainee.trainee_files.each do |tf| %>
+				<li>
+					<%= check_box_tag("tf_#{tf.id}", tf.name, false, {style: "margin: 0px;"}) %>
+					<%= "#{tf.name} (#{tf.notes})" %>
+				</li>
+			<% end %>
+			</ol>
+		</td>
+	</tr>
+	<% end %>
+</table>

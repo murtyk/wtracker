@@ -1,0 +1,47 @@
+<h1>Cities</h1>
+
+<div class = 'row-fluid filters-div'>
+  <%= simple_form_for :filters, method: :get, url: url_for([:admin, :cities]),html: {class: 'form-search' } do |f| %>
+    State<%= f.input_field :state_id, collection: State.all %>
+    Name starting with <%= f.input_field :name, class: "search-query" %>
+    <%= submit_button(f, 'Find') %>
+  <% end %>
+</div>
+
+<% if @cities.any? %>
+
+  <div class = 'row-fluid'>
+    <div align="center">
+      <b>Total: <%= @total %></b>
+      <%= will_paginate @cities %>
+    </div>
+  </div>
+
+  <table id="table_city" class="table table-condensed table-bordered table-striped table-hover">
+    <tr>
+      <th>Name</th>
+      <th>State</th>
+      <th>County</th>
+      <th>Zip</th>
+      <th>Lat</th>
+      <th>Long</th>
+      <th></th>
+    </tr>
+
+    <% @cities.each do |city| %>
+      <tr>
+        <td><%= link_to city.name,admin_city_path(city)  %></td>
+        <td><%= city.state_code %></td>
+        <td><%= city.county_name %></td>
+        <td><%= city.zip %></td>
+        <td><%= city.latitude %></td>
+        <td><%= city.longitude %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <div align="center">
+    <%= will_paginate @cities%>
+  </div>
+<% end %>

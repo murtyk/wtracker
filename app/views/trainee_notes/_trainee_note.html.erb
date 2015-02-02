@@ -1,0 +1,8 @@
+<div id = '<%=div_id_for(trainee_note)%>'>
+    <p>
+        <%= button_edit_association(trainee_note, title: 'Edit trainee note') %>
+        <%= button_destroy_association(trainee_note, title: 'Delete note') %>
+        <%= trainee_note.created_at.to_date.to_s%><br>
+        <%= trainee_note.notes%>
+    </p>
+</div>

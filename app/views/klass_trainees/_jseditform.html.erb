@@ -1,0 +1,73 @@
+<%= simple_form_for(klass_trainee, remote: true) do |f| %>
+  <hr>
+
+  <% if from_page == 1 %>
+    <% caption = "Update trainee status in class #{klass_trainee.klass_name}"%>
+    <%= f.hidden_field :trainee_id %>
+  <% else %>
+    <% caption = "Update status of  #{klass_trainee.name}"%>
+    <%= f.hidden_field :klass_id %>
+  <% end %>
+
+  <%= f.input :status, label: caption, collection: klass_trainee_statuses, include_blank: false %>
+
+  <div id = 'hire_details' class = 'row-fluid' style='display: <%=klass_trainee.status == 4 ? "show" : "none"%>'>
+    <p> Employer Name Search</p>
+    <%= f.input_field :employer_name, style: 'margin-top:10px;width: 50px' %>
+    <button type = "button" id="button-getemployers" class="btn btn-flat btn-primary" style = 'margin: 0px'>
+      <i class="icon-search icon-white"></i>Find
+    </button>
+    <br>
+    <%= f.input :employer_id, collection: [klass_trainee.hired_employer], label: 'Employer', input_html: {style: 'width: 260px'} %>
+    <%= f.input :start_date, input_html: {class: 'date', data: {behaviour: "datepicker"}, value: klass_trainee.start_date.to_s}, as: :string %>
+    <%= f.input :hire_title %>
+    <%= f.input :hire_salary %>
+  </div>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(klass_trainee) %>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+    })
+  </script>
+  <script type="text/javascript">
+    $('#klass_trainee_status').change(function() {
+      status_id = $('#klass_trainee_status :selected').val();
+      if (status_id == 4)
+      {
+      $('#hire_details').show();
+      }
+      else
+      {
+      $('#hire_details').hide();
+      };
+    });
+
+    $("#button-getemployers").click(function(e){
+      var name = $("#klass_trainee_employer_name").val();
+      if (name.length < 1){
+        alert("please enter at least 1 character");
+        return false;
+      }
+
+      $.get("/employers/list_for_trainee", {trainee_id: 0, name: name}, function(data) {
+          populateDropdown($("#klass_trainee_employer_id"), data);
+      }, "json");
+
+      e.preventDefault();
+    });
+
+    function populateDropdown(select, data) {
+        select.html('');
+        $.each(data, function(id, option) {
+            select.append($('<option></option>').val(option.id).html(option.name));
+        });
+    };
+  </script>
+
+<% end %>
+

@@ -1,0 +1,37 @@
+# job titles and/or skill key words for
+# searching jobs relevant to a class
+class KlassTitle < ActiveRecord::Base
+  default_scope { where(account_id: Account.current_id) }
+  belongs_to :account
+  belongs_to :klass
+  delegate :line1, :city, :county, :state, :zip, to: :klass
+
+  has_one :job_search
+  attr_accessible :title, :klass_id
+
+  validates :title, presence: true, length: { minimum: 3 }
+
+  def get_job_search(refresh = false)
+    return job_search if !refresh && valid_job_search_count?
+    address = klass.college.address
+    count = JobBoard.job_count(title, address.city, address.state, 25, 30)
+    return create_job_search(count) unless job_search
+    job_search.update_attributes(count: count)
+    job_search
+  end
+
+  def jobs_count
+    job_search.count
+  end
+
+  def valid_job_search_count?
+    job_search && ((Time.now - job_search.updated_at) / 12.hours) < 1
+  end
+
+  def create_job_search(count)
+    self.job_search = JobSearch.create(
+                    klass_title_id: id, keywords: title,
+                    location: "#{city},#{state}",
+                    distance: 25, days: 30, count: count)
+  end
+end

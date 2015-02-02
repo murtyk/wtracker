@@ -1,0 +1,21 @@
+<%= simple_form_for(trainee_submit, remote: true) do |f| %>
+  <br>
+  <div class="form-inputs">
+    <%= f.hidden_field :trainee_id %>
+    <%= f.association :employer, collection: employers_collection %>
+    <%= f.input :title %>
+    <%= f.input :applied_on, input_html: { data: {behaviour: "datepicker"}, value: trainee_submit.applied_on.to_s}, as: :string%>
+  </div>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(trainee_submit) %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+    $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+    })
+  </script>
+
+<% end %>
+

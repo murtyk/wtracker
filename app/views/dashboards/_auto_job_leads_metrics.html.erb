@@ -1,0 +1,112 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Job Leads Metrics</h1>
+</div>
+<h2>
+  <%= link_to 'Skill Metrics', skill_metrics_grants_path %>
+</h2>
+<% auto_lead_trainees = AutoLeadTrainees.new %>
+<% current_grant.programs.each do |program| %>
+  <div class='row'>
+    <h1><%= program.name %></h1>
+    <%# trainee_counts = program.trainee_counts_by_auto_leads_status %>
+    <% auto_lead_trainees.program = program %>
+    <% trainee_counts     = auto_lead_trainees.counts_by_status %>
+    <div id = 'jobs_leads_metrics' class='span4'>
+      <table class="table table-condensed table-bordered table-striped table-hover">
+        <tr>
+          <td>No. of students</td>
+          <td><b><%=program.trainees.count%></b></td>
+        </tr>
+        <tr>
+          <td>Total Job Leads Sent</td>
+          <td><b><%=program.job_leads_sent_count%></b></td>
+        </tr>
+        <tr>
+          <td>Job Leads / Student </td>
+          <td>
+            <b>
+            <%= program.job_leads_sent_count / trainee_counts[:NOT_PENDING] if trainee_counts[:NOT_PENDING] > 0 %>
+            </b>
+          </td>
+        </tr>
+      </table>
+      <table class="table table-condensed table-bordered table-striped table-hover">
+        <tr>
+          <td>
+            <%= link_to 'No. of students updated job search profile',
+                        trainees_by_auto_lead_status_program_path(program, status: :NOT_PENDING) %>
+          </td>
+          <td><b><%= trainee_counts[:NOT_PENDING] %></b></td>
+        </tr>
+        <tr>
+          <td>
+            <%= link_to 'No. of students NOT updated job search profile',
+                        trainees_by_auto_lead_status_program_path(program, status: :PENDING) %>
+          </td>
+          <td><b><%= trainee_counts[:PENDING] %></b></td>
+        </tr>
+        <tr>
+          <td>
+            <%= link_to 'No. of students opted out',
+                        trainees_by_auto_lead_status_program_path(program, status: :OPTED_OUT) %>
+          </td>
+          <td><b><%= trainee_counts[:OPTED_OUT] %></b></td>
+        </tr>
+        <tr>
+          <td>
+            <%= link_to 'Students viewed at least one job lead',
+                        trainees_by_auto_lead_status_program_path(program, status: :VIEWED) %>
+          </td>
+          <td><b><%= trainee_counts[:VIEWED] %></b></td>
+        </tr>
+        <tr>
+          <td>
+            <%= link_to 'Students NOT viewed any job lead',
+                        trainees_by_auto_lead_status_program_path(program, status: :NOT_VIEWED) %>
+          </td>
+          <td><b><%= trainee_counts[:NOT_VIEWED] %></b></td>
+        </tr>
+        <tr>
+          <td>
+            <%= link_to 'Students applied for at least one job lead',
+                        trainees_by_auto_lead_status_program_path(program, status: :APPLIED) %>
+          </td>
+          <td><b><%= trainee_counts[:APPLIED] %></b></td>
+        </tr>
+        <tr>
+          <td>
+            <%= link_to 'Students NOT applied for any job lead',
+                        trainees_by_auto_lead_status_program_path(program, status: :NOT_APPLIED) %>
+          </td>
+          <td><b><%= trainee_counts[:NOT_APPLIED] %></b></td>
+        </tr>
+      </table>
+    </div>
+    <div id = 'jobs_leads_trainees' class='span7 vertical-scroll-div' style='max-height: 320px;'>
+      <table class="table table-condensed table-bordered table-striped table-hover">
+        <tr>
+          <th>Name</th>
+          <th>Profile</th>
+          <th>Leads</th>
+          <th>Viewed</th>
+          <th>Applied</th>
+          <th>Not Interested</th>
+        </tr>
+        <%# trainee_metrics = program.auto_leads_metrics_by_trainee %>
+        <% trainee_metrics = auto_lead_trainees.metrics_by_trainee%>
+        <% trainee_metrics.each do |tm| %>
+        <tr>
+          <td><%= tm[:name] %></td>
+          <td style='<%= "color: red" unless tm[:valid_profile] %>'>
+            <%= tm[:valid_profile] ? 'updated' : 'not updated' %>
+          </td>
+          <td><%= tm[:leads_count].to_i %></td>
+          <td><%= tm[:viewed_count].to_i %></td>
+          <td><%= tm[:applied_count].to_i %></td>
+          <td><%= tm[:not_interested_count].to_i %></td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+<% end %>

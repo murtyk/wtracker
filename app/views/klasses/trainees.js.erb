@@ -1,0 +1,6 @@
+$('#select_trainees').html('<%= j render("traineelist", trainees: @klass.trainees_for_job_leads) %>');
+
+<%# debugger %>
+<% if params[:markers] %>
+	Gmaps.map.addMarkers(<%= raw(@klass.trainees_markers_for_job_leads) %>);
+<% end %>

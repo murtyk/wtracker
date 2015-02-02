@@ -1,0 +1,6 @@
+<div id = '<%=div_id_for(funding_source)%>'>
+  <p>
+    <%= button_destroy_association(funding_source) if funding_source.trainees.empty? %>
+    <%= funding_source.name %>
+  </p>
+</div>

@@ -1,0 +1,2 @@
+class ProfileRequestContent < AutoLeadEmailText
+end

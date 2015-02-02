@@ -1,0 +1,3 @@
+// build report in ajax mode in multiple iterations
+// call process_next until the status is done
+send_process_requests(<%= @report.count %>, '<%= @report.url_for_process_next %>', '<%= @report.url_for_show %>');

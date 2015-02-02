@@ -1,0 +1,26 @@
+<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+  <div class="modal-header" style='background-color: #ddd'>
+    <h4 id="statusModalLabel">Employers Search - Applicable Filters.
+      <button type="button" class="btn btn-flat btn-danger pull-right" data-dismiss="modal" aria-hidden="true">×</button>
+    </h4>
+  </div>
+  <div class="modal-body" id="status_areas">
+    <p><strong style="color: blue">Option 1: Counties, Sector or Source Combination</strong></p>
+    <p>You can select a combination of 1 or more counties, and/or a sector and/or a source.</p>
+
+    <p><strong style="color: blue">Option 2: Name Search</strong></p>
+    <p>Enter 1 or more characters to search by name.</p>
+
+    <hr>
+    <p><strong style="color: brown">When name is present, option 1 (counties etc.) will be ignored.</strong></p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#help-button').click(function() {
+    $('#helpModal').modal();
+  });
+</script>

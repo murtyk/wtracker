@@ -1,0 +1,39 @@
+<% klass.klass_events_group_by_type.each do |event_data| %>
+<div class="accordion-group" id = '<%= event_data.accordion_group_id %>'>
+  <div class="accordion-heading" style='background-color: #DDDDFF'>
+    <strong>
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href='<%= event_data.accordian_href %>'>
+      <%= event_data.accordion_heading %>
+    </a>
+    </strong>
+  </div>
+  <div id= '<%= event_data.accoridon_body_id%>' class="accordion-body collapse">
+    <div class="accordion-inner">
+      <% event_data.klass_events.each do |ke| %>
+        <div id = <%= "klass_event_#{ke.id}"%>>
+          <%= ke.date %> <%= ke.time %>
+          <span class='pull-right'%>
+            <%= link_to 'Edit', edit_klass_event_path(ke), class: "btn btn-flat btn-mini btn-warning", id: ke.edit_link_id,  rel:"tooltip", title:"Edit Event"%>
+            <%= link_to 'Delete', ke, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-flat btn-mini btn-danger", id: ke.delete_link_id,  rel:"tooltip", title:"Delete Event", remote: true%>
+          </span>
+          <br>
+          <%= ke.other_name %>
+          Notes:<%= ke.notes%><br>
+          <% ke.interactions_grouped_by_status.each do |ki_data| %>
+            <p><strong><%= ki_data.header %></strong></p>
+            <% ki_data.klass_interactions.each do |ki| %>
+              <div id = 'klass_interaction_<%=ki.id%>'>
+                <%= button_edit_association(ki, from: 1) %>
+                <%= button_destroy_association(ki) %>
+                <%= link_to ki.employer.name, ki.employer %><br>
+              </div>
+            <% end %>
+            <br>
+          <% end %>
+        </div>
+        <hr>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>

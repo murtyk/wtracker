@@ -1,0 +1,33 @@
+<h1>Imported Employers</h1>
+
+<%= render 'shared/import_fails', import_status: @import_status %>
+
+<h4>The following <%= @import_status.employers.count %> employers imported successfully!</h4>
+<table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>County</th>
+    <th>Sectors</th>
+    <th>Source</th>
+    <th></th>
+  </tr>
+
+  <% @import_status.employers.each do |employer| %>
+    <tr id='tr_<%=employer.id%>'>
+      <td><%= name_and_link(employer) %></td>
+      <td><%= employer.county %></td>
+      <td>
+        <ol>
+          <% employer.sectors.each do |s| %>
+            <li><%= s.name %></li>
+          <% end %>
+        </ol>
+      </td>
+      <td><%= employer.source %></td>
+      <td>
+        <% confirm_message = "Delete #{employer.name}.\n\nAre you sure?" %>
+        <%= render('shared/show_edit_destroy_buttons', resource: employer, confirm_message: confirm_message) %>
+      </td>
+    </tr>
+  <% end %>
+</table>

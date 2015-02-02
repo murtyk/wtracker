@@ -1,0 +1,2 @@
+$(<%=("'" + @add_company_id + "'").html_safe%>).remove();
+$(<%=("'" + @action_cell_id + "'").html_safe%>).append('<%= j render("google_employer_info", employer_exists: @employer_exists, employer: @employer, error: @error) %>');

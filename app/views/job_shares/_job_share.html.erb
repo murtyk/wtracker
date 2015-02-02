@@ -1,0 +1,27 @@
+<tr>
+  <td><%= job_share.created_at.to_date.to_s%></td>
+  <td>
+    <% if job_share.shared_jobs.any? %>
+      <ol>
+      <% job_share.shared_jobs.each do |shared_job|%>
+        <li><%= shared_job.title.length > 30 ? (shared_job.title[0..29] + "...") : shared_job.title%></li>
+      <% end %>
+      </ol>
+    <% else %>
+      <% debugger unless job_share.title%>
+      <%= job_share.title.length > 30 ? (job_share.title[0..29] + "...") : job_share.title%>
+    <% end %>
+  </td>
+  <td><%= job_share.comment %></td>
+  <td><%= job_share.company %></td>
+  <td><%= job_share.location %></td>
+  <td>
+  <% prefix = nil %>
+  <% job_share.trainees.each do |t| %>
+    <%= link_to "#{prefix}#{t.name}", t%>
+    <% prefix ||= " - " %>
+  <% end %>
+  <td>
+    <%= show_button(job_share) %>
+  </td>
+</tr>

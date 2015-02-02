@@ -1,0 +1,17 @@
+<h4>
+	<span id="trainees_header">Trainees(<%= klass.enrolled_count %>)</span>
+	<%= button_new_association(KlassTrainee, klass_id: klass.id, title: 'Add Trainees')%>
+</h4>
+
+<% unless current_user.instructor? %>
+	<button type = 'button' id = 'trainees_more_info_show' class = 'btn btn-flat btn-small btn-primary pull-left'>
+    Show More
+  </button>
+	<br><br>
+<% end %>
+
+<div id="klass_trainees">
+	<%= render 'klass_trainees/klass_trainees', object: klass %>
+</div>
+
+<hr>

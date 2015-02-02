@@ -1,0 +1,28 @@
+<h4>
+  Classes
+  <%= button_new_association(KlassTrainee, trainee_id: trainee.id, title: 'Add Class')%>
+</h4>
+<div id="klass_trainees">
+  <%= render 'klass_trainees/klass_trainees', object: trainee %>
+</div>
+<hr>
+<h4>
+  Notes
+  <%= button_new_association(TraineeNote, from: 1, trainee_id: trainee.id, id_prefix: "trainee_#{trainee.id}_", title: 'New Note') %>
+</h4>
+<div id = 'trainee_<%=trainee.id%>_trainee_notes'>
+  <%= render trainee.trainee_notes%>
+</div>
+
+<hr>
+
+<%= trainee.trainee_interactions_header %>
+<div id="<%= div_id_for_collection(TraineeInteraction)%>">
+  <%= render("trainee_interactions/trainee_interactions", object: trainee) %>
+</div>
+
+<% if current_grant.trainee_applications? && trainee.trainee_placements.any? %>
+<div id="trainee_placements">
+  <%= render("trainee_placements/list", trainee_placements: trainee.trainee_placements) %>
+</div>
+<% end %>

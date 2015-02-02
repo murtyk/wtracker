@@ -1,0 +1,28 @@
+<% if policy(klass_trainee).show? %>
+    <div id = '<%=div_id_for(klass_trainee)%>'>
+        <p>
+            <button type = 'button' id = 'Klass_trainee_show_more_<%= klass_trainee.id%>' class = 'btn btn-flat btn-mini btn-primary klass-trainee-info'><i class="icon-arrow-down white"></i></button> <!-- dont break this line -->
+            <%= button_edit_association(klass_trainee, title: 'Edit Status') %>
+            <%= button_destroy_association(klass_trainee, title: 'Remove Trainee') %>
+            <%= link_to klass_trainee.name, klass_trainee.trainee %>
+        </p>
+        <div class='trainee_details' id = 'klass_trainee_details_<%=klass_trainee.id%>' style="display: none;">
+            <% if klass_trainee.hired?%>
+                Start Date: <%= klass_trainee.start_date %><br>
+                Title: <%= klass_trainee.hire_title %><br>
+                Salary: <%= klass_trainee.hire_salary %><br>
+                Employer: <%= klass_trainee.employer_name %><br>
+            <% end %>
+            <h5>
+                Notes
+                <%= button_new_association(TraineeNote, trainee_id:  klass_trainee.trainee.id, id_prefix: "trainee_#{klass_trainee.trainee.id}_") %>
+            </h5>
+            <div id = 'trainee_<%=klass_trainee.trainee.id%>_trainee_notes'>
+                <%= render klass_trainee.trainee.trainee_notes%>
+            </div>
+            <hr>
+        </div>
+    </div>
+<% else %>
+    <p><%= klass_trainee.name %></p>
+<% end %>

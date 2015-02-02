@@ -1,0 +1,2 @@
+class JobLeadsContent < AutoLeadEmailText
+end

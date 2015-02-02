@@ -1,0 +1,2 @@
+class TraineesDetailsWithPlacementReport < TraineesDetailsReport
+end

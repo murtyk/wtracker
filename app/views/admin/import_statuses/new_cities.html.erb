@@ -1,0 +1,25 @@
+<br>
+<div class = 'row-fluid'>
+  <%= form_tag admin_import_statuses_path(resource: 'cities'), id: 'form-import', multipart: true do %>
+    <p><strong>Find A File To Upload:</strong></p>
+    <%= file_field_tag :file %></span>
+    <br>
+    <button type="submit" id='submit-button' class="btn btn-flat btn-small btn-primary btn-spinner" data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Processing...">
+      <i class="icon-upload icon-white"></i> Import
+    </button>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  $('#form-import').submit(function() {
+    if ($('#file').val() == ""){
+      alert("Please select a file");
+      return false;
+    }
+    $('#submit-button').button('loading');
+  });
+</script>
+
+<script type="text/javascript">
+  $('.btn-spinner').button();
+</script>

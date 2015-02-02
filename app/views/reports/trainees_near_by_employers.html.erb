@@ -1,0 +1,86 @@
+<h1>Trainees & Near By Employers</h1>
+
+<div class = 'row-fluid filters-div' style='margin-bottom:10px'>
+<%= simple_form_for :filters, url: reports_path(report: Report::TRAINEES_NEAR_BY_EMPLOYERS), html: { class: 'form-search'}, remote: true do |f| %>
+
+    Class
+    <%= f.input_field :klass_id, collection: current_user.klasses_for_selection(false), selected: @report.selected_klass_id, multiple: false, class: "search-query", style: 'width: 350px;', include_blank: false %>
+
+    Sector
+    <%= f.input_field :sector_id, collection: Sector.all, selected: @report.sector_id, multiple: false, class: "search-query", include_blank: false %>
+
+    Distance
+    <%= f.number_field :distance, style: 'width: 50px;', value: @report.radius %>
+
+    <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+        <i class="icon-search icon-white"></i>Find
+    </button>
+
+<% end %>
+</div>
+
+<script type="text/javascript">
+  $('.btn-spinner').button();
+  $('.form-search').submit(function() {
+    $('#submit-button').button('loading');
+  });
+</script>
+
+<% unless @report.data.blank? %>
+  <%= @report.download_button %>
+  <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+    <tr>
+      <th>Class</th>
+      <th>Trainee</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>Employer</th>
+      <th>Address</th>
+      <% n = 1 %>
+      <% mc = @report.max_contacts %>
+      <% (1..mc).each do |n| %>
+        <th><%= "Contact #{n}" %></th>
+      <% end %>
+    </tr>
+    <% klass = @report.data.klass %>
+    <% (0..@report.count-1).each do |c| %>
+      <% trainee, employers_contacts = @report.trainee_employers_and_contacts(c) %>
+      <% employers_contacts.each do |employer_data| %>
+        <% employer = employer_data[0] %>
+        <% contacts = employer_data[1] %>
+        <tr>
+          <td><%= klass.name %></td>
+          <td><%= trainee.name %></td>
+          <td><%= trainee.email %></td>
+          <td><%= trainee.land_no %></td>
+          <td><%= trainee.home_address %></td>
+          <td><%= employer.name %></td>
+          <td><%= employer.address_details(true) %></td>
+          <% contacts.each do |contact| %>
+            <td><%= contact.details %></td>
+          <% end %>
+          <% blank_contacts = @report.max_contacts - contacts.count %>
+          <% blank_contacts.times do |n| %>
+            <td></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+  <%= render 'shared/export_table.js.erb' %>
+<% end %>
+
+<script type="text/javascript">
+  function send_process_requests(trainees_count, request_url, show_url){
+    jQuery.ajaxSetup({async:false});
+    n = 0;
+    while(n < trainees_count){
+      n = n + 1;
+      $.get(request_url, function(status) {
+      }, "json");
+    }
+    jQuery.ajaxSetup({async:true});
+    location.href = show_url;
+  }
+</script>

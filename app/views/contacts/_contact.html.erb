@@ -1,0 +1,11 @@
+<div id = '<%="contact_#{contact.id}"%>'>
+  <p>
+    <b><%= contact.name %></b>
+    <%= button_edit_association(contact, title: 'Edit Contact') %>
+    <%= button_destroy_association(contact, title: 'Delete Contact') %>
+    <%= contact.title %>
+    <%= contact.land_no %>
+    <%= contact.mobile_no %>
+    <%= contact.email %>
+  </p>
+</div>

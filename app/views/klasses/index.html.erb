@@ -1,0 +1,40 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Classes</h1>
+</div>
+
+<% if @programs.count == 0 %>
+  <h4>Please define a program and add classes</h4>
+<% end %>
+
+<% @programs.each do |program| %>
+  <h4>
+    <%= program.name%>
+    <%= new_button(Klass, {program_id: program.id}, "New Class for #{program.name}")%>
+  </h4>
+  <table class="table table-condensed table-bordered table-striped table-hover">
+    <tr>
+      <th>Name          </th>
+      <th>College       </th>
+      <th>Trainees      </th>
+      <th>Training hours</th>
+      <th>Credits       </th>
+      <th>Start date    </th>
+      <th>End date      </th>
+      <th>Program       </th>
+      <th></th>
+    </tr>
+    <% program.klasses.each do |klass| %>
+      <tr id='tr_<%=klass.id%>'>
+        <td><%= name_and_link(klass) %> </td>
+        <td><%= klass.college_name %>   </td>
+        <td><%= klass.enrolled_count %> </td>
+        <td><%= klass.training_hours %> </td>
+        <td><%= klass.credits %>        </td>
+        <td><%= klass.start_date %>     </td>
+        <td><%= klass.end_date %>       </td>
+        <td><%= klass.program_name %>   </td>
+        <td><%= render('shared/show_edit_destroy_buttons', resource: klass, confirm_message: "Are your sure you want to delete the class #{klass.name}?") %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

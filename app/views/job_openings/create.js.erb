@@ -1,0 +1,7 @@
+$('#new_job_opening').remove();
+<% if @job_opening.errors.empty? %>
+  $('#job_openings').prepend('<%= j render @job_opening %>');
+  $('#new_job_opening_link').show();
+<% else %>
+  $('#new_job_opening_link').after('<%= j render("jsform", job_opening: @job_opening) %>');
+<% end %>

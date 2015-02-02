@@ -1,0 +1,19 @@
+<h4>
+  <%= trainee.name %>
+  <%= edit_button(trainee) %>
+</h4>
+
+<p>
+  <b>Address:</b><br>
+  <%= trainee.home_address %>
+  <%= trainee.land_no      %>
+  <%= trainee.mobile_no    %>
+  <%= trainee.email        %>
+</p>
+
+<%= trainee.funding_source %>
+
+<%= trainee.files_header %>
+<div id = '<%=div_id_for_collection(TraineeFile)%>'>
+  <%= render trainee.trainee_files %>
+</div>

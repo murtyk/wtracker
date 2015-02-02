@@ -1,0 +1,12 @@
+<% if @object.errors.empty? %>
+  $('#new_klass_trainee').remove();
+  $('#new_klass_trainee_link').show();
+  $('#klass_trainees').html('<%= j render("klass_trainees/klass_trainees", object: @object) %>');
+  <% if @object.is_a? Klass %>
+    $("#trainees_header").html("Trainees(<%=@object.klass_trainees.count%>)");
+  <% end %>
+<% else %>
+  <% messages = '<br><b style="color:red">'  + @object.errors.full_messages.join(";") + '</b>' %>
+  $('#new_klass_trainee').prepend('<%= messages.html_safe %>');
+<% end %>
+

@@ -1,0 +1,32 @@
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Employer</th>
+    <th>Location</th>
+    <th>Trainee</th>
+    <th>Class</th>
+    <th>College</th>
+    <th>Status</th>
+    <th>Employer Notes</th>
+
+  </tr>
+
+  <% report.interested_interactions.each do |ti| %>
+    <tr>
+      <td><%= link_to(ti.employer_name, ti.employer)%></td>
+      <td><%= ti.employer_location%></td>
+      <td><%= link_to(ti.trainee_name, ti.trainee) %></td>
+      <td><%= policy(ti.klass).show? ? link_to(ti.klass_name, ti.klass) : ti.klass_name %></td>
+      <td><%= ti.college_name_location %></td>
+      <td><%= ti.status_name %> </td>
+      <td>
+        <% ti.employer.employer_notes.each do |employer_note| %>
+          <p>
+              <%= employer_note.created_at.to_date.to_s%>
+              <%= employer_note.note.truncate(40)%>
+          </p>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+

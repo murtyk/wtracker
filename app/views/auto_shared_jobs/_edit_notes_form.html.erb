@@ -1,0 +1,13 @@
+<%= simple_form_for(auto_shared_job, html: { class: "form-horizontal", style: "margin-top: 10px", id: 'form_edit_notes' }, remote: true) do |f| %>
+  <%= f.error_notification %>
+  <ul class="errors" style='color: red'></ul>
+  <div class="form-inputs" style='padding-left: 20px'>
+    <%= f.input_field :notes, style: 'width: 90%; height: 200px' %>
+  </div>
+  <div class="form-actions" style='padding-top: 5px;padding-bottom: 5px;margin-bottom: 0px;'>
+    <%= link_to "Cancel", "#", class: "btn btn-flat btn-small btn-danger", data: {dismiss: "modal"} %>
+    <%= button_tag(type: 'submit', class: "btn btn-flat btn-small btn-primary") do %>
+      <i class="icon-ok"></i> Save
+    <% end %>
+  </div>
+<% end %>

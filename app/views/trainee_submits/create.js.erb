@@ -1,0 +1,8 @@
+$('#new_trainee_submit').remove();
+<% if @trainee_submit.errors.any? %>
+  $('#new_trainee_submit_link').hide().after('<%= j render("jsform", trainee_submit: @trainee_submit) %>');
+<% else %>
+<% s = "#{@trainee_submit.applied_on ? @trainee_submit.applied_on.to_s : ''}: <a href='/employers/"+ @trainee_submit.employer_id.to_s + "'>" + "#{@trainee_submit.employer_name}"+ '</a>' + ":#{@trainee_submit.title} "%>
+  $('#trainee_submits').append('<%=  j render @trainee_submit%>');
+  $('#new_trainee_submit_link').show();
+<% end %>

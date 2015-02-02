@@ -1,0 +1,20 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1><%="#{program.new_record? ? "New Program for #{program.grant_name}" : 'Edit Program'} "%></h1>
+    </div>
+     <%= simple_form_for(program, html: {class: "form-horizontal"}) do |f| %>
+      <div class="form-inputs">
+        <%= f.input :name %>
+        <%= f.input :description %>
+        <%= f.input :hours %>
+        <%= f.association :sector %>
+        <%= f.hidden_field :grant_id%>
+      </div>
+      <div class="form-actions">
+        <%= render 'shared/cancel_link' %>
+        <%= submit_button(f) %>
+      </div>
+      <% end %>
+  </div>
+</div>

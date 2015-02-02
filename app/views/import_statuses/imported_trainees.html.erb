@@ -1,0 +1,31 @@
+<h1>Imported Trainees</h1>
+
+<%= render 'shared/import_fails', import_status: @import_status %>
+
+<h4>Following <%= @import_status.trainees.count %> Trainees were imported successfully</h4>
+
+<table id="table_trainee" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>email</th>
+    <th>Land No.</th>
+    <th>Mobile</th>
+    <th>Location</th>
+    <th></th>
+  </tr>
+
+  <% @import_status.trainees.each do |trainee| %>
+    <tr id='tr_<%=trainee.id%>'>
+      <td><%= link_to trainee.name, trainee_path(trainee)%></td>
+      <td><%= trainee.email%></td>
+      <td><%= trainee.land_no%></td>
+      <td><%= trainee.mobile_no%></td>
+      <td><%= trainee.county_name %></td>
+
+      <td>
+        <% confirm_message = "Delete #{trainee.name}.\n\nAre you sure?" %>
+        <%= render('shared/show_edit_destroy_buttons', resource: trainee, confirm_message: confirm_message) %>
+      </td>
+    </tr>
+  <% end %>
+</table>

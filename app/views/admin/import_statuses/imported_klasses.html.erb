@@ -1,0 +1,32 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Imported Classes</h1>
+</div>
+
+<%= render 'import_status', import_status: @import_status %>
+<%= render 'import_fails', import_status: @import_status %>
+
+<h4>Following <%= @import_status.klasses.count %> Classes were imported successfully</h4>
+
+<table id="table_klass" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Credits</th>
+    <th>Training Hours</th>
+  </tr>
+
+  <% @import_status.klasses.each do |klass| %>
+    <tr id='tr_<%=klass.id%>'>
+      <td><%= klass.id %></td>
+      <td><%= link_to klass.name, klass_path(klass)%></td>
+      <td><%= klass.description%></td>
+      <td><%= klass.start_date%></td>
+      <td><%= klass.end_date%></td>
+      <td><%= klass.credits%> </td>
+      <td><%= klass.training_hours%> </td>
+    </tr>
+  <% end %>
+</table>

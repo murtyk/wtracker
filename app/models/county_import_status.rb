@@ -1,0 +1,2 @@
+class CountyImportStatus < ImportStatus
+end

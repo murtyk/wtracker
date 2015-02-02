@@ -1,0 +1,47 @@
+<% if @companies_finder.errors? %>
+  <%= render 'form' %>
+<% else %>
+  <div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-header"  style='background-color: #ddd'>
+      <div id='modal_title'>
+        <h2>Processing <%= params[:file].original_filename %> ...Please wait</h2>
+      </div>
+    </div>
+    <div class="modal-body" style='padding: 20px'>
+      <div class ='row-fluid' style= 'margin-bottom: 20px' >
+        <span id='ROWS_SUCCESSFUL' style='padding: 5px; border: solid green; text-weight: bold'>0</span><b> Companies Found</b>
+      </div>
+      <div class ='row-fluid'>
+        <span id='ROWS_FAILED' style='padding: 5px; border: solid red'>0</span><b> Not Found </b>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(window).load(function() {
+      processing = true
+      console.log("fetching companies finder status");
+      $("#pleaseWaitDialog").modal();
+      $("body").css("cursor", "progress");
+      jQuery.ajaxSetup({async:false});
+      interval = setInterval(function(){
+        $.get("/companies_finder/status?process_id=<%=@companies_finder.process_id%>", function(data){
+          $('#ROWS_SUCCESSFUL').html(data['success_count']);
+          $('#ROWS_FAILED').html(data['fail_count']);
+          processing = data['status'] != 'FINISHED';
+        }, "json")
+        .fail(function(jqXHR, textStatus, errorThrown){
+          alert("error in companies finder " + textStatus + errorThrown);
+        });
+
+        if (!processing) {
+          clearInterval(interval);
+          jQuery.ajaxSetup({async:true});
+          $("body").css("cursor", "default");
+          location.href = '/companies_finder?process_id=<%=@companies_finder.process_id%>';
+        }
+      }, 1000);
+
+    });
+  </script>
+<% end %>

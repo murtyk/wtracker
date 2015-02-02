@@ -1,0 +1,116 @@
+<h1><%= @applicant_metrics.title%></h1>
+<% if @applicant_metrics.applicants %>
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <th>Name</th>
+    <th>Applied On</th>
+    <th>Email</th>
+    <th>Phone No</th>
+    <th>County</th>
+    <th>Source</th>
+    <th>Sector</th>
+    <th>Employment Status</th>
+  </tr>
+  <% @applicant_metrics.applicants.each do |applicant| %>
+    <tr>
+      <td><%= link_to applicant.name, applicant %></td>
+      <td><%= applicant.created_at.to_date.to_s %></td>
+      <td><%= applicant.email %></td>
+      <td><%= applicant.mobile_phone_number %></td>
+      <td><%= applicant.county.name %></td>
+      <td><%= applicant.source %></td>
+      <td><%= applicant.sector.name %></td>
+      <td><%= applicant.current_employment_status %></td>
+    </tr>
+  <% end %>
+</table>
+<% end %>
+
+<% if @applicant_metrics.trainees %>
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <th>Name</th>
+    <th>Applied On</th>
+    <th>Email</th>
+    <th>Phone No</th>
+    <th>County</th>
+    <th>Last Job Title</th>
+    <th>Sector /Industry</th>
+    <th>Education Level</th>
+    <th>Employment Status</th>
+    <th>Funding Source</th>
+    <% if @applicant_metrics.show_applicant_placements %>
+      <th>Placement Information</th>
+    <% end %>
+    <% if @applicant_metrics.show_trainee_placements %>
+      <th>Start Date</th>
+      <th>Company</th>
+      <th>Job Title</th>
+      <th>Salary</th>
+    <% end %>
+  </tr>
+  <% @applicant_metrics.trainees.each do |trainee| %>
+    <% applicant = trainee.applicant %>
+    <tr>
+      <td><%= link_to trainee.name, trainee       %></td>
+      <td><%= applicant.applied_on                %></td>
+      <td><%= applicant.email                     %></td>
+      <td><%= applicant.mobile_phone_number       %></td>
+      <td><%= applicant.county_name               %></td>
+      <td><%= applicant.last_job_title            %></td>
+      <td><%= applicant.sector_name               %></td>
+      <td><%= applicant.education                 %></td>
+      <td><%= applicant.current_employment_status %></td>
+      <td><%= trainee.funding_source_name         %></td>
+      <% if @applicant_metrics.show_applicant_placements %>
+        <td><%= applicant.placement_details       %></td>
+      <% end %>
+    <% if @applicant_metrics.show_trainee_placements %>
+      <td><%= trainee.start_date    %></td>
+      <td><%= trainee.employer_name %></td>
+      <td><%= trainee.hire_title    %></td>
+      <td><%= trainee.hire_salary   %></td>
+    <% end %>
+    </tr>
+  <% end %>
+</table>
+<% end %>
+
+<!--
+<div class = 'row-fluid filters-div'>
+  <%= simple_form_for :filters, method: :get, url: :applicants, html: { class: 'form-search'} do |f| %>
+    <div class='row-fluid'>
+      <div class='span2'>
+        County
+        <%= f.input_field :county_id, collection: applicant_counties_for_selection,
+                                      selected: @filter[:county_id],
+                                      include_blank: true,
+                                      class: "search-query input-block-level"%>
+      </div>
+      <div class='span2'>
+        Sector
+        <%= f.input_field :sector_id, collection: applicant_sectors_for_selection,
+                                      selected: @filter[:sector_id],
+                                      include_blank: true,
+                                      class: "search-query input-block-level"%>
+      </div>
+      <div class='span2'>
+        Source<%= f.input_field :source, collection: applicant_sources_for_selection,
+                                         selected: @filter[:source],
+                                         include_blank: true,
+                                         class: "search-query input-block-level" %>
+      </div>
+      <div class='span2'>
+        Last Name starts with
+        <%= f.input_field :last_name, value: @filter[:last_name],
+                                      class: "search-query input-block-level" %>
+      </div>
+      <div class='span2' style='padding-top:20px'>
+        <button type="submit" id='submit-button' class="btn btn-flat btn-small btn-primary btn-spinner" style = 'margin-right:10px; margin-left: 0px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white">  Find</i>
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>
+-->

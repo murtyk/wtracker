@@ -1,0 +1,155 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.simplyhired.com/a/jobs-api/xml-v2/q-cnc/l-Edison,NJ/mi-10/fdb-7/ws-25/pn-2?cflg=r&clip=127.0.0.1&jbd=<simplyhired_jbd>&pshid=<simplyhired_pshid>&ssty=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - ngx_openresty
+      Date:
+      - Tue, 22 Apr 2014 17:02:33 GMT
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '277'
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=20
+      Vary:
+      - Host
+      Set-Cookie:
+      - gc=1; expires=Wed, 23-Apr-2014 17:02:55 GMT; path=/
+      - sh_sess=id%3A1398186175%2Csrc%3Aother%2Cnu%3A1; expires=Tue, 22-Apr-2014 17:32:55
+        GMT; Max-Age=1800; path=/
+      - sh_uid=id%3A18590282655356a0bf08ca17.63087638; expires=Sun, 21-Apr-2019 17:02:55
+        GMT; Max-Age=157680000; path=/
+      - shup=fvt%3D5356a0bf%26ncs%3D1%26lst%3D5356a0bf; expires=Thu, 22-May-2014 17:02:55
+        GMT; path=/
+      Cache-Control:
+      - no-cache, must-revalidate
+      P3p:
+      - CP="CAO DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT"
+    body:
+      encoding: UTF-8
+      string: "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<!DOCTYPE
+        shrs SYSTEM \"http://api.simplyhired.com/c/jobs-api/html/sr2.dtd\">\n\n<sherror>\n
+        \ <error type=\"noresults\" code=\"1.1\">\n  <title></title>\n  <subtitle></subtitle>\n
+        \ <text></text>\n  <base></base>\n </error>\n</sherror>\n "
+    http_version: 
+  recorded_at: Tue, 22 Apr 2014 17:02:55 GMT
+- request:
+    method: get
+    uri: http://api.simplyhired.com/a/jobs-api/xml-v2/q-cnc/l-Edison,NJ/mi-10/fdb-7/ws-25/pn-1?cflg=r&clip=127.0.0.1&jbd=<simplyhired_jbd>&pshid=<simplyhired_pshid>&ssty=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - ngx_openresty
+      Date:
+      - Tue, 22 Apr 2014 17:02:34 GMT
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=20
+      Vary:
+      - Host
+      Set-Cookie:
+      - gc=1; expires=Wed, 23-Apr-2014 17:02:55 GMT; path=/
+      - sh_sess=id%3A1398186175%2Csrc%3Aother%2Cnu%3A1; expires=Tue, 22-Apr-2014 17:32:55
+        GMT; Max-Age=1799; path=/
+      - sh_uid=id%3A519321065356a0bfbab586.44663405; expires=Sun, 21-Apr-2019 17:02:55
+        GMT; Max-Age=157679999; path=/
+      - shup=fvt%3D5356a0bf%26ncs%3D1%26lst%3D5356a0c0; expires=Thu, 22-May-2014 17:02:56
+        GMT; path=/
+      Cache-Control:
+      - no-cache, must-revalidate
+      P3p:
+      - CP="CAO DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT"
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+        <!DOCTYPE shrs SYSTEM "http://api.simplyhired.com/c/jobs-api/html/sr2.dtd">
+
+        <shrs>
+        <rq url="http://api.simplyhired.com/a/jobs-api/xml_v2/q-cnc/l-Edison%2CNJ/mi-10/fdb-7/pn-1/ws-25">
+          <t>Cnc Jobs - Edison, NJ</t>
+          <dt>2014-04-22T17:02:55Z</dt>
+          <si>0</si>
+          <rpd>25</rpd>
+          <tr>3</tr>
+          <tv>3</tv>
+          <em url=""/>
+        <h>
+          <kw pos="1"/>
+        </h>
+        </rq>
+        <rs>
+        <r>
+          <jt>SME Technical Sales</jt>
+          <cn url="">KPIT Infosystems</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/cparm-cF9pZD00OTgyMSZ6b25lPTYmaXA9MTI3LjAuMC4xJmNvdW50PTI1JnN0YW1wPTIwMTQtMDQtMjIgMTA6MDI6NTYmY291bnRyeT11cyZwdWJsaXNoZXJfY2hhbm5lbF9pZHM9bnVsbCZhX2lkPTQ5MjQ3JmNfaWQ9MzYwNjEmY3BjPTAuMDgmcG9zPTEmaGFzaD00ZTVjYzA5MWJjMGNmM2Y4N2FiNzdlNTlhYTY5ZjQ5Yg%3D%3D%3B355afcd6b43a40d392f483f1ef935d23/jobkey-25070.13243927/rid-leneddefvvjnhihawpnianjrjoqetaps/pub_id-<simplyhired_pshid>/cjp-0/hits-3">Dice</src>
+          <ty>sponsored</ty>
+          <loc cty="Iselin" st="NJ" postal="08830" county="Middlesex County" region="" country="US">Iselin, NJ</loc>
+          <ls>2014-04-21T20:09:08Z</ls>
+          <dp>2014-04-16T02:05:29Z</dp>
+          <e>ions. Person should be considered Subject Matter Expert. Please send your updated resume with details to aarti.sabnanikpit.com mailtoaarti.sabnanikpit.com Cloud,Datacenter,Security,Telematics,M2M,...></e>
+        </r>
+        <r>
+          <jt>Machinist Toolmaker</jt>
+          <cn url="">Megawatt Machine Services</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/cparm-cF9pZD00OTgyMSZ6b25lPTYmaXA9MTI3LjAuMC4xJmNvdW50PTI1JnN0YW1wPTIwMTQtMDQtMjIgMTA6MDI6NTYmY291bnRyeT11cyZwdWJsaXNoZXJfY2hhbm5lbF9pZHM9bnVsbCZhX2lkPTIxMzUmY19pZD0xODk1MiZjcGM9MC4wNyZwb3M9MiZoYXNoPTI4ZjBjNDY4YWJhMmFlZWQzZDlmODcwZjliNzhhNmE5%3Bf486f04a3908b10da10a0f34a76d7c68/jobkey-8686.817656600010800/rid-leneddefvvjnhihawpnianjrjoqetaps/pub_id-<simplyhired_pshid>/cjp-1/hits-3">Get Machinist Jobs</src>
+          <ty>sponsored</ty>
+          <loc cty="Somerset" st="NJ" postal="08873" county="Somerset County" region="" country="US">Somerset, NJ</loc>
+          <ls>2014-04-20T20:01:25Z</ls>
+          <dp>2014-04-20T20:01:25Z</dp>
+          <e>Machinist Toolmaker Machinist Toolmaker that has good drafting ability. CAD experience is a plus along with having CNC Programming experience. Good manual machining skills is a must.></e>
+        </r>
+        <r>
+          <jt>Pick packer</jt>
+          <cn url="">Select Family of Staffing Companies</cn>
+          <src url="http://api.simplyhired.com/a/job-details/view/jobkey-53c175ea13822f84b34943887541538233fb13c/rid-leneddefvvjnhihawpnianjrjoqetaps/cjp-2/hits-3">The Select Family of Staffing Companies</src>
+          <ty>organic</ty>
+          <loc cty="Somerset" st="NJ" postal="08875" county="Somerset County" region="" country="US">Somerset, NJ</loc>
+          <ls>2014-04-22T06:16:38Z</ls>
+          <dp>2014-04-22T06:16:38Z</dp>
+          <e>engineer, machinist, plant manager, operations, technician, CNC, purchasing, engineering, production supervisor, mechanical, production manager, plant manager, assembly, general, welder, logistics, chemical, electrical, buyer, autocad,...></e>
+        </r>
+        </rs>
+        <pjl>
+        </pjl>
+        </shrs>
+    http_version: 
+  recorded_at: Tue, 22 Apr 2014 17:02:56 GMT
+recorded_with: VCR 2.8.0

@@ -1,0 +1,110 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=10%20Rembrandt,%20East%20Windsor,%20NJ,%2008520&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 05 Mar 2014 15:55:34 GMT
+      Expires:
+      - Thu, 06 Mar 2014 15:55:34 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "10",
+                       "short_name" : "10",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Rembrandt Way",
+                       "short_name" : "Rembrandt Way",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "East Windsor",
+                       "short_name" : "East Windsor",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Mercer County",
+                       "short_name" : "Mercer County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "08520",
+                       "short_name" : "08520",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "10 Rembrandt Way, East Windsor, NJ 08520, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.253859,
+                       "lng" : -74.54743490000001
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.2552079802915,
+                          "lng" : -74.54608591970852
+                       },
+                       "southwest" : {
+                          "lat" : 40.2525100197085,
+                          "lng" : -74.54878388029152
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 05 Mar 2014 15:55:32 GMT
+recorded_with: VCR 2.8.0

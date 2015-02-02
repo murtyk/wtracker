@@ -1,0 +1,42 @@
+<% if @valid_key %>
+  <div class = 'row-fluid' style='margin-top:20px'>
+
+    <div class='span3'>
+    </div>
+    <div class ='span6'>
+
+      <p>
+        Hello, <%= @shared_job_status.trainee.name %>
+      </p>
+
+      <p style='margin-left: 30px'>
+        Please click on the job link below, review and provide your feedback on this job lead.
+      </p>
+
+      <%= simple_form_for(@shared_job_status) do |f| %>
+        <%= f.error_notification %>
+        <h4 id="notice"><%= notice %></h4>
+
+        <div class="form-inputs">
+          <%= f.input :status, label: false, collection: shared_job_statuses, as: :radio_buttons %>
+          <%= f.input :feedback, input_html: {style: 'width: 400px'} %>
+        </div>
+
+        <%= submit_button(f, 'Submit')%>
+      <% end %>
+      <p>
+        <b>Job Title: </b>
+        <%= @shared_job_status.title %>
+      </p>
+      <p>
+        <b>Company: </b>
+        <%= @shared_job_status.company %>
+      </p>
+      <h4><%= link_to 'Click here to reivew the job details', clicked_shared_job_status_path(@shared_job_status, key: @shared_job_status.key ), target: '_blank' %></h4>
+    </div>
+  </div>
+<% else %>
+  <p style = 'color: red'>Invalid Key</p>
+  <br>
+  <b> Please inform the administrator.</b>
+<% end %>

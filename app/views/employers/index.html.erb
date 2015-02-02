@@ -1,0 +1,109 @@
+<h1>Employers</h1>
+<div class = 'row-fluid filters-div'>
+  <%= simple_form_for :filters, method: :get, url: :employers, html: { class: 'form-search'} do |f| %>
+    <div class='row-fluid'>
+      <div class='span3'>
+        Counties<%= f.input_field :county_ids, label: 'County', collection: employer_counties_for_selection, class: "search-query input-block-level", multiple: true%>
+      </div>
+      <div class='span3'>
+        Sector<br><%= f.input_field :sector_id, label: 'Sector', collection: employer_sectors_for_selection, class: "search-query input-block-level", width:'50%'%><br>
+        Source<br><%= f.input_field :source, label: 'Source', collection: employer_sources_for_selection, class: "search-query input-block-level"%>
+      </div>
+      <div class='span2'>
+        Name starts with
+        <%= f.input_field :name, class: "search-query input-block-level" %>
+      </div>
+      <div class='span2' style='padding-top:20px'>
+        <button type="submit" id='submit-button' class="btn btn-flat btn-small btn-primary btn-spinner" style = 'margin-right:10px; margin-left: 0px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white">  Find</i>
+        </button>
+        <button type = 'button' id ='help-button' class="btn btn-flat btn-small btn-info">
+          <i class="icon-question-sign icon-white"></i>
+        </button>
+      </div>
+      <div class='span2' style='padding-top:20px'>
+        <%= download_button({filters: {all: 1}}, "Download All") %>
+      </div>
+
+    </div>
+  <% end %>
+</div>
+
+<%= render 'search_help' %>
+
+<div class = 'row-fluid'>
+  <div class = 'span2' style = 'padding-top: 10px'>
+    <p><b>Total: <%= @employers_count %></b></p>
+  </div>
+  <% if @employers.any? %>
+    <div align="center" class='span8'><%= will_paginate @employers%></div>
+    <div class = 'span2' style = 'padding-top: 5px'><%= download_button %></div>
+  <% end %>
+</div>
+
+<table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>City</th>
+    <th>County</th>
+    <th>Contacts</th>
+    <th>Notes</th>
+    <th>Source</th>
+    <th></th>
+  </tr>
+
+<% @employers.each do |emp| %>
+  <% employer = emp.decorate %>
+  <tr id='tr_<%=employer.id%>'>
+    <td><%= name_and_link(employer) %></td>
+    <td><%= employer.city %></td>
+    <td><%= employer.county_state %></td>
+    <td>
+      <p><%= employer.phone_no %></p>
+      <% employer.contacts.each do |contact| %>
+        <p>
+        <%= contact.name %>
+        <%= contact.land_no %>
+        <%= contact.mobile_no %>
+        <%= contact.email %>
+        </p>
+      <% end %>
+    </td>
+    <td>
+      <ol>
+      <% employer.employer_notes.each do |notes|%>
+        <li><%= notes.note %></li>
+      <% end %>
+      </ol>
+    </td>
+    <td><%= employer.source %></td>
+    <td>
+      <% confirm_msg = "Are your sure you want to delete employer #{employer.name}?" %>
+      <%= render('shared/show_edit_destroy_buttons', resource: employer,
+                                                     confirm_message: confirm_msg) %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<% if @employers.any? %>
+  <div align="center"><%= will_paginate @employers%></div>
+<% end %>
+
+<script type="text/javascript">
+  var selected = new Array();
+  $('.form-search').submit(function() {
+    sector_id  = $('#filters_sector_id :selected').text();
+    county_ids = $('#filters_county_ids :selected').text();
+    source     = $('#filters_source :selected').text();
+    name       = $('#filters_name').val();
+    if (sector_id == 0 && county_ids == 0 && source == 0 && name == ''){
+      alert("Please select at least one of sector / county / source OR enter name");
+      return false;
+    }
+    $('#submit-button').button('loading');
+  });
+</script>
+<script type="text/javascript">
+  $('.btn-spinner').button();
+</script>

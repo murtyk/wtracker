@@ -1,0 +1,15 @@
+<% if @error_message %>
+  <strong style='color: red'><%= @error_message %></strong><br>
+<% end %>
+<%= simple_form_for(trainee_file, html: { multipart: true, id: 'trainee_file_form' }, authenticity_token: true) do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs">
+    <%= f.hidden_field :trainee_id %>
+    Select a File:
+    <%= f.input :file, as: :file, label: false %>
+    <%= f.input :notes, label: 'Comments' %>
+  </div>
+  <div class="form-actions">
+    <%= submit_button(f, 'Submit') %>
+  </div>
+<% end %>

@@ -1,0 +1,8 @@
+<% if @object.errors.empty? %>
+  $('#new_trainee_interaction').remove();
+  $('#new_trainee_interaction_link').show();
+  $('#trainee_interactions').html('<%= j render("trainee_interactions", object: @object) %>');
+<% else %>
+  <% messages = '<br><b style="color:red">'  + @object.errors.full_messages.join(";") + '</b>' %>
+  $('#new_trainee_interaction').prepend('<%= messages.html_safe %>');
+<% end %>

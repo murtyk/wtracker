@@ -1,0 +1,13 @@
+<tr>
+  <th>Class</th>
+  <th>College</th>
+  <th>Start date</th>
+  <th>End date</th>
+  <th>Enrolled</th>
+  <th>Dropped</th>
+  <th>Completed</th>
+  <th>Continuing</th>
+  <th>Not Placed</th>
+  <th>Placed</th>
+  <th>Placement Rate</th>
+</tr>

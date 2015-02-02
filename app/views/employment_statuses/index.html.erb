@@ -1,0 +1,24 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Employment Statuses</h1>
+</div>
+<div class="row-fluid">
+  <%= new_button(EmploymentStatus) %>
+</div>
+<% if policy(EmploymentStatus).index? %>
+  <table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
+    <tr>
+      <th>Status</th>
+      <th>Applicant Action</th>
+      <th></th>
+    </tr>
+    <% @employment_statuses.each do |employment_status| %>
+    <tr id="tr_<%=employment_status.id%>">
+      <td><%= employment_status.status %></td>
+      <td><%= employment_status.action %></td>
+      <td>
+        <%= render('shared/show_edit_destroy_buttons', resource: employment_status, confirm_message: 'Are You Sure?') %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>

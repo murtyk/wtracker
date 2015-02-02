@@ -1,0 +1,45 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Colleges</h1>
+</div>
+
+<div class="row-fluid">
+  <%= new_button(College)%>
+</div>
+<table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <th>Name</th>
+    <th>Address</th>
+    <th># of Classes</th>
+    <th></th>
+  </tr>
+  <% @colleges_map.colleges.each do |c| %>
+    <tr id='tr_<%=c.id%>'>
+      <td><%= name_and_link(c) %></td>
+      <td><%= c.formatted_address%></td>
+      <td><%= c.klasses.count %></td>
+      <td>
+        <%= show_button(c) %>
+        <%= edit_button(c) %>
+        <%=
+          if policy(c).destroy?
+            button_destroy_association(c, confirm_message: 'Are you sure?')
+          else
+            delete_message_button('Can not delete. Has classes in some grants.')
+          end
+        %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<div class="row-fluid">
+  <%= gmaps @colleges_map.map %>
+</div>
+
+<script type="text/javascript">
+$('.btn-message').click(function(e){
+  message = $(this).attr('message');
+  alert(message);
+  e.preventDefault();
+});
+</script>

@@ -1,0 +1,25 @@
+<h1>Email Sent To Trainee(s)</h1>
+<p>
+  <strong>From:</strong>
+  <%= @trainee_email.user.name %>
+</p>
+
+<p>
+  <strong>Class:</strong>
+  <%= @trainee_email.klass_name %>
+</p>
+
+<p>
+  <strong>Trainee names:</strong>
+  <%= @trainee_email.trainee_names.join(';') %>
+</p>
+
+<p>
+  <strong>Subject:</strong>
+  <%= @trainee_email.subject %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @trainee_email.content %>
+</p>

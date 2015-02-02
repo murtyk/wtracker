@@ -1,0 +1,36 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Imported Classes</h1>
+</div>
+
+<%= render 'shared/import_fails', import_status: @import_status %>
+
+<h4>Following <%= @import_status.klasses.count %> Classes were imported successfully</h4>
+
+<table id="table_klass" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Credits</th>
+    <th>Training Hours</th>
+    <th></th>
+  </tr>
+
+  <% @import_status.klasses.each do |klass| %>
+    <tr id='tr_<%=klass.id%>'>
+      <td><%= link_to klass.name, klass_path(klass)%></td>
+      <td><%= klass.description%></td>
+      <td><%= klass.start_date%></td>
+      <td><%= klass.end_date%></td>
+      <td><%= klass.credits%> </td>
+      <td><%= klass.training_hours%> </td>
+
+      <td>
+        <%= show_button(klass) %>
+        <%= edit_button(klass) %>
+        <%= button_destroy_association klass, confirm_message: "Are your sure you want to delete class #{klass.name}?"%>
+      </td>
+    </tr>
+  <% end %>
+</table>

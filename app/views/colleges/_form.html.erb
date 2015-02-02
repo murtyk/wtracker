@@ -1,0 +1,22 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1><%="#{college.new_record? ? 'New' : 'Edit'} College"%></h1>
+    </div>
+      <%= simple_form_for(college, html: { class: "form-horizontal"}) do |f| %>
+
+      <div class="form-inputs">
+        <%= f.input :name%>
+
+        <%= f.fields_for :address do |address_fields| %>
+          <%= render 'shared/address_fields', address_fields: address_fields, required: true %>
+        <% end %>
+
+      </div>
+      <div class="form-actions">
+        <%= render 'shared/cancel_link' %>
+        <%= submit_button(f) %>
+      </div>
+      <% end %>
+  </div>
+</div>

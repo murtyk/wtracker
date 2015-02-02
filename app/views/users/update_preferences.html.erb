@@ -1,0 +1,6 @@
+<h1>Updated Your Preferences</h1>
+<% if current_user.copy_job_shares? %>
+	<h4>You will be copied on jobs forwarded to trainees</h4>
+<% else %>
+	<h4>You will NOT be copied on jobs forwarded to trainees</h4>
+<% end %>

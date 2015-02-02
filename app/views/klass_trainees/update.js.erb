@@ -1,0 +1,10 @@
+<% if @klass_trainee.trainee_page %>
+	$('#<%=ajax_form_id(@klass_trainee)%>').remove();
+	$('#klass_trainees').html('<%= j render("klass_trainees", object: @klass_trainee.trainee) %>');
+	<% if @klass_trainee.update_employer_interactions %>
+		$('#trainee_interactions').html('<%= j render("trainee_interactions/trainee_interactions", object: @klass_trainee.trainee) %>');
+	<% end %>
+	$('#<%=div_id_for(@klass_trainee)%>').show();
+<% else %>
+	$('#klass_trainees').html('<%= j render("klass_trainees", object: @klass_trainee.klass) %>');
+<% end %>

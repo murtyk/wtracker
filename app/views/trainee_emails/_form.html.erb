@@ -1,0 +1,53 @@
+<%= simple_form_for(@trainee_email,html: { class: "form-horizontal" }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses, input_html: {id: 'select_klass', style: 'width: 350px;'}%>
+    <%= f.input :trainee_ids, label: "Select Trainees", collection: [], input_html: {multiple: true, id: 'select_trainees',include_blank: false}, include_blank: false%>
+
+    <%= f.input :subject, input_html: {style: 'width: 50%'} %>
+    <%= f.input :content, input_html: {style: 'width: 50%; height: 120px'} %>
+  </div>
+
+  <div class="form-actions">
+    <%= submit_button(f, 'Send') %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  jQuery(function() {
+    return $('#select_klass').change(function() {
+      klass_id = $('#select_klass :selected').val();
+      $.ajax({
+            url: "/klasses/" + klass_id + "/trainees_with_email",
+            beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader('accept', "text/javascript");
+              }
+            });
+    });
+
+  });
+
+  $(window).load(function() {
+    klass_id = $('#select_klass :selected').val();
+    if (klass_id > 0)
+    {
+      $('#select_klass').change();
+    }
+  });
+</script>
+
+
+<script type="text/javascript">
+
+  $(".simple_form").submit(function(e){
+
+    count = $('#select_trainees option:selected').length;
+    if (count == 0){
+      alert("Please select at least one trainee");
+      return false;
+    }
+
+  });
+
+</script>

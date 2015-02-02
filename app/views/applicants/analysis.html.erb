@@ -1,0 +1,13 @@
+<h1>Applicants & Trainees Analysis</h1>
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <% @metrics.headers.each do |header| %>
+      <th><%= header %></th>
+    <% end %>
+  </tr>
+  <% @metrics.rows.each do |row| %>
+    <tr>
+      <%= row.map{ |c| "<td>#{c}</td>"}.join('').html_safe %>
+    </tr>
+  <% end %>
+</table>

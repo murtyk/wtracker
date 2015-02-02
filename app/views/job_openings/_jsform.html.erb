@@ -1,0 +1,15 @@
+<%= simple_form_for(job_opening, remote: true) do |f| %>
+  <hr>
+  <h4> New Jobs</h4>
+  <%#= f.error_notification %>
+
+  <%= f.input :jobs_no, label: 'Number of Jobs Open', input_html: {style: "width: 50px"} %>
+  <%= f.input :skills, label: 'Skills/Positions' %>
+  <%= f.hidden_field :employer_id %>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(job_opening) %>
+<% end %>
+

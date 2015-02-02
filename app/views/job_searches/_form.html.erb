@@ -1,0 +1,107 @@
+<div class = 'row-fluid filters-div' >
+  <div class = 'span4'style = 'min-height: 120px; border-right: 1px solid white'>
+    <p style='color: blue'>Your Previous Searches</p>
+      <ol>
+        <% current_user.job_searches.limit(5).each do |job_search| %>
+          <li><%= link_to job_search.to_label, job_search%></li>
+        <% end %>
+      </ol>
+  </div>
+    <%= simple_form_for(job_search, html: { class: 'form-search', style: 'margin-bottom: 0px' }) do |f| %>
+      <div class = 'span4' >
+          <p style='color: blue'>New Search</p>
+
+          <label style='width:61px'>College</label> <%= f.input_field :college_id, collection: College.all, label: false, include_blank: true%><br>
+          <label style='width:61px'>Location</label>
+            <%= f.input_field :location, placeholder: "ex: Phoenix, AZ", label: false %>
+          <br>
+          <label style='width:61px'> Keywords </label>
+            <%= f.input_field :keywords, placeholder: "ex: Sales Director", label: false %>
+          <br>
+          <%= f.input_field :in_state, label: 'In State Only' %>
+          <label > In State Only </label>
+      </div>
+      <div class = 'span4'>
+        <br>
+        <% job_search.distance ||= 10%>
+        <label style='width:61px'> Distance </label>
+        <%= f.input_field :distance, collection: JobSearch::JOBSEARCH_DISTANCE, label: false, include_blank: false,style: 'width: 130px'%> Miles
+        <br>
+        <% job_search.days ||= 7%>
+        <label style='width:61px'> Age</label> <%= f.input_field :days, collection: JobSearch::JOBSEARCH_DAYS, label: false, include_blank: false,style: 'width: 130px'%>
+        <br><br>
+
+        <button type="submit" class="btn btn-flat btn-small btn-primary " style = 'margin-left: 50px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Searching...">
+          <i class="icon-search icon-white"></i>Find
+        </button>
+      </div>
+    <% end %>
+
+</div>
+<%= content_tag "div", id: "colleges", data: {locations: College.locations_hash } do %>
+<% end %>
+
+
+<script type="text/javascript">
+jQuery(function() {
+  var tolist;
+});
+</script>
+
+<script type="text/javascript">
+jQuery(function() {
+
+  var list;
+  list = $('#colleges').data('locations');
+  return $('#job_search_college_id').change(function() {
+    college = $('#job_search_college_id :selected').text();
+    address = list[college];
+    $('#job_search_location').val(address);
+
+  });
+
+});
+</script>
+
+<script type="text/javascript">
+</script>
+
+<script type="text/javascript">
+  $('#new_job_search').submit(function() {
+    if ($('#job_search_location').val() == ""){
+       alert("Please enter location. example: Edison, NJ");
+       return false;
+    }
+    if ($('#job_search_keywords').val() == ""){
+       alert("Please enter keywords. example: Pediatric Nurse");
+       return false;
+    }
+
+    if ($('#job_search_in_state').val() == '1')
+    {
+      continue_req = true;
+      loc = $('#job_search_location').val();
+      state = loc.split(',')[1];
+      jQuery.ajaxSetup({async:false});
+      $.get("/job_searches/valid_state", {state_code: state}, function(data) {
+        if (data == null || data == false)
+        {
+          alert('Invalid state code. Please enter valid location.');
+          continue_req = false;
+          return false;
+        }
+      });
+    }
+
+    return continue_req;
+  });
+</script>
+
+<script type="text/javascript">
+  $('.btn-spinner').button();
+
+$('.btn-spinner').click(function() {
+    $(this).button('loading');
+});
+
+</script>

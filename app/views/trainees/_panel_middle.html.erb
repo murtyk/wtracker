@@ -1,0 +1,14 @@
+<%= trainee.assessments_header %>
+<div id="<%=div_id_for_collection(TraineeAssessment)%>">
+  <%= render trainee.trainee_assessments %>
+</div>
+<hr>
+
+<%= trainee.trainee_submits_header %>
+<div id="<%=div_id_for_collection(TraineeSubmit)%>">
+  <%= render trainee.trainee_submits %>
+</div>
+<hr>
+
+<%= trainee.job_shares_header %>
+<%= render 'job_shares', job_shares: trainee.job_shares, trainee: trainee %>

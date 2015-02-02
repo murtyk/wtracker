@@ -1,0 +1,19 @@
+<div class='company_info'>
+<% if company_info[:found] %>
+	Name <strong><%= company_info[:name] %></strong><br>
+	Address:
+		<strong><%= company_info[:line1]%></strong><br>
+		<strong><%= company_info[:city]%></strong><br>
+		<strong><%= company_info[:state]%></strong><br>
+		<strong><%= company_info[:zip]%></strong><br>
+	County: <strong><%= company_info[:county]%></strong><br>
+	website: <strong><%= company_info[:website]%></strong><br>
+	phone_no: <strong><%= company_info[:phone_no]%></strong><br>
+	<br>
+	<% if company_info[:opero_company_id] %>
+		<strong style='color: ligthgrey'> Opero Company ID: <%= company_info[:opero_company_id]%></strong>
+	<% end %>
+<% else %>
+	<strong style='color: red'>NOT FOUND</strong>
+<% end %>
+</div>

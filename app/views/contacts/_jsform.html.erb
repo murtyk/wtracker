@@ -1,0 +1,21 @@
+<%= simple_form_for(contact,html: {class: 'form-horizontal'}, remote: true) do |f| %>
+  <hr>
+  <h4><%= contact.new_record? ? "Enter New Contact Information" : "Edit Contact Information"%></h4>
+  <% contact.land_no = format_phone_no(contact.land_no) %>
+  <% contact.mobile_no = format_phone_no(contact.mobile_no) %>
+  <div class="form-inputs" style='margin-left: -50px'>
+      <%= f.input :first, label: 'First Name'%>
+      <%= f.input :last, label: 'Last Name' %>
+      <%= f.input :title %>
+      <%= f.input :email %>
+      <%= f.input :land_no, label: 'Land Number' %>
+      <%= f.input :ext %>
+      <%= f.input :mobile_no, label: 'Mobile Number' %>
+      <%= f.hidden_field :contactable_id%>
+      <%= f.hidden_field :contactable_type%>
+  </div>
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(contact) %>
+<% end %>

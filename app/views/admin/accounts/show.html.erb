@@ -1,0 +1,50 @@
+<h1>Account Information</h1>
+<div class = 'row-fluid'>
+  <div class='span6'>
+    <p><b>Name:       </b><%= @account.name %></p>
+    <p><b>Subdoman:   </b><%= @account.subdomain %></p>
+    <p><b>Description:</b><%= @account.description %></p>
+    <p><b>Type:       </b><%= @account.type %></p>
+    <p><b>Status:     </b><%= @account.status_text %></p>
+    <p><b>Director:   </b><%= @account.director_name %></p>
+
+    <%= link_to 'Stats', stats_admin_account_path(@account) %> |
+    <%= link_to 'Edit', edit_admin_account_path(@account) %> |
+    <%= link_to 'Index', admin_accounts_path %>
+    <hr>
+    <h4>
+    States
+    <%= link_to new_admin_account_state_path(account_id: @account.id),
+                class: "btn btn-flat btn-mini btn-info",
+                id: 'new_state',
+                remote: true, rel:"tooltip", title:"Add State" do %>
+      <i class="icon-plus white"></i>
+    <% end %>
+    </h4>
+    <div id="states">
+      <%= render 'admin/account_states/list', account: @account %>
+    </div>
+    <hr>
+  </div>
+  <div class='span6'>
+    <h4>Grants</h4>
+    <% @account.account_grants.each do |grant| %>
+      <%= link_to edit_admin_grant_path(grant),
+                  id: edit_link_id(grant),
+                  class: 'btn btn-flat btn-mini btn-warning' do %>
+        <i class="icon-edit"></i>
+      <% end %>
+      <%= link_to [:admin, grant] do %>
+        <font color='blue' size='3em'><%= grant.name%></font>
+      <% end %>
+      <p>Status: <b><%= grant.status %>     </b></p>
+      <p>Start:  <b><%= grant.start_date %> </b></p>
+      <p>End:    <b><%= grant.end_date %>   </b></p>
+      <p>Spots:  <b><%= grant.spots %>      </b></p>
+      <p>Amount: <b><%= grant.amount %>     </b></p>
+      <p>Auto Job Leads: <b><%= grant.auto_job_leads? %></b> </p>
+    <% end %>
+
+    <%= link_to 'New Grant', new_admin_grant_path(account_id: @account.id) %>
+  </div>
+</div>

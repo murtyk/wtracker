@@ -1,0 +1,18 @@
+<%= simple_form_for(trainee_file, remote: true, html: {multipart: true}, authenticity_token: true) do |f| %>
+<hr>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.hidden_field :trainee_id %>
+    Select a File:
+    <%= f.input :file, as: :file, label: false %>
+    <%= f.input :notes %>
+  </div>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+<% end %>
+
+<%= ajax_form_cancel_script(@trainee_file) %>
+

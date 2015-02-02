@@ -1,0 +1,27 @@
+<h1>Imported Trainees</h1>
+
+<%= render 'import_status', import_status: @import_status %>
+<%= render 'import_fails', import_status: @import_status %>
+<h4>Following <%= @import_status.trainees.count %> Trainees were imported successfully</h4>
+
+<table id="table_trainee" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>email</th>
+    <th>Land No.</th>
+    <th>Mobile</th>
+    <th>Location</th>
+  </tr>
+
+  <% @import_status.trainees.each do |trainee| %>
+    <tr id='tr_<%=trainee.id%>'>
+      <td><%= trainee.id %></td>
+      <td><%= trainee.name %></td>
+      <td><%= trainee.email%></td>
+      <td><%= trainee.land_no%></td>
+      <td><%= trainee.mobile_no%></td>
+      <td><%= trainee.county_name %></td>
+    </tr>
+  <% end %>
+</table>

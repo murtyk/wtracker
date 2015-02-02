@@ -1,0 +1,31 @@
+<h1>Imported Cities</h1>
+
+<%= render 'shared/import_fails', import_status: @import_status %>
+
+<h4>The following <%= @import_status.cities.count %> cities imported successfully!</h4>
+<table id="table_city" class="table table-condensed table-bordered table-striped table-hover">
+<thead>
+  <tr>
+    <th>Name</th>
+    <th>State</th>
+    <th>Zip</th>
+    <th>County</th>
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+<% @import_status.cities.each do |city| %>
+  <tr>
+    <td><%= link_to city.name, [:admin, city] %></td>
+    <td><%= city.state_code %></td>
+    <td><%= city.zip%></td>
+    <td><%= city.county_name%></td>
+    <td>
+        <%= link_to admin_city_path(city), class: "btn btn-flat btn-mini btn-info" do %>
+          <i class="icon-eye-open"></i>
+        <% end %>
+    </td>
+  </tr>
+<% end %>
+</tbody>
+</table>

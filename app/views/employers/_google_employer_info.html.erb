@@ -1,0 +1,10 @@
+<% if error %>
+	<strong style='color: red'>Error: <%= error %></strong>
+<% else %>
+	<% if employer_exists %>
+		<strong style='color: green'>Saved before</strong><br>
+	<% else %>
+		<strong style='color: green'>Saved</strong><br>
+	<% end %>
+    <%= show_button(employer) %>
+<% end %>

@@ -1,0 +1,24 @@
+<%= simple_form_for(trainee_interaction, remote: true) do |f| %>
+  <div class="form-inputs">
+    <br>
+    <%= f.hidden_field :employer_id %>
+    <p><b><%=trainee_interaction.trainee.name %></b>xxxx</p>
+    <%= f.input :interview_date, input_html: { class: 'date', data: { behaviour: "datepicker" }, value: trainee_interaction.interview_date.to_s }, as: :string %>
+    <%= f.input :interviewer%>
+    <p><strong>Offer Details:</strong></p>
+    <%= f.input :offer_date, input_html: { class: 'date', data: { behaviour: "datepicker" }, value: trainee_interaction.offer_date.to_s }, as: :string %>
+    <%= f.input :offer_title%>
+    <%= f.input :offer_salary%>
+    <p><strong> Hire Details:</strong></p>
+    <%= f.input :start_date, input_html: { class: 'date', data: { behaviour: "datepicker" }, value: trainee_interaction.start_date.to_s }, as: :string %>
+    <%= f.input :hire_title%>
+    <%= f.input :hire_salary%>
+    <%= f.input :comment, input_html: { style: 'height: 100px' } %>
+  </div>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+<% end %>
+
+<%= ajax_form_cancel_script(trainee_interaction) %>

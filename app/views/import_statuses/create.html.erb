@@ -1,0 +1,48 @@
+<% if @importer.errors? %>
+  <%= render 'shared/import_fails', import_status: @importer.import_status %>
+<% else %>
+  <div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-header"  style='background-color: #ddd'>
+      <div id='modal_title'>
+        <h2>Importing <%= params[:resource] %> data...Please wait</h2>
+      </div>
+    </div>
+    <div class="modal-body" style='padding: 20px'>
+      <div class ='row-fluid' style= 'margin-bottom: 20px' >
+        <span id='ROWS_SUCCESSFUL' style='padding: 5px; border: solid green; text-weight: bold'>0</span><b> Records Imported</b>
+      </div>
+      <div class ='row-fluid'>
+        <span id='ROWS_FAILED' style='padding: 5px; border: solid red'>0</span><b> Records Failed</b>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(window).load(function() {
+      processing = true
+      console.log("fetching importer status");
+      $("#pleaseWaitDialog").modal();
+      $("body").css("cursor", "progress");
+      jQuery.ajaxSetup({async:false});
+      interval = setInterval(function(){
+        $.get("/import_statuses/<%=@importer.import_status_id%>/status", function(data){
+          $('#ROWS_SUCCESSFUL').html(data['rows_successful']);
+          $('#ROWS_FAILED').html(data['rows_failed']);
+          processing = data['status'] != 'completed';
+        }, "json")
+        .fail(function(jqXHR, textStatus, errorThrown){
+          alert("error in importer " + textStatus + errorThrown);
+        });
+
+        if (!processing) {
+          clearInterval(interval);
+          jQuery.ajaxSetup({async:true});
+          $("body").css("cursor", "default");
+          location.href = '/import_statuses/<%=@importer.import_status_id%>';
+        }
+      }, 1000);
+
+    });
+  </script>
+
+<% end %>

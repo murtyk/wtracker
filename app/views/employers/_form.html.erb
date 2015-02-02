@@ -1,0 +1,65 @@
+<div class="row-fluid">
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1><%= employer.new_record? ? "New Employer" : 'Edit Employer'%></h1>
+    </div>
+    <%= simple_form_for(employer, html: {class: "form-horizontal", id: 'form_employer'}) do |f| %>
+      <%= f.error_notification %>
+      <% if employer.errors[:base] %>
+        <div style = 'color:red; '>
+          <%= employer.errors[:base][0]%>
+        </div>
+      <% end %>
+      <div class="form-inputs">
+        <div class = 'row-fluid'>
+          <div class = 'span5'>
+            <%= f.input :name %>
+            <%= f.input :phone_no %>
+            <%= f.input :source %>
+            <%= f.association :sectors, selected: employer.sector_ids, required: true, input_html: {multiple: true} %>
+          </div>
+          <div class = 'span5'>
+            <% if employer.errors[:address_attributes] %>
+              <div style = 'color:red; text-align: center;margin-bottom:10px'>
+                <%= employer.errors[:address_attributes][0]%>
+              </div>
+            <% end %>
+
+            <%= f.fields_for :address do |address_fields| %>
+              <%= render 'shared/address_fields', address_fields: address_fields, required: false %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <%= render 'shared/cancel_link' %>
+        <%= submit_button(f,'Save') %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var selected = new Array();
+  $('#form_employer').submit(function() {
+    var count = $('#employer_sector_ids option:selected').length;
+    if (count == 0){
+      alert("Please select at least one sector");
+      return false;
+    }
+    var line1 =  $('#employer_address_attributes_line1').val();
+    var city =  $('#employer_address_attributes_city').val();
+    var state =  $('#employer_address_attributes_state').val();
+    var zip =  $('#employer_address_attributes_zip').val();
+    if (line1.length > 0 || city.length > 0 || state.length > 0 || zip.length > 0){
+      if (city.length == 0){
+        alert("Please enter city");
+        return false;
+      }
+      if (state.length == 0){
+        alert("Please select state");
+        return false;
+      }
+    }
+  });
+</script>

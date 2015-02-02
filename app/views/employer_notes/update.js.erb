@@ -1,0 +1,7 @@
+$('#edit_employer_note_<%=@employer_note.id%>').remove();
+<% if @employer_note.errors.empty? %>
+  $('#<%=div_id_for(@employer_note)%>').html('<%= j render(@employer_note) %>');
+  $('#<%=div_id_for(@employer_note)%>').show();
+<% else %>
+  $('#<%=div_id_for(@employer_note)%>').after('<%= j render("jsform", employer_note: @employer_note) %>');
+<% end %>

@@ -1,0 +1,2 @@
+<% object = @trainee_page ? @trainee_interaction.trainee : @trainee_interaction.employer%>
+$('#trainee_interactions').html('<%= j render("trainee_interactions", object: object) %>');

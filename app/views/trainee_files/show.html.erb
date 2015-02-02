@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Trainee:</b>
+  <%= @trainee_file.trainee.name %>
+</p>
+
+<p>
+  <b>File:</b>
+  <%= @trainee_file.name %>
+</p>
+
+<p>
+  <b>Notes:</b>
+  <%= @trainee_file.notes %>
+</p>
+
+
+<%= link_to 'Trainee Informaiton', trainee_path(@trainee_file.trainee),  class: 'btn btn-primary'%>

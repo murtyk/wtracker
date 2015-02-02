@@ -1,0 +1,68 @@
+<table border="1">
+	<tr>
+	    <td bgcolor= "#FFD966">
+	      Site Visit
+	    </td>
+	    <td bgcolor= "#92D050">
+	      Class Visit
+	    </td>
+      <td bgcolor= "#CCCCFF">
+        Others
+      </td>
+	</tr>
+	<tr></tr>
+</table>
+
+<style>
+ table { table-layout: fixed; }
+</style>
+
+  <% calendar = @klass.calendar %>
+  <% monday = calendar.first_monday %>
+  <% while monday <= calendar.last_monday %>
+    <table border="1">
+      <thead>
+        <tr style = 'background-color: #ddd'>
+          <% next_day = monday %>
+          <% (0..5).each do |i| %>
+            <th style='text-align: center;color: black'><%= next_day.strftime("%A<br>%d-%b").html_safe %></th>
+            <% next_day = next_day.tomorrow %>
+          <% end %>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% next_day = monday %>
+        <% row_count = calendar.event_rows(next_day) %>
+        <% (1..row_count).each do |row_no| %>
+          <tr style = "height: 100px;">
+            <% (0..5).each do |i| %>
+              <% event = calendar.get_event(next_day, row_no) %>
+              <% if event %>
+                <% event_type = calendar.visit_type(event) %>
+                <% color = calendar.event_color(event) %>
+                <td bgcolor= '<%=color%>'>
+                  <%= event.name%><br>
+                  <%= calendar.event_time(event) %><br>
+                  <%= event.notes %><br>
+                  <% if event_type > 0 %>
+                    <% if employer = event.employers.first %>
+                      <%= employer.name%><br>
+                      <%= format_phone_no(employer.phone_no)%><br>
+                      <%= employer.formatted_address %>
+                      <br>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% else %>
+                <td></td>
+              <% end %>
+              <% next_day = next_day.tomorrow %>
+            <% end %>
+          </tr>
+          <% next_day = monday %>
+        <% end %>
+      </tbody>
+    </table>
+    <% monday = monday.next_week %>
+  <% end %>

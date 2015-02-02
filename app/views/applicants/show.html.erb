@@ -1,0 +1,150 @@
+<div class='row-fluid'>
+  <h1>Applicant
+    <% if @applicant.trainee %>
+      <span class='pull-right' style='font-size: medium'>
+        <%= link_to('Go To Trainee Page', @applicant.trainee) %>
+      </span>
+    <% end %>
+  </h1>
+</div>
+<div class = 'row-fluid'>
+  <div class = 'span5'>
+    <table class="table table-bordered table-striped table-hover table-condensed">
+      <tr>
+        <td><strong>Date Received</strong></td>
+        <td><%= @applicant.created_at.to_date.to_s %></td>
+      </tr>
+      <tr>
+        <td><strong>Name</strong></td>
+        <td><%= @applicant.name %></td>
+      </tr>
+      <tr>
+        <td><strong>Address</strong></td>
+        <td><%= @applicant.address %></td>
+      </tr>
+      <tr>
+        <td><strong>Email</strong></td>
+        <td><%= @applicant.email %></td>
+      </tr>
+      <tr>
+        <td><strong>Mobile Phone No</strong></td>
+        <td><%= @applicant.mobile_phone_number %></td>
+      </tr>
+      <tr>
+        <td><strong>Veteran</strong></td>
+        <td><%= @applicant.veteran? %></td>
+      </tr>
+      <tr>
+        <td><strong>Legal Status</strong></td>
+        <td><%= @applicant.legal_status_text %></td>
+      </tr>
+      <tr>
+        <td><strong>Gender</strong></td>
+        <td><%= @applicant.gender_text %></td>
+      </tr>
+      <tr>
+        <td><strong>Ethnicity</strong></td>
+        <td><%= @applicant.ethnicity %></td>
+      </tr>
+
+      <tr>
+        <td><strong>Last Date of Full-Time Employment</strong></td>
+        <td><%= @applicant.last_employed_on %></td>
+      </tr>
+      <tr>
+        <td><strong>Current employment status</strong></td>
+        <td><%= @applicant.current_employment_status %></td>
+      </tr>
+
+      <tr>
+        <td><strong>Last or Current Employer</strong></td>
+        <td><%= @applicant.last_employer_name %></td>
+      </tr>
+      <tr>
+        <td><strong>Industry(Sector)</strong></td>
+        <td><%= @applicant.sector.name %></td>
+      </tr>
+      <tr>
+        <td><strong>Last Employer Contact</strong></td>
+        <td><%= @applicant.last_employer_contact %></td>
+      </tr>
+      <tr>
+        <td><strong>Last job title</strong></td>
+        <td><%= @applicant.last_job_title %></td>
+      </tr>
+      <tr>
+        <td><strong>Last Full-time Wages</strong></td>
+        <td><%= @applicant.last_wages %></td>
+      </tr>
+      <tr>
+        <td><strong>Expected Salary</strong></td>
+        <td><%= @applicant.salary_expected %></td>
+      </tr>
+      <tr>
+        <td><strong>Education level</strong></td>
+        <td><%= @applicant.education %></td>
+      </tr>
+      <tr>
+        <td><strong>Un(der) Employment Proof Preferences</strong></td>
+        <td><%= @applicant.unemployment_proof %></td>
+      </tr>
+      <tr>
+        <td><strong>Special Services Requested</strong></td>
+        <td><%= @applicant.special_services_requested.html_safe %></td>
+      </tr>
+      <tr>
+        <td><strong>Has Transportation?</strong></td>
+        <td><%= @applicant.transportation? %></td>
+      </tr>
+      <tr>
+        <td><strong>Has a computer at home with internet access?</strong></td>
+        <td><%= @applicant.computer_access? %></td>
+      </tr>
+      <tr>
+        <td><strong>Source</strong></td>
+        <td><%= @applicant.source %></td>
+      </tr>
+    </table>
+  </div>
+  <div class = 'span7'>
+    <div class = 'row-fluid' style='background-color: #ddd; padding-top: 10px; padding-bottom: 10px'>
+      <%= simple_form_for(@applicant, html: { class: "form-search" }) do |f| %>
+        <% if @applicant.errors.any? %>
+          <strong style='color: red'>Update Failed. Errors:</strong>
+          <ul>
+          <% @applicant.errors.messages.each do |field, msg| %>
+            <li style='color: red'><%= "#{field.to_sym} - #{msg}" %></li>
+          <% end %>
+          </ul>
+        <% end %>
+
+        <div class='span4'>
+          Status: <%= f.input_field :status, collection: applicant_statuses,
+                                             disabled: !@applicant.status_can_change?,
+                                             include_blank: false %>
+          <% unless @applicant.declined? %>
+            Funding Source: <%= f.input_field :funding_source_id,
+                                collection:    funding_sources %>
+            Industry: <%= f.input_field :sector_id, collection: sectors %>
+          <% end %>
+          Navigator : <%= f.input_field :navigator_id,
+                          collection: current_grant.navigators,
+                          include_blank: false %>
+        </div>
+        <div class='span4'>
+          Comments: <%= f.input_field :comments, style: 'min-height: 100px' %>
+        </div>
+        <div class='span2' style='padding-top: 50px'>
+          <button type="submit" class="btn btn-flat btn-small btn-primary" style='margin-left:20px'>
+            Update
+          </button>
+        </div>
+      <% end %>
+    </div>
+    <hr>
+    <strong>Resume</strong>
+    <div class='vertical-scroll-div' style='min-height: 100px; max-height: 350px;'>
+      <%= @applicant.resume %>
+    </div>
+  </div>
+</div>

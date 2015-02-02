@@ -1,0 +1,7 @@
+<% if @error %>
+	<% message = "'<b style= " + '"color: red"' + ">Retry Failed.</b>'"%>
+<% else %>
+	<% message = "'<b style= " + '" color: green"' + ">Saved!</b>'"%>
+<% end %>
+
+$("#save_company_link_<%=@company['name'].gsub(' ','')%>").html(<%= message.html_safe %>);

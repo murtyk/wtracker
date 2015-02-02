@@ -1,0 +1,166 @@
+<%= render 'navigator_klass_titles' %>
+
+<div class = 'row-fluid' style = 'margin-top: 20px'>
+  <%= render 'form', job_search: @job_search.new_search %>
+</div>
+
+<div class = 'row-fluid' style='margin-top:5px;background-color: #eee;padding: 10px 5px 10px 10px'>
+  <div class = 'span4'>
+    <span style = 'color: darkblue;vertical-align: middle'><strong>Found: <%= @job_search.jobs_count %></strong></span>
+    <% if @job_search.slices > 0 %>
+      <button id= 'analyze_all' class="btn btn-flat btn-small btn-primary">Analyze</button>
+    <% end %>
+  </div>
+  <div class = 'span6' style="margin-left: 20px">
+    <strong>Searched:</strong>
+    <strong style='color: blue'><%= @job_search.search_criteria %></strong><br>
+  </div>
+  <% if @job_search.pages > 1 %>
+  <div class ='span2 pull-right'>
+    <%= link_to '<', job_search_path(page: @job_search.prev_page), class: 'btn btn-flat btn-small btn-primary', id: 'prev-button', disabled: @job_search.first_page? %>
+    <%= "Page #{@job_search.page} of #{@job_search.pages}" %>
+    <%= link_to '>', job_search_path(page: @job_search.next_page), class: 'btn btn-flat btn-small btn-primary', id: 'next-button', disabled: @job_search.last_page? %>
+  </div>
+  <% end %>
+</div>
+
+<div id="analyzed_slices_div" style="display: none;">
+  <%= select_tag "slices_analyzed" %>
+  <%= select_tag "slices_searched_and_filtered_in_state" %>
+</div>
+
+<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-header"  style='background-color: #ddd'>
+    <h4><div id='modal_title'>Analyzing...</div></h4>
+  </div>
+  <div class="modal-body">
+    <div class="progress progress-success progress-striped">
+      <div class="bar" style="width: 0;"></div>
+    </div>
+  </div>
+</div>
+
+ <hr>
+
+<%= render('jobs', jobs: @job_search.jobs) if @job_search.jobs %>
+
+<%= render 'shared/sh_attribution' %>
+
+<script type="text/javascript">
+  var total_slices_count = <%= @job_search.slices %>;
+  var job_search_id = <%= @job_search.id %>;
+</script>
+<script type="text/javascript">
+  function complete_analysis() {
+    console.log('complete_analysis');
+    $('.bar').width("95%");
+    $.get("/job_searches/complete_analysis", { job_search_id: job_search_id }, function(data) {
+    }, "script");
+  }
+</script>
+
+<script type="text/javascript">
+
+  <% if @job_search.first_page?  %>
+    $('#prev-button').attr('disabled', true);
+    $('#prev-button').prop('disabled', true);
+  <% end %>
+  <% if @job_search.last_page? %>
+    $('#next-button').attr('disabled', true);
+    $('#next-button').prop('disabled', true);
+  <% end %>
+
+
+  $('#analyze_all').click(function(){
+
+    // first check if analysis exists
+    $.get("/job_searches/analysis_present", { job_search_id: job_search_id }, function(data) {
+
+      if (data == null || data == false)
+      {
+        var slice = 1;
+        // var $bar = $('.bar');
+
+        $("#pleaseWaitDialog").modal();
+
+        interval = setInterval(function(){
+          count = 1
+          while (count < 4 && slice <= total_slices_count)
+          {
+            console.log("analyze request for slice = ", slice);
+            $.get("/job_searches/analyze_slice", { slice: slice, job_search_id: job_search_id }, function(data) {
+            }, "script")
+            .fail(function(jqXHR, textStatus, errorThrown){
+              alert('error in analyzing job search id = ' + job_search_id + ' slice = ' + slice + ' ' + errorThrown);
+            });
+
+            slice += 1;
+            count += 1;
+          }
+
+          if (slice > total_slices_count) {
+            clearInterval(interval);
+          }
+        }, 20);
+      }
+      else
+      {
+        location.href = '/job_searches/' + job_search_id + '/analyze';
+      }
+
+    }, "json");
+
+  });
+
+</script>
+
+<% if @job_search.process_in_state_jobs? %>
+<script type="text/javascript">
+  function complete_search_and_filter_in_state() {
+    $('.bar').width('95%');
+    location.href = '/job_searches/' + job_search_id;
+  }
+
+  function in_state_slice_searched(slice) {
+    $('#slices_searched_and_filtered_in_state').append($('<option></option>').val(slice).html(slice));
+    searched_and_filtered_in_state_slices_count = $('#slices_searched_and_filtered_in_state option').size();
+    console.log("searched_and_filtered_in_state_slices_count = ", searched_and_filtered_in_state_slices_count);
+    $('.bar').width((80 * searched_and_filtered_in_state_slices_count / total_slices_count) + "%");
+    if (searched_and_filtered_in_state_slices_count == total_slices_count){
+      complete_search_and_filter_in_state();
+    }
+  }
+
+</script>
+<script type="text/javascript">
+	$( window ).load(function() {
+		// perform search and filter for each slice
+    var slice = 1;
+    // var $bar = $('.bar');
+    $("#pleaseWaitDialog").modal();
+    $("#modal_title").html('Searching and filtering jobs within the state');
+    interval = setInterval(function(){
+      count = 1
+      while (count < 4 && slice <= total_slices_count)
+      {
+        console.log("search and filter request for slice = ", slice);
+        $.get("/job_searches/search_and_filter_in_state", {slice: slice, job_search_id: job_search_id }, function(data) {
+          in_state_slice_searched(data);
+        }, "json")
+        .fail(function(jqXHR, textStatus, errorThrown){
+          alert("error in search and filter by state");
+        });
+
+        slice += 1;
+        count += 1;
+      }
+
+      if (slice > total_slices_count) {
+        clearInterval(interval);
+      }
+    }, 20);
+	});
+</script>
+<% end %>
+
+<%= render 'get_google_companies_script' %>

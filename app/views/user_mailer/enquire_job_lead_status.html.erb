@@ -1,0 +1,9 @@
+Have you applied for this job?
+
+<p><b>Company: </b><%=@shared_job_status.company%></p>
+<p><b>Location: </b><%=@shared_job_status.location%></p>
+<p><b>Title: </b><%=@shared_job_status.title%></p>
+
+<%# url_yes = polymorphic_url(@shared_job_status, key: @shared_job_status.key, r: 'yes') %>
+
+<a href= "<%=@url_link%>">Click here to respond</a>
