@@ -24,4 +24,9 @@ class TraineeAssessmentsController < ApplicationController
     authorize @trainee_assessment
     @trainee_assessment.save
   end
+
+  def destroy
+    @trainee_assessment = TraineeAssessment.find(params[:id])
+    @trainee_assessment.destroy
+  end
 end

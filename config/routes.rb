@@ -70,7 +70,7 @@ WTracker::Application.routes.draw do
 
   resources :trainee_files,       only: [:new, :show, :create, :destroy]
   resources :trainee_submits,     only: [:new, :create]
-  resources :trainee_assessments, only: [:new, :create]
+  resources :trainee_assessments, only: [:new, :create, :destroy]
   resources :trainee_emails,      except: [:edit, :update]
   resources :trainee_notes,       except: [:index, :show]
 

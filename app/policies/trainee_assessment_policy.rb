@@ -4,7 +4,7 @@ class TraineeAssessmentPolicy < Struct.new(:user, :trainee_assessment)
   end
 
   def create?
-    user.role < 4
+    new?
   end
 
   def show?
@@ -16,6 +16,6 @@ class TraineeAssessmentPolicy < Struct.new(:user, :trainee_assessment)
   end
 
   def destroy?
-    user.role < 4
+    new?
   end
 end
