@@ -65,6 +65,10 @@ class JobSearchProfilesController < ApplicationController
       jsp.zip      ||= applicant.address_zip
       return jsp
     end
-    JobSearchProfile.find(params[:id])
+    jsp = JobSearchProfile.find(params[:id])
+    grant_id = jsp.trainee.grant_id
+    Grant.current_id = grant_id
+    session[:grant_id] = grant_id
+    jsp
   end
 end

@@ -67,4 +67,10 @@ class Amazon
   def self.empty_recycle_bin
     delete_bucket.objects.each { |obj| obj.delete }
   end
+
+  def self.original_file_name(name)
+    name_parts = name.split('/')
+    bare_name = name_parts[-1]
+    bare_name[12..-1]
+  end
 end

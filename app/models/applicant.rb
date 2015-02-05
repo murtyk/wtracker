@@ -15,10 +15,11 @@ class Applicant < ActiveRecord::Base
                   :last_employer_manager_email, :resume, :source, :signature, :status,
                   :salt, :humanizer_answer, :humanizer_question_id,
                   :trainee_id, :navigator_id, :sector_id, :race_id, :last_wages,
-                  :gender, :unemployment_proof, :special_service_ids
+                  :gender, :unemployment_proof, :special_service_ids, :reapply_key
 
   attr_accessor :salt, :bypass_humanizer, :funding_source_id, :klass_id
   attr_accessor :latitude, :longitude
+  attr_accessor :reapply_key
 
   require_human_on :create, unless: :bypass_humanizer
 
@@ -32,6 +33,8 @@ class Applicant < ActiveRecord::Base
   has_many :applicant_special_services, dependent: :destroy
   has_many :special_services, through: :applicant_special_services
   accepts_nested_attributes_for :special_services
+
+  has_many :applicant_reapplies
 
   belongs_to :race
   belongs_to :account
@@ -64,6 +67,8 @@ class Applicant < ActiveRecord::Base
   end
 
   def applied_on
+    ra = applicant_reapplies.where(used: true).last
+    return ra.updated_at.to_date.to_s if ra
     created_at.to_date.to_s
   end
 
@@ -171,7 +176,26 @@ class Applicant < ActiveRecord::Base
     latitude && longitude
   end
 
+  def reapply_key
+    ar = applicant_reapplies.last
+    ar && !ar.used? && ar.key
+  end
+
+  def reapply?(key)
+    ar = applicant_reapplies.last
+    ar && !ar.used? && ar.key == key
+  end
+
+  def void_reapplication
+    ar = applicant_reapplies.last
+    if ar
+      ar.used = true
+      ar.save
+    end
+  end
   delegate :email_subject, :email_body, to: :employment_status
+
+
 
   private
 

@@ -1,0 +1,19 @@
+<div class = 'row-fluid'>
+  <div class='span10 offset1'>
+    <h2 style='margin-left: 20px; padding-top: 5px'>
+      Please enter the email you have used when you applied first time
+    </h2>
+  <%= simple_form_for(@applicant_reapply) do |f| %>
+    <%= f.error_notification %>
+    <div class="form-inputs">
+      <%= f.hidden_field :salt %>
+      <div class='span3'>
+        <%= f.input :email, required: true %>
+      </div>
+    </div>
+    <div class="form-actions">
+      <%= f.button :submit, 'Submit', class: 'btn btn-flat btn-primary' %>
+    </div>
+  <% end %>
+  </div>
+</div>

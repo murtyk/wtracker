@@ -1,61 +1,5 @@
 require 'rails_helper'
 
-# RSpec.configure do |config|
-#   config.order = "defined"
-# end
-def fill_in_applicant_fields(employment_status = nil)
-  employment_status ||= 'Employed Part Time'
-
-  fill_in 'applicant_first_name',      with: 'Adaline'
-  fill_in 'applicant_last_name',       with: 'Schuster'
-  fill_in 'applicant_address_line1',   with: '120 Wood Ave S'
-  fill_in 'applicant_address_city',    with: 'Iselin'
-  fill_in 'applicant_address_zip',     with: '08830'
-  select  'Middlesex',                 from: 'applicant_county_id'
-  fill_in 'applicant_email',           with: 'adaline_schuster@shields.biz'
-  fill_in 'applicant_mobile_phone_no', with: '626 656 2323'
-  select 'telecom',                    from: 'applicant_sector_id'
-
-  select 'No',                         from: 'applicant_veteran'
-  select 'Resident Alien',             from: 'applicant_legal_status'
-  select 'Male',                       from: 'applicant_gender'
-  select 'Asian',                      from: 'applicant_race_id'
-
-  select employment_status,            from: 'applicant_current_employment_status'
-
-  fill_in 'applicant_last_employed_on',    with: '10/17/2014'
-  fill_in 'applicant_last_employer_name',  with: 'ABC Inc'
-  fill_in 'applicant_last_employer_line1', with: '1 Metroplex Dr'
-  fill_in 'applicant_last_employer_city',  with: 'Edison'
-  select  'NJ',                            from: 'applicant_last_employer_state'
-  fill_in 'applicant_last_employer_zip',   with: '08817'
-
-  fill_in 'applicant_last_employer_manager_name',      with: 'John Smith'
-  fill_in 'applicant_last_employer_manager_phone_no',  with: '7773332222'
-
-  fill_in 'applicant_last_wages',         with: '100K'
-  fill_in 'applicant_last_job_title',     with: 'Sr. Developer'
-  fill_in 'applicant_salary_expected',    with: '75-85K'
-  select 'GED',                           from: 'applicant_education_level'
-  select 'Letter from Unemployment',      from: 'applicant_unemployment_proof'
-  select 'Child Care',                    from: 'applicant[special_service_ids][]'
-  select 'Yes',                           from: 'applicant_transportation'
-  select 'No',                            from: 'applicant_computer_access'
-
-  select 'One Stop',                      from: 'applicant_source'
-
-  # use the below when ready to test js: true
-  # select 'Other, please specify',             from: 'applicant_reference'
-  # prompt = page.driver.browser.switch_to.alert
-  # prompt.send_keys('This is my reference')
-  # prompt.accept
-
-  fill_in 'applicant_resume',  with: 'I am an excellent software developer with 10 years' \
-                                     ' of experience in java, ajax, xml, oracle'
-  fill_in 'applicant_humanizer_answer', with: '4'
-
-  check 'applicant_signature'
-end
 def visit_new_applicant_page
     account = Account.where(subdomain: 'apple').first
     Account.current_id = account.id
@@ -84,19 +28,32 @@ describe "applicants" do
     switch_to_main_domain
   end
 
+  it 'reports errors when trainee can not be created' do
+    allow(TraineeFactory).to receive(:create_trainee_from_applicant)
+                             .and_return(Trainee.create)
+    visit_new_applicant_page
+
+    fill_applicant_form(build_applicant_data)
+
+    click_on 'Submit'
+
+    expect(page).to have_text("can't be blank")
+  end
+
   it 'accepts applicant and creates trainee' do
     VCR.use_cassette('applicant') do
       visit_new_applicant_page
-      fill_in_applicant_fields
+      os_applicant = build_applicant_data
+      fill_applicant_form(os_applicant)
       click_on 'Submit'
 
       expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
 
       applicant = Applicant.unscoped.first
-      expect(applicant.name).to eq('Adaline Schuster')
+      expect(applicant.name).to eq(os_applicant.name)
       expect(applicant.status).to eq('Accepted')
       trainee = Trainee.unscoped.find(applicant.trainee_id)
-      expect(trainee.name).to eq('Adaline Schuster')
+      expect(trainee.name).to eq(os_applicant.name)
 
       trainee_id = trainee.id
 
@@ -104,10 +61,10 @@ describe "applicants" do
       visit "/trainees/#{trainee_id}"
       click_on 'Go To Applicant Page'
 
-      expect(page).to have_text('Adaline Schuster')
+      expect(page).to have_text(os_applicant.name)
       expect(page).to have_text('(626) 656-2323')
-      expect(page).to have_text('Middlesex')
-      expect(page).to have_text('telecom')
+      expect(page).to have_text(os_applicant.county)
+      expect(page).to have_text(os_applicant.sector)
 
       select 'banking', from: 'applicant_sector_id'
       click_on 'Update'
@@ -121,8 +78,8 @@ describe "applicants" do
       expect(page).to have_link '1', href: href
 
       visit href
-      expect(page).to have_text('Adaline Schuster')
-      expect(page).to have_text('Middlesex')
+      expect(page).to have_text(os_applicant.name)
+      expect(page).to have_text(os_applicant.county)
       expect(page).to have_text('banking')
 
       signout
@@ -132,13 +89,14 @@ describe "applicants" do
   it 'declines applicant and does not create trainee' do
     VCR.use_cassette('applicant') do
       visit_new_applicant_page
-      fill_in_applicant_fields('Employed Full Time')
+      os_applicant = build_applicant_data(false)
+      fill_applicant_form(os_applicant)
       click_on 'Submit'
 
       expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
 
       applicant = Applicant.unscoped.first
-      expect(applicant.name).to eq('Adaline Schuster')
+      expect(applicant.name).to eq(os_applicant.name)
       expect(applicant.status).to eq('Declined')
 
       expect(applicant.trainee_id).to be_nil
@@ -148,7 +106,7 @@ describe "applicants" do
   it 'trainee can sign in and provide information' do
     VCR.use_cassette('applicant') do
       visit_new_applicant_page
-      fill_in_applicant_fields
+      fill_applicant_form(build_applicant_data)
       click_on 'Submit'
 
       switch_to_applicants_domain

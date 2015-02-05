@@ -39,11 +39,28 @@ describe "Trainees" do
       expect(page).to have_text 'Mercer'
     end
 
-    it 'search' do
-      create_klasses(2, 2)
+    it 'searches' do
+      Account.current_id = 1
+      Grant.current_id = 1
+
+      t1 = Trainee.create(first: 'First1', last: 'Last1', email: 'one@nomail.com')
+      t2 = Trainee.create(first: 'First2', last: 'Last2', email: 'two@nomail.com')
+
+      program = Program.first
+      college = College.first
+      k1 = program.klasses.create(name: 'TestClass1', college_id: college.id)
+      k2 = program.klasses.create(name: 'TestClass2', college_id: college.id)
+
+      k1.trainees << t1
+      k1.trainees << t2
+      k2.trainees << t1
+      k2.trainees << t2
+
+      # create_klasses(2, 2)
 
       href_link('trainees').click
-      klass = get_klasses.first
+      # klass = get_klasses.first
+      klass = k1
       select(klass.name, from: 'filters_klass_id')
       click_button 'Find'
 
@@ -53,22 +70,22 @@ describe "Trainees" do
 
       fill_in 'filters_last_name', with: 'last'
       click_button 'Find'
-      (1..4).each {|n| expect(page).to have_text "First#{n} Last#{n}"}
+      (1..2).each {|n| expect(page).to have_text "First#{n} Last#{n}"}
 
     end
 
     it 'delete', js: true do
-      create_klasses(2, 2)
+      create_trainees(2)
       visit '/trainees'
       fill_in 'filters_last_name', with: 'last'
       click_button 'Find'
-      (1..4).each {|n| expect(page).to have_text "First#{n} Last#{n}"}
+      (1..2).each {|n| expect(page).to have_text "First#{n} Last#{n}"}
       get_trainees.each do |trainee|
         click_on "destroy_trainee_#{trainee.id}_link"
         page.driver.browser.switch_to.alert.accept
         wait_for_ajax
       end
-      (1..4).each {|n| expect(page).to_not have_text "First#{n} Last#{n}"}
+      (1..2).each {|n| expect(page).to_not have_text "First#{n} Last#{n}"}
       destroy_all_created
     end
 end

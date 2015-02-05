@@ -72,6 +72,7 @@ RSpec.configure do |config|
   config.include(KlassesHelper)
   config.include(KlassTraineesHelper)
   config.include(AutoLeadsHelper)
+  config.include(ApplicantsHelper)
 
   config.include FactoryGirl::Syntax::Methods
   # config.raise_errors_for_deprecations!

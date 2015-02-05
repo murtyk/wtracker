@@ -126,6 +126,27 @@ class AutoMailer < ActionMailer::Base
     Rails.logger.info "Application confirmation email sent to #{applicant.name}"
   end
 
+  def applicant_reapply(applicant)
+    from      = applicant.account.admins.first
+    to_email  = applicant.email
+    reply_to_email = applicant.grant.reply_to_email || from.email
+
+    subject   = reapply_subject(applicant)
+    body_text = reapply_body(applicant)
+
+    use_job_leads_email
+
+    mail(to:      to_email,
+         subject: subject,
+         from:    'JobLeads<jobleads@operoinc.com>',
+         reply_to: reply_to_email) do |format|
+           format.html { render inline: body_text }
+         end
+    use_standard_email
+
+    Rails.logger.info "Applicant reapply email sent to #{applicant.name}"
+  end
+
   def host
     case Rails.env
     when 'development' then 'localhost.com:3000'
@@ -173,6 +194,7 @@ private
 
     job_leads_text.gsub('$OPTOUTLINK$', opt_out_link)
   end
+
   def auto_leads_status_body(status)
     body = ''
     unless status.error_messages.empty?
@@ -209,12 +231,33 @@ private
 
     msg = msg.gsub('$LOGIN_ID$',  applicant.login_id) if applicant.accepted?
 
+    if applicant.reapply_key
+      url = edit_polymorphic_url(applicant,
+                                 host: host,
+                                 subdomain: applicant.account.subdomain,
+                                 salt: applicant.grant.salt,
+                                 key: applicant.reapply_key)
+
+      link =  "<a href= '#{url}'>click here</a>"
+      msg = msg.gsub('$REAPPLY_LINK$',  link)
+    end
+
     msg.gsub(/\r\n/, '<br>')
   end
+
   def applicant_notify_subject(applicant)
     parse_applicant_msg(applicant.email_subject, applicant)
   end
+
   def applicant_notify_body(applicant)
     parse_applicant_msg(applicant.email_body, applicant)
+  end
+
+  def reapply_subject(applicant)
+    applicant.grant.reapply_subject
+  end
+
+  def reapply_body(applicant)
+    parse_applicant_msg(applicant.grant.reapply_body, applicant)
   end
 end

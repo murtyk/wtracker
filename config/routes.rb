@@ -1,10 +1,12 @@
 WTracker::Application.routes.draw do
 
-  resources :applicants, except: [:edit, :destroy] do
+  resources :applicants, except: [:destroy] do
     collection do
       get :analysis
     end
   end
+  resources :applicant_reapplies, only: [:new, :create, :index]
+
   resources :trainee_placements, only: [:new, :create, :index]
 
   resources :auto_shared_jobs, only: [:edit, :update]
@@ -25,6 +27,7 @@ WTracker::Application.routes.draw do
   resources :grants, only: [:show, :index, :edit, :update] do
     collection do
       get :skill_metrics
+      get :reapply_message
     end
   end
 

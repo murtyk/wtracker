@@ -42,12 +42,16 @@
           </ul>
         </div>
       </div>
-    <% elsif controller_name == 'applicants' && ['new', 'create'].include?(action_name) %>
+    <% elsif controller_name == 'applicants' && ['new', 'create', 'edit'].include?(action_name) %>
       <div class="container-fluid" style ='background-color: #26294D;'>
         <h1 style='margin:0;color: white'>Applicant Registration</h1>
         <div style= 'text-align: center;color: white'>
           Funding for this grant is provided by the U.S. Department of Labor, Employment & Training Administration and the New Jersey Department of Labor and Workforce Development.
         </div>
+      </div>
+    <% elsif controller_name == 'applicant_reapplies' %>
+      <div class="container-fluid" style ='min-height: 40px;background-color: #26294D;text-align: center;'>
+        <h2 style='margin:0;color: white'>Re-Apply</h2>
       </div>
     <% else %>
       <div class="container-fluid" style ='min-height: 40px;background-color: #26294D;text-align: center;'>

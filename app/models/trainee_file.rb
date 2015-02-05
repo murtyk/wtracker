@@ -7,9 +7,7 @@ class TraineeFile < ActiveRecord::Base
   before_destroy :cb_before_destroy
 
   def name
-    file_parts = file.split('/')
-    bare_name = file_parts[-1]
-    bare_name[12..-1]
+    Amazon.original_file_name(file)
   end
 
   private

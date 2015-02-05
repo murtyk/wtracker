@@ -31,7 +31,7 @@ class KlassesController < ApplicationController
     respond_to do |format|
       format.html
       format.js
-      format.json { render json: @klass.trainees }
+      format.json { render json: @klass.trainees_with_email }
     end
   end
 

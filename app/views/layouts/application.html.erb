@@ -10,7 +10,7 @@
 </head>
 <body>
 
-  <%=  render'layouts/topbar' %>
+  <%=  render 'layouts/' + top_bar %>
   <% if admin_signed_in? || user_signed_in? || trainee_signed_in? %>
     <div class = 'container' style = "min-height:500px;">
       <% flash.each do |name, msg| %>

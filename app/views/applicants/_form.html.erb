@@ -2,6 +2,9 @@
   <%= f.error_notification %>
   <div class="form-inputs">
     <%= f.hidden_field :salt %>
+    <% if applicant.persisted? %>
+      <%= f.hidden_field :reapply_key %>
+    <% end %>
     <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :first_name, label: 'First Name', required: true %>

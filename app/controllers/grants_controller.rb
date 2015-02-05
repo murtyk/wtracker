@@ -39,7 +39,12 @@ class GrantsController < ApplicationController
 
     respond_to do |format|
       if @grant.update_attributes(params[:grant])
-        format.html { redirect_to @grant, notice: 'Grant was successfully updated.' }
+        if params[:grant][:reapply_subject]
+          notice = 'Re-apply email message updated.'
+        else
+          notice = 'Grant was successfully updated.'
+        end
+        format.html { redirect_to @grant, notice: notice }
         format.json { head :no_content }
       else
         format.html { render :edit }
@@ -51,5 +56,9 @@ class GrantsController < ApplicationController
   def skill_metrics
     @skill_metrics = SkillMetrics.new
     @skill_metrics.generate
+  end
+
+  def reapply_message
+    @grant = current_grant
   end
 end

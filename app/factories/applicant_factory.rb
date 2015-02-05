@@ -11,21 +11,14 @@ class ApplicantFactory
       applicant.save
       return applicant if applicant.errors.any?
       capture_applicant_location(request, applicant)
-      if applicant.accepted?
-        trainee, _pwd = TraineeFactory.create_trainee_from_applicant(applicant)
-        if trainee.errors.any?
-          copy_error_messages(applicant, trainee)
-          fail ActiveRecord::Rollback, 'Inform Grant Staff'
-        end
-        applicant.trainee_id = trainee.id
-        applicant.save
-      end
-      notify_applicant(applicant)
+      process_applicant(applicant)
     end
     applicant
   end
 
   def self.update(params)
+    return reapply(params) if params[:applicant][:reapply_key]
+
     applicant = Applicant.find params[:id]
     a_params  = params[:applicant]
     fs_id     = a_params.delete(:funding_source_id).to_i
@@ -44,6 +37,23 @@ class ApplicantFactory
     applicant
   end
 
+  def self.reapply(params)
+    applicant = Applicant.find params[:id]
+    a_params  = params[:applicant]
+    a_params[:last_employed_on] = opero_str_to_date(a_params[:last_employed_on])
+
+    Applicant.transaction do
+      applicant.update_attributes(a_params)
+      return applicant if applicant.errors.any?
+      applicant.navigator_id = navigator_id(applicant)
+
+      process_applicant(applicant)
+
+      applicant.void_reapplication
+    end
+    applicant
+  end
+
   def self.navigator_id(applicant)
     return nil if applicant.county_id.blank?
     users = applicant.grant.navigators
@@ -58,13 +68,18 @@ class ApplicantFactory
     user && user.id
   end
 
-  # def self.clone_params(params)
-  #   a_params = params[:applicant].clone
-  #   if a_params[:last_employed_on]
-  #     a_params[:last_employed_on] = opero_str_to_date(a_params[:last_employed_on])
-  #   end
-  #   a_params
-  # end
+  def self.process_applicant(applicant)
+    if applicant.accepted?
+      trainee, _pwd = TraineeFactory.create_trainee_from_applicant(applicant)
+      if trainee.errors.any?
+        copy_error_messages(applicant, trainee)
+        fail ActiveRecord::Rollback, 'Inform Grant Staff'
+      end
+      applicant.trainee_id = trainee.id
+      applicant.save
+    end
+    notify_applicant(applicant)
+  end
 
   def self.notify_applicant(applicant)
     if applicant.accepted? || applicant.declined?
@@ -88,5 +103,14 @@ class ApplicantFactory
     trainee.errors.each do |f, m|
       applicant.errors.add(f, m) if applicant.respond_to?(f)
     end
+  end
+
+  def self.create_reapply(applicant)
+    applicant.applicant_reapplies.create(key: random_key)
+    AutoMailer.applicant_reapply(applicant).deliver
+  end
+
+  def self.random_key
+    SecureRandom.urlsafe_base64(6)
   end
 end

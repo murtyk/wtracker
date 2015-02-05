@@ -36,7 +36,7 @@ class Company
     @score                = 0
   end
 
-  # search order: employer, opero companyly and finally google
+  # search order: employer, opero company and finally google
   # opero company or google: check for existing employer
   # save in cache
   def search

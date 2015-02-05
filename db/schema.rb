@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150123192753) do
+ActiveRecord::Schema.define(version: 20150203192638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,20 @@ ActiveRecord::Schema.define(version: 20150123192753) do
   end
 
   add_index "agents", ["identifiable_id", "identifiable_type"], name: "index_agents_on_identifiable_id_and_identifiable_type", using: :btree
+
+  create_table "applicant_reapplies", force: true do |t|
+    t.integer  "applicant_id"
+    t.integer  "account_id"
+    t.integer  "grant_id"
+    t.string   "key"
+    t.boolean  "used"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "applicant_reapplies", ["account_id"], name: "index_applicant_reapplies_on_account_id", using: :btree
+  add_index "applicant_reapplies", ["applicant_id"], name: "index_applicant_reapplies_on_applicant_id", using: :btree
+  add_index "applicant_reapplies", ["grant_id"], name: "index_applicant_reapplies_on_grant_id", using: :btree
 
   create_table "applicant_sources", force: true do |t|
     t.string   "source"

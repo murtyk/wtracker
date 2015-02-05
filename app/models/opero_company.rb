@@ -13,10 +13,6 @@ class OperoCompany < ActiveRecord::Base
   has_many :google_places_searches, dependent: :destroy
   accepts_nested_attributes_for :google_places_searches
 
-  def opero_company_id
-    id
-  end
-
   def county_name
     county.name
   end

@@ -1,0 +1,116 @@
+require 'rails_helper'
+
+def salt
+  account = Account.where(subdomain: 'apple').first
+  Account.current_id = account.id
+  grant = Grant.first
+  Grant.current_id = grant.id
+
+  "salted#{grant.id}andpeppered"
+end
+def visit_new_applicant_page
+  visit "/applicants/new?salt=#{salt}"
+end
+
+def visit_applicant_reapply_page
+  visit "/applicant_reapplies/new?salt=#{salt}"
+end
+
+def visit_reapply_form_for(email)
+  grant_salt = salt # call this first for setting current_ids
+  applicant  = Applicant.where('email ilike ?', email).first
+  id = applicant.id
+  key = applicant.reapply_key
+  visit "/applicants/#{id}/edit?salt=#{salt}&key=#{key}"
+end
+
+describe "applicant re-apply" do
+
+  before :each do
+    switch_to_applicants_domain
+    allow_any_instance_of(Applicant).to receive(:humanizer_questions)
+                                        .and_return([{"question"=>"Two plus two?",
+                                                      "answers"=>["4", "four"]}])
+  end
+
+  after :each do
+    switch_to_main_domain
+  end
+
+  it 'does not acceept invalid email' do
+    visit_applicant_reapply_page
+    fill_in 'applicant_reapply_email', with: 'bad@noemail.ddd'
+    click_on 'Submit'
+    expect(page).to have_text 'Not found. Please enter correct email address.'
+  end
+
+  it 'does not allow re-apply for accepted applicant' do
+    os = OpenStruct.new(accepted?: true)
+    allow(Applicant).to receive(:find_by).and_return(os)
+
+    visit_applicant_reapply_page
+    fill_in 'applicant_reapply_email', with: 'name@noemail.ddd'
+    click_on 'Submit'
+    expect(page).to have_text 'You are already accepted and should have received an e-mail.'
+  end
+
+  it 'declines applicant and allows re-apply' do
+    allow_any_instance_of(Grant).to receive(:reapply_subject)
+                                    .and_return('Reapply instructions')
+
+    allow_any_instance_of(Grant).to receive(:reapply_body)
+                                    .and_return("$FIRSTNAME$, $LASTNAME$, <br> $REAPPLY_LINK$")
+
+    VCR.use_cassette('applicant') do
+
+      # for apply and get declined
+      visit_new_applicant_page
+
+      os_applicant =  build_applicant_data(false)
+      fill_applicant_form(os_applicant)
+      click_on 'Submit'
+
+      expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
+
+      applicant = Applicant.unscoped.first
+      expect(applicant.name).to eq(os_applicant.name)
+      expect(applicant.status).to eq('Declined')
+
+      expect(applicant.trainee_id).to be_nil
+
+      # now reapply
+
+      visit_applicant_reapply_page
+      fill_in 'applicant_reapply_email', with: os_applicant.email
+      click_on 'Submit'
+
+      expect(page).to have_text 'Email is found. We sent you instructions for reapplying. Please check your email.'
+
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.subject).to eq('Reapply instructions')
+
+
+      # applicant clicks link in email
+
+      visit_reapply_form_for(os_applicant.email)
+      os_applicant.employment_status = 'Employed Part Time'
+      first_name = os_applicant.first_name
+      os_applicant.first_name = ''
+      fill_applicant_form(os_applicant)
+
+      click_on 'Submit'
+      expect(page).to have_text "can't be blank"
+
+      fill_in 'applicant_first_name', with: first_name
+      click_on 'Submit'
+
+      expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
+
+      applicant = Applicant.unscoped.first
+      expect(applicant.name).to eq(os_applicant.name)
+      expect(applicant.status).to eq('Accepted')
+      trainee = Trainee.unscoped.find(applicant.trainee_id)
+      expect(trainee.name).to eq(os_applicant.name)
+    end
+  end
+end

@@ -14,11 +14,11 @@ class Grant < ActiveRecord::Base
                   :optout_message_two_attributes, :optout_message_three_attributes,
                   :trainee_applications, :applicant_logo_file,
                   :assessments_include_score, :assessments_include_pass,
-                  :reply_to_email
+                  :reply_to_email, :reapply_subject, :reapply_body
 
   store_accessor :specific_data, :assessments_include_score,
                                  :assessments_include_pass,
-                                 :reply_to_email
+                                 :reply_to_email, :reapply_subject, :reapply_body
 
   validates :name, presence: true, length: { minimum: 4, maximum: 40 }
   validates :start_date, presence: true
@@ -155,6 +155,11 @@ class Grant < ActiveRecord::Base
 
   def assessments_include_pass?
     assessments_include_pass == '1'
+  end
+
+  def salt
+    atoz = ('a'..'z').map{|x| x}
+    atoz.shuffle[0..3].join + '0000' + atoz.shuffle[0..3].join + id.to_s
   end
 
   private

@@ -1,7 +1,8 @@
 class ApplicantsController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :update, :show, :destroy, :analysis]
-  before_action :set_applicant,      only: [:show, :destroy]
-  before_action :set_grant,          only: [:new, :create]
+  before_action :authenticate_user!, only: [:index, :show, :analysis]
+  before_action :set_grant,          only: [:new, :create, :edit]
+  before_action :set_applicant,      only: [:show, :edit, :update]
+  before_action :user_or_key,        only: [:update]
 
   def analysis
     @metrics = ApplicantMetrics.new.generate_navigator_dashboard_metrics(current_user)
@@ -12,21 +13,11 @@ class ApplicantsController < ApplicationController
     if params[:query]
       @applicant_metrics = ApplicantMetrics.new
       @applicant_metrics.query(params[:query])
-      @filter = params[:filters] || {}
       render 'index_from_metrics'
       return
     end
-
-    filters = params[:filters] || {}
-    if filters[:navigator_id] || filters[:status]
-      predicate = {}
-      predicate.merge!(navigator_id: filters[:navigator_id]) unless filters[:navigator_id].blank?
-      predicate.merge!(status: filters[:status]) unless filters[:status].blank?
-      @applicants = Applicant.where(predicate).order(created_at: :desc)
-    else
-      @applicants = []
-    end
-    @filter_info = filters
+    @filter_info = params[:filters] || {}
+    @applicants  = search_applicants(@filter_info)
   end
 
   # GET /applicants/1
@@ -51,17 +42,30 @@ class ApplicantsController < ApplicationController
     end
   end
 
+  # only applicant can reapply
+  def edit
+    validate_key
+  end
+
   # PATCH/PUT /applicants/1
   def update
     @applicant = ApplicantFactory.update(params)
 
     if @applicant.errors.empty?
+      if params[:applicant][:reapply_key]
+        render 'create'
+        return
+      end
       notice = 'Applicant updated successfully'
       next_applicant = @applicant.next
       redirect_to(next_applicant, notice: notice) if next_applicant
       redirect_to('/applicants/analysis', notice: notice) unless next_applicant
     else
-      render 'show'
+      if params[:applicant][:reapply_key]
+        render 'new'
+      else
+        render 'show'
+      end
     end
   end
 
@@ -111,11 +115,28 @@ class ApplicantsController < ApplicationController
     salt.delete('^0-9').to_i
   end
 
-  # def clean_filters
-  #   return nil unless params[:filters]
-  #   filters = params[:filters].clone
-  #   [:county_id, :sector_id,
-  #    :source, :navigator_id].each { |f| filters.delete(f) if filters[f].blank? }
-  #   filters
-  # end
+  def validate_key
+    fail 'invalid key or expired link' unless @applicant.reapply_key == param_key
+  end
+
+  def user_or_key
+    return true if current_user
+    validate_key
+  end
+
+  def param_key
+    params[:key] || (params[:applicant] && params[:applicant][:reapply_key])
+  end
+
+  def search_applicants(filters)
+    navigator_id = filters[:navigator_id]
+    status       = filters[:status]
+
+    return [] unless navigator_id || status
+
+    predicate = {}
+    predicate.merge!(navigator_id: navigator_id) unless navigator_id.blank?
+    predicate.merge!(status: status) unless status.blank?
+    Applicant.where(predicate).order(created_at: :desc)
+  end
 end

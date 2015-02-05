@@ -6,8 +6,8 @@ case Rails.env
     AWS_BUCKET = 'managee2e-dev'
     AWS_BUCKET_DELETED = 'managee2e-dev-deleted'
   when "test"
-    AWS_BUCKET = 'managee2e-dev'
-    AWS_BUCKET_DELETED = 'managee2e-dev-deleted'
+    AWS_BUCKET = 'managee2e-test'
+    AWS_BUCKET_DELETED = 'managee2e-test-deleted'
   when "staging"
     AWS_BUCKET = 'managee2e-staging'
     AWS_BUCKET_DELETED = 'managee2e-staging-deleted'
