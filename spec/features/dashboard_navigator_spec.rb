@@ -8,7 +8,7 @@ describe "Dashboard" do
       grant = Grant.first
       Grant.current_id = grant.id
       klass = Klass.first
-      klass.navigators << melinda
+      klass.klass_navigators.create(user_id: melinda.id)
 
       signin_navigator
 

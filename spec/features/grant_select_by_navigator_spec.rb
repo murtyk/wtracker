@@ -9,7 +9,7 @@ describe "grants" do
     grant = Grant.first
     Grant.current_id = grant.id
     klass = Klass.first
-    klass.navigators << melinda
+    klass.klass_navigators.create(user_id: melinda.id)
 
     #create another grant
     grant = Grant.create(name: 'Mega Grant', status: 2, start_date: Date.today,
@@ -20,7 +20,7 @@ describe "grants" do
     college = College.first
     klass = program.klasses.create(name: 'Mega Class', college_id: college.id)
     melinda = User.where(email: 'melinda@mail.com').first
-    klass.navigators << melinda
+    klass.klass_navigators.create(user_id: melinda.id)
 
     signin_navigator
     # grant selection page
