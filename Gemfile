@@ -5,7 +5,7 @@ group :production, :staging, :integration do
   ruby ENV['CUSTOM_RUBY_VERSION'] || '2.1.3'
 end
 
-gem 'rails', '4.0.13'
+gem 'rails', '4.1.9'
 gem 'protected_attributes', '1.0.7'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

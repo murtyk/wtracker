@@ -36,9 +36,10 @@ class Address < ActiveRecord::Base
   before_save :cb_before_save
 
   after_validation(on: :update) do
-    return unless self.changed?
-    self.longitude = nil
-    self.latitude = nil
+    if self.changed?
+      self.longitude = nil
+      self.latitude = nil
+    end
   end
 
   private
