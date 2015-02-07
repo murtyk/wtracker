@@ -1,12 +1,27 @@
 <div class="row-fluid" >
   <div class="opero-widget-box">
     <div class="opero-widget-header ">
-      <h1>Applicant Re-apply Email Message</h1>
+      <h1>Applicant Re-apply Messages</h1>
     </div>
-     <%= simple_form_for(current_grant, html: { class: "form-horizontal" }) do |f| %>
+     <%= simple_form_for(current_grant) do |f| %>
       <div class="form-inputs">
-        <%= f.input :reapply_subject, lablel: 'Subject' %>
-        <%= f.input :reapply_body, lablel: 'Body', as: :text, input_html: { style: 'width: 400px; height: 100px' }, hint: "meta key words: $FIRSTNAME$, $LASTNAME$, $REAPPLY_LINK$" %>
+        <div class='row-fluid'>
+          <div class='span5'>
+            <%= f.input :reapply_subject, lablel: 'Email Subject' %>
+            <%= f.input :reapply_body, lablel: 'Email Body', as: :text, input_html: { style: 'width: 400px; height: 100px' }, hint: "meta key words: $FIRSTNAME$, $LASTNAME$, $REAPPLY_LINK$" %>
+          </div>
+          <div class='span5 offset1'>
+            <% input_html = { style: 'width: 400px; height: 40px' } %>
+            <%= f.input :reapply_instructions, label: 'Instructions To Applicant',
+                        as: :text, required: true, input_html: input_html %>
+            <%= f.input :reapply_email_not_found_message, label: 'Email Not Found Message',
+                        as: :text, required: true, input_html: input_html %>
+            <%= f.input :reapply_already_accepted_message, label: 'Already Accepted Message',
+                        as: :text, required: true, input_html: input_html %>
+            <%= f.input :reapply_confirmation_message, label: 'Confirmation Message',
+                        as: :text, required: true, input_html: input_html %>
+          </div>
+        </div>
       </div>
       <div class="form-actions">
         <%= render 'shared/cancel_link' %>

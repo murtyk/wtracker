@@ -31,6 +31,11 @@ describe "applicant re-apply" do
     allow_any_instance_of(Applicant).to receive(:humanizer_questions)
                                         .and_return([{"question"=>"Two plus two?",
                                                       "answers"=>["4", "four"]}])
+
+    @instructions = 'Not found. Please enter correct email address.'
+    allow_any_instance_of(Grant).to receive(:reapply_instructions)
+                                     .and_return(@instructions)
+
   end
 
   after :each do
@@ -38,23 +43,35 @@ describe "applicant re-apply" do
   end
 
   it 'does not acceept invalid email' do
+    msg = 'Not found. Please enter correct email address.'
+    allow_any_instance_of(Grant).to receive(:reapply_email_not_found_message)
+                                     .and_return(msg)
     visit_applicant_reapply_page
+    expect(page).to have_text @instructions
     fill_in 'applicant_reapply_email', with: 'bad@noemail.ddd'
     click_on 'Submit'
-    expect(page).to have_text 'Not found. Please enter correct email address.'
+    expect(page).to have_text msg
   end
 
   it 'does not allow re-apply for accepted applicant' do
+    msg = 'You are already accepted and should have received an e-mail.'
+    allow_any_instance_of(Grant).to receive(:reapply_already_accepted_message)
+                                     .and_return(msg)
+
     os = OpenStruct.new(accepted?: true)
     allow(Applicant).to receive(:find_by).and_return(os)
 
     visit_applicant_reapply_page
     fill_in 'applicant_reapply_email', with: 'name@noemail.ddd'
     click_on 'Submit'
-    expect(page).to have_text 'You are already accepted and should have received an e-mail.'
+    expect(page).to have_text msg
   end
 
   it 'declines applicant and allows re-apply' do
+    msg = 'We sent you instructions for reapplying. Please check your email.'
+    allow_any_instance_of(Grant).to receive(:reapply_confirmation_message)
+                                     .and_return(msg)
+
     allow_any_instance_of(Grant).to receive(:reapply_subject)
                                     .and_return('Reapply instructions')
 
@@ -84,7 +101,7 @@ describe "applicant re-apply" do
       fill_in 'applicant_reapply_email', with: os_applicant.email
       click_on 'Submit'
 
-      expect(page).to have_text 'Email is found. We sent you instructions for reapplying. Please check your email.'
+      expect(page).to have_text msg
 
       mail = ActionMailer::Base.deliveries.last
       expect(mail.subject).to eq('Reapply instructions')

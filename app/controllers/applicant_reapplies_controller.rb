@@ -6,27 +6,15 @@ class ApplicantReappliesController < ApplicationController
   end
 
   def new
-    @applicant_reapply      = ApplicantReapply.new
-    @applicant_reapply.salt = @grant.id.to_s
+    @applicant_reapply = current_grant.applicant_reapplies.new
   end
 
   def create
-    email     = params[:applicant_reapply][:email]
-    @applicant = Applicant.find_by('email ilike ?', email)
+    @applicant_reapply = ApplicantFactory.create_reapply(params[:applicant_reapply], current_grant)
 
-    if @applicant && @applicant.declined?
-      @applicant_reapply = ApplicantFactory.create_reapply(@applicant)
-      flash[:error] = nil
-    else
-      @applicant_reapply = ApplicantReapply.new
-      @applicant_reapply.email = email
-      @applicant_reapply.salt  = @grant.id.to_s
-      if @applicant
-        flash[:error] = 'You are already accepted and should have received an e-mail.'
-      else
-        flash[:error] = 'Email Not found. Please enter correct email address.'
-      end
+    if @applicant_reapply.errors.any?
       render 'new'
+      return
     end
   end
 

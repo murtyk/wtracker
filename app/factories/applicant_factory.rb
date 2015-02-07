@@ -105,9 +105,19 @@ class ApplicantFactory
     end
   end
 
-  def self.create_reapply(applicant)
-    applicant.applicant_reapplies.create(key: random_key)
-    AutoMailer.applicant_reapply(applicant).deliver_now
+  def self.create_reapply(params, grant)
+    params ||= {}
+    ap = Applicant.find_by('email ilike ?', params[:email])
+    ra = ApplicantReapply.new(email: params[:email])
+
+    ra.errors.add(:base, grant.reapply_email_not_found_message) unless ap
+    ra.errors.add(:base, grant.reapply_already_accepted_message) if ap && ap.accepted?
+
+    return ra if ra.errors.any?
+
+    ra = ap.applicant_reapplies.create(key: random_key)
+    AutoMailer.applicant_reapply(ap).deliver_now
+    ra
   end
 
   def self.random_key

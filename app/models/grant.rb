@@ -13,12 +13,18 @@ class Grant < ActiveRecord::Base
                   :job_leads_content_attributes, :optout_message_one_attributes,
                   :optout_message_two_attributes, :optout_message_three_attributes,
                   :trainee_applications, :applicant_logo_file,
-                  :assessments_include_score, :assessments_include_pass,
-                  :reply_to_email, :reapply_subject, :reapply_body
+                  :assessments_include_score, :assessments_include_pass
 
-  store_accessor :specific_data, :assessments_include_score,
-                                 :assessments_include_pass,
-                                 :reply_to_email, :reapply_subject, :reapply_body
+  attr_accessible :reply_to_email, :reapply_subject, :reapply_body,
+                  :reapply_instructions, :reapply_email_not_found_message,
+                  :reapply_already_accepted_message,
+                  :reapply_confirmation_message
+
+  store_accessor :specific_data, :assessments_include_score, :assessments_include_pass,
+                                 :reply_to_email, :reapply_subject, :reapply_body,
+                                 :reapply_instructions, :reapply_email_not_found_message,
+                                 :reapply_already_accepted_message,
+                                 :reapply_confirmation_message
 
   validates :name, presence: true, length: { minimum: 4, maximum: 40 }
   validates :start_date, presence: true
@@ -53,6 +59,7 @@ class Grant < ActiveRecord::Base
   accepts_nested_attributes_for :optout_message_three
 
   has_many :applicants
+  has_many :applicant_reapplies
   has_many :employment_statuses
   has_many :applicant_sources
 

@@ -1,10 +1,14 @@
 <div class = 'row-fluid'>
   <div class='span10 offset1'>
     <h2 style='margin-left: 20px; padding-top: 5px'>
-      Please enter the email you have used when you applied first time
+      <%= current_grant.reapply_instructions %>
     </h2>
   <%= simple_form_for(@applicant_reapply) do |f| %>
-    <%= f.error_notification %>
+    <% if @applicant_reapply.errors.any? %>
+      <div class="alert alert-error"><%= @applicant_reapply.errors[:base][0] %></div>
+    <% else %>
+      <%= @message %>
+    <% end %>
     <div class="form-inputs">
       <%= f.hidden_field :salt %>
       <div class='span3'>
