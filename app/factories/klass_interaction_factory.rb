@@ -22,7 +22,7 @@ class KlassInteractionFactory
     saved       = save_objects(employer, klass_event, status)
 
     if saved && new_event
-      UserMailer.send_event_invite(klass_event, current_user).deliver
+      UserMailer.send_event_invite(klass_event, current_user).deliver_now
     end
 
     klass_interaction = KlassInteraction.new(status: status)
@@ -108,7 +108,7 @@ class KlassInteractionFactory
     if event_chaged?(klass_event, ke, event_date)
       ke[:event_date] = event_date
       klass_event.update_attributes(ke)
-      UserMailer.send_event_invite(klass_event, current_user).deliver
+      UserMailer.send_event_invite(klass_event, current_user).deliver_now
     end
   end
 

@@ -27,7 +27,7 @@ class JobShareFactory
     to_ids.each { |tid| job_share.job_shared_tos.new(trainee_id: tid.to_i) }
 
     if job_share.save && to_ids.size > 0
-      UserMailer.share_jobs(job_share, job_share.sent_to_emails.join(';')).deliver
+      UserMailer.share_jobs(job_share, job_share.sent_to_emails.join(';')).deliver_now
     end
     job_share
   end
@@ -44,10 +44,10 @@ class JobShareFactory
                                                  key: SecureRandom.urlsafe_base64(4))
         sjs.save
         # debugger unless saved
-        UserMailer.forward_job_lead(sjs).deliver
+        UserMailer.forward_job_lead(sjs).deliver_now
       end
     else
-      UserMailer.share_jobs(job_share, trainee.email).deliver
+      UserMailer.share_jobs(job_share, trainee.email).deliver_now
     end
   end
 

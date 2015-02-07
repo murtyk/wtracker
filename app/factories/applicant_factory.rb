@@ -83,7 +83,7 @@ class ApplicantFactory
 
   def self.notify_applicant(applicant)
     if applicant.accepted? || applicant.declined?
-      AutoMailer.notify_applicant_status(applicant).deliver
+      AutoMailer.notify_applicant_status(applicant).deliver_now
     end
   end
 
@@ -107,7 +107,7 @@ class ApplicantFactory
 
   def self.create_reapply(applicant)
     applicant.applicant_reapplies.create(key: random_key)
-    AutoMailer.applicant_reapply(applicant).deliver
+    AutoMailer.applicant_reapply(applicant).deliver_now
   end
 
   def self.random_key

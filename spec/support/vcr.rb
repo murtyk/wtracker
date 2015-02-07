@@ -5,6 +5,10 @@ VCR.configure do |c|
   c.ignore_localhost = true
   # c.allow_http_connections_when_no_cassette = true
 
+  c.filter_sensitive_data("<simplyhired_auth>") do
+    ENV['SH_AUTH']
+  end
+
   c.filter_sensitive_data("<simplyhired_jbd>") do
     ENV['JBD']
   end

@@ -186,9 +186,8 @@ namespace :testprep do
     klass = create_klass(program, 'Auto Class', '', 'March 1, 2014', 'Aug 17, 2015', 3,
                          272, college.id)
 
-    klass.trainees.create(first: 'first', last: 'last', email: 'name@mail.com')
+    klass.trainees << Trainee.create(first: 'first', last: 'last', email: 'name@mail.com')
 
-    AutoJobLeads.new.delay.perform
   end
 
   def set_up_apple_account
@@ -225,7 +224,6 @@ namespace :testprep do
     nav1 = create_user('Melinda', 'Peters', 'Camden', 1, 3, 'melinda1@mail.com')
 
     nav1.counties << nj_state.counties.where(name: 'Middlesex').first
-
     nav1.grants << grant
   end
 
@@ -452,7 +450,8 @@ namespace :testprep do
   def create_trainee(*a) # first, last, email, address_attrs, klass
     attrs = { first: a[0], last: a[1], email: a[2] }
     attrs[:home_address_attributes] = address_hash(a[3]) if a[3]
-    a[4] ? a[4].trainees.create(attrs) : Trainee.create(attrs)
+    t = Trainee.create(attrs)
+    a[4].trainees << t if a[4]
   end
 
   def address_hash(a)

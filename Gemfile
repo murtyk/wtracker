@@ -5,7 +5,7 @@ group :production, :staging, :integration do
   ruby ENV['CUSTOM_RUBY_VERSION'] || '2.1.3'
 end
 
-gem 'rails', '4.1.9'
+gem 'rails', '4.2'
 gem 'protected_attributes', '1.0.7'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -26,7 +26,7 @@ gem 'mongoid', github: 'mongoid/mongoid'
 
 gem 'attr_encrypted', '1.3.3'
 gem 'draper', '1.3.1'
-gem 'simple_form', '~> 3.0.1'
+gem 'simple_form', '~> 3.1.0'
 gem 'devise', '~> 3.4.1'
 gem 'gmaps4rails', '1.5.6'
 gem 'fusion_tables', '0.4.1'
@@ -71,6 +71,7 @@ gem 'uglifier', '1.2.3'
 
 group :development do
   gem 'rack-mini-profiler'
+  gem 'web-console', '~> 2.0'
 end
 
 group :test, :development do

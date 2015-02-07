@@ -22,7 +22,7 @@ class EmailFactory
 
     if trainee_email.save
       UserMailer.send_trainee_email(trainee_email, email_addresses,
-                                    params[:use_job_leads_email]).deliver
+                                    params[:use_job_leads_email]).deliver_now
     end
     trainee_email
   end
@@ -55,7 +55,7 @@ class EmailFactory
     build_trainee_submits(email, contact_ids,
                           trainee_file_ids) if Account.mark_jobs_applied?
 
-    UserMailer.send_employer_emails(email, attachments).deliver if email.save
+    UserMailer.send_employer_emails(email, attachments).deliver_now if email.save
     email
   end
 

@@ -118,7 +118,7 @@ class AutoJobLeads
         leads_to_be_sent << trainee.auto_shared_jobs.create_from_job(job, trainee)
       end
     end
-    AutoMailer.send_job_leads(leads_to_be_sent).deliver
+    AutoMailer.send_job_leads(leads_to_be_sent).deliver_now
     leads_to_be_sent.count
   end
 
@@ -129,6 +129,9 @@ class AutoJobLeads
 
     keywords = skills.split(',')
     keywords = keywords.map { |kw| kw.blank? ? nil : kw.squish }.compact
+
+    # now should have cleaned keywords similar to ['java' 'sdlc' 'project lead']
+    # phrases should be escaped
 
     jobs = find_jobs(job_search_profile, keywords, days)
     return jobs unless jobs.empty?
@@ -144,32 +147,32 @@ class AutoJobLeads
   end
 
   def find_jobs(jsp, keywords, days)
-    search_params = { in_state: false, keywords: keywords,
-                      distance: jsp.distance, days: days }
-    job_search_city = JobSearch.new(search_params.merge(location: jsp.location))
-    # job_search_zip = JobSearch.new(search_params.merge(location: jsp.zip))
+    search_params = { keywords: keywords, distance: jsp.distance,
+                      city: jsp.location, days: days,
+                      search_type: JobBoard::ANY_KEYWORDS_SEARCH }
 
-    job_store_city = JobBoard.new_store(job_search_city)
-    # job_store_zip  = JobBoard.new_store(job_search_zip)
     jobs = []
     attempts = 1
     3.times do
-      jobs = job_store_city.get_jobs(1, JobBoard::ANY_KEYWORDS_SEARCH, 25)
-      # jobs = job_store_zip.get_jobs(1, JobBoard::ANY_KEYWORDS_SEARCH, 25) if jobs.empty?
-      if jobs.any? && attempts > 1
+      count = job_board.search_jobs(search_params)
+      if count > 0 && attempts > 1
         Rails.logger.info "AutoJobLeads: JSP id = #{jsp.id} attempts = #{attempts}"
       end
       break unless jobs.empty?
       attempts += 1
     end
-    jobs
+    job_board.jobs
+  end
+
+  def job_board
+    @job_board ||= JobBoard.new
   end
 
   def solicit_profile(t)
     tp = t.job_search_profile || t.create_job_search_profile(account_id: t.account_id,
                                                              key: random_key)
 
-    AutoMailer.solicit_job_search_profile(t).deliver
+    AutoMailer.solicit_job_search_profile(t).deliver_now
     tp
   end
 
@@ -199,11 +202,11 @@ class AutoJobLeads
   end
 
   def notify
-    AutoMailer.notify_status(statuses).deliver
+    AutoMailer.notify_status(statuses).deliver_now
   end
 
   def notify_grant_status(grant, status)
-    AutoMailer.notify_grant_status(grant, status).deliver
+    AutoMailer.notify_grant_status(grant, status).deliver_now
   end
 
   def random_key

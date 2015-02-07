@@ -2,15 +2,15 @@ include CacheHelper
 # searches for jobs
 # filters in state jobs
 class JobSearchServices
-  attr_reader :jobs, :jobs_count, :pages
+  attr_reader :jobs, :jobs_count, :pages, :job_search
+  delegate :in_state, :keywords, :location, :zip, :city, :state, :distance, :days, to: :job_search
 
-  def initialize(job_search, ip)
-    @job_search = job_search
+  def initialize(js, ip)
+    @job_search = js
     @request_ip = ip
   end
 
   def perform_search(page)
-    # slices_for_selection = []
     clean_up_stale_jobs_in_mongo
     if in_state
       jobs_in_state_store = JobsInStateStore.where(job_search_id: job_search_id).first
@@ -30,7 +30,7 @@ class JobSearchServices
       end
     end
 
-    perform_sh_search(page)
+    job_board_search(page)
 
     @jobs = nil if in_state # important it should be nil not [].
                             # [] means no jobs found in case of in state
@@ -38,8 +38,9 @@ class JobSearchServices
     [@jobs, @jobs_count, @pages, @new_job_search]
   end
 
+  # Jobs are analyzed before calling this method
   # job_ids are in "478::Bristol-Myers Squibb::Princeton--- NJ::2" format
-  # job_search_id::company name::cityname---statec0de::title_url id
+  # job_search_id::company name::cityname---statecode::title_url id
   #       0           1            2                      3
   # OR
   # "478::::Skillman--- NJ::Analytical Scientist::http://api.simplyhired.com/...."
@@ -47,7 +48,6 @@ class JobSearchServices
   #      1          2           3             4     5
   #
   # if name or location is missing then we will have title and url
-
   def self.company_and_jobs_from_cache(job_ids)
     job_search_id, company_name, location = job_ids[0].split('::')
     location.gsub!('---', ',')
@@ -85,7 +85,7 @@ class JobSearchServices
 
   def search_and_filter_in_state(page)
     jobs_in_state_store = JobsInStateStore.where(job_search_id: job_search_id).first
-    jobs_in_state_store ||= JobsInStateStore.create(@job_search)
+    jobs_in_state_store ||= JobsInStateStore.create(job_search)
 
     job_board = JobBoard.new(@request_ip)
 
@@ -109,7 +109,7 @@ class JobSearchServices
     JobsInStateStore.where(:created_at.lte => 1.hour.ago).destroy
   end
 
-  def perform_sh_search(page)
+  def job_board_search(page)
     kw = keywords.split
 
     job_board = JobBoard.new(@request_ip)
@@ -132,12 +132,12 @@ class JobSearchServices
     job_board.search_jobs(args)
     @jobs_count = job_board.accessible_count.to_i unless page == 1 && jobs_count > 0
 
-    unless @job_search.count == jobs_count
+    unless job_search.count == jobs_count
       @job_search.count = jobs_count
       @job_search.save
     end
 
-    @jobs = job_board.jobs
+    @jobs  = job_board.jobs
     @pages = (@jobs_count + 24) / 25
 
     build_new_job_search
@@ -151,43 +151,12 @@ class JobSearchServices
                                     distance: distance)
   end
 
-  def in_state
-    @job_search.in_state
-  end
-
   def job_search_id
-    @job_search.id
+    job_search.id
   end
 
   def state_code
-    @job_search.state
+    state
   end
 
-  def keywords
-    @job_search.keywords
-  end
-
-  def location
-    @job_search.location
-  end
-
-  def zip
-    @job_search.zip
-  end
-
-  def city
-    @job_search.city
-  end
-
-  def state
-    @job_search.state
-  end
-
-  def distance
-    @job_search.distance
-  end
-
-  def days
-    @job_search.days
-  end
 end

@@ -120,20 +120,6 @@ class JobSearchesController < ApplicationController
   end
 
   def show
-    # @current_job_search = job_search = JobSearch.find(params[:id])
-    # authorize job_search
-    # # debugger
-    # @page = (params[:page] || 1).to_i
-
-    # @job_search_service = JobSearchServices.new(job_search, request_ip)
-
-    # @jobs, @jobs_count, @pages, @job_search = @job_search_service.perform_search(@page)
-
-    # respond_to do |format|
-    #   format.html # show.html.erb
-    #   format.json { render json: @job_search }
-    # end
-
     @job_search = JobSearch.find(params[:id])
     authorize @job_search
     page = (params[:page] || 1).to_i

@@ -51,11 +51,11 @@ class TraineesNearByEmployersReport < Report
   end
 
   def url_for_process_next
-    "/reports/process_next?report=trainees_near_by_employers&report_id=#{report_id}"
+    "/reports/process_next?report=trainees_near_by_employers&report_id=#{report_id}".html_safe
   end
 
   def url_for_show
-    "/reports/show?report=trainees_near_by_employers&report_id=#{report_id}"
+    "/reports/show?report=trainees_near_by_employers&report_id=#{report_id}".html_safe
   end
 
   def sector_id

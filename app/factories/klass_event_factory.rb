@@ -4,7 +4,7 @@ class KlassEventFactory
   def self.create(params, current_user)
     klass_event = build_event(params.clone)
     if klass_event.save
-      UserMailer.send_event_invite(klass_event, current_user).deliver
+      UserMailer.send_event_invite(klass_event, current_user).deliver_now
     else
       klass_event.event_date = params[:klass_event][:event_date]
     end
@@ -53,7 +53,7 @@ class KlassEventFactory
       add_ids.each do |id|
         ke.klass_interactions.create(employer_id: id, status: 1)
       end
-      UserMailer.send_event_invite(ke, current_user).deliver
+      UserMailer.send_event_invite(ke, current_user).deliver_now
     else
       ke.event_date = params[:klass_event][:event_date]
     end

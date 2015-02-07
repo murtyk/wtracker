@@ -1,29 +1,28 @@
 require 'rails_helper'
 
-RSpec.configure do |config|
-  config.order = "defined"
-end
-
+# test data is set up for one trainee in njit account
 describe "auto job leads" do
   describe "dashboard" do
     it 'shows metrics' do
-      # Delayed::Worker.new.work_off
-      AutoJobLeads.new.perform
-      expect(JobSearchProfile.count).to eq(1)
       signin_autolead_director
       click_on 'Dashboard'
       expect(page).to have_text('Job Leads Metrics')
+      signout
     end
   end
 
   describe "update status" do
     it 'updates profile' do
       VCR.use_cassette('auto_job_leads') do
+        AutoJobLeads.new.delay.perform
         Delayed::Worker.new.work_off
         expect(JobSearchProfile.count).to eq(1)
+
         profile = JobSearchProfile.last
         id   = profile.id
         key  = profile.key
+
+        switch_to_auto_leads_domain
         visit "/profiles/#{id}/edit?key=#{key}"
         expect(page).to have_text "Please enter your preferences for job leads"
 
@@ -39,22 +38,23 @@ describe "auto job leads" do
         expect(page).to have_text "Status:Not Viewed"
       end
     end
-    it "can send profile reminder" do
-      pending 'need to develop this spec soon'
-      fail
-    end
+    # it "can send profile reminder" do
+    #   pending 'need to develop this spec soon'
+    #   fail
+    # end
 
   end
 
   describe "opt out" do
     before :each do
-      Delayed::Worker.new.work_off
+      AutoJobLeads.new.perform
       profile = JobSearchProfile.first
       @id   = profile.id
       @key  = profile.key
     end
     it 'trainee opts out and director can view' do
 
+      switch_to_auto_leads_domain
       visit "/profiles/#{@id}/edit?key=#{@key}&opt_out=true"
 
       select 'Moved out of the area', from: 'Status'
