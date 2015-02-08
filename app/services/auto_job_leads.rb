@@ -147,14 +147,17 @@ class AutoJobLeads
   end
 
   def find_jobs(jsp, keywords, days)
-    search_params = { keywords: keywords, distance: jsp.distance,
-                      city: jsp.location, days: days,
+    search_params = { keywords: keywords, distance: jsp.distance, days: days,
                       search_type: JobBoard::ANY_KEYWORDS_SEARCH }
+
+    search_params_by_city = search_params.merge(city: jsp.location)
+    search_params_by_zip  = search_params.merge(zip: jsp.zip)
 
     jobs = []
     attempts = 1
     3.times do
-      count = job_board.search_jobs(search_params)
+      count = job_board.search_jobs(search_params_by_city)
+      count = job_board.search_jobs(search_params_by_zip) if count == 0
       if count > 0 && attempts > 1
         Rails.logger.info "AutoJobLeads: JSP id = #{jsp.id} attempts = #{attempts}"
       end

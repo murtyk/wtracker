@@ -1,42 +1,39 @@
 # a city in usa.
-# part of a county.
+# part of a county and a state
 class City < ActiveRecord::Base
   belongs_to :state
   belongs_to :county
 
-  attr_accessible :county_id, :city_state, :latitude,
-                  :longitude, :name, :state_code, :zip
+  attr_accessible :name, :latitude, :longitude, :county_id, :zip
 
-  validates :state_code, presence: true, length: { minimum: 2, maximum: 2 }
-  validates :city_state, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :name, presence: true
+
+  validate :validate_state_and_county
+
+  before_save :determine_city_state
 
   def county_name
     county.name
   end
 
+  # checks if this city is in a state (state code)
   def in_state?(s)
     s && state && s.squish.downcase == state.code.downcase
   end
 
-  def state_code
-    state.code
-  end
-
   def self.search(name, state_id)
-    return [] if state_id == 0 && name.blank?
-    if state_id > 0
-      cities = State.find(state_id).cities
-      return cities.where('name ilike ?', name + '%') unless name.blank?
-      return cities
-    end
-    return where('name ilike ?', name + '%') unless name.blank?
+    return [] if state_id.to_i == 0 && name.blank?
+    cities = City
+    cities = cities.where(state_id: state_id) if state_id.to_i > 0
+    name.blank? ? cities : cities.where('name ilike ?', name + '%')
   end
 
-  def self.get_by_citystate(city_state)
-    where('city_state ilike ?', city_state.squish).first
+  def self.find_by_citystate(city_comma_state)
+    city_name, st_code = city_comma_state.split(',')
+    return nil unless city_name && st_code
+    find_by('city_state ilike ?', city_name.squish + ',' + st_code.squish)
   end
 
   # find_by_zip might be useful in future. For now, we do not
@@ -60,4 +57,25 @@ class City < ActiveRecord::Base
   #   city.save
   #   city
   # end
+
+  private
+
+  def validate_state_and_county
+    return false unless state_id && county_id
+
+    s = State.where(id: state_id).first
+    errors.add(:state_id, 'invalid state id') unless s
+
+    c = County.where(id: county_id).first
+    errors.add(:county_id, 'invalid county id') unless c
+
+    errors.add(:county_id, 'county not in given state') unless c && c.state == s
+
+    s && c && c.state == s
+  end
+
+  def determine_city_state
+    self.state_code ||= state.code
+    self.city_state ||= name + ',' + state_code
+  end
 end

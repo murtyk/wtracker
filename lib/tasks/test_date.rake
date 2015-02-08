@@ -304,20 +304,29 @@ namespace :testprep do
   end
 
   def create_states
-    s = State.create(code: 'NH', name: 'New Hampshire')
+    [ ['NJ', 'New Jersey'], ['NH', 'New Hampshire'], ['NM', 'New Mexico'],
+      ['PA', 'Pennsylvania'], ['DE', 'Delaware'], ['TX', 'Texas']
+      ].each { |code, name| State.create(code: code, name: name) }
+    create_counties
+  end
+
+  def create_counties
+    create_nj_counties
+    create_nh_counties
+    create_nm_counties
+    create_pa_counties
+    create_de_counties
+    create_tx_counties
+  end
+
+  def create_de_counties
+    ['Kent', 'New Castle', 'Sussex'].each { |c| de_state.counties.create(name: c) }
+  end
+
+  def create_nh_counties
+    s = State.find_by(code: 'NH')
     %w(Belknap Carroll Cheshire Coos Grafton Hillsborough Merrimack Rockingham Strafford
        Sullivan).each { |c| s.counties.create(name: c) }
-
-    State.create(code: 'NM', name: 'New Mexico')
-    create_nm_counties
-    State.create(code: 'NJ', name: 'New Jersey')
-    create_nj_counties
-    State.create(code: 'PA', name: 'Pennsylvania')
-    create_pa_counties
-    State.create(code: 'DE', name: 'Delaware')
-    ['Kent', 'New Castle', 'Sussex'].each { |c| de_state.counties.create(name: c) }
-    State.create(code: 'TX', name: 'Texas')
-    create_tx_counties
   end
 
   def create_nm_counties
@@ -357,23 +366,19 @@ namespace :testprep do
   def create_cities
     northampton, bucks, lycoming, monmouth, mercer = fetch_counties
 
-    c_a = city_hash('Newtown', '18940', bucks.id, 'PA',
-                    'newtown,pa', -74.75, 41.05)
+    c_a = city_hash('Newtown', '18940', bucks.id, -74.75, 41.05)
     pa_state.cities.create(c_a)
 
-    c_a = city_hash('Bethlehem', '18020', northampton.id, 'PA',
-                    'bethlehem,pa', -75.36, 40.62)
+    c_a = city_hash('Bethlehem', '18020', northampton.id, -75.36, 40.62)
     pa_state.cities.create(c_a)
 
-    c_a = city_hash('Jersey Shore', '17740', lycoming.id, 'PA',
-                    'jersey shore,pa', -77.26, 41.20)
+    c_a = city_hash('Jersey Shore', '17740', lycoming.id, -77.26, 41.20)
     pa_state.cities.create(c_a)
 
-    c_a = city_hash('Middletown', '', monmouth.id, 'NJ', 'middletown,pa', -74.13, 40.33)
+    c_a = city_hash('Middletown', '', monmouth.id, -74.13, 40.33)
     nj_state.cities.create(c_a)
 
-    c_a = city_hash('East Windsor', '', mercer.id, 'NJ',
-                    'east windsor,pa', -74.54, 40.2677)
+    c_a = city_hash('East Windsor', '', mercer.id, -74.54, 40.2677)
     nj_state.cities.create(c_a)
 
     create_cities_for_companies_search_spec
@@ -381,18 +386,15 @@ namespace :testprep do
 
   def create_cities_for_companies_search_spec
     hudson = nj_state.counties.where(name: 'Hudson').first
-    c_a = city_hash('Union City', '07087', hudson.id, 'NJ',
-                    'Union City,NJ', -74.03, 40.77)
+    c_a = city_hash('Union City', '07087', hudson.id, -74.03, 40.77)
     nj_state.cities.create(c_a)
 
     cape_may = nj_state.counties.where(name: 'Cape May').first
-    c_a = city_hash('Cape May Court House', '08210', cape_may.id, 'NJ',
-                    'Cape May Court House,NJ', -74.80, 39.12)
+    c_a = city_hash('Cape May Court House', '08210', cape_may.id, -74.80, 39.12)
     nj_state.cities.create(c_a)
 
     ocean = nj_state.counties.where(name: 'Ocean').first
-    c_a = city_hash('Brick', '08723', ocean.id, 'NJ',
-                    'Brick,NJ', -74.1357407, 40.0508979)
+    c_a = city_hash('Brick', '08723', ocean.id, -74.1357407, 40.0508979)
     nj_state.cities.create(c_a)
   end
 
@@ -459,8 +461,7 @@ namespace :testprep do
   end
 
   def city_hash(*a)
-    { name: a[0], zip: a[1], county_id: a[2], state_code: a[3],
-      city_state: a[4], longitude: a[5], latitude: a[6] }
+    { name: a[0], zip: a[1], county_id: a[2], longitude: a[3], latitude: a[4] }
   end
 
   def create_employer(*a)

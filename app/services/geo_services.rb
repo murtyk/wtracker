@@ -36,7 +36,7 @@ class GeoServices
     parts = location.downcase.split(',')
     loc = parts.map { |p| p.squish }.join(',')
     city = City.where("REPLACE(city_state,' ','') = ? AND zip = ?", loc, zip).first if zip
-    city ||= City.get_by_citystate(loc)
+    city ||= City.find_by_citystate(loc)
 
     return city if city
 
@@ -88,7 +88,7 @@ class GeoServices
 
     # KORADA for 'Sparta, NJ' we get 'Sparta Township'.
     # solution: check if it exists
-    city = City.get_by_citystate(city_state)
+    city = City.find_by_citystate(city_state)
     return city if city
 
     data_zip = data.postal_code
@@ -105,8 +105,8 @@ class GeoServices
     end
 
     state.cities.create(name: city_name, county_id: county.id,
-                        city_state: city_state, latitude: data.latitude,
-                        longitude: data.longitude, state_code: state.code,
+                        latitude: data.latitude,
+                        longitude: data.longitude,
                         zip: data_zip)
   end
 

@@ -34,8 +34,6 @@ class CitiesImporter < Importer
     city            = state.cities.new
     city.name       = row['city']
     city.zip        = zip
-    city.state_code = state.code
-    city.city_state = (city.name + ',' + state.code).downcase
     city.longitude  = lng
     city.latitude   = lat
     county        ||= findcounty(city, state)
