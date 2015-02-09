@@ -238,7 +238,7 @@ private
                                  salt: applicant.grant.salt,
                                  key: applicant.reapply_key)
 
-      link =  "<a href= '#{url}'>click here</a>"
+      link =  "<a href= '#{url}'>Click here</a>"
       msg = msg.gsub('$REAPPLY_LINK$',  link)
     end
 
