@@ -63,7 +63,7 @@ class TraineesImporter < Importer
     trainee.home_address    = map_home_address row
     trainee.mailing_address = map_mailing_address row
 
-    init_races(trainee, row)
+    trainee.race_id = find_race_id(row)
 
     # now get tact_three attributes
     tact_three = trainee.build_tact_three
@@ -91,10 +91,9 @@ class TraineesImporter < Importer
     trainee.funding_source_id = funding_source_id(clean_field(row['funding_source']))
   end
 
-  def init_races(trainee, row)
-    race = Race.where(name: row['ethnicity']).first
-    return unless race
-    trainee.trainee_races.new(race_id: race.id)
+  def find_race_id(row)
+    race = Race.find_by(name: row['ethnicity'])
+    race && race.id
   end
 
   def init_tact_three(t3, row)

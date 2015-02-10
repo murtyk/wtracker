@@ -91,7 +91,7 @@ class TraineeFactory
     attrs = { first: applicant.first_name, last: applicant.last_name,
               email: applicant.email, mobile_no: applicant.mobile_phone_no,
               legal_status: applicant.legal_status, veteran: applicant.veteran,
-              gender: applicant.gender, race_ids: [applicant.race_id],
+              gender: applicant.gender, race_id: applicant.race_id,
               funding_source_id: applicant.funding_source_id,
               tact_three_attributes: tact_three_attributes
             }

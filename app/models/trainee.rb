@@ -17,21 +17,11 @@ class Trainee < ActiveRecord::Base
   attr_accessible :remember_me, :login_id, :password, :password_confirmation,
                   :disability, :dob, :education, :email, :first, :last,
                   :gender, :land_no, :middle, :mobile_no, :trainee_id,
-                  :status, :veteran, :race_ids, :klass_ids,
+                  :status, :veteran, :race_id, :race_ids, :klass_ids,
                   :tact_three_attributes, :legal_status, :funding_source_id,
                   :home_address_attributes, :mailing_address_attributes
 
   attr_encrypted :trainee_id, key: :encryption_key
-
-  # initial spec was to have multiple races for a trainee
-  # now the spec is changed to have only one.
-  # we are keeping the database design intact and managing through code
-  # eventually we should migrate to having only one race in the db
-  # for now we handle this as follows:
-  # on initialization we set race_id to race_ids[0]
-  # before save, we set race_ids = [race_id]
-  attr_accessible :race_id
-  attr_accessor :race_id
 
   validates :first, presence: true, length: { minimum: 2, maximum: 20 }
   validates :last,  presence: true, length: { minimum: 2, maximum: 20 }
@@ -110,7 +100,6 @@ class Trainee < ActiveRecord::Base
       self.password_confirmation ||= 'password'
     end
     self.email ||= ''
-    self.race_id = race_ids && race_ids[0]
   end
 
   def name
@@ -198,6 +187,5 @@ class Trainee < ActiveRecord::Base
   def cb_before_save
     self.land_no   = land_no.delete('^0-9') if land_no
     self.mobile_no = mobile_no.delete('^0-9') if mobile_no
-    self.race_ids  = race_id ? [race_id] : []
   end
 end
