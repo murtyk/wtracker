@@ -162,4 +162,19 @@ class EmployerFactory
     end
     [saved, error_message]
   end
+
+  def self.add_employer_file(params, user)
+    employer = Employer.find(params[:employer_id])
+    saved    = false
+
+    begin
+      file = Amazon.store_file(params[:file], 'employer_files')
+      employer_file = employer.employer_files.create!(notes: params[:notes],
+                                                      file: file, user_id: user.id)
+      saved = true
+    rescue StandardError => e
+      error_message = e.to_s
+    end
+    [saved, error_message, employer_file]
+  end
 end

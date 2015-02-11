@@ -71,7 +71,7 @@
     </tr>
     <% @trainees_map.trainees_no_college.each do |trainee, address, reason| %>
     <tr>
-      <td><%= "<a href='/trainees/#{trainee.id}'>#{trainee.name}</a>".html_safe %></td>
+      <td><%= "<a href='/trainees/#{trainee.id}'>#{trainee.name} - #{trainee.funding_source_name}</a>".html_safe %></td>
       <td><%= address %> </td>
       <td><%= reason %></td>
     </tr>

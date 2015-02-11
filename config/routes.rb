@@ -121,6 +121,7 @@ WTracker::Application.routes.draw do
   end
 
   resources :contacts,          except: [:index, :show]
+  resources :employer_files,    only: [:new, :show, :create, :destroy]
   resources :employer_notes,    except: [:index, :show]
   resources :job_openings,      only: [:new, :create]
   resources :employer_sectors,  only: [:new, :create, :destroy]

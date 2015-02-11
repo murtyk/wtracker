@@ -57,6 +57,7 @@ class Employer < ActiveRecord::Base
   has_many :job_openings, dependent: :destroy
   has_many :trainee_submits, dependent: :destroy
   has_many :employer_notes, -> { order 'created_at desc' }, dependent: :destroy
+  has_many :employer_files, dependent: :destroy
 
   def formatted_address
     address ? address.gmaps4rails_address : ''

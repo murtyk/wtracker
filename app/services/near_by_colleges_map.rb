@@ -79,7 +79,7 @@ class NearByCollegesMap < MapService
     trainees.each do |t|
       addr        = t.home_address
       next unless addr
-      trainee     = OpenStruct.new(name: t.name, id: t.id)
+      trainee     = OpenStruct.new(name: "#{t.name} - #{t.funding_source_name}", id: t.id)
 
       a.id        = addr.id
       a.latitude  = addr.latitude

@@ -151,4 +151,18 @@ class EmployerDecorator < Draper::Decorator
   def county_state
     "#{county} - #{state}"
   end
+
+  def files_header
+    return nil unless EmployerFilePolicy.new.index?
+
+    html = '<hr>'  \
+           '<h4>'  +
+           'Files ' +
+           h.button_new_association(EmployerFile, employer_id: object.id,
+                                                 title: 'Add Document',
+                                                 skip_policy_check: true) +
+           '</h4>'
+    html.html_safe
+  end
+
 end

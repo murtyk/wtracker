@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150210221625) do
+ActiveRecord::Schema.define(version: 20150211180458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -351,6 +351,20 @@ ActiveRecord::Schema.define(version: 20150210221625) do
 
   add_index "emails", ["account_id"], name: "index_emails_on_account_id", using: :btree
   add_index "emails", ["user_id"], name: "index_emails_on_user_id", using: :btree
+
+  create_table "employer_files", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "employer_id"
+    t.string   "file"
+    t.integer  "user_id"
+    t.string   "notes"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "employer_files", ["account_id"], name: "index_employer_files_on_account_id", using: :btree
+  add_index "employer_files", ["employer_id"], name: "index_employer_files_on_employer_id", using: :btree
+  add_index "employer_files", ["user_id"], name: "index_employer_files_on_user_id", using: :btree
 
   create_table "employer_notes", force: :cascade do |t|
     t.integer  "employer_id", null: false
@@ -1006,4 +1020,7 @@ ActiveRecord::Schema.define(version: 20150210221625) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "employer_files", "accounts"
+  add_foreign_key "employer_files", "employers"
+  add_foreign_key "employer_files", "users"
 end

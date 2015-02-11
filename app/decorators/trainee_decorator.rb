@@ -46,7 +46,7 @@ class TraineeDecorator < Draper::Decorator
 
     html = '<hr>'  \
            '<h4>'  +
-           'Files' +
+           'Files ' +
            h.button_new_association(TraineeFile, trainee_id: object.id,
                                                  title: 'Add Document',
                                                  skip_policy_check: true) +
