@@ -27,7 +27,7 @@ class Trainee < ActiveRecord::Base
   validates :last,  presence: true, length: { minimum: 2, maximum: 20 }
   validate :validate_email
 
-  validates_uniqueness_of :email, scope: :grant_id
+  validates_uniqueness_of :email, scope: :grant_id, allow_blank: true
   validates_uniqueness_of :login_id, allow_nil: true
 
 
