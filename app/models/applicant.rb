@@ -124,8 +124,10 @@ class Applicant < ActiveRecord::Base
     app.where('id > ?', id).order(:id).first || app.order(:id).first
   end
 
-  def navigator
-    User.find(navigator_id)
+  belongs_to :navigator, class_name: "User", foreign_key: 'navigator_id'
+
+  def navigator_name
+    navigator && navigator.name
   end
 
   def last_employer_address

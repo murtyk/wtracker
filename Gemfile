@@ -51,6 +51,7 @@ gem 'memcachier', '0.0.2'
 gem 'dalli', '2.6.4'
 gem 'icalendar', '1.4.3'
 gem 'humanizer'
+gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
 
 gem 'delayed_job_active_record'
 gem 'clockwork'

@@ -29,6 +29,14 @@ class TraineesController < ApplicationController
                        .where(klass_trainees: { klass_id: klass_id })
   end
 
+  def advanced_search
+    @q = Trainee.ransack(params[:q])
+    # @trainees = @q.result(distinct: true)
+    @trainees = @q.result.includes(:klasses, :job_search_profile, :assessments,
+                                   :funding_source, :home_address, :tact_three)
+                         .includes(applicant: [:applicant_reapplies, :navigator])
+  end
+
   def index
     @trainees     = []
     @filter_info  =  {}

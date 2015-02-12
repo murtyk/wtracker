@@ -1,0 +1,126 @@
+<h1>Trainees - Advanced Search</h1>
+<div class = 'row-fluid'>
+  <div class='span3' style="padding: 10px;background-color: #ddd">
+    <%= search_form_for(@q, url: advanced_search_trainees_path, method: :post) do |f| %>
+
+      <%#= f.input :first_start, label: 'First Name', required: false%>
+
+      <%= f.label :first_start, 'First Name' %>
+      <%= f.search_field :first_start %>
+
+      <%= f.label :last_start, 'Last Name' %>
+      <%= f.search_field :last_start %>
+
+      <% if current_grant.trainee_applications? %>
+        <%= f.label :applicant_navigator_id_eq, 'Navigator' %>
+        <%= f.collection_select :applicant_navigator_id_eq,
+                                current_grant.navigators, :id, :name,
+                                include_blank: true %>
+      <% end %>
+
+      <%= f.label :home_address_county_eq, 'County' %>
+      <%= f.collection_select :home_address_county_eq,
+                              current_account.state.counties, :name, :name,
+                              include_blank: true %>
+
+      <% if current_grant.trainee_applications? %>
+        <%= f.label :applicant_industry_id_eq, 'Industry' %>
+        <%= f.collection_select :applicant_sector_id_eq, Sector.all, :id, :name,
+                                include_blank: true %>
+      <% end %>
+
+      <%= f.label :mobile_no_eq, 'Mobile No' %>
+      <%= f.search_field :mobile_no_eq %>
+
+      <%= f.label :funding_source_id_eq, 'Funding Source' %>
+      <%= f.collection_select :funding_source_id_eq,
+                              FundingSource.order(:name), :id, :name,
+                              include_blank: true %>
+
+      <%= f.label :klasses_id_eq, 'Class' %>
+      <%= f.collection_select :klasses_id_eq, Klass.order(:name), :id, :name,
+                              include_blank: true %>
+
+      <%= f.label :veteran_eq, 'Veteran' %>
+      <%= f.collection_select :veteran_eq, [[true, 'Yes'],[false, 'No']], :first, :last,
+                              include_blank: true %>
+
+      <% if current_grant.trainee_applications? %>
+        <%= f.label :job_search_profile_skills_cont, 'Skills' %>
+        <%= f.search_field :job_search_profile_skills_cont %>
+      <% end %>
+
+      <%= f.label :assessments_id_eq, 'Assessment' %>
+      <%= f.collection_select :assessments_id_eq, Assessment.all, :id, :name,
+                              include_blank: true %>
+      <br>
+      <%= f.submit class: 'btn btn-flat btn-primary' %>
+    <% end %>
+  </div>
+  <div class='span9'>
+    <div class='row-fluid'>
+      <div class='span3'>
+        <h4>Trainee Count: <%= @trainees.count %></h4>
+      </div>
+      <div class='span9'>
+        <button type='button' id = 'btnExport' name='export'
+                class='btn btn-flat btn-small btn-primary pull-right'>
+          <i class='icon-cloud-download icon-2x'></i>
+        </button><br>
+      </div>
+    </div>
+
+    <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+    <tr>
+      <th><%= sort_link(@q, :first, "First Name") %></th>
+      <th><%= sort_link(@q, :last, "Last Name") %></th>
+      <% if current_grant.trainee_applications? %>
+        <th>Applied On?</th>
+      <% end %>
+      <th><%= sort_link(@q, :email, "Email") %></th>
+      <th>Mobile No</th>
+      <th><%= sort_link(@q, :home_address_county, "County") %></th>
+      <% if current_grant.trainee_applications? %>
+        <th>Last Job Title</th>
+        <th><%= sort_link(@q, :applicant_sector_name, "Industry") %></th>
+      <% end %>
+      <th><%= sort_link(@q, :funding_source_name, "Funding Source") %></th>
+
+      <th>Education</th>
+      <th>Veteran</th>
+      <% if current_grant.trainee_applications? %>
+        <th>Skills</th>
+        <th>Navigator</th>
+      <% end %>
+      <th>Classes</th>
+      <th>Assessment</th>
+    </tr>
+    <% @trainees.each do |t| %>
+    <tr>
+      <td><%= link_to t.first, t %></td>
+      <td><%= link_to t.last, t %></td>
+      <% if current_grant.trainee_applications? %>
+        <td><%= t.applicant.applied_on %></td>
+      <% end %>
+      <td><%= t.email %></td>
+      <td><%= t.mobile_no %></td>
+      <td><%= t.home_address && t.home_address.county %></td>
+      <% if current_grant.trainee_applications? %>
+        <td><%= t.applicant.last_job_title %></td>
+        <td><%= t.applicant.sector.name %></td>
+      <% end %>
+      <td><%= t.funding_source && t.funding_source.name %></td>
+      <td><%= t.education %></td>
+      <td><%= t.veteran ? 'Yes' : 'No' %></td>
+      <% if current_grant.trainee_applications? %>
+        <td><%= t.job_search_profile.skills %></td>
+        <td><%= t.applicant.navigator_name %></td>
+      <% end %>
+      <td><%= t.klasses.map{ |k| link_to(k.name, k) }.join('<br>').html_safe %></td>
+      <td><%= t.assessments.map{ |a| a.name }.join('<br>').html_safe %></td>
+    </tr>
+    <% end %>
+    </table>
+  </div>
+</div>
+<%= render 'shared/export_table.js.erb' %>

@@ -65,6 +65,7 @@ class Trainee < ActiveRecord::Base
   # accepts_nested_attributes_for :trainee_races
 
   has_many :trainee_assessments, dependent: :destroy
+  has_many :assessments, through: :trainee_assessments
   has_many :trainee_notes, -> { order('created_at DESC') }, dependent: :destroy
 
   has_many :trainee_interactions, dependent: :destroy
@@ -188,4 +189,10 @@ class Trainee < ActiveRecord::Base
     self.land_no   = land_no.delete('^0-9') if land_no
     self.mobile_no = mobile_no.delete('^0-9') if mobile_no
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    # whitelist only the title and body attributes for other users
+    super & %w(first last email funding_source_id mobile_no veteran)
+  end
+
 end

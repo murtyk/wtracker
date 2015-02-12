@@ -176,6 +176,7 @@ WTracker::Application.routes.draw do
       get :docs_for_selection
       get :search_by_skills
       get :portal
+      match 'advanced_search' => 'trainees#advanced_search', via: [:get, :post], as: :advanced_search
     end
   end
 

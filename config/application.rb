@@ -1,6 +1,8 @@
 require File.expand_path('../boot', __FILE__)
 require 'csv'
 # require 'iconv'
+ENV['RANSACK_FORM_BUILDER'] = '::SimpleForm::FormBuilder'
+
 require 'rails/all'
 
 if defined?(Bundler)

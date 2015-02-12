@@ -112,10 +112,12 @@
               <b class="caret" style='border-top-color: white;'></b>
             </a>
             <ul class="dropdown-menu">
+              <li><%= link_to 'Search', trainees_path %></li>
               <% if current_grant.auto_job_leads? %>
                 <li><%= link_to 'Search by skills', search_by_skills_trainees_path %></li>
               <% end %>
-              <li><%= link_to 'Search', trainees_path %></li>
+              <li><%= link_to 'Advanced Search', advanced_search_trainees_path %></li>
+              <li class="divider"></li>
               <% if policy(Trainee).new? %>
               <li><%= link_to 'Add', new_trainee_path %></li>
               <li><%= link_to 'Import from a file', new_import_status_path(resource: 'trainees') %></li>
