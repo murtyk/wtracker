@@ -1,0 +1,10 @@
+<div id = '<%=div_id_for(grant_trainee_status)%>'>
+  <p>
+    <% if grant_trainee_status.is_default? %>
+      <%= grant_trainee_status.name + ' (default)'%>
+    <% else %>
+      <%= button_destroy_association(grant_trainee_status) %>
+      <%= grant_trainee_status.name %>
+    <% end %>
+  </p>
+</div>

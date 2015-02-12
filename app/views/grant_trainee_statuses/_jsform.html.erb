@@ -1,4 +1,4 @@
-<%= simple_form_for(unemployment_proof, remote: true) do |f| %>
+<%= simple_form_for(grant_trainee_status,remote: true) do |f| %>
 	<%= f.error_notification %>
 	<div class='form-inputs'>
 		<%= f.input :name, input_html: {style: 'width: 400px'} %>
@@ -9,12 +9,12 @@
 <% end %>
 <script type="text/javascript">
 
-  $('#new_unemployment_proof').submit(function() {
-    if ($('#unemployment_proof_name').val() == ""){
+  $('#new_grant_trainee_status').submit(function() {
+    if ($('#grant_trainee_status_name').val() == ""){
       alert("Please enter funding soruce name");
       return false;
     }
-    if ($('#unemployment_proof_name').val().length < 3){
+    if ($('#grant_trainee_status_name').val().length < 3){
       alert("Name should be minimum 3 characters");
       return false;
     }
@@ -22,4 +22,4 @@
   });
 </script>
 
-<%= ajax_form_cancel_script(unemployment_proof) %>
+<%= ajax_form_cancel_script(grant_trainee_status) %>

@@ -67,6 +67,7 @@
                 <% end %>
                 <li><%= link_to 'Trainee Options', trainee_options_accounts_path %></li>
                 <% if current_grant.trainee_applications? %>
+                  <li><%= link_to 'Trainee Status Options', grant_trainee_statuses_path %></li>
                   <li><%= link_to 'Unemployment Proof', unemployment_proofs_path %></li>
                 <% end %>
 
@@ -216,43 +217,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-  OnlineUsersPoller = {
-    poll: function() {
-      return setTimeout(this.request, <%= Rails.env.production? ? 20000 : 300000 %>);
-    },
-    request: function() {
-    var popover = $('#popover-onlineusers').data('popover');
-
-    $.get("/users/online", function(data) {
-        if (data.length > 0){
-        data_html = '';
-        data.forEach(function(user_name) {
-            data_html = data_html + user_name + '<br>';
-          });
-        popover.options.content = data_html;
-        title = "<b style='color:red;'>" + data.length + '</b> online';
-        $('#popover-onlineusers').html(title);
-        }
-        else{
-        popover.options.content = 'none';
-        $('#popover-onlineusers').html('');
-        }
-      popover.options.html = true;
-      popover.options.placement = "bottom";
-    }, "json");
-
-    OnlineUsersPoller.poll();
-    }
-  };
-
-  jQuery(function() {
-    if ($('#popover-onlineusers').length > 0) {
-      return OnlineUsersPoller.poll();
-    }
-  });
-
-  $('#popover-onlineusers').popover({placement: 'bottom'});
-
-</script>

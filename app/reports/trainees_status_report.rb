@@ -5,7 +5,7 @@ class TraineesStatusReport < Report
 
     klass_trainees = klass_trainees_placed + klass_trainees_not_placed
     klass_trainees.to_a.sort! { |a, b| a.trainee.name <=> b.trainee.name }
-    @trainee_statuses = klass_trainees.map { |kt| TraineeStatus.new(kt) }
+    @trainee_statuses = klass_trainees.map { |kt| KlassTraineeStatus.new(kt) }
   end
 
   def trainee_statuses

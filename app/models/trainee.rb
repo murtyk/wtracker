@@ -76,6 +76,7 @@ class Trainee < ActiveRecord::Base
   has_many :klasses, through: :klass_trainees
 
   has_many :trainee_submits, dependent: :destroy
+  has_many :trainee_statuses, dependent: :destroy
   has_many :trainee_files, dependent: :destroy
 
   has_many :job_shared_tos # job_share should do dependent: :destroy

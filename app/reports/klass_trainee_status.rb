@@ -1,5 +1,5 @@
 # trainee and full status information
-class TraineeStatus < DelegateClass(KlassTrainee)
+class KlassTraineeStatus < DelegateClass(KlassTrainee)
   attr_reader :hired_employer, :hired
 
   def initialize(obj)

@@ -62,17 +62,19 @@ WTracker::Application.routes.draw do
     end
   end
 
-  resources :unemployment_proofs,  only: [:new, :create, :destroy, :index]
-  resources :special_services,     only: [:new, :create, :destroy, :index]
-  resources :applicant_sources,    only: [:new, :create, :destroy, :index]
+  resources :applicant_sources,      only: [:new, :create, :destroy, :index]
   resources :employment_statuses
-  resources :funding_sources,      only: [:new, :create, :destroy, :index]
+  resources :funding_sources,        only: [:new, :create, :destroy, :index]
+  resources :special_services,       only: [:new, :create, :destroy, :index]
+  resources :grant_trainee_statuses, only: [:new, :create, :destroy, :index]
+  resources :unemployment_proofs,    only: [:new, :create, :destroy, :index]
 
   resources :trainee_files,       only: [:new, :show, :create, :destroy]
   resources :trainee_submits,     only: [:new, :create]
   resources :trainee_assessments, only: [:new, :create, :destroy]
   resources :trainee_emails,      except: [:edit, :update]
   resources :trainee_notes,       except: [:index, :show]
+  resources :trainee_statuses,    only: [:new, :create]
 
   resources :job_searches, only: [:new, :show, :create] do
     member do
