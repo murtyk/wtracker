@@ -1,6 +1,6 @@
 class GrantPolicy < Struct.new(:user, :grant)
   def edit?
-    user.admin_or_director?
+    user.admin_access?
   end
 
   def update?
