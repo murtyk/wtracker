@@ -87,7 +87,10 @@ class TraineeFactory
   end
 
   def self.create_trainee_from_applicant(applicant)
+    grant   = applicant.grant
+
     tact_three_attributes = build_tact3_attrs(applicant)
+
     attrs = { first: applicant.first_name, last: applicant.last_name,
               email: applicant.email, mobile_no: applicant.mobile_phone_no,
               legal_status: applicant.legal_status, veteran: applicant.veteran,
@@ -105,9 +108,10 @@ class TraineeFactory
     attrs[:login_id]              = login_id_for(applicant)
     attrs[:password]              = pwd
     attrs[:password_confirmation] = pwd
-    grant   = applicant.grant
+
     trainee = grant.trainees.new(attrs)
     trainee.build_job_search_profile(account_id: trainee.account_id)
+    trainee.trainee_statuses.new(grant_trainee_status_id: grant.default_trainee_status_id.to_i)
     trainee.save
     [trainee, pwd]
   end

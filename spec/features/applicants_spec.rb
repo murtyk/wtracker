@@ -50,16 +50,23 @@ describe "applicants" do
       expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
 
       applicant = Applicant.unscoped.first
+      Account.current_id = applicant.account_id
+      Grant.current_id = applicant.grant_id
+      trainee = Trainee.find(applicant.trainee_id)
+      trainee_id = trainee.id
+      ts = TraineeStatus.where(trainee_id: trainee_id).first
+      ts_name = ts.name
+      ts_display = "#{ts.created_at.to_date.to_s} - #{ts.name}"
+
+
       expect(applicant.name).to eq(os_applicant.name)
       expect(applicant.status).to eq('Accepted')
-      trainee = Trainee.unscoped.find(applicant.trainee_id)
       expect(trainee.name).to eq(os_applicant.name)
-
-      trainee_id = trainee.id
+      expect(ts_name).to eql('Active')
 
       signin_applicants_admin
       visit "/trainees/#{trainee_id}"
-      expect(page).to have_text('Active')
+      expect(page).to have_text(ts_display)
       click_on 'Go To Applicant Page'
 
       expect(page).to have_text(os_applicant.name)
