@@ -215,6 +215,7 @@ namespace :testprep do
     create_special_services
     create_funding_sources
     create_employment_statuses
+    create_grant_trainee_statuses(grant)
 
     create_college('Newark Campus', '765 Newman Springs Rd', 'Middletown', 'NJ',
                    '07738', 40.3279, -74.1334)
@@ -225,6 +226,12 @@ namespace :testprep do
 
     nav1.counties << nj_state.counties.where(name: 'Middlesex').first
     nav1.grants << grant
+  end
+
+  def create_grant_trainee_statuses(grant)
+    ['Active', 'Placed X',
+     'Lost', 'Placed Y'].each{|s| GrantTraineeStatus.create(name: s)}
+    grant.update(default_trainee_status_id: 1)
   end
 
   def create_applicant_sources

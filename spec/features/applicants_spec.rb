@@ -40,7 +40,7 @@ describe "applicants" do
     expect(page).to have_text("can't be blank")
   end
 
-  it 'accepts applicant and creates trainee' do
+  it 'accepts applicant and creates trainee with default grant_trainee_status' do
     VCR.use_cassette('applicant') do
       visit_new_applicant_page
       os_applicant = build_applicant_data
@@ -59,6 +59,7 @@ describe "applicants" do
 
       signin_applicants_admin
       visit "/trainees/#{trainee_id}"
+      expect(page).to have_text('Active')
       click_on 'Go To Applicant Page'
 
       expect(page).to have_text(os_applicant.name)

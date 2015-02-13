@@ -19,7 +19,8 @@ class Trainee < ActiveRecord::Base
                   :gender, :land_no, :middle, :mobile_no, :trainee_id,
                   :status, :veteran, :race_id, :race_ids, :klass_ids,
                   :tact_three_attributes, :legal_status, :funding_source_id,
-                  :home_address_attributes, :mailing_address_attributes
+                  :home_address_attributes, :mailing_address_attributes,
+                  :gts_id
 
   attr_encrypted :trainee_id, key: :encryption_key
 
@@ -59,6 +60,7 @@ class Trainee < ActiveRecord::Base
   belongs_to :account
   belongs_to :grant
   belongs_to :funding_source
+  belongs_to :grant_trainee_status, foreign_key: :gts_id
 
   has_many :trainee_races, dependent: :destroy
   has_many :races, through: :trainee_races
@@ -193,7 +195,7 @@ class Trainee < ActiveRecord::Base
 
   def self.ransackable_attributes(auth_object = nil)
     # whitelist only the title and body attributes for other users
-    super & %w(first last email funding_source_id mobile_no veteran)
+    super & %w(first last email funding_source_id mobile_no veteran gts_id)
   end
 
 end

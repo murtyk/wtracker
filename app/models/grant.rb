@@ -170,6 +170,9 @@ class Grant < ActiveRecord::Base
     atoz.shuffle[0..3].join + '0000' + atoz.shuffle[0..3].join + id.to_s
   end
 
+  def grant_trainee_status?
+    !default_trainee_status_id.nil?
+  end
   private
 
   def save_options

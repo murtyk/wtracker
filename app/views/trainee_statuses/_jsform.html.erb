@@ -1,0 +1,15 @@
+<%= simple_form_for(trainee_status, remote: true) do |f| %>
+  <hr>
+  <div class="form-inputs">
+      <%= f.hidden_field :trainee_id %>
+      <% if trainee_status.new_record? %>
+        <%= f.input :grant_trainee_status_id, collection: GrantTraineeStatus.all, label: 'New Status' %>
+      <% end %>
+      <%= f.input :notes, label: 'Enter Notes', as: :text%>
+  </div>
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(trainee_status, "trainee_#{trainee_status.trainee_id}_") %>
+<% end %>
+

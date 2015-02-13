@@ -4,7 +4,12 @@
     <%= search_form_for(@q, url: advanced_search_trainees_path, method: :post) do |f| %>
 
       <%#= f.input :first_start, label: 'First Name', required: false%>
-
+      <span>
+        <%= link_to 'Clear', advanced_search_trainees_path,
+                class: 'btn btn-flat btn-small btn-primary pull-left'%>
+        <%= f.submit class: 'btn btn-flat btn-primary pull-right' %>
+      </span>
+      <br><br>
       <%= f.label :first_start, 'First Name' %>
       <%= f.search_field :first_start %>
 
@@ -37,6 +42,13 @@
                               FundingSource.order(:name), :id, :name,
                               include_blank: true %>
 
+      <% if current_grant.grant_trainee_status? %>
+        <%= f.label :gts_id_eq, 'Status' %>
+        <%= f.collection_select :gts_id_eq,
+                                GrantTraineeStatus.all, :id, :name,
+                                include_blank: true %>
+      <% end %>
+
       <%= f.label :klasses_id_eq, 'Class' %>
       <%= f.collection_select :klasses_id_eq, Klass.order(:name), :id, :name,
                               include_blank: true %>
@@ -54,7 +66,11 @@
       <%= f.collection_select :assessments_id_eq, Assessment.all, :id, :name,
                               include_blank: true %>
       <br>
-      <%= f.submit class: 'btn btn-flat btn-primary' %>
+      <span>
+        <%= link_to 'Clear', advanced_search_trainees_path,
+                class: 'btn btn-flat btn-small btn-primary pull-left'%>
+        <%= f.submit class: 'btn btn-flat btn-primary pull-right' %>
+      </span>
     <% end %>
   </div>
   <div class='span9'>
@@ -75,7 +91,8 @@
       <th><%= sort_link(@q, :first, "First Name") %></th>
       <th><%= sort_link(@q, :last, "Last Name") %></th>
       <% if current_grant.trainee_applications? %>
-        <th>Applied On?</th>
+        <th>Applied On</th>
+        <th>Status</th>
       <% end %>
       <th><%= sort_link(@q, :email, "Email") %></th>
       <th>Mobile No</th>
@@ -101,6 +118,7 @@
       <td><%= link_to t.last, t %></td>
       <% if current_grant.trainee_applications? %>
         <td><%= t.applicant.applied_on %></td>
+        <td><%= t.grant_trainee_status.name %></td>
       <% end %>
       <td><%= t.email %></td>
       <td><%= t.mobile_no %></td>
