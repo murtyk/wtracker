@@ -72,7 +72,7 @@ class NearByCollegesMap < MapService
   end
 
   # for each trainee, finds colleges within 15 miles
-  # and assigns trainee to each these college
+  # and assigns trainee to nearest college
   def attach_trainees_to_colleges
     no_college_msg = 'No college within 15 miles'
     a = Address.new

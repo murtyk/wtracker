@@ -116,7 +116,7 @@ class CompanyListFinder
     city = City.where(zip: zip).first
     return { error: "city not found for zip #{zip}" }.merge(info) unless city
     info.merge(city_id: city.id, city: city.name,
-               city_state: city.city_state, county: city.county.name)
+               city_state: city.city_state, county: city.county_name)
   end
 
   def open_reader

@@ -21,12 +21,13 @@ class ApplicantFactory
 
     applicant = Applicant.find params[:id]
     a_params  = params[:applicant]
-    fs_id     = a_params.delete(:funding_source_id).to_i
+    t_params  = a_params.delete(:trainee)
+    t_params.delete(:id) if t_params
 
     Applicant.transaction do
       applicant.update_attributes(a_params) if a_params.any?
       trainee = applicant.trainee
-      trainee.update_attributes(funding_source_id: fs_id) if fs_id > 0
+      trainee.update_attributes(t_params) if t_params
       if trainee.errors.any?
         trainee.errors.each do |f, m|
           applicant.errors.add(f, m) if applicant.respond_to?(f)

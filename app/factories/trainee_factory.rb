@@ -95,7 +95,6 @@ class TraineeFactory
               email: applicant.email, mobile_no: applicant.mobile_phone_no,
               legal_status: applicant.legal_status, veteran: applicant.veteran,
               gender: applicant.gender, race_id: applicant.race_id,
-              funding_source_id: applicant.funding_source_id,
               tact_three_attributes: tact_three_attributes
             }
 

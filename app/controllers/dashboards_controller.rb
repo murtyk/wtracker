@@ -1,13 +1,13 @@
+# serves as a starting point when user logs in
+# for non admin users, signs out if they are not assigned to any grant
+# redirects to an appropriate page depending on the grant and user
 class DashboardsController < ApplicationController
   before_filter :authenticate_user!
 
   def startingpage
     @grants = current_user.active_grants
     if @grants.empty?
-      sign_out :user
-      flash[:error] = 'You are not assigned to any classes yet.
-                       Please inform your administrator'
-      redirect_to new_user_session_path # Force a full reload
+      redirect_to_not_assigned_path
       return
     end
 
@@ -16,18 +16,13 @@ class DashboardsController < ApplicationController
       return
     end
 
-    Grant.current_id   = @grants.first.id
-    session[:grant_id] = Grant.current_id
+    session[:grant_id] = Grant.current_id = @grants.first.id
 
     if current_grant.trainee_applications?
-      if current_user.navigator?
-        redirect_to analysis_applicants_path
-        return
-      end
-      @applicant_metrics = ApplicantMetrics.new.generate(current_user)
-      render 'applicant_metrics'
+      redirect_to_applicant_grant_start_page
       return
     end
+
     if current_user.admin_or_director? || current_user.grant_admin?
       render 'summary'
       return
@@ -39,18 +34,12 @@ class DashboardsController < ApplicationController
 
   def grantselected
     Grant.current_id = session[:grant_id] = params[:grant][:id].to_i
-    if current_grant.trainee_applications?
-      @applicant_metrics = ApplicantMetrics.new.generate(current_user)
-      render 'applicant_metrics'
-      return
-    end
-    init_data if current_user.navigator?
-    render 'summary'
+    redirect_to summary_dashboards_path
   end
 
   def summary
     if current_grant.trainee_applications?
-      @applicant_metrics = ApplicantMetrics.new.generate(current_user)
+      @applicant_metrics = DashboardMetrics.new.generate
       render 'applicant_metrics'
       return
     end
@@ -72,5 +61,20 @@ class DashboardsController < ApplicationController
                         .where('name ilike ?', '%visit%')
                         .where('DATE(event_date) >= ?', Time.now.to_date)
                         .order('event_date desc')
+  end
+
+  def redirect_to_applicant_grant_start_page
+    if current_user.navigator?
+      redirect_to analysis_applicants_path
+    else
+      redirect_to summary_dashboards_path
+    end
+  end
+
+  def redirect_to_not_assigned_path
+    sign_out :user
+    flash[:error] = 'You are not assigned to any classes yet.
+                     Please inform your administrator'
+    redirect_to new_user_session_path # Force a full reload
   end
 end

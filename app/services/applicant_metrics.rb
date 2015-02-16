@@ -2,23 +2,32 @@
 # definitions:
 # new applicant: Applicant of Trainee whose funding source not assigned
 class ApplicantMetrics
+  # need this for link_to
+  include ActionView::Helpers::UrlHelper
   attr_reader :metrics, :trainees, :applicants, :title,
-              :show_applicant_placements, :show_trainee_placements
+              :show_applicant_placements, :show_trainee_placements,
+              :trainee_status_metrics
 
-  def generate(current_user)
-    navigators(current_user)
+  def initialize(user = nil)
+    @user    = user
     @metrics = OpenStruct.new
-    @metrics.by_navigator_and_status   = by_navigator_and_status
-    @metrics.all_trainees_by_navigator = all_trainees_by_navigator
+  end
+
+  # dashboard menu
+  def generate_dashboard
+    # @metrics.by_navigator_and_status   = by_navigator_and_status
+    # @metrics.all_trainees_by_navigator = all_trainees_by_navigator
     # @metrics.applicants_by_status      = applicants_by_status
     # @metrics.applicants_by_navigator   = applicants_by_navigator
     # @metrics.trainees_by_navigator     = trainees_by_navigator
     @metrics
   end
 
-  def generate_navigator_dashboard_metrics(current_user)
-    navigators(current_user)
-    navigator_dashboard_metrics
+  # for applicant analysis menu
+  def generate_analysis
+    tsm = TraineeStatusMetrics.new(@user)
+    @trainee_status_metrics = tsm.generate(false)
+    generate_navigator_metrics
   end
 
   def query(params)
@@ -101,9 +110,11 @@ class ApplicantMetrics
     @funding_sources
   end
 
-  def navigator_dashboard_metrics
-    navigator_names = @navigators.map { |id, name| name }
+  def navigator_names
+    @navigators.map { |id, name| name }
+  end
 
+  def generate_navigator_metrics
     # New Applicants: Applicants where Funding Souce in not assigned.
     # Navigator should be determined based on the county entered by applicant
     new_applicants_counts        = ['# of New Applicants']
@@ -112,6 +123,11 @@ class ApplicantMetrics
     # Navigator should be determined based on the county entered by applicant
     # Funding Source does not matter - all trainees
     trainees_not_in_class_counts = ['# Trainees not Assigned to Workshops']
+
+    # Trainee Assigned to workshop means assigned to any class
+    # Navigator should be determined based on the county entered by applicant
+    # Funding Source does not matter - all trainees
+    trainees_in_class_counts     = ['# Trainees Assigned to Workshops']
 
     # Active Trainees -> Not Placed Trainees
     # Placement is based on TraineeInteractions entered by user
@@ -127,22 +143,25 @@ class ApplicantMetrics
     # Navigator is determined by navigator_id.
     trainees_reported_placements_counts = ['# of Applicants Reported Placement']
 
-    @navigators.each do |id, name|
+    navigators.each do |id, name|
       links = navigator_dashboard_counts_links(id)
       new_applicants_counts               << links[0]
       trainees_not_in_class_counts        << links[1]
-      trainees_not_placed_counts          << links[2]
-      trainees_placed_counts              << links[3]
-      trainees_reported_placements_counts << links[4]
+      trainees_in_class_counts            << links[2]
+      trainees_not_placed_counts          << links[3]
+      trainees_placed_counts              << links[4]
+      trainees_reported_placements_counts << links[5]
     end
 
-    metric = OpenStruct.new
-    metric.headers = [''] + navigator_names
-    metric.rows = [new_applicants_counts, trainees_not_in_class_counts,
-                   trainees_not_placed_counts, trainees_placed_counts,
-                   trainees_reported_placements_counts]
+    @metrics = OpenStruct.new
+    @metrics.headers = [''] + navigator_names
+    @metrics.rows = [
+      new_applicants_counts, trainees_not_in_class_counts, trainees_in_class_counts,
+      trainees_not_placed_counts, trainees_placed_counts,
+      trainees_reported_placements_counts
+    ]
 
-    metric
+    @metrics
   end
 
   def navigator_dashboard_counts_links(id)
@@ -151,6 +170,9 @@ class ApplicantMetrics
 
     count = trainee_ids_not_in_klass(id).count
     links << trainees_not_in_class_link(id, count)
+
+    count = trainee_ids_in_klass(id).count
+    links << trainees_in_class_link(id, count)
 
     count = trainees_not_placed(id).count
     links << trainees_not_placed_link(id, count)
@@ -166,10 +188,10 @@ class ApplicantMetrics
     @grant ||= Grant.find(Grant.current_id)
   end
 
-  def navigators(current_user)
+  def navigators
     return @navigators if @navigators
     navs        = grant.navigators
-    navs        = ([current_user] + navs).uniq if current_user.navigator?
+    navs        = ([@user] + navs).uniq if @user.navigator?
     @navigators = Hash[navs.map { |n| [n.id, n.name] }]
   end
 
@@ -233,6 +255,16 @@ class ApplicantMetrics
     trainee_ids - KlassTrainee.where(trainee_id: trainee_ids).pluck(:trainee_id)
   end
 
+  def trainees_in_class(params)
+    navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
+    Trainee.where(id: trainee_ids_in_klass(navigator_id)).order(:first, :last)
+  end
+
+  def trainee_ids_in_klass(navigator_id)
+    trainee_ids = trainees_from_navigator_counites(navigator_id).pluck(:id)
+    KlassTrainee.where(trainee_id: trainee_ids).pluck(:trainee_id).uniq
+  end
+
   def trainees_from_navigator_counites(navigator_id)
     Trainee.joins(:applicant)
            .where(applicants: { county_id: navigator_county_ids(navigator_id) })
@@ -284,7 +316,12 @@ class ApplicantMetrics
 
   def trainees_not_in_class_link(id, count)
     href = url_helpers.near_by_colleges_trainees_path
-    format(HREF_LINK, href, count)
+
+    link_to(count, href)
+  end
+
+  def trainees_in_class_link(id, count)
+    applicants_link('trainees_in_class', id, count)
   end
 
   def trainees_not_placed_link(id, count)
@@ -299,21 +336,22 @@ class ApplicantMetrics
     applicants_link('trainees_reported_placement', id, count)
   end
 
-  HREF_LINK = "<a href='%s'>%s</a>"
   def applicants_link(method, id, count)
     href = url_helpers.applicants_path(query: { method: method, navigator_id: id })
-    format(HREF_LINK, href, count)
+    link_to(count, href)
   end
 
+  # need this for href
   def url_helpers
     Rails.application.routes.url_helpers
   end
 
   TITLES = {
-    'navigator_new_applicants' => 'New Applicants',
-    'trainees_not_in_class' => 'Trainees not Assigned to Workshops',
-    'trainees_not_placed' => 'Active Trainees',
-    'trainees_placed' =>  'Trainees Placed',
+    'navigator_new_applicants'    => 'New Applicants',
+    'trainees_not_in_class'       => 'Trainees not Assigned to Workshops',
+    'trainees_in_class'           => 'Trainees Assigned to Workshops',
+    'trainees_not_placed'         => 'Active Trainees',
+    'trainees_placed'             =>  'Trainees Placed',
     'trainees_reported_placement' => 'Applicants Reported Placements'
   }
   def determine_page_title(method, navigator_id)

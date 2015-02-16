@@ -6,9 +6,9 @@ class Trainee < ActiveRecord::Base
   LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }
   include Encryption
   include ValidationsMixins
-  default_scope { where(account_id: Account.current_id, grant_id: Grant.current_id) }
-  # default_scope order('first, last')
   include InteractionsMixins
+
+  default_scope { where(account_id: Account.current_id, grant_id: Grant.current_id) }
 
   devise :database_authenticatable, authentication_keys: [:login_id]
   devise :recoverable, :rememberable, :trackable
@@ -17,7 +17,7 @@ class Trainee < ActiveRecord::Base
   attr_accessible :remember_me, :login_id, :password, :password_confirmation,
                   :disability, :dob, :education, :email, :first, :last,
                   :gender, :land_no, :middle, :mobile_no, :trainee_id,
-                  :status, :veteran, :race_id, :race_ids, :klass_ids,
+                  :status, :veteran, :race_id, :klass_ids,
                   :tact_three_attributes, :legal_status, :funding_source_id,
                   :home_address_attributes, :mailing_address_attributes,
                   :gts_id
@@ -31,7 +31,6 @@ class Trainee < ActiveRecord::Base
   validates_uniqueness_of :email, scope: :grant_id, allow_blank: true
   validates_uniqueness_of :login_id, allow_nil: true
 
-
   def active_for_authentication?
     # remember to call the super
     # then put our own check to determine "active" state using
@@ -41,7 +40,6 @@ class Trainee < ActiveRecord::Base
 
   before_save :cb_before_save
 
-  # has_one :address, as: :addressable, dependent: :destroy
   has_one :home_address, as: :addressable,
                          class_name: 'HomeAddress', dependent: :destroy
   accepts_nested_attributes_for :home_address
@@ -54,17 +52,16 @@ class Trainee < ActiveRecord::Base
 
   has_one :tact_three, dependent: :destroy
   accepts_nested_attributes_for :tact_three
-  delegate :education, :recent_employer, :job_title, :years, :certifications,
+  delegate :education_name, :recent_employer, :job_title, :years, :certifications,
            to: :tact_three, allow_nil: true
+
+  alias_attribute(:education, :education_name)
 
   belongs_to :account
   belongs_to :grant
   belongs_to :funding_source
   belongs_to :grant_trainee_status, foreign_key: :gts_id
-
-  has_many :trainee_races, dependent: :destroy
-  has_many :races, through: :trainee_races
-  # accepts_nested_attributes_for :trainee_races
+  belongs_to :race
 
   has_many :trainee_assessments, dependent: :destroy
   has_many :assessments, through: :trainee_assessments
@@ -183,7 +180,7 @@ class Trainee < ActiveRecord::Base
 
   def klasses_for_selection
     ks = Klass.where('start_date > ?', Date.today) - klasses
-    ks.map{ |k| [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id] }
+    ks.map { |k| [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id] }
   end
 
   private
@@ -197,5 +194,4 @@ class Trainee < ActiveRecord::Base
     # whitelist only the title and body attributes for other users
     super & %w(first last email funding_source_id mobile_no veteran gts_id)
   end
-
 end

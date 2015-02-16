@@ -1,3 +1,6 @@
+# Trainee is also known as student, candidate, applicant
+# there is a seperate model for Applicant
+# for some grants, trainee can sign in
 class TraineesController < ApplicationController
   before_action :authenticate_user!, except: [:portal, :edit, :update]
   before_filter :authenticate_trainee!, only: [:portal]
@@ -32,10 +35,16 @@ class TraineesController < ApplicationController
   def advanced_search
     @q = Trainee.ransack(params[:q])
     # @trainees = @q.result(distinct: true)
-    @trainees = @q.result.includes(:klasses, :job_search_profile, :assessments,
-                                   :funding_source, :home_address, :tact_three,
-                                   :grant_trainee_status,
-                                   applicant: [:applicant_reapplies, :navigator])
+    if current_grant.trainee_applications?
+      @trainees = @q.result.includes(:klasses, :job_search_profile, :assessments,
+                                     :funding_source, :home_address,
+                                     :grant_trainee_status,
+                                     tact_three: [:education],
+                                     applicant: [:navigator, :sector])
+    else
+      @trainees = @q.result.includes(:klasses, :funding_source, :home_address,
+                                     :assessments, tact_three: [:education])
+    end
   end
 
   def index

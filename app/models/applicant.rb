@@ -15,33 +15,38 @@ class Applicant < ActiveRecord::Base
                   :last_employer_manager_email, :resume, :source, :signature, :status,
                   :salt, :humanizer_answer, :humanizer_question_id,
                   :trainee_id, :navigator_id, :sector_id, :race_id, :last_wages,
-                  :gender, :unemployment_proof, :special_service_ids, :reapply_key
+                  :gender, :unemployment_proof, :special_service_ids, :reapply_key,
+                  :applied_on
 
-  attr_accessor :salt, :bypass_humanizer, :funding_source_id, :klass_id
+  attr_accessor :salt, :bypass_humanizer
   attr_accessor :latitude, :longitude
   attr_accessor :reapply_key
 
   require_human_on :create, unless: :bypass_humanizer
 
-  delegate :funding_source_name, :login_id, to: :trainee, allow_nil: true
-
-  after_initialize :init_values
   before_save :cb_before_save
 
   has_one :agent, as: :identifiable, dependent: :destroy
 
   has_many :applicant_special_services, dependent: :destroy
   has_many :special_services, through: :applicant_special_services
-  accepts_nested_attributes_for :special_services
 
-  has_many :applicant_reapplies
+  has_many :applicant_reapplies, dependent: :destroy
 
-  belongs_to :race
   belongs_to :account
-  belongs_to :grant
-  belongs_to :trainee
-  belongs_to :sector
   belongs_to :county
+  belongs_to :education, foreign_key: :education_level
+  belongs_to :grant
+  belongs_to :race
+  belongs_to :sector
+  belongs_to :trainee
+
+  delegate :county_name,                    to: :county,    allow_nil: true
+  delegate :education_name,                 to: :education, allow_nil: true
+  delegate :ethnicity,                      to: :race,      allow_nil: true
+  delegate :sector_name,                    to: :sector,    allow_nil: true
+  delegate :funding_source_name, :login_id, to: :trainee,   allow_nil: true
+
   validates :grant,  presence: true
   validates_uniqueness_of :email, scope: :grant_id
   validate :validate_applicant_data
@@ -56,20 +61,6 @@ class Applicant < ActiveRecord::Base
 
   def mobile_phone_number
     format_phone_no(mobile_phone_no)
-  end
-
-  def county_name
-    county.name
-  end
-
-  def sector_name
-    sector.name
-  end
-
-  def applied_on
-    ra = applicant_reapplies.where(used: true).last
-    return ra.updated_at.to_date.to_s if ra
-    created_at.to_date.to_s
   end
 
   def placement_details
@@ -91,10 +82,6 @@ class Applicant < ActiveRecord::Base
     gender.to_i == 1 ? 'Male' : 'Female'
   end
 
-  def education
-    Education.find(education_level).name
-  end
-
   def accepted?
     status == 'Accepted'
   end
@@ -112,11 +99,7 @@ class Applicant < ActiveRecord::Base
   end
 
   def self.employment_statuses
-    [
-      %w(Accept Accepted),
-      %w(Decline Declined),
-      %w(None None)
-    ]
+    [%w(Accept Accepted), %w(Decline Declined), %w(None None)]
   end
 
   def next
@@ -124,7 +107,7 @@ class Applicant < ActiveRecord::Base
     app.where('id > ?', id).order(:id).first || app.order(:id).first
   end
 
-  belongs_to :navigator, class_name: "User", foreign_key: 'navigator_id'
+  belongs_to :navigator, class_name: 'User', foreign_key: 'navigator_id'
 
   def navigator_name
     navigator && navigator.name
@@ -142,10 +125,6 @@ class Applicant < ActiveRecord::Base
      format_phone_no(last_employer_manager_phone_no) + '<br>' +
      (last_employer_manager_email && (last_employer_manager_email.to_s + '<br>')) +
      last_employer_address).html_safe
-  end
-
-  def ethnicity
-    race.name
   end
 
   def special_services_requested
@@ -178,32 +157,31 @@ class Applicant < ActiveRecord::Base
     latitude && longitude
   end
 
+  def recent_ra
+    @recent_ra ||= applicant_reapplies.last
+  end
+
   def reapply_key
-    ar = applicant_reapplies.last
-    ar && !ar.used? && ar.key
+    recent_ra && !recent_ra.used? && recent_ra.key
   end
 
   def reapply?(key)
-    ar = applicant_reapplies.last
-    ar && !ar.used? && ar.key == key
+    reapply_key == key
   end
 
   def void_reapplication
-    ar = applicant_reapplies.last
-    if ar
-      ar.used = true
-      ar.save
-    end
+    return unless recent_ra
+    recent_ra.update(used: true)
+    update(applied_on: recent_ra.updated_at.to_date)
   end
+
   delegate :email_subject, :email_body, to: :employment_status
-
-
 
   private
 
   def allowed_blank_attrs # also includes false values ex: veteran true or false
     %w(id trainee_id navigator_id comments status type address_line2
-       transportation computer_access veteran
+       transportation computer_access veteran applied_on
        created_at updated_at last_employer_line2 last_employer_manager_email)
   end
 
@@ -226,11 +204,6 @@ class Applicant < ActiveRecord::Base
     errors.empty?
   end
 
-  def init_values
-    self.address_state = account.state_code
-    @funding_source_id = trainee && trainee.funding_source_id
-  end
-
   def cb_before_save
     self.mobile_phone_no = mobile_phone_no.delete('^0-9') if mobile_phone_no
     if last_employer_manager_phone_no
@@ -238,6 +211,7 @@ class Applicant < ActiveRecord::Base
       self.last_employer_manager_phone_no = p
     end
     self.status = employment_status.action
+    self.applied_on ||= Date.current
   end
 
   def employment_status

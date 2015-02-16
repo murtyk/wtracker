@@ -2,13 +2,10 @@
   <div class="navbar-inner">
     <div class="container-fluid">
       <a class="brand" style = 'height: 30px;' href="#">
-        <small><%=current_user.account.name%></small>
+        <small>
+          <%= current_user.account.name + (current_grant && " - #{current_grant.name}") %>
+        </small>
       </a>
-
-      <% if current_user.admin_or_director? %>
-        <% title =   current_user.online_users.any? ? "<b style='color:red'>#{current_user.online_users.count}</b> online" : ''%>
-        <%= link_to(title.html_safe, '#', id: "popover-onlineusers", style: 'color:white;margin-left:60%', :'data-content' => current_user.online_users.join('<br>').html_safe, :'data-placement' => 'bottom')%>
-      <% end %>
 
       <ul class="nav pull-right">
         <li class="light-blue dropdown">

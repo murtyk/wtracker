@@ -41,6 +41,11 @@ class TraineeDecorator < Draper::Decorator
     "<p>Funding Source: #{object.funding_source_name}</p>".html_safe
   end
 
+  def navigator
+    return nil unless applicant
+    'Navigator: ' + applicant.navigator_name
+  end
+
   def files_header
     return nil unless TraineeFilePolicy.new.index?
 

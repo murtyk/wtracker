@@ -14,12 +14,12 @@
   <% @applicant_metrics.applicants.each do |applicant| %>
     <tr>
       <td><%= link_to applicant.name, applicant %></td>
-      <td><%= applicant.created_at.to_date.to_s %></td>
+      <td><%= applicant.applied_on %></td>
       <td><%= applicant.email %></td>
       <td><%= applicant.mobile_phone_number %></td>
-      <td><%= applicant.county.name %></td>
+      <td><%= applicant.county_name %></td>
       <td><%= applicant.source %></td>
-      <td><%= applicant.sector.name %></td>
+      <td><%= applicant.sector_name %></td>
       <td><%= applicant.current_employment_status %></td>
     </tr>
   <% end %>

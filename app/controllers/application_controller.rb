@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   around_filter :scope_current_account
-  after_filter :user_activity
+  # after_filter :user_activity
 
   include Pundit
 
@@ -69,9 +69,9 @@ class ApplicationController < ActionController::Base
     Grant.current_id = nil
   end
 
-  def user_activity
-    current_user.try(:touch, :last_activity_at)
-    rescue  => error
-      Rails.logger("error in user_activity #{error}")
-  end
+  # def user_activity
+  #   current_user.try(:touch, :last_activity_at)
+  #   rescue  => error
+  #     Rails.logger("error in user_activity #{error}")
+  # end
 end

@@ -62,7 +62,7 @@
       </tr>
       <tr>
         <td><strong>Industry(Sector)</strong></td>
-        <td><%= @applicant.sector.name %></td>
+        <td><%= @applicant.sector_name %></td>
       </tr>
       <tr>
         <td><strong>Last Employer Contact</strong></td>
@@ -82,7 +82,7 @@
       </tr>
       <tr>
         <td><strong>Education level</strong></td>
-        <td><%= @applicant.education %></td>
+        <td><%= @applicant.education_name %></td>
       </tr>
       <tr>
         <td><strong>Un(der) Employment Proof Preferences</strong></td>
@@ -119,20 +119,21 @@
         <% end %>
 
         <div class='span4'>
-          Status: <%= f.input_field :status, collection: applicant_statuses,
+          <%= f.input :status, collection: applicant_statuses,
                                              disabled: !@applicant.status_can_change?,
                                              include_blank: false %>
           <% unless @applicant.declined? %>
-            Funding Source: <%= f.input_field :funding_source_id,
-                                collection:    funding_sources %>
-            Industry: <%= f.input_field :sector_id, collection: sectors %>
+            <%= f.simple_fields_for @applicant.trainee do |f_trainee| %>
+              <%= f_trainee.association :funding_source, label: 'Funding Source' %>
+            <% end %>
+
+            <%= f.association :sector, label: 'Industry' %>
           <% end %>
-          Navigator : <%= f.input_field :navigator_id,
-                          collection: current_grant.navigators,
-                          include_blank: false %>
+          <%= f.input :navigator_id,  collection: current_grant.navigators,
+                                      label: 'Navigator', include_blank: false %>
         </div>
         <div class='span4'>
-          Comments: <%= f.input_field :comments, style: 'min-height: 100px' %>
+          <%= f.input :comments, input_html: { style: 'min-height: 100px' } %>
         </div>
         <div class='span2' style='padding-top: 50px'>
           <button type="submit" class="btn btn-flat btn-small btn-primary" style='margin-left:20px'>

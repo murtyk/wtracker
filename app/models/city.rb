@@ -1,10 +1,11 @@
 # a city in usa.
 # part of a county and a state
 class City < ActiveRecord::Base
+  attr_accessible :name, :latitude, :longitude, :county_id, :zip
+
   belongs_to :state
   belongs_to :county
-
-  attr_accessible :name, :latitude, :longitude, :county_id, :zip
+  delegate :county_name, to: :county, allow_nil: true
 
   validates :latitude, presence: true
   validates :longitude, presence: true
@@ -13,10 +14,6 @@ class City < ActiveRecord::Base
   validate :validate_state_and_county
 
   before_save :determine_city_state
-
-  def county_name
-    county.name
-  end
 
   # checks if this city is in a state (state code)
   def in_state?(s)

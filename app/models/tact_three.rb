@@ -5,7 +5,10 @@ class TactThree < ActiveRecord::Base
                   :job_title, :recent_employer, :years
   belongs_to :trainee
 
-  def education
-    education_level? ? Education.find(education_level).name : ''
+  def education_name
+    education ? education.name : ''
+    # education_level? ? Education.find(education_level).name : ''
   end
+
+  belongs_to :education, foreign_key: :education_level
 end

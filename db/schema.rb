@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212200409) do
+ActiveRecord::Schema.define(version: 20150215020529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,6 +188,7 @@ ActiveRecord::Schema.define(version: 20150212200409) do
     t.integer  "race_id"
     t.string   "source",                         limit: 255
     t.string   "unemployment_proof",             limit: 255
+    t.date     "applied_on"
   end
 
   add_index "applicants", ["account_id"], name: "index_applicants_on_account_id", using: :btree

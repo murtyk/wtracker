@@ -1,42 +1,17 @@
-<h1>APPLICANT METRICS DASHBOARD</h1>
+<h1>DASHBOARD</h1>
 
-<p style='color: green; text-align: center'>COMING SOON TO A BROWSER NEAR YOU!</p>
-<h2>New Applicants (Funding Source has not been assigned)</h2>
+<h4>All Trainees</h4>
 <table class="table table-condensed table-bordered table-striped table-hover">
   <tr>
-    <th></th>
-    <th>Accepted</th>
-    <th>Declined</th>
-  </tr>
-  <% @applicant_metrics.by_navigator_and_status.each do |metric| %>
-  <tr>
-    <td><%= metric.name %></td>
-    <td><%= metric.accepted_count %></td>
-    <td><%= metric.declined_count %></td>
-  </tr>
-  <% end %>
-</table>
-
-
-<h2>All Trainees</h2>
-<table class="table table-condensed table-bordered table-striped table-hover">
-  <% header, metrics = @applicant_metrics.all_trainees_by_navigator %>
-  <tr>
-    <th></th>
-    <th># of Trainees</th>
-    <% header.funding_sources.each do |fs_name| %>
-      <th><%= "# of #{fs_name} trainees" %></th>
+    <% @applicant_metrics.header.each do |h| %>
+      <th><%= h %></th>
     <% end %>
-    <th># of Trainees requested special services</th>
   </tr>
-  <% metrics.each do |metric| %>
-  <tr>
-    <td><%= metric.name %></td>
-    <td><%= metric.trainee_count %></td>
-    <% metric.fs_counts.each do |c| %>
-      <td><%= c %></td>
-    <% end %>
-    <td><%= metric.ss_count %></td>
-  </tr>
+  <% @applicant_metrics.rows.each do |row| %>
+    <tr>
+      <% row.each do |d| %>
+        <td><%= d %></td>
+      <% end %>
+    </tr>
   <% end %>
 </table>

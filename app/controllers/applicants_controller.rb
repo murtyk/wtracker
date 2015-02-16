@@ -5,7 +5,9 @@ class ApplicantsController < ApplicationController
   before_action :user_or_key,        only: [:update]
 
   def analysis
-    @metrics = ApplicantMetrics.new.generate_navigator_dashboard_metrics(current_user)
+    am = ApplicantMetrics.new(current_user)
+    @metrics = am.generate_analysis
+    @trainee_status_metrics = am.trainee_status_metrics
   end
 
   # GET /applicants
