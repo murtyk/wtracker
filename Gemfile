@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # gem 'rails', github: 'rails/rails', ref: '968c581ea34b5236af14805e6a77913b1cb36238', branch: '4-1-stable'
 group :production, :staging, :integration do
-  ruby ENV['CUSTOM_RUBY_VERSION'] || '2.1.3'
+  ruby ENV['CUSTOM_RUBY_VERSION'] || '2.2.0'
 end
 
 gem 'rails', '4.2'
@@ -12,7 +12,7 @@ gem 'protected_attributes', '1.0.7'
 # gem 'bootstrap-sass', '~> 2.1.0.0' #trying new one
 
 group :development, :test do
-  gem "thin", '1.6.2'
+  gem "thin"
 end
 group :production, :staging, :integration do
   gem 'unicorn', '4.8.3'

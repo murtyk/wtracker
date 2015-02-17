@@ -54,9 +54,9 @@ class DashboardMetrics
     fs_counts = Trainee.group(:funding_source_id).count
     funding_sources.keys.each do |id|
       if id
-        row << link(fs_counts[id],  funding_source_id_eq: id)
+        row << link(fs_counts[id].to_i,  funding_source_id_eq: id)
       else
-        row << link(fs_counts[id],  funding_source_id_null: 1)
+        row << link(fs_counts[id].to_i,  funding_source_id_null: 1)
       end
     end
     ts_counts = Trainee.group(:gts_id).count

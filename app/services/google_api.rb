@@ -10,8 +10,10 @@ class GoogleApi
   NEARBY_SEARCH_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
   DETAILS_URL       = 'https://maps.googleapis.com/maps/api/place/details/json'
   TEXT_SEARCH_URL   = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
-  COUNTY_POLYGON_QRY = "SELECT geometry FROM 0IMZAFCwR-t7jZnVzaW9udGFibGVzOjIxMDIxNw
-                        WHERE 'State-County' = "
+
+  COUNTY_POLYGON_QRY = "SELECT geometry FROM 1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa " \
+                       "WHERE 'State-County' = "
+
   SHORT_NAME        = 'short_name'
   LONG_NAME         = 'long_name'
 
@@ -44,10 +46,9 @@ class GoogleApi
     state_county = county.state_code.upcase + '-' + county.name
 
     ft = GData::Client::FusionTables.new
-    ft.clientlogin(ENV['FT_GMAIL_USER_NAME'], ENV['FT_GMAIL_PASSWORD'])
     ft.set_api_key(ENV['GOOGLE_KEY'])
-
     qry = COUNTY_POLYGON_QRY + "'#{state_county}';"
+
     data = ft.execute qry
 
     if data.empty? && state_county.include?(' ')
