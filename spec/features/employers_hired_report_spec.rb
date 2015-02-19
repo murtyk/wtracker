@@ -40,8 +40,8 @@ describe "Report" do
                                               status: 1)
 
 
-      visit '/reports/new?report=employers_hired'
-      select 'All', from: 'filters_klass_ids'
+      visit_report 'employers_hired'
+      select 'All', from: 'Class'
       click_on 'Find'
 
       expect(page).to have_text 'First1 Last1'

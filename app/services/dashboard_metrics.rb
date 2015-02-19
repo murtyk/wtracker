@@ -2,17 +2,21 @@
 class DashboardMetrics
   # need this for link_to
   include ActionView::Helpers::UrlHelper
-  attr_reader :metrics
+  attr_reader :metrics, :new_applicants
 
   def initialize
     @metrics = OpenStruct.new
     @metrics.rows = []
+    @new_applicants = OpenStruct.new
+    @new_applicants.rows = []
   end
 
   # generates for dashboard data where grant accepts applicants
   def generate
     @tsm = TraineeStatusMetrics.new
     @tsm.generate
+    generate_new_applicants
+
     generate_header
     @metrics.rows << row_zero
     generate_metrics
@@ -33,7 +37,7 @@ class DashboardMetrics
       id, name = ts_row.shift
       row = [name]
       trainees = Trainee.joins(:applicant).where(applicants: { navigator_id: id })
-      row << trainees.count
+      row << link(trainees.count, applicant_navigator_id_eq: id)
       fs_counts = trainees.group(:funding_source_id).count
       funding_sources.keys.each do |fs_id|
         count = fs_counts[fs_id].to_i
@@ -65,6 +69,18 @@ class DashboardMetrics
       row << link(count, gts_id_eq: status_id)
     end
     row
+  end
+
+  def generate_new_applicants
+    @new_applicants.header = ['', 'Total', 'Accepted', 'Declined']
+    totals   = Applicant.group(:navigator_id).count
+    accepted = Applicant.joins(:trainee)
+                        .where(trainees: { funding_source_id: nil })
+                        .group(:navigator_id).count
+    declined = Applicant.where(status: 'Declined').group(:navigator_id).count
+    @tsm.navigators.each do |id, name|
+      @new_applicants.rows << [name, totals[id], accepted[id], declined[id]]
+    end
   end
 
   def fs_names

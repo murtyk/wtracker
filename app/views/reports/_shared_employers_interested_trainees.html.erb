@@ -1,4 +1,9 @@
 <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr style="display:none;">
+    <th>Employers Interested in Trainees Not Placed</th>
+    <%= 6.times.map{'<th></th>'}.join().html_safe %>
+  </tr>
+
   <tr>
     <th>Employer</th>
     <th>Location</th>

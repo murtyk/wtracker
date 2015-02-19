@@ -1,6 +1,6 @@
 <h1>Class Trainees</h1>
-<%= render "single_class_selection", report: Report::CLASS_TRAINEES, klass_id: @report.klass_id %>
-<% if @report.klass %>
+<%= render "single_class_selection", report: @report, klass_id: @report.klass_id %>
+<% if @report.klass_id %>
 <%= @report.render_counts %>
 <%= @report.download_button %>
 <%= render 'class_trainees_table.html.erb', report: @report %>

@@ -1,14 +1,20 @@
 <div class = 'row-fluid filters-div' style='margin-bottom:10px'>
-<%= simple_form_for :filters, url: reports_path(report: report), html: { class: 'form-search'} do |f| %>
+  <%= simple_form_for report, as: :report, method: :post, url: '/reports', html: { class: 'form-search form-horizontal'} do |f| %>
+    <div class='span7'>
+      <%= f.hidden_field :report_name %>
 
-    Class
-    <%= f.input_field :klass_ids, collection: current_user.klasses_for_selection(true), selected: klass_ids, multiple: true, class: "search-query", style: 'width: 350px;' %>
-
-    <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
-        <i class="icon-search icon-white"></i>Find
-    </button>
-
-<% end %>
+      <%= f.input :klass_ids, label: 'Class',
+                              collection: current_user.klasses_for_selection(true),
+                              input_html: { class: "search-query", style: 'width: 490px;', multiple: true } %>
+    </div>
+    <div class='span2'>
+      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
+              style='margin-left: 20px'
+              data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white"></i>Find
+      </button>
+    </div>
+  <% end %>
 </div>
 
 <script type="text/javascript">

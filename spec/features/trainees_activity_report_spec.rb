@@ -21,8 +21,8 @@ describe "Reports" do
 
       trainee_ids = trainees.map{ |t| t.id }
 
-      visit('/reports/new?report=trainees_activity')
-      select 'A Class', from: 'filters_klass_ids'
+      visit_report('trainees_activity')
+      select 'A Class', from: 'Class'
       click_on 'Find'
 
       (1..3).each do |n|
@@ -41,9 +41,9 @@ describe "Reports" do
                                           status: 1,
                                           comment: 'This employer is interested')
 
-      visit('/reports/new?report=trainees_activity')
-      select 'A Class', from: 'filters_klass_ids'
-      fill_in 'filters_end_date', with: Date.tomorrow
+      visit_report('trainees_activity')
+      select 'A Class', from: 'Class'
+      fill_in 'To', with: Date.tomorrow
 
       click_on 'Find'
 
@@ -51,14 +51,13 @@ describe "Reports" do
       expect(page).to have_content 'Company1 - Interested'
 
       #change the end_date to yesterday
-      fill_in 'filters_end_date', with: Date.yesterday
+      fill_in 'To', with: Date.yesterday
       click_on 'Find'
       expect(page).to_not have_content 'This is Notes'
       expect(page).to_not have_content 'Company1 - Interested'
 
-      #test status filter
-      visit('/reports/new?report=trainees_activity')
-      select 'A Class', from: 'filters_klass_ids'
+      visit_report('trainees_activity')
+      select 'A Class', from: 'Class'
       click_on 'Find'
 
       expect(page).to have_content 'First1 Last1'
@@ -70,7 +69,7 @@ describe "Reports" do
       klass_trainee.update(status: 2)
 
       select 'Completed', from: 'Status'
-      fill_in 'filters_end_date', with: Date.tomorrow
+      fill_in 'To', with: Date.tomorrow
       click_on 'Find'
       expect(page).to_not have_content 'First1 Last1'
       expect(page).to_not have_content 'First2 Last2'

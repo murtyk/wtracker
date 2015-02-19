@@ -7,7 +7,7 @@ class ReportsController < ApplicationController
   end
 
   def create
-    @report = Report.create(current_user, params)
+    @report = Report.create(current_user, params[:report])
     respond_to do |format|
       format.html { render @report.template }
       format.js

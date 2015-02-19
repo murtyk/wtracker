@@ -40,8 +40,8 @@ describe "Report" do
       fill_in 'Hire salary', with: hire_salary
       click_on 'Update'
 
-      visit('/reports/new?report=trainees_placed')
-      select 'All', from: 'filters_klass_ids'
+      visit_report('trainees_placed')
+      select 'All', from: 'Class'
       click_on 'Find'
 
       expect(page).to have_text 'First1 Last1'
@@ -75,8 +75,8 @@ describe "Report" do
       wait_for_ajax
       expect(page).to have_text 'Hired'
 
-      visit('/reports/new?report=trainees_placed')
-      select 'All', from: 'filters_klass_ids'
+      visit_report('trainees_placed')
+      select 'All', from: 'Class'
       click_on 'Find'
 
       expect(page).to have_text 'First1 Last1'
@@ -114,8 +114,8 @@ describe "Report" do
       wait_for_ajax
       expect(page).to have_text 'Hired'
 
-      visit('/reports/new?report=trainees_placed')
-      select 'All', from: 'filters_klass_ids'
+      visit_report('trainees_placed')
+      select 'All', from: 'Class'
       click_on 'Find'
 
       expect(page).to have_text 'First1 Last1'

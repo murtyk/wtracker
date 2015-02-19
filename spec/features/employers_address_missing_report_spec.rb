@@ -19,7 +19,7 @@ describe "Report" do
 
       employers.first.update(address_attributes: attrs)
 
-      visit '/reports/new?report=employers_no_address'
+      visit_report 'employers_no_address'
 
       expect(page).to have_text "Good Company 2"
       expect(page).to have_text "Good Company 3"

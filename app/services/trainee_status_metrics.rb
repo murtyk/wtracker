@@ -29,8 +29,6 @@ class TraineeStatusMetrics
     statuses.values
   end
 
-  private
-
   # header:       status1  status2  status3   ...
   # each row:
   # row[1]         n01        n02     n03     ...

@@ -23,8 +23,8 @@ describe "Reports" do
         t
       end
 
-      visit "/reports/new?report=#{Report::CLASS_TRAINEES}"
-      select klass.name, from: 'filters_klass_id'
+      visit "/reports/new?report_name=#{Report::CLASS_TRAINEES}"
+      select klass.name, from: 'Class'
       click_on 'Find'
 
       (1..3).each do |n|

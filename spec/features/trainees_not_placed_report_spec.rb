@@ -22,8 +22,8 @@ describe "Trainees" do
       # STATUSES = { 1 => 'Enrolled', 2 => 'Completed',
       #              3 => 'Dropped', 4 => 'Placed', 5 => 'Continuing Education' }
 
-      visit('/reports/new?report=trainees_not_placed')
-      select 'All', from: 'filters_klass_ids'
+      visit_report('trainees_not_placed')
+      select 'All', from: 'Class'
       click_on 'Find'
 
       expect(page).to_not have_text 'First1 Last1' # enrolled

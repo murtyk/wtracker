@@ -1,6 +1,10 @@
 # mother of all reports
 class Report
-  attr_reader :klass_ids, :include_all_dates, :user_id
+  include ActiveModel::Conversion
+  extend ActiveModel::Naming
+
+  attr_accessor :report_name, :start_date, :end_date, :include_all_dates,
+                :klass_id, :klass_ids, :include_all_dates, :user_id
 
   TRAINEES_DETAILS                = 'trainees_details'
   TRAINEES_DETAILS_WITH_PLACEMENT = 'trainees_details_with_placement'
@@ -35,10 +39,15 @@ class Report
     }
 
   def initialize(user, params = nil)
+    @report_name = params && params[:report_name]
     init_klass_ids(user, params) if params
     init_dates(params) if params && params[:start_date]
     @user_id = user.id
     post_initialize(params)
+  end
+
+  def persisted?
+    false
   end
 
   def self.reports_by_type
@@ -77,17 +86,15 @@ class Report
   end
 
   def self.new_report(user, params)
-    name = params[:report]
-    report_class(name).new(user, params)
+    report_class(params[:report_name]).new(user, params)
   end
 
   def self.create(user, params)
-    name = params[:report]
-    report_class(name).new(user, params[:filters])
+    report_class(params[:report_name]).new(user, params)
   end
 
   def template
-    self.class.name.underscore.gsub('_report', '')
+    report_name.underscore.gsub('_report', '')
   end
 
   def render_counts
@@ -116,8 +123,8 @@ class Report
 
   private
 
-  def self.report_class(name)
-    REPORT_CLASS[name].to_s.constantize
+  def self.report_class(r_name)
+    REPORT_CLASS[r_name].to_s.constantize
   end
 
   def init_dates(params)
@@ -128,9 +135,11 @@ class Report
   end
 
   def init_klass_ids(user, params)
-    return unless params[:klass_ids] || params[:klass_id]
-    k_ids = params[:klass_id].nil? ? params[:klass_ids] : [params[:klass_id]]
-    k_ids.delete('') if k_ids
+    @klass_id = params[:klass_id]
+    @klass_ids = params[:klass_ids]
+    return unless @klass_id || @klass_ids
+    k_ids = (@klass_id && [@klass_id]) || @klass_ids
+    k_ids.delete('')
     all_klasses = k_ids.blank? || k_ids.include?('0')
     @klass_ids = all_klasses ? user.klasses.pluck(:id) : k_ids
   end

@@ -11,10 +11,10 @@ describe "Reports" do
     end
 
     it 'near by employers' do
-      visit "/reports/new?report=#{Report::TRAINEES_NEAR_BY_EMPLOYERS}"
-      select 'CNC 101', from: 'filters_klass_id'
-      select 'manufacturing', from: 'filters_sector_id'
-      fill_in 'filters_distance', with: '25'
+      visit_report Report::TRAINEES_NEAR_BY_EMPLOYERS
+      select 'CNC 101', from: 'Class'
+      select 'manufacturing', from: 'Sector'
+      fill_in 'Distance', with: '25'
       click_on 'Find'
       sleep 3
       wait_for_ajax

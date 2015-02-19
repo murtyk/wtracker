@@ -49,8 +49,8 @@
             <tr class = '<%= klass_state%>'>
               <% status_counts = klass.trainees_status_counts %>
 
-              <td><%= request.format.xls? ? klass.name : link_to(klass.name, klass) %></td>
               <td><%= klass.college_name %></td>
+              <td><%= request.format.xls? ? klass.name : link_to(klass.name, klass) %></td>
               <td><%= klass.start_date.to_s%></td>
               <td><%= klass.end_date.to_s%></td>
               <td><%= klass.enrolled_count%></td>

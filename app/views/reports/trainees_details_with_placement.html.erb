@@ -1,6 +1,5 @@
 <h1>Trainees Details With Placement Information</h1>
-
-<%= render "class_selection", report: Report::TRAINEES_DETAILS_WITH_PLACEMENT, klass_ids: @report.klass_ids%>
+<%= render "class_selection", report: @report %>
 <%= @report.render_counts %>
 <%= @report.download_button %>
 <%= render 'shared_trainees_details_with_placement.html.erb', report: @report %>

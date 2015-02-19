@@ -1,5 +1,5 @@
 <h1>Active Employers</h1>
-<%= render "class_selection", report: Report::ACTIVE_EMPLOYERS, klass_ids: @report.klass_ids%>
+<%= render "class_selection", report: @report %>
 <%= @report.render_counts %>
 <%= @report.download_button %>
 <%= render 'shared_active_employers.html.erb', report: @report %>

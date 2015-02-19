@@ -29,9 +29,11 @@ class Program < ActiveRecord::Base
   end
 
   def ongoing_classes
-    klasses.where('DATE(start_date) <= ? and DATE(end_date) >= ?',
+    klasses.joins(:college)
+           .where('DATE(start_date) <= ? and DATE(end_date) >= ?',
                   Time.now.to_date, Time.now.to_date)
-            .order('start_date desc')
+           .order('colleges.name')
+           .order('start_date desc')
   end
 
   def completed_classes

@@ -2,7 +2,7 @@ include UtilitiesHelper
 # provides details information on a trainee
 # for trainee details with placement
 class TraineeDetails < DelegateClass(Trainee)
-  attr_reader :hired
+  attr_reader :hired, :hired_interaction
   def initialize(obj)
     super(obj)
     @hired_interaction = hired_employer_interaction
@@ -17,15 +17,23 @@ class TraineeDetails < DelegateClass(Trainee)
   end
 
   def hired_employer
-    @hired_employer if @hired
+    @hired_employer
   end
 
   def hired_employer_name
-    @hired_employer.name if @hired
+    @hired_employer && @hired_employer.name
   end
 
   def employer_location
-    @hired_employer.location if @hired
+    @hired_employer && @hired_employer.location
+  end
+
+  def job_start_date
+    hired_interaction && hired_interaction.start_date.to_s
+  end
+
+  def pay
+    hired_interaction && hired_interaction.hire_salary
   end
 
   def status_in_klass(klass)

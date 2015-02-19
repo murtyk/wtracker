@@ -19,8 +19,8 @@ describe "Reports" do
         t
       end
 
-      visit('/reports/new?report=trainees_status')
-      select klass.name, from: 'filters_klass_ids'
+      visit_report('trainees_status')
+      select klass.name, from: 'Class'
       click_on 'Find'
 
       sleep 1

@@ -33,8 +33,8 @@ describe "Report" do
                                           comment: 'This employer hired')
 
 
-      visit '/reports/new?report=active_employers'
-      select 'All', from: 'filters_klass_ids'
+      visit_report 'active_employers'
+      select 'All', from: 'Class'
       click_on 'Find'
 
       expect(page).to have_text 'Company 1'
@@ -48,8 +48,8 @@ describe "Report" do
       klass_event = klass2.klass_events.first
       klass_event.klass_interactions.create(employer_id: company2.id, status: 1)
 
-      visit '/reports/new?report=active_employers'
-      select 'All', from: 'filters_klass_ids'
+      visit_report 'active_employers'
+      select 'All', from: 'Class'
 
       click_on 'Find'
 
@@ -60,8 +60,8 @@ describe "Report" do
       expect(page).to have_text 'Company 2'
       expect(page).to have_text 'Another Class'
 
-      select 'A Class', from: 'filters_klass_ids'
-      unselect 'Another Class', from: 'filters_klass_ids'
+      select 'A Class', from: 'Class'
+      unselect 'Another Class', from: 'Class'
       click_on 'Find'
 
       expect(page).to have_text 'Company 1'

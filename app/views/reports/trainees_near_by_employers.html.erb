@@ -1,20 +1,24 @@
 <h1>Trainees & Near By Employers</h1>
 
 <div class = 'row-fluid filters-div' style='margin-bottom:10px'>
-<%= simple_form_for :filters, url: reports_path(report: Report::TRAINEES_NEAR_BY_EMPLOYERS), html: { class: 'form-search'}, remote: true do |f| %>
+<%= simple_form_for @report, as: :report, method: :post, url: '/reports', html: { class: 'form-search form-horizontal'}, remote: true do |f| %>
+    <%= f.hidden_field :report_name %>
+    <div class='span7'>
+    <%= f.input :klass_id, collection: current_user.klasses_for_selection(false),
+                           label: 'Class', include_blank: false,
+                           input_html: { class: "search-query", style: 'width: 490px;' } %>
 
-    Class
-    <%= f.input_field :klass_id, collection: current_user.klasses_for_selection(false), selected: @report.selected_klass_id, multiple: false, class: "search-query", style: 'width: 350px;', include_blank: false %>
+    <%= f.input :sector_id, collection: Sector.all, label: 'Sector',
+                            include_blank: false,
+                            input_html: { class: "search-query" }%>
 
-    Sector
-    <%= f.input_field :sector_id, collection: Sector.all, selected: @report.sector_id, multiple: false, class: "search-query", include_blank: false %>
-
-    Distance
-    <%= f.number_field :distance, style: 'width: 50px;', value: @report.radius %>
-
+    <%= f.input :distance, input_html: { style: 'width: 50px;' } %>
+    </div>
+    <div class='span2'>
     <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
         <i class="icon-search icon-white"></i>Find
     </button>
+    </div>
 
 <% end %>
 </div>
@@ -29,6 +33,11 @@
 <% unless @report.data.blank? %>
   <%= @report.download_button %>
   <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+
+    <tr style="display:none;">
+      <th>Near By Employers</th>
+      <%= (6 + @report.max_contacts).times.map{'<th></th>'}.join().html_safe %>
+    </tr>
     <tr>
       <th>Class</th>
       <th>Trainee</th>

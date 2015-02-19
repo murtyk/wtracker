@@ -39,7 +39,8 @@ class DashboardsController < ApplicationController
 
   def summary
     if current_grant.trainee_applications?
-      @applicant_metrics = DashboardMetrics.new.generate
+      @dm = DashboardMetrics.new
+      @applicant_metrics = @dm.generate
       render 'applicant_metrics'
       return
     end

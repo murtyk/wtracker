@@ -1,24 +1,32 @@
 <h1>Trainees Activities</h1>
 
 <div class = 'row-fluid filters-div'>
-  <%= simple_form_for :filters, url: reports_path(report: Report::TRAINEES_ACTIVITY), html: { class: 'form-search form-horizontal'} do |f| %>
+  <%= simple_form_for @report, as: :report, method: :post, url: '/reports',
+                               html: { class: 'form-search form-horizontal'} do |f| %>
+    <%= f.hidden_field :report_name %>
 
-  	<div class='span6' style='margin-left: -120px'>
-  	    <%= f.input :klass_ids, label: 'Class', required: false, collection: current_user.klasses_for_selection(true), selected: @report.klass_ids, input_html: {class: "search-query", style: 'width: 350px;'} %>
-      	<%= f.input :status, required: false, collection: klass_trainee_statuses, selected: @report.status, include_blank: 'All', input_html: {class: "search-query", style: 'width: 150px;'} %>
+
+    <div class='span6' style='margin-left: -120px'>
+      <%= f.input :klass_id, label: 'Class', include_blank: false,
+                             collection: current_user.klasses_for_selection(true),
+                             input_html: {class: "search-query", style: 'width: 350px;'} %>
+      <%= f.input :status, required: false, collection: klass_trainee_statuses,
+                           include_blank: 'All', input_html: {class: "search-query", style: 'width: 150px;'} %>
     </div>
 
-  	<div class='span4'>
-  	    <%= f.input :start_date, label: 'From', required: false, as: :string, input_html: {value: @report.start_date, data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
+    <div class='span4'>
+      <%= f.input :start_date, label: 'From', required: false, as: :string,
+                               input_html: { data: { behaviour: "datepicker" },
+                                             style: 'width: 150px;' } %>
 
-  	    <%= f.input :end_date, label: 'To', required: false, as: :string, input_html: {value: @report.end_date, data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
+      <%= f.input :end_date, label: 'To', required: false, as: :string, input_html: { data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
 
-  	    <%= f.input :include_all_dates, label: false, inline_label: true, as: :boolean, input_html: {checked: @report.include_all_dates}%>
+      <%= f.input :include_all_dates, label: false, inline_label: true, as: :boolean %>
     </div>
 
     <div class = 'span2'>
       <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
-          <i class="icon-search icon-white"></i>Find
+        <i class="icon-search icon-white"></i>Find
       </button>
     </div>
 

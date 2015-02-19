@@ -45,8 +45,8 @@ describe "Reports" do
       trainee.trainee_interactions.create(attrs)
       trainee.klass_trainees.first.update(status: 4)
 
-      visit('/reports/new?report=trainees_details_with_placement')
-      select 'All', from: 'filters_klass_ids'
+      visit_report('trainees_details_with_placement')
+      select 'All', from: 'Class'
       click_on 'Find'
 
       expect(page).to have_text "First1 Last1"
@@ -61,12 +61,7 @@ describe "Reports" do
       expect(page).to have_text '06/07/1992'
       expect(page).to have_text 'GED'
 
-      expect(page).to have_text 'Some Company'
-      expect(page).to have_text 'A title'
-      expect(page).to have_text 'PMP CBA'
-
       expect(page).to have_text employer.name
-
     end
   end
 

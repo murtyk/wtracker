@@ -1,18 +1,19 @@
 <h1>Employers with Notes</h1>
 
 <div class = 'row-fluid filters-div' style='margin-bottom: 10px'>
-  <%= simple_form_for :filters, url: reports_path(report: Report::EMPLOYERS_ACTIVITIES_WITH_NOTES), html: { class: 'form-search'} do |f| %>
+  <%= simple_form_for @report, as: :report, method: :post, url: '/reports', html: { class: 'form-search'} do |f| %>
+    <%= f.hidden_field :report_name %>
     <div class='span2'>
-      From
-	    <%= f.input :start_date, label: false, required: false, as: :string, input_html: {value: @report.start_date, data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
+      <%= f.input :start_date, label: 'From', required: false, as: :string,
+                               input_html: { data: { behaviour: "datepicker" }, style: 'width: 150px;'} %>
     </div>
     <div class='span2'>
-      To
-      <%= f.input :end_date, label: false, required: false, as: :string, input_html: {value: @report.end_date, data: {behaviour: "datepicker"}, style: 'width: 150px;'} %>
+      <%= f.input :end_date, label: 'To', required: false, as: :string,
+                             input_html: { data: { behaviour: "datepicker" }, style: 'width: 150px;' } %>
     </div>
     <div class='span2'>
       <br>
-	    <%= f.input :include_all_dates, label: false, inline_label: true, as: :boolean, input_html: {checked: @report.include_all_dates}%>
+      <%= f.input :include_all_dates, label: false, inline_label: true, as: :boolean %>
     </div>
     <div class='span2'>
       <br>
@@ -20,9 +21,8 @@
           <i class="icon-search icon-white"></i>Find
       </button>
     </div>
-<% end %>
+  <% end %>
 </div>
-
 
 <script type="text/javascript">
   $(document).ready(function(){

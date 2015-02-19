@@ -18,8 +18,8 @@ describe "Reports" do
         employer
       end
 
-      visit '/reports/new?report=employers_activities_with_notes'
-      fill_in 'filters_end_date', with: Date.current
+      visit_report 'employers_activities_with_notes'
+      fill_in 'To', with: Date.current
       click_on 'Find'
 
       notes.each do |note|

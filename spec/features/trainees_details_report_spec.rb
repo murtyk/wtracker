@@ -37,9 +37,9 @@ describe "Reports" do
 
       trainee.update(tact_three_attributes: tact3_attrs)
 
-      visit('/reports/new?report=trainees_details')
+      visit_report('trainees_details')
 
-      select klass.name,       from: 'filters_klass_ids'
+      select klass.name,       from: 'Class'
       click_on 'Find'
 
       (1..6).each do |seq|

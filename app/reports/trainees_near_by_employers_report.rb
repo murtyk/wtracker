@@ -1,6 +1,11 @@
 # contains data for employers near trainees report
 class TraineesNearByEmployersReport < Report
+  attr_accessor :distance
+  alias_attribute(:radius, :distance)
+
   attr_reader :data, :max_contacts, :status, :report_id
+
+
   def post_initialize(params)
     return unless params && (params[:klass_id] || params[:report_id])
     init_filter_values(params) if params[:klass_id]
@@ -10,7 +15,7 @@ class TraineesNearByEmployersReport < Report
 
   def init_filter_values(params)
     @sector_id = params[:sector_id]
-    @radius    = (params[:distance] || 20).to_i
+    @distance  = params[:distance].to_i > 0 ? params[:distance].to_i : 20
   end
 
   def process_next
@@ -39,7 +44,7 @@ class TraineesNearByEmployersReport < Report
   end
 
   def klass_id
-    klass_ids && klass_ids.first
+    @data && @data.klass_id
   end
 
   def klass
@@ -51,19 +56,15 @@ class TraineesNearByEmployersReport < Report
   end
 
   def url_for_process_next
-    "/reports/process_next?report=trainees_near_by_employers&report_id=#{report_id}".html_safe
+    "/reports/process_next?report_name=trainees_near_by_employers&report_id=#{report_id}".html_safe
   end
 
   def url_for_show
-    "/reports/show?report=trainees_near_by_employers&report_id=#{report_id}".html_safe
+    "/reports/show?report_name=trainees_near_by_employers&report_id=#{report_id}".html_safe
   end
 
   def sector_id
     @data && @data.sector_id
-  end
-
-  def radius
-    (@data && @data.radius) || 10
   end
 
   def selected_klass_id
@@ -88,12 +89,15 @@ class TraineesNearByEmployersReport < Report
     generate_report_id # cache_key
 
     @data = OpenStruct.new
-    @data.sector_id = @sector_id
-    @data.radius = @radius
+
+    @data.klass_id     = @klass_id
+    @data.sector_id    = @sector_id
+    @data.distance     = @distance
     @data.max_contacts = 1
-    @data.next_index = 0
+    @data.next_index   = 0
     @data.employer_ids = []
-    @data.contact_ids = []
+    @data.contact_ids  = []
+
     find_sector_employers
     init_klass_trainees
     determine_processing_status
@@ -119,6 +123,7 @@ class TraineesNearByEmployersReport < Report
                        .where(addressable_type: 'Employer',
                               addressable_id: sector_employers_ids)
                        .map { |addr| addr.addressable_id }
+
     a.id = nil
     a.delete
     near_by_emp_ids
@@ -164,6 +169,7 @@ class TraineesNearByEmployersReport < Report
 
   def read_cache
     @data = Rails.cache.read(report_id)
+    @distance = @data.distance
     fetch_employers_and_contacts if processing_complete?
   end
 

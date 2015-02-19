@@ -34,8 +34,8 @@ describe "Report" do
       trainees[2].trainee_interactions.create(employer_id: company1.id,
                                               status: 1)
 
-      visit "/reports/new?report=#{Report::EMPLOYERS_INTERESTED_TRAINEES}"
-      select 'All', from: 'filters_klass_ids'
+      visit "/reports/new?report_name=#{Report::EMPLOYERS_INTERESTED_TRAINEES}"
+      select 'All', from: 'Class'
 
       click_on 'Find'
 

@@ -32,7 +32,7 @@ module UtilitiesHelper
 
   def report_link(name, label = nil)
     label ||= name.split('_').map { |part| part.capitalize }.join(' ')
-    link_to(label, new_report_path(report: name))
+    link_to(label, new_report_path(report_name: name))
   end
 
   def full_calendar_link(calendar)
