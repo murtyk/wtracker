@@ -39,6 +39,14 @@ class TraineesNearByEmployersReport < Report
     @status
   end
 
+  def title
+    'Trainees & Near By Employers'
+  end
+
+  def template
+    'trainees_near_by_employers'
+  end
+
   def count
     @data.trainees_data.count
   end

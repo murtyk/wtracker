@@ -6,6 +6,14 @@ class EmployersActivitiesWithNotesReport < Report
     @employers = Employer.includes(:employer_notes).where(id: employer_ids)
   end
 
+  def title
+    'Employers with Notes'
+  end
+
+  def selection_partial
+    'employers_activities_selection'
+  end
+
   def count
     employers.count
   end

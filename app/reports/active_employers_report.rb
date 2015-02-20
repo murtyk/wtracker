@@ -17,6 +17,10 @@ class ActiveEmployersReport < Report
     @total_employers = @employers_klasses.map { |ek| ek[0] }.uniq.count
   end
 
+  def title
+    'Active Employers'
+  end
+
   def count
     employers_klasses.count
   end

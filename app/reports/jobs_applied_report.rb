@@ -16,4 +16,8 @@ class JobsAppliedReport < Report
   def count
     trainees.count
   end
+
+  def title
+    'Trainees Applied For Jobs'
+  end
 end

@@ -1,0 +1,6 @@
+<h1><%= @report.title %></h1>
+<%= render @report.selection_partial, report: @report %>
+<%= @report.render_counts %>
+<%= @report.download_button %>
+<%= render @report.table_partial, report: @report %>
+<%= render 'shared/export_table.js.erb' %>

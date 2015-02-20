@@ -12,6 +12,10 @@ class EmployersHiredReport < Report
     @hired_interactions || []
   end
 
+  def title
+    'Employers Hired'
+  end
+
   def count
     hired_interactions.count
   end

@@ -1,0 +1,63 @@
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr style="display:none;">
+    <th><%= @report.title%></th>
+    <%= 6.times.map{'<th></th>'}.join().html_safe %>
+  </tr>
+
+  <tr>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Contacts</th>
+    <th>Class</th>
+    <th>Events</th>
+    <th>Trainees Hired</th>
+    <th>Employer Notes</th>
+  </tr>
+
+  <% report.employers_klasses.each do |employer, klass| %>
+      <tr>
+        <td><%= link_to(employer.name, employer) %></td>
+        <td><%= "#{employer.city} - #{employer.county}" %></td>
+        <td>
+            <p><%= employer.phone_no%></p>
+            <% employer.contacts.each do |contact| %>
+              <p>
+                <b><%= contact.name %></b>
+                <%= contact.land_no %>
+                <%= contact.mobile_no %>
+                <%= contact.email %>
+              </p>
+            <% end %>
+        </td>
+        <td><%= policy(klass).show? ? link_to(klass.to_label, klass) : klass.to_label%></td>
+        <td>
+          <% klass_interactions = report.employer_interactions.map{|r| r if r.employer_id == employer.id}.compact %>
+
+          <% klass_interactions.each do |klass_interaction| %>
+            <% if klass_interaction.for_klass?(klass) %>
+            <% if klass_interaction.status == 4 %>
+              <p style='color: red'><%= klass_interaction.event_date.to_s + " " + klass_interaction.event_name%></p>
+            <% else %>
+              <p><%= klass_interaction.event_date.to_s + " " + klass_interaction.event_name%></p>
+            <% end %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <% hires = report.trainees_hired.map{|t| t if t.employer_id == employer.id && report.klass_trainee_ids[klass.id].include?(t.trainee_id)}.compact %>
+          <% hires.each do |h| %>
+              <% trainee = h.trainee %>
+              <p><%= policy(trainee).show? ? link_to(trainee.name, trainee) : trainee.name %></p>
+          <% end %>
+        </td>
+        <td>
+          <% employer.employer_notes.each do |employer_note| %>
+            <p>
+                <%= employer_note.created_at.to_date.to_s%>
+                <%= employer_note.note.truncate(40)%>
+            </p>
+          <% end %>
+        </td>
+      </tr>
+  <% end %>
+</table>

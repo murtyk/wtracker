@@ -12,6 +12,10 @@ class TraineesStatusReport < Report
     @trainee_statuses || []
   end
 
+  def title
+    'Trainees Status'
+  end
+
   def count
     trainee_statuses.count
   end

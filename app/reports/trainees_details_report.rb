@@ -8,6 +8,10 @@ class TraineesDetailsReport < Report
     init_klasses_and_trainees
   end
 
+  def title
+    'Trainees Details'
+  end
+
   def klasses_and_trainees
     @klasses_and_trainees || []
   end

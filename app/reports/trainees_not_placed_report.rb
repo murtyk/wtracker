@@ -16,6 +16,10 @@ class TraineesNotPlacedReport < Report
     @trainees_not_placed || []
   end
 
+  def title
+    'Trainees Dropped or Not Placed'
+  end
+
   def count
     trainees_not_placed.count
   end

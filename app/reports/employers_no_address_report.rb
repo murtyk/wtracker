@@ -9,6 +9,14 @@ class EmployersNoAddressReport < Report
                          .where('addresses.addressable_id is null')
   end
 
+  def title
+    'Employers With Missing Address'
+  end
+
+  def selection_partial
+    'none'
+  end
+
   def count
     employers.count
   end

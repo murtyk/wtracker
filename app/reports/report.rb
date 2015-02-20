@@ -94,6 +94,14 @@ class Report
   end
 
   def template
+    'report'
+  end
+
+  def selection_partial
+    'class_selection'
+  end
+
+  def table_partial
     report_name.underscore.gsub('_report', '')
   end
 

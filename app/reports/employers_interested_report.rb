@@ -7,6 +7,10 @@ class EmployersInterestedReport < Report
     @interactions = tis.map { |ti| TraineeInteractionDetails.new(ti) }
   end
 
+  def title
+    'Employers Interested in Trainees Not Placed'
+  end
+
   def count
     interested_interactions.count
   end

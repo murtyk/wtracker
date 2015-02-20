@@ -20,6 +20,10 @@ class TraineesPlacedReport < Report
     @trainees_placed_no_employer || []
   end
 
+  def title
+    'Trainees Got Placed'
+  end
+
   def count
     trainee_interactions.count + trainees_placed_no_employer.count
   end

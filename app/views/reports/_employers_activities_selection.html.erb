@@ -1,0 +1,35 @@
+<div class = 'row-fluid filters-div' style='margin-bottom: 10px'>
+  <%= simple_form_for @report, as: :report, method: :post, url: '/reports', html: { class: 'form-search'} do |f| %>
+    <%= f.hidden_field :report_name %>
+    <div class='span2'>
+      <%= f.input :start_date, label: 'From', required: false, as: :string,
+                               input_html: { data: { behaviour: "datepicker" }, style: 'width: 150px;'} %>
+    </div>
+    <div class='span2'>
+      <%= f.input :end_date, label: 'To', required: false, as: :string,
+                             input_html: { data: { behaviour: "datepicker" }, style: 'width: 150px;' } %>
+    </div>
+    <div class='span2'>
+      <br>
+      <%= f.input :include_all_dates, label: false, inline_label: true, as: :boolean %>
+    </div>
+    <div class='span2'>
+      <br>
+      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white"></i>Find
+      </button>
+    </div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
+  })
+</script>
+<script type="text/javascript">
+  $('.btn-spinner').button();
+  $('.form-search').submit(function() {
+    $('#submit-button').button('loading');
+  });
+</script>

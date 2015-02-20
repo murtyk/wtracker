@@ -178,11 +178,11 @@
                 <b class="caret" style='border-top-color: white;'></b>
               </a>
               <ul class="dropdown-menu">
-                <% Report.reports_by_type.each do |type_reports| %>
+                <% Report.reports_by_type.each do |type, reports| %>
                   <li class="dropdown-submenu">
-                    <a tabindex="-1" href="#"><%= type_reports[0]%></a>
+                    <a tabindex="-1" href="#"><%= type %></a>
                     <ul class="dropdown-menu">
-                      <% type_reports[1].each do |report| %>
+                      <% reports.each do |report| %>
                         <li><%= report_link report %></li>
                       <% end %>
                     </ul>

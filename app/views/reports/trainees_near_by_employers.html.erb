@@ -1,4 +1,4 @@
-<h1>Trainees & Near By Employers</h1>
+<h1><%= @report.title%></h1>
 
 <div class = 'row-fluid filters-div' style='margin-bottom:10px'>
 <%= simple_form_for @report, as: :report, method: :post, url: '/reports', html: { class: 'form-search form-horizontal'}, remote: true do |f| %>
@@ -35,7 +35,7 @@
   <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
 
     <tr style="display:none;">
-      <th>Near By Employers</th>
+      <th><%= @report.title%></th>
       <%= (6 + @report.max_contacts).times.map{'<th></th>'}.join().html_safe %>
     </tr>
     <tr>

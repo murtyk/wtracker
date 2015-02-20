@@ -1,0 +1,26 @@
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr style="display:none;">
+    <th><%= @report.title%></th>
+    <%= 1.times.map{'<th></th>'}.join().html_safe %>
+  </tr>
+
+  <tr>
+    <th>Name</th>
+    <th>Contacts</th>
+  </tr>
+
+  <% report.employers.each do |employer| %>
+      <tr>
+        <td><%= link_to(employer.name, employer) %></td>
+        <td>
+            <p>Main Number: <%= employer.phone_no%></p>
+            <% employer.contacts.each do |contact| %>
+              <p><b><%= contact.name %></b></p>
+              <p><%= format_phone_no(contact.land_no, contact.ext) %></p>
+              <p><%= format_phone_no(contact.mobile_no) %></p>
+              <p><%= contact.email %></p>
+            <% end %>
+        </td>
+      </tr>
+  <% end %>
+</table>

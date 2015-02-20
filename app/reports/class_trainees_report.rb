@@ -22,4 +22,12 @@ class ClassTraineesReport < TraineesDetailsReport
     return [] if @klasses_and_trainees.blank?
     @klasses_and_trainees[0][1]
   end
+
+  def title
+    'Class Trainees'
+  end
+
+  def selection_partial
+    'single_class_selection'
+  end
 end

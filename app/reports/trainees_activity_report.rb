@@ -19,8 +19,22 @@ class TraineesActivityReport < Report
     end
   end
 
+  def title
+    'Trainees Activities'
+  end
+
+  def selection_partial
+    'trainees_activity_selection'
+  end
+
   def count
     trainee_activities.count
+  end
+
+  def render_counts
+    strong_class = "<strong class='align-right' style='font-color: blue'>"
+    ctxt = "#{count_label}: #{count}"
+    (strong_class + ctxt + '</strong>').html_safe
   end
 
   private
