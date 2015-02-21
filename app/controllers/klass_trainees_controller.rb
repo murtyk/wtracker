@@ -1,7 +1,13 @@
 class KlassTraineesController < ApplicationController
   before_filter :authenticate_user!
 
-  # GET /klass_trainees/new
+  # 3 ways to come here
+  # Trainee Page:   params will have :trainee_id
+  #        @object should be Trainee
+  # Klass Page: params will have trainee_ids as array
+  #        @object should be Klass
+  # Near By Colleges ->  new.html -> trainee_ids as string
+  #        @object should be Klass
   def new
     if params[:trainee_ids]
       @trainees = Trainee.where(id: params[:trainee_ids].split(','))

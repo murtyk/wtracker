@@ -76,6 +76,9 @@ RSpec.configure do |config|
   config.include(ReportsHelper)
 
   config.include FactoryGirl::Syntax::Methods
+  config.include Devise::TestHelpers, type: :controller
+  config.extend ControllerMacros, type: :controller
+
   # config.raise_errors_for_deprecations!
 
   config.before(:suite) do
@@ -90,7 +93,6 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  config.include Devise::TestHelpers, type: :controller
 
   config.verbose_retry = true # show retry status in spec process
 
