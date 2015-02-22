@@ -9,27 +9,20 @@ class TraineesController < ApplicationController
 
   def search_by_skills
     @results      = []
-    @filter_info  =  {}
+    @filter_info  =  params[:filters] || {}
 
     return unless params[:filters]
 
-    @filter_info  = params[:filters]
-    skills        = @filter_info[:skills]
-    @results      = TraineeSearchService.search_by_skills(skills)
-    unless @results.blank?
-      trainee_ids   = @results.map { |result| result.trainee.id }
-      trainee_names = @results.map { |result| result.trainee.name }
-      @trainee_email = current_user.trainee_emails.new(trainee_ids: trainee_ids,
-                                                       trainee_names: trainee_names,
-                                                       klass_id: 0)
-    end
+    @results,
+    @trainee_email = TraineeSearchService.search_by_skills(@filter_info[:skills],
+                                                           current_user)
   end
 
   def docs_for_selection
     klass_id = params[:klass_id].to_i
     @trainees = Trainee.includes(:trainee_files)
-                       .joins(:klass_trainees)
-                       .where(klass_trainees: { klass_id: klass_id })
+                .joins(:klass_trainees)
+                .where(klass_trainees: { klass_id: klass_id })
   end
 
   def advanced_search
@@ -48,24 +41,12 @@ class TraineesController < ApplicationController
   end
 
   def index
-    @trainees     = []
-    @filter_info  =  {}
-
-    return unless params[:filters]
-
-    @filter_info  = params[:filters]
-    last_name     = @filter_info[:last_name]
-    klass_id      = @filter_info[:klass_id].to_i
-
-    return if klass_id == 0 && last_name.blank?
-
-    trainees = Klass.find(klass_id).trainees if last_name.blank?
-    trainees = Trainee.where('last ilike ?', last_name + '%') unless last_name.blank?
-    @trainees = trainees.order(:first, :last)
+    @filter_info  = params[:filters] || {}
+    @trainees = TraineeSearchService.search(params)
   end
 
   def mapview
-     # debugger
+    # debugger
     @trainees_map = TraineesMap.new(params[:filters])
   end
 
@@ -85,10 +66,8 @@ class TraineesController < ApplicationController
     respond_to do |format|
       if TraineeFactory.save(@trainee)
         format.html { redirect_to @trainee, notice: 'Trainee was successfully added.' }
-        format.json { render json: @trainee, status: :created, location: @trainee }
       else
         format.html { render :new }
-        format.json { render json: @trainee.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -164,10 +143,9 @@ class TraineesController < ApplicationController
   end
 
   def set_trainee_grant
-    if current_trainee
-      grant_id = current_trainee.grant_id
-      session[:grant_id] = grant_id
-      Grant.current_id = grant_id
-    end
+    return unless current_trainee
+    grant_id = current_trainee.grant_id
+    session[:grant_id] = grant_id
+    Grant.current_id = grant_id
   end
 end

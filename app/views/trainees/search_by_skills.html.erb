@@ -20,8 +20,8 @@
         </tr>
         <% @results.each do |result| %>
           <tr>
-            <td><%= name_and_link result.trainee %></td>
-            <td><%= highlight(result.all_skills, @filter_info[:skills].split) %></td>
+            <td><%= result.trainee %></td>
+            <td><%= highlight(result.skills, @filter_info[:skills].split) %></td>
           </tr>
         <% end %>
       </table>
