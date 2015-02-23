@@ -183,7 +183,7 @@ class AutoJobLeads
     predicate = { job_search_profiles: { skills: nil } }
     predicate = predicate.merge(id: params[:trainee_id]) if params[:trainee_id]
 
-    Trainee.includes(:job_search_profile).where(predicate).order(:first, :last)
+    Trainee.joins(:job_search_profile).where(predicate).order(:first, :last)
   end
 
   def remind(params, account_id, grant_id)

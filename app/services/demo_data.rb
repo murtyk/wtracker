@@ -198,7 +198,7 @@ class DemoData
 
   def generate_camden_students
     10.times do |n|
-      @camden_klass.trainees.create(student_attribues(CAMDEN, n))
+      @camden_klass.trainees << Trainee.create(student_attribues(CAMDEN, n))
     end
 
     # camden: 1 dropped, 9 completed, 6 placed out of 9 completed
@@ -217,7 +217,7 @@ class DemoData
 
   def generate_bergen_students
     10.times do |n|
-      @bergen_klass.trainees.create(student_attribues(BERGEN, n))
+      @bergen_klass.trainees << Trainee.create(student_attribues(BERGEN, n))
     end
 
     # bergen: 10 completed, 1 continuing, 3 placed

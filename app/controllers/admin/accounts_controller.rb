@@ -1,9 +1,9 @@
 class Admin
+  # for opero admin to manage accounts
   class AccountsController < ApplicationController
     before_filter :authenticate_admin!
 
     # GET /accounts
-    # GET /accounts.json
     def index
       @accounts = Account.all
 
@@ -14,7 +14,6 @@ class Admin
     end
 
     # GET /accounts/1
-    # GET /accounts/1.json
     def show
       @account = Account.find(params[:id])
 
@@ -25,7 +24,6 @@ class Admin
     end
 
     # GET /accounts/new
-    # GET /accounts/new.json
     def new
       @account = Account.new
       @account.users.build
@@ -42,46 +40,33 @@ class Admin
     end
 
     # POST /accounts
-    # POST /accounts.json
     def create
-      user_params = params[:account][:users_attributes]['0']
-
-      # debugger
-      user_params[:password_confirmation] = user_params[:password]
-      user_params[:status] = 1
-      user_params[:role] = 1
+      set_up_user_params
       @account = Account.new(params[:account])
-      respond_to do |format|
-        if @account.save
-          notice = 'Account was successfully created.'
-          notice += ' Please wait for a minute to generate ' \
-                    'data for this demo account' if @account.demo
-          format.html { redirect_to admin_account_path(@account), notice: notice }
-        else
-          format.html { render :new }
-        end
+
+      if @account.save
+        notice = 'Account was successfully created.'
+        notice += ' Please wait for a minute to generate ' \
+                  'data for this demo account' if @account.demo
+        redirect_to admin_account_path(@account), notice: notice
+      else
+        render :new
       end
     end
 
     # PUT /accounts/1
-    # PUT /accounts/1.json
     def update
       @account = Account.find(params[:id])
 
-      respond_to do |format|
-        if @account.update_attributes(params[:account])
-          notice = 'Account was successfully updated.'
-          format.html { redirect_to [:admin, @account], notice: notice }
-          format.json { head :no_content }
-        else
-          format.html { render :edit }
-          format.json { render json: @account.errors, status: :unprocessable_entity }
-        end
+      if @account.update_attributes(params[:account])
+        notice = 'Account was successfully updated.'
+        redirect_to [:admin, @account], notice: notice
+      else
+        render :edit
       end
     end
 
     # DELETE /accounts/1
-    # DELETE /accounts/1.json
     def destroy
       @account = Account.find(params[:id])
       @account.destroy
@@ -89,6 +74,16 @@ class Admin
 
     def stats
       @stats = AccountStats.generate(params[:id])
+    end
+
+    private
+
+    def set_up_user_params
+      user_params = params[:account][:users_attributes]['0']
+
+      user_params[:password_confirmation] = user_params[:password]
+      user_params[:status] = 1
+      user_params[:role] = 1
     end
   end
 end

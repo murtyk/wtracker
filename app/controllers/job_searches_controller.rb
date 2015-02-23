@@ -64,22 +64,9 @@ class JobSearchesController < ApplicationController
 
   def sort_and_filter
     @job_search = JobSearch.find(params[:id])
-    sort_by = params[:sort_by] || 'score'
+    @analyzer   = @job_search.analyzer
 
-    county_names = params[:county_ids] && params[:county_ids].split(',')
-
-    if params[:in_state]
-      state = current_account.states.first
-      if state && state.code == @job_search.state
-        county_names = state.county_names_with_state_prefex
-      end
-    end
-
-    @analyzer = @job_search.analyzer
-
-    @analyzer.sort_and_filter(sort_by, county_names)
-
-    if @analyzer.error
+    unless @analyzer.sort_and_filter(params[:sort_by], county_names(params))
       flash[:error] = @analyzer.error
       redirect_to @job_search
       return
@@ -97,27 +84,27 @@ class JobSearchesController < ApplicationController
     end
   end
 
-  def retrycompanysave
-    @company = params[:company]
-    @sector_ids  = params[:sector_ids]
-    @error = nil
-    begin
-      attrs = Hash[%w(name phone_no website).zip @company]
-      attrs['source'] = 'job search'
-      attrs['address_attributes'] = %w(line1 city state zip).zip @company
-      e = Employer.new(attrs)
-      @sector_ids.each do |sid|
-        e.employer_sectors.new(sector_id: sid.to_i)
-      end
-      e.save
-    rescue StandardError => error
-      @error = error.to_s
-    end
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
+  # def retrycompanysave
+  #   @company = params[:company]
+  #   @sector_ids  = params[:sector_ids]
+  #   @error = nil
+  #   begin
+  #     attrs = Hash[%w(name phone_no website).zip @company]
+  #     attrs['source'] = 'job search'
+  #     attrs['address_attributes'] = %w(line1 city state zip).zip @company
+  #     e = Employer.new(attrs)
+  #     @sector_ids.each do |sid|
+  #       e.employer_sectors.new(sector_id: sid.to_i)
+  #     end
+  #     e.save
+  #   rescue StandardError => error
+  #     @error = error.to_s
+  #   end
+  #   respond_to do |format|
+  #     format.html
+  #     format.js
+  #   end
+  # end
 
   def show
     @job_search = JobSearch.find(params[:id])
@@ -146,15 +133,7 @@ class JobSearchesController < ApplicationController
   # POST /job_searches
   # POST /job_searches.json
   def create
-    params[:job_search].delete(:college_id)
-    klass_title_id = params[:job_search][:klass_title_id].to_i
-
-    if klass_title_id > 0
-      klass_title = KlassTitle.find(klass_title_id)
-      @job_search = klass_title.get_job_search(true)
-    else
-      @job_search = current_user.job_searches.new(params[:job_search])
-    end
+    @job_search = find_or_new_job_search(params)
     authorize @job_search
 
     respond_to do |format|
@@ -172,5 +151,22 @@ class JobSearchesController < ApplicationController
 
   def request_ip
     request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
+  end
+
+  def county_names(params)
+    return params[:county_ids] && params[:county_ids].split(',') unless params[:in_state]
+    state = current_account.states.first
+    return nil unless state && state.code == @job_search.state
+    state.county_names_with_state_prefex
+  end
+
+  def find_or_new_job_search(params)
+    params[:job_search].delete(:college_id)
+    klass_title_id = params[:job_search][:klass_title_id].to_i
+
+    return current_user.job_searches.new(params[:job_search]) unless klass_title_id > 0
+
+    klass_title = KlassTitle.find(klass_title_id)
+    klass_title.get_job_search(true)
   end
 end

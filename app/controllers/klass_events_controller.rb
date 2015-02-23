@@ -1,24 +1,11 @@
+#
 class KlassEventsController < ApplicationController
   before_filter :authenticate_user!
-
-  # GET /klass_events/1
-  # GET /klass_events/1.json
-  # def show
-  #   @klass_event = KlassEvent.find(params[:id])
-  #   authorize @klass_event
-
-  #   respond_to do |format|
-  #     format.html # show.html.erb
-  #     format.json { render json: @klass_event }
-  #   end
-  # end
 
   # GET /klass_events/new
   # GET /klass_events/new.json
   def new
-    klass = Klass.find(params[:klass_id])
-    @klass_event = klass.klass_events.build
-    logger.info { "[#{current_user.name}] [klass_event new]" }
+    @klass_event = Klass.find(params[:klass_id]).klass_events.build
     authorize @klass_event
 
     respond_to do |format|
@@ -30,9 +17,7 @@ class KlassEventsController < ApplicationController
 
   # GET /klass_events/1/edit
   def edit
-    @klass_event = KlassEvent.find(params[:id])
-    # debugger
-    authorize @klass_event
+    @klass_event = find_klass_event
     respond_to do |format|
       format.html
       format.js
@@ -41,15 +26,11 @@ class KlassEventsController < ApplicationController
   end
 
   # POST /klass_events
-  # POST /klass_events.json
   def create
-    authorize Klass.find(params[:klass_id]).klass_events.new
-    @klass_event = KlassEventFactory.create(params, current_user)
-
+    @klass_event = create_from_factory
     respond_to do |format|
       if @klass_event.errors.empty?
-        notice = 'Class event was successfully created.'
-        format.html { redirect_to @klass_event.klass, notice: notice }
+        format.html { redirect_to @klass_event.klass, notice: notice_created }
         format.js
       else
         format.html { render :new }
@@ -60,13 +41,11 @@ class KlassEventsController < ApplicationController
   # PUT /klass_events/1
   # PUT /klass_events/1.json
   def update
-    authorize KlassEvent.find(params[:id])
-    @klass_event = KlassEventFactory.update_klass_event(params, current_user)
-    klass = @klass_event.klass
+    @klass_event = find_and_update_from_factory
 
     respond_to do |format|
-      if @klass_event.errors.count == 0
-        format.html { redirect_to klass, notice: 'Class event was successfully updated.' }
+      if @klass_event.errors.empty?
+        format.html { redirect_to @klass_event.klass, notice: notice_updated }
         format.js
       else
         format.html { render :edit }
@@ -78,9 +57,8 @@ class KlassEventsController < ApplicationController
   # DELETE /klass_events/1
   # DELETE /klass_events/1.json
   def destroy
-    @klass_event = KlassEvent.find(params[:id])
+    @klass_event = find_klass_event
     @klass = @klass_event.klass.decorate
-    authorize @klass_event
 
     @klass_event.destroy
 
@@ -89,5 +67,31 @@ class KlassEventsController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def find_and_update_from_factory
+    find_klass_event
+    KlassEventFactory.update_klass_event(params, current_user)
+  end
+
+  def find_klass_event
+    klass_event = KlassEvent.find(params[:id])
+    authorize klass_event
+    klass_event
+  end
+
+  def create_from_factory
+    authorize Klass.find(params[:klass_id]).klass_events.new
+    KlassEventFactory.create(params, current_user)
+  end
+
+  def notice_created
+    'Class event was successfully created.'
+  end
+
+  def notice_updated
+    'Class event was successfully updated.'
   end
 end

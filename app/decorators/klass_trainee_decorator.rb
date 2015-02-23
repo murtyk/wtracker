@@ -2,7 +2,7 @@
 class KlassTraineeDecorator < Draper::Decorator
   delegate_all
 
-  attr_accessor :trainee_page, :updated, :update_employer_interactions
+  attr_accessor :trainee_page, :updated, :updated_eis
   # Define presentation-specific methods here. Helpers are accessed through
   # `helpers` (aka `h`). You can override attributes, for example:
   #
@@ -18,5 +18,9 @@ class KlassTraineeDecorator < Draper::Decorator
 
   def status
     KlassTrainee::STATUSES[object.status]
+  end
+
+  def updated_eis?
+    updated_eis
   end
 end

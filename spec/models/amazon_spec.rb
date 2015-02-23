@@ -14,6 +14,7 @@ describe Amazon do
   end
 
   after :each do
+    Amazon.delete_bucket('wtracker-rspec-testing')
     VCR.configure do |config|
       config.allow_http_connections_when_no_cassette = false
     end

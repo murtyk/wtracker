@@ -1,21 +1,14 @@
 class CollegesController < ApplicationController
   before_filter :authenticate_user!
   # GET /colleges
-  # GET /colleges.json
   def index
     @colleges_map = CollegesMap.new
   end
 
   # GET /colleges/1
-  # GET /colleges/1.json
   def show
     @college = College.find(params[:id])
     authorize @college
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @college }
-    end
   end
 
   # GET /colleges/new
@@ -24,11 +17,6 @@ class CollegesController < ApplicationController
     @college = College.new
     authorize @college
     @college.build_address
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @college }
-    end
   end
 
   # GET /colleges/1/edit
@@ -45,14 +33,10 @@ class CollegesController < ApplicationController
     @college = College.new(params[:college])
     authorize @college
 
-    respond_to do |format|
-      if @college.save
-        format.html { redirect_to @college, notice: 'College was successfully created.' }
-        format.json { render json: @college, status: :created, location: @college }
-      else
-        format.html { render :new }
-        format.json { render json: @college.errors, status: :unprocessable_entity }
-      end
+    if @college.save
+      redirect_to @college, notice: 'College was successfully created.'
+    else
+      render :new
     end
   end
 
@@ -62,14 +46,10 @@ class CollegesController < ApplicationController
     @college = College.find(params[:id])
     authorize @college
 
-    respond_to do |format|
-      if @college.update_attributes(params[:college])
-        format.html { redirect_to @college, notice: 'College was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render :edit }
-        format.json { render json: @college.errors, status: :unprocessable_entity }
-      end
+    if @college.update_attributes(params[:college])
+      redirect_to @college, notice: 'College was successfully updated.'
+    else
+      render :edit
     end
   end
 

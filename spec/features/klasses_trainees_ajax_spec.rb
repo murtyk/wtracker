@@ -47,10 +47,6 @@ describe "Klasses" do
       page.driver.browser.switch_to.alert.accept
       wait_for_ajax
       expect(page).to_not have_text name
-
     end
-
   end
-
-
 end

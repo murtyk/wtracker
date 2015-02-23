@@ -47,11 +47,11 @@ class JobsAnalyzer
     (1..slices).each { |slice| Rails.cache.delete(cache_id_page(slice)) }
   end
 
-  def sort_and_filter(sort_by, county_names)
+  def sort_and_filter(sort_by = 'score', county_names)
     @county_counts = read_cache(cache_id_counties_analyzed)
     unless county_counts
       @error = 'county analysis missing'
-      return nil
+      return false
     end
 
     @companies = read_cache(cache_id_sorted_by_score) || sort_companies_by_score

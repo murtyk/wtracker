@@ -56,8 +56,8 @@ class KlassesController < ApplicationController
     @klass = Klass.includes(:klass_titles,
                             klass_trainees: :trainee,
                             klass_events: { klass_interactions: :employer })
-                  .find(params[:id])
-                  .decorate
+             .find(params[:id])
+             .decorate
     authorize @klass
 
     respond_to do |format|
@@ -92,7 +92,6 @@ class KlassesController < ApplicationController
   def create
     # debugger
     @klass = KlassFactory.new_klass(params)
-    logger.info { "[#{current_user.name}] [klass create] [name: #{@klass.name}]" }
     authorize @klass
 
     respond_to do |format|
@@ -100,7 +99,6 @@ class KlassesController < ApplicationController
         format.html { redirect_to @klass, notice: 'Class was successfully created.' }
         format.json { render json: @klass, status: :created, location: @klass }
       else
-        # debugger
         format.html { render :new }
         format.json { render json: @klass.errors, status: :unprocessable_entity }
       end
@@ -111,17 +109,16 @@ class KlassesController < ApplicationController
   # PUT /klasses/1.json
   def update
     klass = Klass.find(params[:id])
-    logger.info { "[#{current_user.name}] [klass update] [klass_id: #{klass.id}]" }
     authorize klass
 
-    respond_to do |format|
-      @klass = KlassFactory.update_klass(params)
-      if @klass.errors.count == 0
-        format.html { redirect_to @klass, notice: 'Class was successfully updated.' }
-      else
-        format.html { render :edit }
-      end
+    @klass = KlassFactory.update_klass(params)
+
+    if @klass.errors.any?
+      render :edit
+      return
     end
+
+    redirect_to @klass, notice: 'Class was successfully updated.'
   end
 
   # DELETE /klasses/1
@@ -131,11 +128,5 @@ class KlassesController < ApplicationController
     logger.info { "[#{current_user.name}] [klass destroy] [klass_id: #{@klass.id}]" }
     authorize @klass
     @klass.destroy
-
-    respond_to do |format|
-      format.html { redirect_to klasses_url }
-      format.js
-      format.json { head :no_content }
-    end
   end
 end

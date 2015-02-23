@@ -25,7 +25,7 @@ RSpec.describe KlassTraineesController, type: :controller do
       Grant.current_id = 1
     end
     it "assigns @trainees and @klasses_collection when passed trainee_ids" do
-      get :new, { trainee_ids: [] }, valid_session
+      get :new, { trainee_ids: '' }, valid_session
       expect(assigns(:trainees)).not_to be_nil
       expect(assigns(:klasses_collection)).not_to be_nil
 
@@ -34,7 +34,6 @@ RSpec.describe KlassTraineesController, type: :controller do
     it "assigns @trainee and @klass_trainee when passed trainee_id" do
       get :new, { trainee_id: 1 }, valid_session
 
-      expect(assigns(:trainee)).not_to be_nil
       expect(assigns(:trainees)).to be_nil
 
       expect(assigns(:klass_trainee)).not_to be_nil

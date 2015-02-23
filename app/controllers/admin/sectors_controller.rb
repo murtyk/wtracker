@@ -1,4 +1,5 @@
 class Admin
+  # for opero admin to manage sectors (alias industries)
   class SectorsController < ApplicationController
     before_filter :authenticate_admin!
 

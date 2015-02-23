@@ -4,9 +4,8 @@ class TraineeSubmitsController < ApplicationController
   # GET /trainee_submits/new
   # GET /trainee_submits/new.json
   def new
-    trainee = Trainee.find(params[:trainee_id])
-    @trainee_submit = trainee.trainee_submits.new
-    logger.info { "[#{current_user.name}] [trainee_submit new]" }
+    @trainee_submit = Trainee.find(params[:trainee_id]).trainee_submits.new
+    # logger.info { "[#{current_user.name}] [trainee_submit new]" }
     authorize @trainee_submit
 
     respond_to do |format|
@@ -19,13 +18,19 @@ class TraineeSubmitsController < ApplicationController
   # POST /trainee_submits
   # POST /trainee_submits.json
   def create
-    trainee = Trainee.find(params[:trainee_submit].delete(:trainee_id))
-
-    @trainee_submit = trainee.trainee_submits.new(params[:trainee_submit])
-    @trainee_submit.applied_on = opero_str_to_date(params[:trainee_submit][:applied_on])
-
+    @trainee_submit = build_trainee_submit
     logger.info { "[#{current_user.name}] [trainee_submit create]" }
     authorize @trainee_submit
     @trainee_submit.save
+  end
+
+  private
+
+  def build_trainee_submit
+    trainee = Trainee.find(params[:trainee_submit].delete(:trainee_id))
+
+    trainee_submit = trainee.trainee_submits.new(params[:trainee_submit])
+    trainee_submit.applied_on = opero_str_to_date(params[:trainee_submit][:applied_on])
+    trainee_submit
   end
 end

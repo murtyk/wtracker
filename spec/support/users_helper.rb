@@ -77,7 +77,8 @@ module  UserHelper
     switch_to_demo_domain
     visit root_path
     # click_link 'Sign In'
-    fill_in 'user_email', with: "aandrola@gmail.com"
+    # fill_in 'user_email', with: "aandrola@gmail.com"
+    fill_in 'user_email', with: User.unscoped.last.email
     fill_in 'user_password', with: "password"
     click_button 'Sign in'
   end

@@ -1,27 +1,13 @@
+# trainees can be added on class page
+# class can be added on trainee page
+# multiple trainees can be added through near by colleges page
 class KlassTraineesController < ApplicationController
   before_filter :authenticate_user!
 
-  # 3 ways to come here
-  # Trainee Page:   params will have :trainee_id
-  #        @object should be Trainee
-  # Klass Page: params will have trainee_ids as array
-  #        @object should be Klass
-  # Near By Colleges ->  new.html -> trainee_ids as string
-  #        @object should be Klass
   def new
-    if params[:trainee_ids]
-      @trainees = Trainee.where(id: params[:trainee_ids].split(','))
-      klasses  = Klass.where('start_date > ?', Date.today).order(:start_date)
-      @klasses_collection = klasses.map do |k|
-        [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id]
-      end
-    elsif params[:trainee_id]
-      @trainee = Trainee.find params[:trainee_id]
-      @klass_trainee = @trainee.klass_trainees.build
-    else
-      @klass = Klass.find(params[:klass_id])
-      @klass_trainee = @klass.klass_trainees.build
-    end
+    @klass_trainee,
+    @trainees,
+    @klasses_collection = KlassTraineeFactory.new(params)
   end
 
   # GET /klass_trainees/1/edit
@@ -30,13 +16,6 @@ class KlassTraineesController < ApplicationController
     @from_page = params[:from].to_i
   end
 
-  # 3 ways to come here
-  # Trainee Page:   params will have :trainee_id
-  #        @object should be Trainee
-  # Klass Page: params will have trainee_ids as array
-  #        @object should be Klass
-  # Near By Colleges ->  new.html -> trainee_ids as string
-  #        @object should be Klass
   def create
     @object = KlassTraineeFactory.add_klass_trainees(params).decorate
     respond_to do |format|

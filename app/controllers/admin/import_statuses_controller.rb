@@ -1,4 +1,5 @@
 class Admin
+  # for opero admin to view and clean up the imports done by users
   class ImportStatusesController < ApplicationController
     before_filter :authenticate_admin!
 
@@ -27,7 +28,7 @@ class Admin
         status: import_status.status,
         rows_failed: import_status.rows_failed,
         rows_successful: import_status.rows_successful
-             }
+      }
       respond_to do |format|
         format.json { render json: data }
       end

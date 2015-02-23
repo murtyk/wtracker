@@ -1,4 +1,5 @@
 class Admin
+  # for admin to search for a city or get it added
   class CitiesController < ApplicationController
     before_filter :authenticate_admin!
 
@@ -8,15 +9,21 @@ class Admin
 
     def index
       if params[:filters]
-        name = params[:filters][:name]
-        state_id = params[:filters][:state_id].to_i
-        cities = City.search(name, state_id)
-
-        @total = cities.count
-        @cities = cities.to_a.paginate(page: params[:page], per_page: 20)
+        @cities = find_cities.to_a.paginate(page: params[:page], per_page: 20)
       else
         @cities = []
       end
+    end
+
+    private
+
+    def find_cities
+      name     = params[:filters][:name]
+      state_id = params[:filters][:state_id].to_i
+      cities   = City.search(name, state_id)
+
+      @total   = cities.count
+      cities
     end
   end
 end

@@ -59,32 +59,30 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize @user
 
-    respond_to do |format|
-      if @user.update_and_assign_role(params[:user])
-        format.html { redirect_to @user, notice: 'user was successfully updated.' }
-        format.json { render json: @user, status: :created, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.update_and_assign_role(params[:user])
+      redirect_to @user, notice: 'user was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def create
-    params[:user].merge(password_confirmation: params[:user][:password])
-
-    @user = User.new(params[:user])
+    @user = User.new(params[:user]
+                     .merge(password_confirmation: params[:user][:password]))
     authorize @user
 
-    valid_password = params[:user][:password].length >= 8
-    @user.errors.add(:password, 'required. minimum 8 characters.') unless valid_password
-
-    respond_to do |format|
-      if valid_password && @user.save
-        format.html { redirect_to users_path, notice: 'User was successfully created.' }
-      else
-        format.html { render :new }
-      end
+    if valid_password && @user.save
+      redirect_to users_path, notice: 'User was successfully created.'
+    else
+      render :new
     end
+  end
+
+  private
+
+  def valid_password
+    return true if params[:user][:password].length >= 8
+    @user.errors.add(:password, 'required. minimum 8 characters.')
+    false
   end
 end

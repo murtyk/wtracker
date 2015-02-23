@@ -14,14 +14,10 @@ class ProgramsController < ApplicationController
     @program = Program.find(params[:id])
     alt         = AutoLeadTrainees.new
     alt.program = @program
-    template    = TRAINEE_STATUS_TEMPLATES[params[:status].to_sym]
     @trainees   = alt.by_status(params[:status])
-    if params[:map]
-      @job_search_profiles_map = JobSearchProfilesMap.new(@trainees)
-      render template + '_map'
-    else
-      render template
-    end
+
+    @job_search_profiles_map = JobSearchProfilesMap.new(@trainees) if params[:map]
+    render template
   end
 
   # GET /programs
@@ -40,23 +36,12 @@ class ProgramsController < ApplicationController
   def show
     @program = Program.find(params[:id])
     authorize @program
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @program }
-    end
   end
 
   # GET /programs/new
-  # GET /programs/new.json
   def new
     @program = Program.new
     authorize @program
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @program }
-    end
   end
 
   # GET /programs/1/edit
@@ -74,10 +59,10 @@ class ProgramsController < ApplicationController
     respond_to do |format|
       if @program.save
         format.html { redirect_to @program, notice: 'Program was successfully created.' }
-        format.json { render json: @program, status: :created, location: @program }
+        # format.json { render json: @program, status: :created, location: @program }
       else
         format.html { render :new }
-        format.json { render json: @program.errors, status: :unprocessable_entity }
+        # format.json { render json: @program.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -91,11 +76,17 @@ class ProgramsController < ApplicationController
     respond_to do |format|
       if @program.update_attributes(params[:program])
         format.html { redirect_to @program, notice: 'Program was successfully updated.' }
-        format.json { head :no_content }
+        # format.json { head :no_content }
       else
         format.html { render :edit }
-        format.json { render json: @program.errors, status: :unprocessable_entity }
+        # format.json { render json: @program.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  private
+
+  def template
+    TRAINEE_STATUS_TEMPLATES[params[:status].to_sym] + (params[:map] && '_map').to_s
   end
 end
