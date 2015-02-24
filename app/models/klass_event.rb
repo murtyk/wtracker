@@ -58,8 +58,8 @@ class KlassEvent < ActiveRecord::Base
 
   def interactions_by_status(status)
     klass_interactions.joins(:employer)
-                      .where(status: status)
-                      .order('employers.name')
+      .where(status: status)
+      .order('employers.name')
   end
 
   def next_sequence

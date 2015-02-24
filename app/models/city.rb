@@ -50,7 +50,7 @@ class City < ActiveRecord::Base
   #   longitude = results[0].longitude
   #   county = County.find_by_city_and_state(name, state.code)
   #   city = state.cities.new(name: name, zip: zip, county_id: county.id,
-                              # latitude: latitude, longitude: longitude)
+  # latitude: latitude, longitude: longitude)
   #   city.save
   #   city
   # end

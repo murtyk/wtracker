@@ -12,15 +12,15 @@ class Employer < ActiveRecord::Base
 
   scope :in_county, lambda { |county, state|
                       joins(:address)
-                      .where(addresses: { county: county, state: state })
+                        .where(addresses: { county: county, state: state })
                     }
   scope :in_counties, lambda { |county_ids|
                         joins(:address)
-                        .where(addresses: { county_id: county_ids })
+                          .where(addresses: { county_id: county_ids })
                       }
   scope :in_sector, lambda { |sector_id|
                       joins(:employer_sectors)
-                      .where(employer_sectors: { sector_id: sector_id })
+                        .where(employer_sectors: { sector_id: sector_id })
                     }
   scope :from_source, ->(source) { where(source: source) }
 
@@ -90,12 +90,12 @@ class Employer < ActiveRecord::Base
 
   def self.existing_employer(name, lat, lng)
     Employer.joins(:address)
-            .where(
-              'name ILIKE ? and round(addresses.latitude::numeric, 2)= ?
-              and round(addresses.longitude::numeric, 2) = ?',
-              name, lat.to_f.round(2), lng.to_f.round(2)
+      .where(
+        'name ILIKE ? and round(addresses.latitude::numeric, 2)= ?
+        and round(addresses.longitude::numeric, 2) = ?',
+        name, lat.to_f.round(2), lng.to_f.round(2)
             )
-            .first
+      .first
   end
 
   def duplicate?(assume_no_address = false)
@@ -114,10 +114,10 @@ class Employer < ActiveRecord::Base
 
   def duplicate_with_address
     dupes = Employer.joins(:address)
-                    .where(
-                      'name ILIKE ? and addresses.line1 ILIKE ?
-                      and addresses.city ILIKE ? and state ILIKE ?',
-                      name, address.line1, address.city, address.state
+            .where(
+              'name ILIKE ? and addresses.line1 ILIKE ?
+              and addresses.city ILIKE ? and state ILIKE ?',
+              name, address.line1, address.city, address.state
                     )
 
     return dupes.first if new_record?
@@ -127,9 +127,9 @@ class Employer < ActiveRecord::Base
 
   def self.find_by_name_and_zip(name, zip)
     includes(:address)
-    .where('employers.name ilike ? and addresses.zip = ?', name, zip)
-    .references(:addresses)
-    .first
+      .where('employers.name ilike ? and addresses.zip = ?', name, zip)
+      .references(:addresses)
+      .first
   end
 
   private

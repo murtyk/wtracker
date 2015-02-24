@@ -35,7 +35,7 @@ describe Amazon do
   end
 
   it 'stores and deletes a file' do
-    expect(Amazon.aws_bucket).to eq('managee2e-test')
+    expect(Amazon.send(:aws_bucket)).to eq('managee2e-test')
     file_list = Amazon.file_list
     count = file_list.count
     aws_file_name = Amazon.store_file(@file)

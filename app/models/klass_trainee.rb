@@ -39,11 +39,10 @@ class KlassTrainee < ActiveRecord::Base
 
   EMP_ATTRS = %w(employer_id employer_name hire_title hire_salary start_date)
   def copy_employer_interaction_details
-    if id && hired? && trainee
-      ei = trainee.hired_employer_interaction
-      return unless ei
-      EMP_ATTRS.each { |attr| send("#{attr}=", ei.send(attr)) }
-    end
+    return unless id && hired? && trainee
+    ei = trainee.hired_employer_interaction
+    return unless ei
+    EMP_ATTRS.each { |attr| send("#{attr}=", ei.send(attr)) }
   end
 
   def default_values

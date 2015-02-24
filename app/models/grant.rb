@@ -6,8 +6,7 @@ class Grant < ActiveRecord::Base
   serialize :options
   default_scope { where(account_id: Account.current_id) }
 
-  attr_accessible :account_id, :end_date,
-                  :name, :start_date, :status, :spots, :amount,
+  attr_accessible :account_id, :end_date, :name, :start_date, :status, :spots, :amount,
                   :auto_job_leads, :profile_request_content_attributes,
                   :profile_request_subject_attributes, :job_leads_subject_attributes,
                   :job_leads_content_attributes, :optout_message_one_attributes,
@@ -66,19 +65,15 @@ class Grant < ActiveRecord::Base
 
   before_save :save_options
 
-  after_find do |grant|
-    grant.initialize_option_accessors
-  end
+  after_find :initialize_option_accessors
+
+  delegate :account_name, to: :account
 
   def initialize_option_accessors
     self.options ||= {}
     @auto_job_leads       = options[:auto_job_leads] || false
     @trainee_applications = options[:trainee_applications] || false
     @applicant_logo_file  = options[:applicant_logo_file]
-  end
-
-  def account_name
-    account.name
   end
 
   def auto_job_leads?
@@ -94,11 +89,11 @@ class Grant < ActiveRecord::Base
   end
 
   def delete_applicant_logo
-    if applicant_logo_file
-      Amazon.delete_file(applicant_logo_file)
-      @applicant_logo_file = nil
-      save
-    end
+    return unless applicant_logo_file
+
+    Amazon.delete_file(applicant_logo_file)
+    @applicant_logo_file = nil
+    save
   end
 
   def trainee_count
@@ -115,7 +110,7 @@ class Grant < ActiveRecord::Base
     return true if trainee_applications?
 
     valid_email_message?(profile_request_subject) &&
-    valid_email_message?(profile_request_content)
+      valid_email_message?(profile_request_content)
   end
 
   def valid_email_message?(msg)
@@ -150,10 +145,10 @@ class Grant < ActiveRecord::Base
   # navigators that are give admin rights to this grant
   def navigators
     user_ids = User.joins(klass_navigators: :klass)
-                   .where(users: { role: 3, status: 1 }).pluck(:id) +
+               .where(users: { role: 3, status: 1 }).pluck(:id) +
                User.joins(:grant_admins)
-                   .where(grant_admins: { grant_id: id })
-                   .where(users: { role: 3, status: 1 }).pluck(:id)
+               .where(grant_admins: { grant_id: id })
+               .where(users: { role: 3, status: 1 }).pluck(:id)
     User.where(id: user_ids).order(:first, :last)
   end
 
@@ -166,20 +161,18 @@ class Grant < ActiveRecord::Base
   end
 
   def salt
-    atoz = ('a'..'z').map{|x| x}
+    atoz = ('a'..'z').map { |x| x }
     atoz.shuffle[0..3].join + '0000' + atoz.shuffle[0..3].join + id.to_s
   end
 
   def grant_trainee_status?
     !default_trainee_status_id.nil?
   end
+
   private
 
   def save_options
-    if @auto_job_leads.is_a? String
-      @auto_job_leads = @auto_job_leads.to_i
-      @auto_job_leads = @auto_job_leads > 0
-    end
+    auto_job_leads_setting
     if @trainee_applications.is_a? String
       @trainee_applications = @trainee_applications.to_i
       @trainee_applications = @trainee_applications > 0
@@ -188,5 +181,11 @@ class Grant < ActiveRecord::Base
     self.options = self.options.merge(auto_job_leads: @auto_job_leads)
     self.options = self.options.merge(trainee_applications: @trainee_applications)
     self.options = self.options.merge(applicant_logo_file: @applicant_logo_file)
+  end
+
+  def auto_job_leads_setting
+    return unless @auto_job_leads.is_a? String
+    ajl = @auto_job_leads.to_i
+    @auto_job_leads = ajl > 0
   end
 end

@@ -1,7 +1,9 @@
+# An applicant whose status is declined can reapply after some time
+#    when they become eligible
 class ApplicantReapply < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id, grant_id: Grant.current_id) }
   attr_accessible :key, :email, :used
-  attr_accessor   :salt, :email
+  attr_accessor :salt, :email
 
   belongs_to :account
   belongs_to :grant
@@ -16,5 +18,4 @@ class ApplicantReapply < ActiveRecord::Base
   def confirmation_message
     grant.reapply_confirmation_message
   end
-
 end

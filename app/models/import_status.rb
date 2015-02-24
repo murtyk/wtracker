@@ -7,13 +7,15 @@ class ImportStatus < ActiveRecord::Base
   serialize :params
   serialize :data
 
-  belongs_to :user
-  belongs_to :account
   attr_accessible :file_name, :status, :rows_failed, :rows_successful,
                   :type, :user_id, :sector_ids, :klass_id, :params, :data,
                   :aws_file_name
 
+  belongs_to :user
+  belongs_to :account
   has_many :import_fails, dependent: :destroy
+
+  delegate :account_name, to: :account
 
   before_save :default_values
   before_destroy :delete_aws_file
@@ -24,10 +26,6 @@ class ImportStatus < ActiveRecord::Base
 
   def get_param(attr)
     params[attr]
-  end
-
-  def account_name
-    account.name
   end
 
   def default_values
@@ -47,8 +45,8 @@ class ImportStatus < ActiveRecord::Base
     accounts = Account.all
     accounts.each do |account|
       statuses = ImportStatus.unscoped.includes(:user)
-                                      .where(account_id: account.id)
-                                      .order(created_at: :desc)
+                 .where(account_id: account.id)
+                 .order(created_at: :desc)
       account_import_statuses << [account, statuses] unless statuses.empty?
     end
     account_import_statuses

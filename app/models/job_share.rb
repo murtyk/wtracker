@@ -21,7 +21,7 @@ class JobShare < ActiveRecord::Base
   end
 
   def sent_to_emails
-    job_shared_tos.map { |job_shared_to| job_shared_to.sent_to_email }
+    job_shared_tos.map(&:sent_to_email)
   end
 
   def self.search(filters)
@@ -35,14 +35,14 @@ class JobShare < ActiveRecord::Base
 
   def self.search_by_trainee_id(trainee_id)
     joins(:trainees)
-    .where(trainees: { id: trainee_id })
-    .order('created_at desc')
+      .where(trainees: { id: trainee_id })
+      .order('created_at desc')
   end
 
   def self.search_by_klass_id(klass_id)
     joins(trainees: :klass_trainees)
-    .where(klass_trainees: { klass_id: klass_id })
-    .order('job_shares.created_at desc').distinct
+      .where(klass_trainees: { klass_id: klass_id })
+      .order('job_shares.created_at desc').distinct
   end
 
   def map

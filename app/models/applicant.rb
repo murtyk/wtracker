@@ -64,9 +64,7 @@ class Applicant < ActiveRecord::Base
   end
 
   def placement_details
-    trainee.trainee_placements.map do |tp|
-      tp.details
-    end.join('<br>').html_safe
+    trainee.trainee_placements.map(&:details).join('<br>').html_safe
   end
 
   def address
@@ -129,8 +127,8 @@ class Applicant < ActiveRecord::Base
 
   def special_services_requested
     '<ol>' +
-    special_services.pluck(:name).map { |ss| "<li>#{ss}</li>" }.join('') +
-    '</ol>'
+      special_services.pluck(:name).map { |ss| "<li>#{ss}</li>" }.join('') +
+      '</ol>'
   end
 
   def veteran?
@@ -185,19 +183,15 @@ class Applicant < ActiveRecord::Base
        created_at updated_at last_employer_line2 last_employer_manager_email)
   end
 
+  def non_bool_attributes
+    attributes.keys - allowed_blank_attrs
+  end
+
   def validate_applicant_data
-    attrs = attributes.keys - allowed_blank_attrs
+    non_bool_attributes.each { |at| errors.add(at, "can't be blank") if send(at).blank? }
 
-    attrs.each { |at| errors.add(at, "can't be blank") if send(at).blank? }
-
-    %w(transportation computer_access veteran).each do |at|
-      errors.add(at, "can't be blank") if send(at).nil?
-    end
-
-    if applicant_special_services.empty?
-      errors.add('special_services', 'You have to select at least 1 option')
-    end
-
+    validate_boolean_attributes
+    validate_self_services
     validate_email
     validate_phone_numbers
 
@@ -218,6 +212,12 @@ class Applicant < ActiveRecord::Base
     EmploymentStatus.where(status: current_employment_status).first
   end
 
+  def validate_boolean_attributes
+    %w(transportation computer_access veteran).each do |at|
+      errors.add(at, "can't be blank") if send(at).nil?
+    end
+  end
+
   def validate_email
     parts = email.to_s.split('@')
     valid_email = parts.count == 2
@@ -230,15 +230,26 @@ class Applicant < ActiveRecord::Base
   end
 
   def validate_phone_numbers
-    unless mobile_phone_no.blank?
-      phone = mobile_phone_no.delete('^0-9')
-      errors.add(:mobile_phone_no, 'Should contain minimum 10 digits') if phone.size < 10
-    end
+    validate_mobile_phone_no
+    validate_emp_phone_no
+  end
 
-    unless last_employer_manager_phone_no.blank?
-      phone = last_employer_manager_phone_no.delete('^0-9')
-      errors.add(:last_employer_manager_phone_no,
-                 'Should contain minimum 10 digits') if phone.size < 10
-    end
+  def validate_mobile_phone_no
+    return if mobile_phone_no.blank?
+    phone = mobile_phone_no.delete('^0-9')
+    errors.add(:mobile_phone_no, 'Should contain minimum 10 digits') if phone.size < 10
+  end
+
+  def validate_emp_phone_no
+    return if last_employer_manager_phone_no.blank?
+
+    phone = last_employer_manager_phone_no.delete('^0-9')
+    errors.add(:last_employer_manager_phone_no,
+               'Should contain minimum 10 digits') if phone.size < 10
+  end
+
+  def validate_self_services
+    return unless applicant_special_services.empty?
+    errors.add('special_services', 'You have to select at least 1 option')
   end
 end

@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   attr_accessor :pref_copy_jobshares
 
+  delegate :account_name, to: :account
+
   validates :first, presence: true, length: { minimum: 2, maximum: 20 }
   validates :last, presence: true, length: { minimum: 2, maximum: 20 }
   validates :location, presence: true, length: { minimum: 2, maximum: 40 }
@@ -99,13 +101,11 @@ class User < ActiveRecord::Base
     save
   end
 
-  def account_name
-    account.name
-  end
-
   def name
     "#{first} #{last}"
   end
+
+  alias_method :user_name, :name
 
   def online?
     # debugger
@@ -113,8 +113,7 @@ class User < ActiveRecord::Base
   end
 
   def online_users
-    User.where('last_activity_at > ? and not id = ?', 3.minutes.ago, id)
-    .map { |user| user.name }
+    User.where('last_activity_at > ? and not id = ?', 3.minutes.ago, id).map(&:name)
   end
 
   def active_grants

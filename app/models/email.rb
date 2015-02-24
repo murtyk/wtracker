@@ -14,15 +14,15 @@ class Email < ActiveRecord::Base
   has_many :contacts, through: :contact_emails
   has_many :attachments, dependent: :destroy
   has_many :trainee_submits
-            # do not destroy dependent since we need to track this
+  # do not destroy dependent since we need to track this
 
   validates :subject, presence: true, length: { minimum: 5 }
   validates :content, presence: true, length: { minimum: 5 }
   validates :contact_emails, presence: true
 
   def attachment_names
-    TraineeFile.where(id: trainee_file_ids).map { |tf| tf.name } +
-    attachments.pluck(:name)
+    TraineeFile.where(id: trainee_file_ids).map(&:name) +
+      attachments.pluck(:name)
   end
 
   def sender

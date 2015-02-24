@@ -97,7 +97,7 @@ class AutoJobLeads
   def new_status(grant, error_messages)
     status                 = OpenStruct.new
     status.account_id      = grant.account_id
-    status.account_name    = grant.account.name
+    status.account_name    = grant.account_name
     status.grant_id        = grant.id
     status.grant_name      = grant.name
     status.error_messages  = error_messages

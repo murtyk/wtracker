@@ -30,8 +30,8 @@ class KlassTitle < ActiveRecord::Base
 
   def create_job_search(count)
     self.job_search = JobSearch.create(
-                    klass_title_id: id, keywords: title,
-                    location: "#{city},#{state}",
-                    distance: 25, days: 30, count: count)
+      klass_title_id: id, keywords: title,
+      location: "#{city},#{state}",
+      distance: 25, days: 30, count: count)
   end
 end

@@ -1,3 +1,6 @@
+# A trainee can have many of the user defined (through settings) statuses
+# User can set one of them as default
+# trainee's current status is the most recents added TraineeStatus
 class TraineeStatus < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id, grant_id: Grant.current_id) }
   default_scope { order(created_at: :desc) }
@@ -18,8 +21,8 @@ class TraineeStatus < ActiveRecord::Base
   end
 
   def display_name
-    dn = "#{created_at.to_date.to_s} - #{name}"
-    is_current_status? ? "<b>#{dn}</b>".html_safe : dn
+    dn = "#{created_at.to_date} - #{name}"
+    current_status? ? "<b>#{dn}</b>".html_safe : dn
   end
 
   private
@@ -34,7 +37,7 @@ class TraineeStatus < ActiveRecord::Base
     trainee.update(gts_id: prev_ts.grant_trainee_status_id)
   end
 
-  def is_current_status?
+  def current_status?
     grant_trainee_status_id == trainee.gts_id
   end
 end

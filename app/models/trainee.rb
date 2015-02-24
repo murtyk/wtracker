@@ -123,7 +123,7 @@ class Trainee < ActiveRecord::Base
            to: :hired_employer_interaction, allow_nil: true
 
   def unhire
-    trainee_interactions.where(status: 4).each { |ei| ei.unhire }
+    trainee_interactions.where(status: 4).each(&:unhire)
   end
 
   def klass_names

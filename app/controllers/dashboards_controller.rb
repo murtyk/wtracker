@@ -55,13 +55,13 @@ class DashboardsController < ApplicationController
     status_interview = TraineeInteraction::STATUSES.key('Interview')
     @interviews = TraineeInteraction.where(trainee_id: trainee_ids,
                                            status: status_interview)
-                                    .where('DATE(interview_date) > ?',
-                                           7.days.ago.to_date)
-                                    .order('interview_date desc')
+                  .where('DATE(interview_date) > ?',
+                         7.days.ago.to_date)
+                  .order('interview_date desc')
     @visits = KlassEvent.where(klass_id: klass_ids)
-                        .where('name ilike ?', '%visit%')
-                        .where('DATE(event_date) >= ?', Time.now.to_date)
-                        .order('event_date desc')
+              .where('name ilike ?', '%visit%')
+              .where('DATE(event_date) >= ?', Time.now.to_date)
+              .order('event_date desc')
   end
 
   def redirect_to_applicant_grant_start_page

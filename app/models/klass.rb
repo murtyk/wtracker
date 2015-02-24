@@ -80,8 +80,8 @@ class Klass < ActiveRecord::Base
   def trainees_status_counts
     status_counts = {}
     klass_trainees.select('count(*), status')
-        .group(:status)
-        .each { |kts| status_counts[kts.status] = kts.count.to_i }
+      .group(:status)
+      .each { |kts| status_counts[kts.status] = kts.count.to_i }
     status_counts
   end
 
@@ -143,7 +143,7 @@ class Klass < ActiveRecord::Base
   def trainees_markers_for_job_leads
     t_ids = trainees_for_job_leads.pluck(:id)
     addresses = HomeAddress.includes(:addressable)
-                  .where(addressable_type: 'Trainee', addressable_id: t_ids)
+                .where(addressable_type: 'Trainee', addressable_id: t_ids)
     MapService.new(addresses).markers_json
   end
 

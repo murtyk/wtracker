@@ -1,6 +1,6 @@
 <div id = '<%=div_id_for(grant_trainee_status)%>'>
   <p>
-    <% if grant_trainee_status.is_default? %>
+    <% if grant_trainee_status.default? %>
       <%= grant_trainee_status.name + ' (default)'%>
     <% else %>
       <%= button_destroy_association(grant_trainee_status) %>

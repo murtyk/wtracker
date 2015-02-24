@@ -41,7 +41,7 @@ class AutoSharedJob < ActiveRecord::Base
     2 => { 1 => 2, 2 => 2, 4 => 2 },
     3 => { 1 => 3, 2 => 2, 4 => 3 },
     4 => { 1 => 3, 2 => 2, 4 => 4 }
-                  }
+  }
 
   def change_status(new_status)
     if status.to_i == 0
@@ -49,9 +49,9 @@ class AutoSharedJob < ActiveRecord::Base
     end
 
     next_status = STATE_MACHINE[status][new_status]
-    unless status == next_status
-      update_attributes(status: next_status, status_updated_at: Date.today)
-    end
+
+    return if status == next_status
+    update_attributes(status: next_status, status_updated_at: Date.today)
   end
 
   def viewed?
@@ -71,8 +71,9 @@ class AutoSharedJob < ActiveRecord::Base
   end
 
   def status_text
-    return STATUSES[status.to_i] if status.to_i == 0
-    STATUSES[status.to_i] + ' ' + (status_updated_at || updated_at).to_date.to_s
+    st = status.to_i
+    return STATUSES[st] if st.zero?
+    STATUSES[st] + ' ' + (status_updated_at || updated_at).to_date.to_s
   end
 
   def self.status_codes(status_param)

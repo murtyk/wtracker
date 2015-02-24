@@ -64,19 +64,21 @@ class JobSearchProfile < ActiveRecord::Base
   end
 
   def auto_shared_jobs(show_all = true, status = 'Not Viewed')
-    recent_job_lead = trainee.auto_shared_jobs.last unless show_all
+    jobs = jobs_with_status(status)
+
+    jobs = jobs.where('created_at >= :sd',
+                      sd: recent_job_lead.created_at.to_date) if !show_all &&
+                                                                 recent_job_lead
+    jobs.order(date_posted: :desc).to_a
+  end
+
+  def jobs_with_status(status)
     status_codes = AutoSharedJob.status_codes(status)
+    trainee.auto_shared_jobs.where(status: status_codes)
+  end
 
-    return trainee.auto_shared_jobs.order(date_posted: :desc)
-                  .where(status: status_codes)
-                  .to_a if show_all || recent_job_lead.nil?
-
-    recent_date = recent_job_lead.created_at.to_date
-    trainee.auto_shared_jobs
-           .where('created_at >= :start_date', start_date: recent_date)
-           .where(status: status_codes)
-           .order(date_posted: :desc)
-           .to_a
+  def recent_job_lead
+    trainee.auto_shared_jobs.last
   end
 
   def validate_search_params
@@ -87,7 +89,6 @@ class JobSearchProfile < ActiveRecord::Base
 
     return false unless valid
 
-
     # we need to resolve simplyhired issues
     # check if this results in any jobs
     # can_find_jobs?
@@ -95,8 +96,8 @@ class JobSearchProfile < ActiveRecord::Base
   end
 
   def location_error_messages
-    msgs = [errors[:location][0] , errors[:zip][0]].compact
-    msgs.map{ |m| "<br><span style='color: #B94A48'>#{m}</span>" }.join('').html_safe
+    msgs = [errors[:location][0], errors[:zip][0]].compact
+    msgs.map { |m| "<br><span style='color: #B94A48'>#{m}</span>" }.join('').html_safe
   end
 
   private
@@ -120,12 +121,17 @@ class JobSearchProfile < ActiveRecord::Base
 
     return validate_zip(zip) unless zip.blank?
 
+    city = city_from_location
+    !city.blank?
+  end
+
+  def city_from_location
     state_code = location.split(',')[1]
-    return false unless valid_state_code(state_code)
+    return nil unless valid_state_code(state_code)
 
     city = GeoServices.findcity(location, '')
     errors.add(:location, 'not found') unless city
-    !city.blank?
+    city
   end
 
   def validate_zip(zip)

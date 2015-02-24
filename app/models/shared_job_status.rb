@@ -18,10 +18,9 @@ class SharedJobStatus < ActiveRecord::Base
 
   def update_status(new_status)
     self.status ||= 0
-    if self.status == 0 || new_status > STATUSES[:VIEWED]
-      self.status = new_status
-      save
-    end
+    return unless self.status.zero? || new_status > STATUSES[:VIEWED]
+    self.status = new_status
+    save
   end
 
   def clicked(params_key)
@@ -56,9 +55,9 @@ class SharedJobStatus < ActiveRecord::Base
     ord = 'shared_job_statuses.created_at desc'
 
     return includes(:trainee)
-           .where(trainees_id: trainee_id).order(ord) if trainee_id > 0
+      .where(trainees_id: trainee_id).order(ord) if trainee_id > 0
 
     includes(trainee: :klass_trainees)
-           .where(klass_trainees: { klass_id: klass_id }).order(ord)
+      .where(klass_trainees: { klass_id: klass_id }).order(ord)
   end
 end

@@ -2,7 +2,7 @@
 # searched jobs are not persisted
 class JobSearch < ActiveRecord::Base
   JOBSEARCH_DAYS     = { 'Last 24 hours' => 1, 'Last 7 days' => 7, 'Last 14 days' => 14,
-                     'Last 30 days' => 30, 'Anytime' => 0 }
+                         'Last 30 days' => 30, 'Anytime' => 0 }
   JOBSEARCH_DISTANCE = { 5 => 5, 10 => 10, 15 => 15, 25 => 25, 50 => 50,
                          'Exact Location' => 0 }
   JOBS_SLICE_SIZE     = 100

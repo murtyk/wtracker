@@ -30,15 +30,15 @@ class Program < ActiveRecord::Base
 
   def ongoing_classes
     klasses.joins(:college)
-           .where('DATE(start_date) <= ? and DATE(end_date) >= ?',
-                  Time.now.to_date, Time.now.to_date)
-           .order('colleges.name')
-           .order('start_date desc')
+      .where('DATE(start_date) <= ? and DATE(end_date) >= ?',
+             Time.now.to_date, Time.now.to_date)
+      .order('colleges.name')
+      .order('start_date desc')
   end
 
   def completed_classes
     klasses.where('DATE(end_date) < ?', Time.now.to_date)
-           .order('start_date desc')
+      .order('start_date desc')
   end
 
   def klass_count
@@ -98,10 +98,9 @@ class Program < ActiveRecord::Base
     KlassTrainee.unscoped.where(klass_id: program_klasses.pluck(:id)).count
   end
 
-
   def trainees_with_valid_job_search_profiles
     JobSearchProfile.where(trainee_id: trainee_ids)
-                    .where('skills is not null').pluck(:trainee_id)
+      .where('skills is not null').pluck(:trainee_id)
   end
 
   def trainees_pending_job_search_profiles
@@ -114,14 +113,14 @@ class Program < ActiveRecord::Base
 
   def trainees_viewed_auto_leads
     AutoSharedJob.select(:trainee_id)
-                 .where(trainee_id: trainee_ids)
-                 .where('status > 0 and status < 4').pluck(:trainee_id).uniq
+      .where(trainee_id: trainee_ids)
+      .where('status > 0 and status < 4').pluck(:trainee_id).uniq
   end
 
   def trainees_applied_auto_leads
     AutoSharedJob.select(:trainee_id)
-                 .where(trainee_id: trainee_ids)
-                 .where('status = 2').pluck(:trainee_id).uniq
+      .where(trainee_id: trainee_ids)
+      .where('status = 2').pluck(:trainee_id).uniq
   end
 
   def trainees_not_applied_auto_leads
@@ -136,7 +135,7 @@ class Program < ActiveRecord::Base
     return @trainee_ids if @trainee_ids
     klass_ids = klasses.pluck(:id)
     @trainee_ids = KlassTrainee.unscoped.select(:trainee_id)
-                               .where(klass_id: klass_ids).pluck(:trainee_id).uniq
+                   .where(klass_id: klass_ids).pluck(:trainee_id).uniq
     @trainee_ids
   end
 

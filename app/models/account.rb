@@ -19,6 +19,8 @@ class Account < ActiveRecord::Base
   # mark_jobs_applied:  when trainee resumes (or any doc) emailed to employers,
   # treat them as jobs applied (trainee submits)
 
+  alias_attribute :account_name, :name
+
   validates :name, presence: true, length: { minimum: 4, maximum: 60 }
   validates :description, presence: true, length: { minimum: 10, maximum: 100 }
   validates :subdomain, presence: true, length: { minimum: 3, maximum: 12 }
@@ -51,14 +53,13 @@ class Account < ActiveRecord::Base
   after_save :generate_demo_data
   before_destroy { |record| destroy_account(record) }
 
-  after_find do |account|
-    account.initialize_option_accessors
-  end
+  after_find :initialize_option_accessors
 
   def initialize_option_accessors
-    @track_trainee = (options && options[:track_trainee]) || 0
-    @mark_jobs_applied = (options && options[:mark_jobs_applied]) || false
-    @demo = (options && options[:demo]) || false
+    self.options ||= {}
+    @track_trainee     = options[:track_trainee].to_i
+    @mark_jobs_applied = options[:mark_jobs_applied] || false
+    @demo              = options[:demo] || false
   end
 
   def update_options(options_hash)
@@ -170,7 +171,7 @@ class Account < ActiveRecord::Base
       next if table.match(/\Adelayed_jobs\Z/)
       klass = table.singularize.camelize.constantize
       if klass.instance_methods.include?(:account)
-        klass.where(account_id: account.id).each { |obj| obj.destroy }
+        klass.where(account_id: account.id).each(&:destroy)
       end
     end
   end
