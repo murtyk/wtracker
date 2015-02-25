@@ -1,7 +1,8 @@
 class TraineePolicy < Struct.new(:user, :trainee)
   def new?
-    return false if Grant.find(Grant.current_id).trainee_applications?
-    user.admin_or_director? || user.navigator?
+    grant = Grant.find(Grant.current_id)
+    return false if grant.trainee_applications?
+    user.admin_access? || (user.navigator? && user.grants.include?(grant))
   end
 
   def create?

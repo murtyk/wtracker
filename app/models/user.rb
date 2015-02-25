@@ -22,9 +22,11 @@ class User < ActiveRecord::Base
   attr_accessible :remember_me, :password, :password_confirmation,
                   :options, :email, :location, :status, :role,
                   :first, :last, :land_no, :ext, :mobile_no, :comments,
-                  :county_ids, :grant_ids
+                  :county_ids, :grant_ids, :acts_as_admin
   # attr_accessible :title, :body
   attr_accessor :pref_copy_jobshares
+
+  store_accessor :data, :acts_as_admin
 
   delegate :account_name, to: :account
 
@@ -116,6 +118,10 @@ class User < ActiveRecord::Base
     User.where('last_activity_at > ? and not id = ?', 3.minutes.ago, id).map(&:name)
   end
 
+  def acts_as_admin?
+    acts_as_admin.to_i > 0
+  end
+
   def active_grants
     # debugger
     return Grant.where.not(status: 3).order(:name) if admin_or_director?
@@ -130,7 +136,7 @@ class User < ActiveRecord::Base
   end
 
   def klasses_for_selection(all_option = false)
-    ks = klasses.includes(college: :address).map { |k| [k.to_label, k.id] }
+    ks = klasses.map { |k| [k.to_label, k.id] }
     return [['All', 0]] + ks if ks.any? && all_option
     ks
   end

@@ -1,14 +1,11 @@
+# an user typically sends emails to 1 or more trainees in a class
 class TraineeEmailsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_trainee_email, only: [:show, :update, :destroy]
 
   # GET /trainee_emails
   def index
-    klass_ids = current_grant.klasses.pluck(:id) + [0]
-    @trainee_emails = TraineeEmail.includes(:user)
-                                  .where(klass_id: klass_ids)
-                                  .order('created_at desc')
-    @trainee_emails = @trainee_emails.to_a.paginate(page: params[:page], per_page: 15)
+    @trainee_emails = sent_emails.to_a.paginate(page: params[:page], per_page: 15)
   end
 
   # GET /trainee_emails/1
@@ -46,10 +43,21 @@ class TraineeEmailsController < ApplicationController
     @trainee_email = TraineeEmail.find(params[:id])
   end
 
-    # Only allow a trusted parameter "white list" through.
+  # Only allow a trusted parameter "white list" through.
   def trainee_email_params
     params.require(:trainee_email).permit(:account_id, :user_id, :klass_id,
                                           :trainee_names, :trainee_ids,
                                           :subject, :content)
+  end
+
+  def sent_emails
+    if current_user.admin_access?
+      klass_ids = current_grant.klasses.pluck(:id) + [0]
+      TraineeEmail.includes(:user)
+        .where(klass_id: klass_ids)
+        .order('created_at desc')
+    else
+      current_user.trainee_emails.order('created_at desc')
+    end
   end
 end

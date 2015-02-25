@@ -1,6 +1,6 @@
 class CollegePolicy < Struct.new(:user, :college)
   def new?
-    user.admin_or_director? || user.grant_admin?
+    user.admin_access?
   end
 
   def create?
@@ -16,11 +16,11 @@ class CollegePolicy < Struct.new(:user, :college)
   end
 
   def index?
-    true
+    new?
   end
 
   def show?
-    true
+    new?
   end
 
   def destroy?

@@ -1,5 +1,7 @@
 <%= show_button(resource) %>
-<%= edit_button(resource) %>
+<% if policy(resource).edit? %>
+  <%= edit_button(resource) %>
+<% end %>
 <% if policy(resource).destroy? %>
   <%= button_destroy_association(resource, confirm_message: confirm_message)%>
 <% end %>

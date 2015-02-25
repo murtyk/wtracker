@@ -11,17 +11,20 @@
   <div class='span5'>
     <table class="table table-bordered table-striped table-hover table-condensed">
       <tr>
-        <td>Assigned Classes</td>
+        <td>Role</td>
         <td>
-          <ol>
-          <% @user.assigned_klasses.each do |klass| %>
-            <li><%= link_to klass.to_label, klass%></li>
-          <% end %>
-          </ol>
+          <%= @user.role_description %>
         </td>
       </tr>
       <% if @user.navigator? %>
         <tr>
+          <td>Assigned Grants</td>
+          <td>
+            <ol>
+              <%= @user.grants.map{|g| "<li>#{g.name}</li>"}.join.html_safe %>
+            </ol>
+          </td>
+        </tr>        <tr>
           <td>Assigned Counties</td>
           <td>
             <ol>
@@ -31,17 +34,17 @@
             </ol>
           </td>
         </tr>
-        <tr>
-          <td>Class Administration</td>
-          <td>
-            <ol>
-              <% @user.grant_admins.each do |ga| %>
-                <li><%= ga.grant.name %></li>
-              <% end %>
-            </ol>
-          </td>
-        </tr>
       <% end %>
+      <tr>
+        <td>Assigned Classes</td>
+        <td>
+          <ol>
+          <% @user.assigned_klasses.each do |klass| %>
+            <li><%= link_to klass.to_label, klass%></li>
+          <% end %>
+          </ol>
+        </td>
+      </tr>
     </table>
   </div>
 </div>

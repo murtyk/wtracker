@@ -16,6 +16,14 @@
 
         <% if current_user != user %>
           <%= f.input :role, collection: roles, include_blank: false%>
+        <% end %>
+
+        <% display = user.navigator? ? 'show' : 'none' %>
+        <div id='navigator_is_admin' style='display: <%=display%>'>
+          <%= f.input :acts_as_admin, as: :boolean, label: false, inline_label: true %>
+        </div>
+
+        <% if current_user != user %>
           <%= f.input :status, collection: user_statuses, include_blank: false%>
         <% end %>
 
@@ -31,7 +39,7 @@
         <div id='navigator_options' style='display: <%=display%>'>
           <%= f.association :counties, label: 'Assign to Counties',
                                        collection: current_account.state.counties %>
-          <%= f.association :grants, label: 'Assign class administration access in grants',
+          <%= f.association :grants, label: 'Assign to grants',
                                      collection: current_account.active_grants %>
         </div>
 
@@ -75,9 +83,11 @@
     }
     if (new_role == 3){
       $('#navigator_options').show();
+      $('#navigator_is_admin').show();
     }
     else{
       $('#navigator_options').hide();
+      $('#navigator_is_admin').hide();
     }
   });
 </script>

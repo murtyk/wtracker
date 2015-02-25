@@ -23,7 +23,7 @@
       <th>Program       </th>
       <th></th>
     </tr>
-    <% program.klasses.each do |klass| %>
+    <% program.user_klasses(current_user).each do |klass| %>
       <tr id='tr_<%=klass.id%>'>
         <td><%= name_and_link(klass) %> </td>
         <td><%= klass.college_name %>   </td>

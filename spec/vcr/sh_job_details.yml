@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.simplyhired.com/a/jobs-api/xml-v2/q-Java+Ajax/l-Princeton,NJ/mi-10/fdb-7/ws-25/pn-2?auth=0dc844325fa6c66cfbb186e0979d77648429c700.<simplyhired_pshid>&cflg=r&clip=127.0.0.1&pshid=<simplyhired_pshid>&ssty=2
+    uri: http://api.simplyhired.com/a/jobs-api/xml-v2/q-Java+Ajax/l-Princeton,NJ/mi-10/fdb-7/ws-25/pn-2?auth=<simplyhired_auth>&cflg=r&clip=127.0.0.1&pshid=<simplyhired_pshid>&ssty=2
     body:
       encoding: US-ASCII
       string: ''
@@ -48,7 +48,7 @@ http_interactions:
   recorded_at: Sat, 31 Jan 2015 19:07:47 GMT
 - request:
     method: get
-    uri: http://api.simplyhired.com/a/jobs-api/xml-v2/q-Java+Ajax/l-Princeton,NJ/mi-10/fdb-7/ws-25/pn-1?auth=0dc844325fa6c66cfbb186e0979d77648429c700.<simplyhired_pshid>&cflg=r&clip=127.0.0.1&pshid=<simplyhired_pshid>&ssty=2
+    uri: http://api.simplyhired.com/a/jobs-api/xml-v2/q-Java+Ajax/l-Princeton,NJ/mi-10/fdb-7/ws-25/pn-1?auth=<simplyhired_auth>&cflg=r&clip=127.0.0.1&pshid=<simplyhired_pshid>&ssty=2
     body:
       encoding: US-ASCII
       string: ''
@@ -854,4 +854,65 @@ http_interactions:
         GJuJ/z/Po0KCztUAAA==
     http_version: 
   recorded_at: Sat, 31 Jan 2015 19:07:51 GMT
+- request:
+    method: get
+    uri: http://api.simplyhired.com/a/job-details/view/jobkey-14716.98e6ff53a8e680f9951d3830491e5fb8/rid-kniqcreersrghkbmrukdcpiqmqqbhlcu/cjp-1/hits-13?icsrc=xml&rfr=partner
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip,deflate,identity
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Mechanize/2.5.1 Ruby/2.2.0p0 (http://github.com/tenderlove/mechanize/)
+      Accept-Charset:
+      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Accept-Language:
+      - en-us,en;q=0.5
+      Host:
+      - api.simplyhired.com
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - 300
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Server:
+      - shw
+      Date:
+      - Wed, 25 Feb 2015 15:56:06 GMT
+      Content-Type:
+      - text/html; charset=UTF-8
+      Content-Length:
+      - '0'
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=20
+      Vary:
+      - Host
+      Set-Cookie:
+      - gc=1; expires=Thu, 26-Feb-2015 15:56:06 GMT; path=/
+      - sh_sess=id%3A1424879766%2Csrc%3Apartner%2Cnu%3A1; expires=Wed, 25-Feb-2015
+        16:26:06 GMT; Max-Age=1800; path=/; domain=.simplyhired.com
+      - sh_uid=id%3A168837997054edf096f1e766.89906361; expires=Mon, 24-Feb-2020 15:56:06
+        GMT; Max-Age=157680000; path=/; domain=.simplyhired.com
+      - shup=fvt%3D54edf096; expires=Fri, 27-Mar-2015 15:56:06 GMT; path=/
+      - shut=rfr%3Dpartner; expires=Fri, 27-Mar-2015 15:56:06 GMT; path=/; domain=.simplyhired.com
+      Cache-Control:
+      - no-cache, must-revalidate
+      Location:
+      - "/a/job-details/view/jobkey-14716.98e6ff53a8e680f9951d3830491e5fb8/rid-kniqcreersrghkbmrukdcpiqmqqbhlcu/cjp-1/hits-13?icsrc=xml"
+      P3p:
+      - CP="CAO DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT"
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Wed, 25 Feb 2015 15:56:06 GMT
 recorded_with: VCR 2.9.2

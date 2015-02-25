@@ -14,17 +14,11 @@
             <b class="caret" style='border-top-color: white;'></b>
           </a>
           <ul id="user_menu" class="pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
-            <li><a href="/users/<%=current_user.id%>"><i class="icon-user"></i> Profile</a></li>
-            <li><a href="/users/edit_password"><i class="icon-lock"></i>Change Password</a></li>
-            <% if current_user.admin_or_director? || current_user.grant_admin? %>
-              <li><a href="/users/preferences"><i class="icon-asterisk"></i>Preferences</a></li>
-            <% end %>
-            <li class="divider"></li>
-            <li>
-              <%= link_to destroy_user_session_path, method: :delete do %>
-                <i class="icon-off"></i> Sign Off
-              <% end %>
-            </li>
+            <%= profile_menu %>
+            <%= change_password_menu %>
+            <%= preferences_menu %>
+            <%= divider_menu %>
+            <%= sign_off_menu %>
           </ul>
         </li>
       </ul><!--/.nav-->
@@ -38,177 +32,18 @@
       </button>
       <div class="nav-collapse collapse">
         <ul class="nav pull-right">
-          <li><%= link_to 'Dashboard', "/dashboards/summary" %></li>
-          <% if policy(User).index? %>
-            <li><%= link_to 'Users', users_path %></li>
-          <% end %>
-          <% if current_user.admin_or_director? || current_user.grant_admin? %>
-            <li class="dropdown">
-              <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-                Settings
-                <b class="caret" style='border-top-color: white;'></b>
-              </a>
-              <ul class="dropdown-menu">
-
-                <% if current_grant.trainee_applications? %>
-                  <li><%= link_to 'Applicant Source', applicant_sources_path %></li>
-                <% end %>
-                <li><%= link_to 'Assessments', assessments_path %></li>
-                <% if current_grant.trainee_applications? %>
-                  <li><%= link_to 'Employment Status', employment_statuses_path %></li>
-                <% end %>
-                <li><%= link_to 'Funding Sources', funding_sources_path %></li>
-                <% if current_grant.trainee_applications? %>
-                  <li><%= link_to 'Re-apply Messages', reapply_message_grants_path %></li>
-                  <li><%= link_to 'Specialized Services', special_services_path %></li>
-                <% end %>
-                <li><%= link_to 'Trainee Options', trainee_options_accounts_path %></li>
-                <% if current_grant.trainee_applications? %>
-                  <li><%= link_to 'Trainee Status Options', grant_trainee_statuses_path %></li>
-                  <li><%= link_to 'Unemployment Proof', unemployment_proofs_path %></li>
-                <% end %>
-
-              </ul>
-            </li>
-          <% end %>
-
-          <% if current_account.grant_recipient? && policy(Grant).index? %>
-            <% if current_user.active_grants.count > 1 %>
-              <li class="dropdown">
-                <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-                  Grants
-                  <b class="caret" style='border-top-color: white;'></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><%= link_to 'List', grants_path%></li>
-                  <li><%= link_to 'Change Current Grant', startingpage_dashboards_path %></li>
-                </ul>
-              </li>
-            <% else %>
-              <li><%= link_to 'Grants', grants_path%></li>
-            <% end %>
-          <% end %>
-
-          <li><%= link_to 'Programs', programs_path %></li>
-
-          <li class="dropdown">
-            <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-              Classes
-              <b class="caret" style='border-top-color: white;'></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><%= link_to 'List', klasses_path %></li>
-              <li><%= link_to 'Import from a file', new_import_status_path(resource: 'klasses') %></li>
-            </ul>
-          </li>
-
-          <li><%= link_to 'Colleges', colleges_path%></li>
-
-          <li class="dropdown">
-            <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-              Trainees
-              <b class="caret" style='border-top-color: white;'></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><%= link_to 'Search', trainees_path %></li>
-              <% if current_grant.auto_job_leads? %>
-                <li><%= link_to 'Search by skills', search_by_skills_trainees_path %></li>
-              <% end %>
-              <li><%= link_to 'Advanced Search', advanced_search_trainees_path %></li>
-              <li class="divider"></li>
-              <% if policy(Trainee).new? %>
-              <li><%= link_to 'Add', new_trainee_path %></li>
-              <li><%= link_to 'Import from a file', new_import_status_path(resource: 'trainees') %></li>
-              <% end %>
-              <li class="divider"></li>
-              <% if policy(Trainee).mapview? %>
-                <li><%= link_to 'Map View', mapview_trainees_path %></li>
-                <% if current_grant.trainee_applications? %>
-                <li><%= link_to 'Near By Colleges', near_by_colleges_trainees_path %></li>
-                <% end %>
-              <% end %>
-              <li class="divider"></li>
-              <li><%= link_to "Send Email", new_trainee_email_path %></li>
-              <li><%= link_to "Emails Sent", trainee_emails_path %></li>
-            </ul>
-          </li>
-          <% if current_grant.trainee_applications? %>
-            <li class="dropdown">
-              <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-                Applicants
-                <b class="caret" style='border-top-color: white;'></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to 'Search', applicants_path%></li>
-                <li><%= link_to 'Analysis', analysis_applicants_path%></li>
-              </ul>
-            </li>
-
-          <% end %>
-          <% if policy(Employer).index? %>
-            <li class="dropdown">
-              <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-                Employers
-                <b class="caret" style='border-top-color: white;'></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to 'Search', employers_path %></li>
-                <li><%= link_to 'Add', new_employer_path %></li>
-                <!-- <li><a href="/employers/import_file">Import from a file</a></li> -->
-                <li><%= link_to 'Import from a file', new_import_status_path(resource: 'employers') %></li>
-                <li><%= link_to 'Search for Companies in a File', new_companies_finder_path %></li>
-                <li class="divider"></li>
-                <li><%= link_to 'Map View', mapview_employers_path %></li>
-                <li><%= link_to 'Analysis', analysis_employers_path %></li>
-                <% unless Rails.env.production? %>
-                  <li><%= link_to 'Search Google', search_google_employers_path %></li>
-                <% end %>
-                <li class="divider"></li>
-                <li><%= link_to "New Employer Class Interaction", new_klass_interaction_path %></li>
-                <li><%= link_to "Send Email", new_email_path %></li>
-                <li><%= link_to "Emails Sent", emails_path %></li>
-              </ul>
-            </li>
-          <% end %>
-
-          <% if policy(Report).new? %>
-            <li class="dropdown">
-              <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-                Reports
-                <b class="caret" style='border-top-color: white;'></b>
-              </a>
-              <ul class="dropdown-menu">
-                <% Report.reports_by_type.each do |type, reports| %>
-                  <li class="dropdown-submenu">
-                    <a tabindex="-1" href="#"><%= type %></a>
-                    <ul class="dropdown-menu">
-                      <% reports.each do |report| %>
-                        <li><%= report_link report %></li>
-                      <% end %>
-                    </ul>
-                  </li>
-                <% end %>
-              </ul>
-            </li>
-          <% end %>
-
-          <% if policy(JobSearch).new? %>
-            <li class="dropdown">
-              <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-                Jobs
-                <b class="caret" style='border-top-color: white;'></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to 'Search Jobs', new_job_search_path %></li>
-                <li><%= link_to 'Shared List', job_shares_path %></li>
-                <% if current_account.track_trainee_status? %>
-                  <li><%= link_to 'Job Leads Status', shared_job_statuses_path %></li>
-                <% end %>
-
-              </ul>
-            </li>
-          <% end %>
-
+          <%= dashboard_menu  %>
+          <%= users_menu      %>
+          <%= settings_menu   %>
+          <%= grants_menu     %>
+          <%= programs_menu   %>
+          <%= klasses_menu    %>
+          <%= colleges_menu   %>
+          <%= trainees_menu   %>
+          <%= applicants_menu %>
+          <%= employers_menu  %>
+          <%= reports_menu    %>
+          <%= jobs_menu       %>
         </ul><!--/.nav-->
       </div>
     </div>

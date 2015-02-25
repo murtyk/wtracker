@@ -13,6 +13,8 @@
     <th>Email</th>
     <th>Location</th>
     <th>Role</th>
+    <th>Acts As Admin?</th>
+    <th>Grants</th>
     <th>Status</th>
     <% if current_grant.trainee_applications? %>
       <th>Counties</th>
@@ -29,6 +31,8 @@
       <td>  <%= user.email %>    </td>
       <td>  <%= user.location %> </td>
       <td>  <%= user.role %>     </td>
+      <td>  <%= user.acts_as_admin? ? 'Yes' : nil%> </td>
+      <td>  <%= user.grant_names %>     </td>
       <td>  <%= user.status %>   </td>
       <% if current_grant.trainee_applications? %>
         <td><%= user.assigned_county_names %></td>

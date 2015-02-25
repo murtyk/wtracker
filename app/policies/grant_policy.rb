@@ -8,8 +8,7 @@ class GrantPolicy < Struct.new(:user, :grant)
   end
 
   def show?
-    edit? ||
-    user.navigator? && user.active_grants.include?(grant)
+    edit?
   end
 
   def index?

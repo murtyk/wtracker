@@ -1,6 +1,7 @@
+# authorizations for user object
 class UserPolicy < Struct.new(:user, :otheruser)
   def new?
-    user.admin_or_director? || user.grant_admin?
+    user.admin_access?
   end
 
   def create?
@@ -8,10 +9,9 @@ class UserPolicy < Struct.new(:user, :otheruser)
   end
 
   def edit?
-    user.director? ||
-    user == otheruser ||
-    (user.admin? && !otheruser.admin_or_director?) ||
-    (user.grant_admin?  && !otheruser.admin_or_director?)
+    return true if user.director? || user == otheruser
+    return false if otheruser.director?
+    can_edit_other?
   end
 
   def update?
@@ -23,10 +23,17 @@ class UserPolicy < Struct.new(:user, :otheruser)
   end
 
   def show?
-    edit?
+    user.admin_access? || (user == otheruser)
   end
 
   def destroy?
     new?
+  end
+
+  private
+
+  def can_edit_other?
+    (user.admin? && !otheruser.admin?) ||
+      (user.admin_access?  && !otheruser.admin_or_director?)
   end
 end

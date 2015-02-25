@@ -26,13 +26,8 @@ module UtilitiesHelper
   end
 
   def name_and_link(object, to_label = false)
-    object.name unless policy(object).show?
+    return object.name unless policy(object).show?
     link_to(to_label ? object.to_label : object.name, object)
-  end
-
-  def report_link(name, label = nil)
-    label ||= name.split('_').map { |part| part.capitalize }.join(' ')
-    link_to(label, new_report_path(report_name: name))
   end
 
   def full_calendar_link(calendar)

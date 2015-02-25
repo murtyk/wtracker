@@ -8,7 +8,7 @@ class KlassPolicy < Struct.new(:user, :klass)
   end
 
   def new?
-    user.admin_or_director? || user.grant_admin?
+    user.admin_access?
   end
 
   def create?
@@ -16,7 +16,7 @@ class KlassPolicy < Struct.new(:user, :klass)
   end
 
   def edit?
-    new? || (user.navigator? && user.klasses.include?(klass))
+    new?
   end
 
   def update?

@@ -16,6 +16,11 @@ class UserDecorator < Draper::Decorator
     User::ROLES[object.role]
   end
 
+  def role_description
+    return role unless navigator? && acts_as_admin?
+    role + ' (Acts as Admin)'
+  end
+
   def status
     User::STATUSES[object.status]
   end

@@ -1,3 +1,6 @@
+# A grant has many programs and a program can have many Klasses
+# Some Klass events are created by default when a class is created
+# trainees are assigned to a class
 class KlassesController < ApplicationController
   before_filter :authenticate_user!
 
@@ -47,7 +50,7 @@ class KlassesController < ApplicationController
   # GET /klasses
   # GET /klasses.json
   def index
-    @programs = Program.includes(klasses: :college).load
+    @programs = Program.includes(klasses: :college).decorate
   end
 
   # GET /klasses/1

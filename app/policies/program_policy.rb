@@ -1,6 +1,6 @@
 class ProgramPolicy < Struct.new(:user, :program)
   def new?
-    user.admin_or_director? || user.grant_admin?
+    user.admin_access?
   end
 
   def create?
@@ -16,11 +16,11 @@ class ProgramPolicy < Struct.new(:user, :program)
   end
 
   def index?
-    true
+    new?
   end
 
   def show?
-    true
+    new?
   end
 
   def destroy?

@@ -5,7 +5,6 @@ describe "Administration" do
   describe "manage accounts" do
     before(:each) do
       signin_opero_admin
-
     end
     it "can delete an account", js: true do
 
