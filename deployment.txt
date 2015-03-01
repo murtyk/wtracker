@@ -40,7 +40,7 @@ Account.all.each do |ac|
   User.all.each do |user|
     es = EmployerSource.where(name: user.name).first
     es ||= EmployerSource.create(name: user.name)
-    user.employer_sources << es
+    UserEmployerSource.create(user_id: user.id, employer_source_id: es.id)
     user.default_employer_source_id = es.id
     user.save
   end
