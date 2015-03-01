@@ -1,0 +1,15 @@
+class UserEmployerSource < ActiveRecord::Base
+  default_scope { where(account_id: Account.current_id) }
+
+  attr_accessible :user_id, :employer_source_id
+
+  belongs_to :account
+  belongs_to :employer_source
+  belongs_to :user
+
+  delegate :name, to: :employer_source
+
+  def default?
+    user.default_employer_source_id.to_i == employer_source_id
+  end
+end

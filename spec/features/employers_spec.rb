@@ -64,11 +64,13 @@ describe "Employers" do
     end
 
     it 'can edit' do
+      Account.current_id = 1
+      user_name = User.last.name
       click_on "edit_employer_1"
-      fill_in 'Source', with: 'changed source'
+      select user_name, from: 'Source'
       click_on 'Save'
       expect(page).to have_text 'Employer Information'
-      expect(page).to have_text 'changed source'
+      expect(page).to have_text user_name
     end
   end
 
@@ -80,7 +82,6 @@ describe "Employers" do
       VCR.use_cassette('employer_create') do
         href_link('employers/new').click
         fill_in 'Name', with: 'Abc Inc.'
-        fill_in 'Source', with: 'test'
         fill_in 'Street', with: '25 Rembrandt'
         fill_in 'City', with: 'East Windsor'
         select('NJ', from: 'employer_address_attributes_state')

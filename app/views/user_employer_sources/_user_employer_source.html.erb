@@ -1,0 +1,10 @@
+<div id = "<%=div_id_for(user_employer_source)%>">
+  <p>
+    <% if user_employer_source.default? %>
+      <b><%= user_employer_source.name %></b>
+    <% else %>
+      <%= button_destroy_association(user_employer_source, title: 'Remove') %>
+      <%= user_employer_source.name %>
+    <% end %>
+  </p>
+</div>

@@ -15,7 +15,7 @@
           <div class = 'span5'>
             <%= f.input :name %>
             <%= f.input :phone_no %>
-            <%= f.input :source %>
+            <%= f.association :employer_source, collection: employer_sources_collection, include_blank: false, label: 'Source' %>
             <%= f.association :sectors, selected: employer.sector_ids, required: true, input_html: {multiple: true} %>
           </div>
           <div class = 'span5'>

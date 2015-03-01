@@ -16,13 +16,13 @@ class KlassInteractionFactory
   # create event and send emails if new event
   # update interaction if exists
   # create interaction if new
-  def self.create_klass_interaction(params, current_user)
-    employer, klass_event, new_event = find_or_build_objects(params.clone)
+  def self.create_klass_interaction(params, user)
+    employer, klass_event, new_event = find_or_build_objects(params.clone, user)
     status      = params[:klass_interaction][:status]
     saved       = save_objects(employer, klass_event, status)
 
     if saved && new_event
-      UserMailer.send_event_invite(klass_event, current_user).deliver_now
+      UserMailer.send_event_invite(klass_event, user).deliver_now
     end
 
     klass_interaction = KlassInteraction.new(status: status)
@@ -33,20 +33,21 @@ class KlassInteractionFactory
     [saved, klass_interaction, klass_event, employer]
   end
 
-  def self.find_or_build_objects(params)
-    employer    = find_or_build_employer(params)
+  def self.find_or_build_objects(params, user)
+    employer    = find_or_build_employer(params, user)
     klass_event = find_or_build_event(params)
     new_event   = klass_event.new_record?
     [employer, klass_event, new_event]
   end
 
-  def self.find_or_build_employer(params)
+  def self.find_or_build_employer(params, user)
     employer_id = params[:klass_interaction][:employer_id]
     return Employer.find(employer_id) unless employer_id.blank?
 
     emp_params     = params[:employer]
     address_params = emp_params[:address_attributes]
     emp_params.delete(:address_attributes) if address_params[:city].blank?
+    emp_params[:employer_source_id] = user.default_employer_source_id
     Employer.new(emp_params)
   end
 
@@ -87,7 +88,7 @@ class KlassInteractionFactory
     klass_event.event_date = params[:klass_event][:event_date]
   end
 
-  def self.update_klass_interaction(all_params, current_user)
+  def self.update_klass_interaction(all_params, user)
     klass_interaction = KlassInteraction.find(all_params[:id])
     params = all_params[:klass_interaction]
     params.delete(:employer_id)
@@ -95,7 +96,7 @@ class KlassInteractionFactory
     if params[:klass_event]
       # event data also might be changed
       klass_event = klass_interaction.klass_event
-      update_event(klass_event, params[:klass_event], current_user)
+      update_event(klass_event, params[:klass_event], user)
       params.delete(:klass_event)
     end
 
@@ -103,12 +104,12 @@ class KlassInteractionFactory
     klass_interaction
   end
 
-  def self.update_event(klass_event, ke, current_user)
+  def self.update_event(klass_event, ke, user)
     event_date = opero_str_to_date(ke[:event_date])
     if event_chaged?(klass_event, ke, event_date)
       ke[:event_date] = event_date
       klass_event.update_attributes(ke)
-      UserMailer.send_event_invite(klass_event, current_user).deliver_now
+      UserMailer.send_event_invite(klass_event, user).deliver_now
     end
   end
 

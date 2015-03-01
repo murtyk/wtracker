@@ -1,0 +1,47 @@
+1. Find case incensive sources from employers. Clean them standardize and update to avoid duplicate
+2. Create EmployerSources
+3. Assign employer_source_id to employers
+4. add UserEmployerSources
+
+Production
+Step 1: May be not required
+
+Account.all.each do |ac|
+  Account.current_id = ac.id
+  sources = Employer.pluck(:source).uniq
+  sources = sources.map{|s| s.split.map{|w|w.downcase.humanize}.join(' ')}.uniq
+  sources.each do |s|
+    employers = Employer.where('source ilike ?', s)
+    employers.update_all(source: s)
+  end
+end
+
+Step 2: Create Sources
+
+Account.all.each do |ac|
+  Account.current_id = ac.id
+  sources = Employer.pluck(:source).uniq
+  sources.each{|s| EmployerSource.create(name: s)}
+end
+
+Step 3: Attach employer_source_id
+
+Account.all.each do |ac|
+  Account.current_id = ac.id
+  EmployerSource.all.each do |es|
+    employers = Employer.where(source: es.name)
+    employers.update_all(employer_source_id: es.id)
+  end
+end
+
+4. add UserEmployerSources
+Account.all.each do |ac|
+  Account.current_id = ac.id
+  User.all.each do |user|
+    es = EmployerSource.where(name: user.name).first
+    es ||= EmployerSource.create(name: user.name)
+    user.employer_sources << es
+    user.default_employer_source_id = es.id
+    user.save
+  end
+end

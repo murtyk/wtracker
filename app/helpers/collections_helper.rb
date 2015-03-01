@@ -1,6 +1,5 @@
 # collections for selection
 module CollectionsHelper
-
   def accounts_collection
     Account.order(:subdomain)
   end
@@ -29,7 +28,6 @@ module CollectionsHelper
     %w(Accepted Declined)
   end
 
-
   def funding_sources
     FundingSource.all
   end
@@ -56,6 +54,11 @@ module CollectionsHelper
 
   def employers_collection
     Employer.order(:name)
+  end
+
+  def employer_sources_collection
+    return EmployerSource.order(:name) if current_user.admin_access?
+    current_user.employer_sources.order(:name)
   end
 
   def klass_interaction_statuses

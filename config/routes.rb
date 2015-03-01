@@ -82,7 +82,6 @@ WTracker::Application.routes.draw do
       get :analyze
     end
     collection do
-      # get :retrycompanysave
       get :analysis_present
       get :analyze_slice
       get :complete_analysis
@@ -127,6 +126,9 @@ WTracker::Application.routes.draw do
   resources :employer_notes,    except: [:index, :show]
   resources :job_openings,      only: [:new, :create]
   resources :employer_sectors,  only: [:new, :create, :destroy]
+  resources :employer_sources,  only: [:new, :create, :destroy]
+
+  resources :user_employer_sources,  only: [:new, :create, :destroy]
 
   resources :emails, except: [:edit, :update] do
     collection do

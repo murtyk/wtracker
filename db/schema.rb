@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224224052) do
+ActiveRecord::Schema.define(version: 20150228171906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -388,18 +388,29 @@ ActiveRecord::Schema.define(version: 20150224224052) do
   add_index "employer_sectors", ["account_id", "employer_id"], name: "index_employer_sectors_on_account_id_and_employer_id", using: :btree
   add_index "employer_sectors", ["account_id", "sector_id"], name: "index_employer_sectors_on_account_id_and_sector_id", using: :btree
 
+  create_table "employer_sources", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.integer  "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "employer_sources", ["account_id"], name: "index_employer_sources_on_account_id", using: :btree
+
   create_table "employers", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "source",     limit: 255
-    t.integer  "account_id",             null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "phone_no",   limit: 255
-    t.string   "website",    limit: 255
+    t.string   "name",               limit: 255
+    t.string   "source",             limit: 255
+    t.integer  "account_id",                     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "phone_no",           limit: 255
+    t.string   "website",            limit: 255
+    t.integer  "employer_source_id"
   end
 
   add_index "employers", ["account_id", "source"], name: "index_employers_on_account_id_and_source", using: :btree
   add_index "employers", ["account_id"], name: "index_employers_on_account_id", using: :btree
+  add_index "employers", ["employer_source_id"], name: "index_employers_on_employer_source_id", using: :btree
 
   create_table "employment_statuses", force: :cascade do |t|
     t.string   "status",        limit: 255
@@ -1018,6 +1029,18 @@ ActiveRecord::Schema.define(version: 20150224224052) do
   add_index "user_counties", ["county_id"], name: "index_user_counties_on_county_id", using: :btree
   add_index "user_counties", ["user_id"], name: "index_user_counties_on_user_id", using: :btree
 
+  create_table "user_employer_sources", force: :cascade do |t|
+    t.integer  "account_id",         null: false
+    t.integer  "employer_source_id", null: false
+    t.integer  "user_id",            null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "user_employer_sources", ["account_id"], name: "index_user_employer_sources_on_account_id", using: :btree
+  add_index "user_employer_sources", ["employer_source_id"], name: "index_user_employer_sources_on_employer_source_id", using: :btree
+  add_index "user_employer_sources", ["user_id"], name: "index_user_employer_sources_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
     t.string   "encrypted_password",     limit: 255, default: "", null: false
@@ -1049,13 +1072,4 @@ ActiveRecord::Schema.define(version: 20150224224052) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "employer_files", "accounts"
-  add_foreign_key "employer_files", "employers"
-  add_foreign_key "employer_files", "users"
-  add_foreign_key "grant_trainee_statuses", "accounts"
-  add_foreign_key "grant_trainee_statuses", "grants"
-  add_foreign_key "trainee_statuses", "accounts"
-  add_foreign_key "trainee_statuses", "grant_trainee_statuses"
-  add_foreign_key "trainee_statuses", "grants"
-  add_foreign_key "trainee_statuses", "trainees"
 end

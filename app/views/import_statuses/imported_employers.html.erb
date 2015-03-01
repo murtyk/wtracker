@@ -23,7 +23,7 @@
           <% end %>
         </ol>
       </td>
-      <td><%= employer.source %></td>
+      <td><%= employer.employer_source_name %></td>
       <td>
         <% confirm_message = "Delete #{employer.name}.\n\nAre you sure?" %>
         <%= render('shared/show_edit_destroy_buttons', resource: employer, confirm_message: confirm_message) %>

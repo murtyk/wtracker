@@ -92,7 +92,7 @@
               <%= link_to company.employer, class: "btn btn-flat btn-mini btn-info", rel:"tooltip", title:"Show", target: "_blank"  do %>
                 <i class="icon-eye-open"></i>
               <% end %>
-            <% elsif company.found %>
+            <% elsif company.found && policy(Employer).create? %>
               <span id = 'add-button-<%=num%>'>
                 <% name_location = company.name_location_param %>
                 <%= link_to "Add", add_google_company_employers_path(params: {name_location: name_location, info: company.info_for_add, add_company_id: "add-company-#{num}", action_cell_id: "action_#{num}"}), class: "add-company-link", id: "add-company-#{num}", remote: true%>

@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   attr_accessor :pref_copy_jobshares
 
-  store_accessor :data, :acts_as_admin
+  store_accessor :data, :acts_as_admin, :default_employer_source_id
 
   delegate :account_name, to: :account
 
@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
   end
 
   before_save :cb_before_save
+  after_create :cb_after_create
 
   belongs_to :account
 
@@ -73,6 +74,10 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :counties
 
   has_many :applicants, foreign_key: 'navigator_id'
+
+  has_many :user_employer_sources, dependent: :destroy
+  has_many :employer_sources, through: :user_employer_sources
+  has_many :employers, through: :employer_sources
 
   def copy_job_shares?
     return true unless options[:copy_job_shares]
@@ -141,6 +146,10 @@ class User < ActiveRecord::Base
     ks
   end
 
+  def employer_sources_for_selection
+    EmployerSource.all - employer_sources
+  end
+
   private
 
   def active_grants_of_navigator
@@ -160,5 +169,13 @@ class User < ActiveRecord::Base
     self.land_no = land_no.delete('^0-9') if land_no
     self.mobile_no = mobile_no.delete('^0-9') if mobile_no
     self.options ||= {}
+  end
+
+  def cb_after_create
+    es = EmployerSource.where(name: name).first
+    es ||= account.employer_sources.create(name: name)
+    UserEmployerSource.create(user_id: id, employer_source_id: es.id)
+    self.default_employer_source_id = es.id
+    save
   end
 end

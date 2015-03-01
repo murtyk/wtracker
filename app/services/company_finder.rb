@@ -16,13 +16,13 @@ class CompanyFinder
     gps, oc     = find_opero_company
     gc, gps, oc = find_google_places_company unless oc
     if oc
-      emp = existing_employer(oc)
+      emp = existing_employer(oc, nil, company.employer_source_id)
       emp ? company.found_employer(emp, gps.score) : company.found_oc(gps, oc)
       return
     end
 
     if gc
-      emp = existing_employer(nil, gc)
+      emp = existing_employer(nil, gc, company.employer_source_id)
       emp ? company.found_employer(emp, gc.score) : company.found_gc(gc)
       return
     end
@@ -55,11 +55,11 @@ class CompanyFinder
     [gc]
   end
 
-  def existing_employer(oc, gc = nil)
+  def existing_employer(oc, gc = nil, employer_source_id)
     if oc && oc.name
-      return Employer.existing_employer(oc.name, oc.latitude, oc.longitude)
+      return Employer.existing_employer(oc.name, employer_source_id, oc.latitude, oc.longitude)
     elsif gc && gc.name
-      return Employer.existing_employer(gc.name, gc.latitude, gc.longitude)
+      return Employer.existing_employer(gc.name, employer_source_id, gc.latitude, gc.longitude)
     end
 
     nil

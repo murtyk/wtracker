@@ -4,37 +4,41 @@ class EmployerFactory
   ADDR_ATTR_LIST = [:line1, :city, :zip, :county, :latitude, :longitude]
 
   def self.create_from_job_search(current_user, params)
-    sector_ids = params[:sector_ids].split(',').map { |s| s.to_i }
-    current_user.last_sectors_selected = sector_ids
+    sector_ids, employer_source_id, opero_company_id =
+                          parse_js_params(current_user, params)
+
+    employer, exists, error =
+            if opero_company_id > 0
+              create_from_opero(opero_company_id, employer_source_id, sector_ids)
+            else
+              create_from_gi(params[:info].clone, employer_source_id, sector_ids)
+            end
 
     job_search = JobSearch.find(params[:job_search_id])
-    source = "job search - #{job_search.keywords} - #{job_search.location}"
-
-    opero_company_id = params[:info][:opero_company_id].to_i
-    if opero_company_id > 0
-      employer, exists, error = create_from_opero(opero_company_id,
-                                                  source,
-                                                  sector_ids)
-    else
-      employer, exists, error = create_from_gi(params[:info].clone,
-                                               source,
-                                               sector_ids)
-    end
-
-    job_search.analyzer.update_company_employer(employer) unless error
+    job_search.analyzer(current_user).update_company_employer(employer) unless error
 
     [employer, exists, error]
   end
 
-  def self.create_from_opero(opero_company_id, source, sector_ids)
+  def self.parse_js_params(current_user, params)
+    sector_ids = params[:sector_ids].split(',').map(&:to_i)
+    current_user.last_sectors_selected = sector_ids
+    employer_source_id = current_user.default_employer_source_id
+    opero_company_id = params[:info][:opero_company_id].to_i
+
+    [sector_ids, employer_source_id, opero_company_id]
+  end
+
+  def self.create_from_opero(opero_company_id, employer_source_id, sector_ids)
     oc = OperoCompany.find(opero_company_id)
-    employer = Employer.existing_employer(oc.name, oc.latitude, oc.longitude)
+    employer = Employer.existing_employer(oc.name, employer_source_id,
+                                          oc.latitude, oc.longitude)
     return [employer, true] if employer
 
     address_attributes = build_address_attributes_from_oc(oc)
 
     begin
-      employer = Employer.new(name: oc.name, source: source,
+      employer = Employer.new(name: oc.name, employer_source_id: employer_source_id,
                               phone_no: oc.phone_no, website: oc.website,
                               address_attributes: address_attributes,
                               sector_ids: sector_ids)
@@ -55,13 +59,14 @@ class EmployerFactory
     address_attributes
   end
 
-  def self.create_from_gi(gi, source, sector_ids)
-    emp = Employer.existing_employer(gi[:name], gi[:latitude], gi[:longitude])
+  def self.create_from_gi(gi, employer_source_id, sector_ids)
+    emp = Employer.existing_employer(gi[:name],
+                                     employer_source_id, gi[:latitude], gi[:longitude])
     return [emp, true] if emp
 
     error = nil
     begin
-      emp = build_from_gi(gi, source, sector_ids)
+      emp = build_from_gi(gi, employer_source_id, sector_ids)
       emp.save
     rescue StandardError => e
       error = e
@@ -70,31 +75,32 @@ class EmployerFactory
     [emp, false, error]
   end
 
-  def self.build_from_gi(gi, source, sector_ids)
+  def self.build_from_gi(gi, employer_source_id, sector_ids)
     address_attributes = build_address_attributes_from_gi(gi)
-    Employer.new(name: gi[:name], source: source, phone_no: gi[:phone_no],
+    Employer.new(name: gi[:name], employer_source_id: employer_source_id,
+                 phone_no: gi[:phone_no],
                  website: gi[:website], sector_ids: sector_ids,
                  address_attributes: address_attributes)
   end
 
-  def self.create_employer(current_user, params)
-    city = params[:address_attributes][:city]
-    params.delete(:address_attributes) if city.blank?
+  def self.create_employer(user, params)
+    city = params[:address_attributes] && params[:address_attributes][:city]
+    params.delete(:address_attributes) if city.blank? && params[:address_attributes]
+    params[:employer_source_id] ||= user.default_employer_source_id
     employer = Employer.new(params)
 
-    saved = false
     if employer.duplicate?
       employer.errors.add(:name, "duplicate employer #{params[:name]}")
+      saved = false
     else
-      saved = save_employer(employer, params, current_user)
+      saved = save_employer(employer)
     end
 
-    employer.build_address if !saved && employer.address.nil?
-
+    employer.build_address unless saved || employer.address
     [employer, saved]
   end
 
-  def self.save_employer(employer, params, current_user)
+  def self.save_employer(employer)
     begin
       # sector_ids = clean_sector_ids(params, current_user)
       saved = employer.save

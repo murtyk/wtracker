@@ -8,15 +8,6 @@
       <%= file_field_tag :file %>
       <br><br>
 
-      <!--
-      <p>
-        <%= check_box_tag :add_to_database %>
-        <strong>Add To Employers Database:</strong>
-      </p>
-      <p><strong>Select Sectors:</strong></p>
-      <%= select_tag "sector_ids[]", options_for_select(Sector.selection_list), {multiple: :multiple, size: 10} %>
-      -->
-
       <div class='form-actions'>
         <button type="submit" id='submit-button' class="btn btn-flat btn-large btn-primary btn-spinner" data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Process...">
           Process

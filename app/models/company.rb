@@ -6,17 +6,16 @@
 class Company
   include CacheHelper
 
-  attr_reader :poster_name, :poster_location, :poster_city_id,
+  attr_reader :poster_name, :poster_location, :poster_city_id, :employer_source_id,
               :poster_city_name, :poster_county_name, :poster_state_code
 
-  attr_reader :titles
-
-  attr_reader :duplicate, :found, :searched, :circles
+  attr_reader :titles, :duplicate, :found, :searched, :circles
 
   attr_reader :google_company, :score, :gps_id, :opero_company_id
   attr_accessor :employer_id
 
-  def initialize(p_name, p_location)
+  def initialize(p_name, p_location, user)
+    @employer_source_id   = user.default_employer_source_id
     @poster_name          = p_name.to_s.squish
     @poster_location      = p_location
     city = GeoServices.findcity(@poster_location) unless @poster_location.blank?
@@ -30,6 +29,10 @@ class Company
       @poster_city_id     = nil
     end
 
+    init_defaults
+  end
+
+  def init_defaults
     @titles               = []
     @searched             = false
     @found                = false
@@ -82,12 +85,9 @@ class Company
   end
 
   def circles
-    return @circles unless @circles.nil?
-    @circles = []
-    [10, 20].each do |radius|
-      @circles.push GoogleApi.get_circle_marker(radius, longitude, latitude)
+    @circles ||= [10, 20].map do |radius|
+      GoogleApi.get_circle_marker(radius, longitude, latitude)
     end
-    @circles
   end
 
   def marker

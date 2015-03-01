@@ -69,15 +69,15 @@ module MenusHelper
 
   def settings_menu
     return unless settings_menu?
-    items = applicant_sources_menu +
-            assessments_menu +
-            employment_statuses_menu +
-            funding_sources_menu +
-            reapply_message_menu +
-            special_services_menu +
-            trainee_options_menu +
-            trainee_statuses_menu +
-            unemployment_proofs_menu
+    items = [applicant_sources_menu,
+             assessments_menu,
+             employment_statuses_menu,
+             funding_sources_menu,
+             reapply_message_menu,
+             special_services_menu,
+             trainee_options_menu,
+             trainee_statuses_menu,
+             unemployment_proofs_menu].join
     build_dropdown_menu('Settings', items)
   end
 
@@ -162,17 +162,23 @@ module MenusHelper
   def trainees_menu
     items = trainees_search_menu +
             trainees_search_by_skills_menu
-    items +=  divider_menu +
-              trainees_add_menu +
-              trainees_import_menu if policy(Trainee).new?
-    items +=  divider_menu +
-              trainees_map_view_menu +
-              trainees_near_by_colleges_menu if policy(Trainee).mapview?
+    items +=  trainees_create_menu_items
+    items +=  trainees_mapview_menu_items
     items +=  divider_menu +
               trainees_send_mail_menu +
               trainees_emails_sent_menu
 
     build_dropdown_menu('Trainees', items)
+  end
+
+  def trainees_create_menu_items
+    return unless policy(Trainee).create?
+    divider_menu + trainees_add_menu + trainees_import_menu
+  end
+
+  def trainees_mapview_menu_items
+    return unless policy(Trainee).mapview?
+    divider_menu + trainees_map_view_menu + trainees_near_by_colleges_menu
   end
 
   def trainees_search_menu
@@ -216,20 +222,26 @@ module MenusHelper
 
   def employers_menu
     return unless policy(Employer).index?
-    items = employers_search_menu +
-            employers_add_menu +
-            employers_import_menu +
-            companies_search_menu +
-            divider_menu +
-            employers_map_view_menu +
-            employers_analysis_menu +
-            employers_search_google_menu +
-            divider_menu +
-            employers_klass_interaction_menu +
-            employers_send_email_menu +
-            employers_sent_emails_menu
+    items = employers_search_menu_items + employers_create_menu_items
+    items += [
+      divider_menu,
+      employers_map_view_menu,
+      employers_analysis_menu,
+      divider_menu,
+      employers_klass_interaction_menu,
+      employers_send_email_menu,
+      employers_sent_emails_menu]
 
-    build_dropdown_menu('Employers', items)
+    build_dropdown_menu('Employers', items.join)
+  end
+
+  def employers_search_menu_items
+    [employers_search_menu, companies_search_menu, employers_search_google_menu]
+  end
+
+  def employers_create_menu_items
+    return unless policy(Employer).create?
+    [divider_menu, employers_add_menu, employers_import_menu]
   end
 
   def employers_search_menu
@@ -237,14 +249,17 @@ module MenusHelper
   end
 
   def employers_add_menu
+    return nil unless policy(Employer).create?
     menu_link('Add', new_employer_path)
   end
 
   def employers_import_menu
+    return nil unless policy(Employer).create?
     menu_link('Import from a file', new_import_status_path(resource: 'employers'))
   end
 
   def companies_search_menu
+    return nil unless policy(Employer).create?
     menu_link('Search for Companies in a File', new_companies_finder_path)
   end
 
@@ -275,16 +290,6 @@ module MenusHelper
 
   def reports_menu
     return unless policy(Report).new?
-
-    items = Report.reports_by_type.map do |type, reports|
-      '<li class="dropdown-submenu">' \
-        '<a tabindex="-1" href="#">' + type + '</a>' \
-        '<ul class="dropdown-menu">' +
-      reports.map { |report| '<li>' + report_link(report) + '</li>' }.join +
-      '</ul>' \
-      '</li>'
-    end.join('')
-
     (
       '<li class="dropdown">' \
       '<a class="dropdown-toggle" data-toggle="dropdown" href="#">' \
@@ -292,10 +297,21 @@ module MenusHelper
       '<b class="caret" style="border-top-color: white;"></b>' \
       '</a>' \
       '<ul class="dropdown-menu">' +
-      items +
+      reports_menu_items +
       '</ul>' \
       '</li>'
     ).html_safe
+  end
+
+  def reports_menu_items
+    Report.reports_by_type.map do |type, reports|
+      '<li class="dropdown-submenu">' \
+        '<a tabindex="-1" href="#">' + type + '</a>' \
+        '<ul class="dropdown-menu">' +
+        reports.map { |report| '<li>' + report_link(report) + '</li>' }.join +
+        '</ul>' \
+        '</li>'
+    end.join('')
   end
 
   def jobs_menu

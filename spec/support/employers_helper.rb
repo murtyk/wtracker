@@ -12,7 +12,6 @@ module EmployersHelper
     seq += 1
     visit '/employers/new'
     fill_in 'Name', with: "Company#{seq}"
-    fill_in 'Source', with: 'Test'
     select sector_names[sector_index], from: 'Sectors'
     if address
       VCR.use_cassette('employers_helper') do

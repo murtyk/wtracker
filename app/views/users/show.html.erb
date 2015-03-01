@@ -1,12 +1,25 @@
 <h1>User Information</h1>
 <div class='row-fluid'>
   <div class='span5'>
-    <p><b>Name:       </b><%= @user.name %></p>
-    <p><b>email:      </b><%= @user.email %></p>
-    <p><b>Land No:    </b><%= @user.land_no %></p>
-    <p><b>Mobile No:  </b><%= @user.mobile_no %></p>
-    <p><b>Location:   </b><%= @user.location %></p>
-    <p><b>Status:     </b><%= @user.status %></p>
+    <div class = 'row-fluid'>
+      <p><b>Name:       </b><%= @user.name %></p>
+      <p><b>email:      </b><%= @user.email %></p>
+      <p><b>Land No:    </b><%= @user.land_no %></p>
+      <p><b>Mobile No:  </b><%= @user.mobile_no %></p>
+      <p><b>Location:   </b><%= @user.location %></p>
+      <p><b>Status:     </b><%= @user.status %></p>
+    </div>
+    <div class = 'row-fluid' id = 'empoyer_sources'>
+      <h4>
+        Employer Sources
+        <% unless @user.admin_access? %>
+          <%= button_new_association(UserEmployerSource, user_id:  @user.id, title: 'Add Source') %>
+        <% end %>
+      </h4>
+      <div id='<%=div_id_for_collection(UserEmployerSource)%>'>
+        <%= render @user.user_employer_sources %>
+      </div>
+    </div>
   </div>
   <div class='span5'>
     <table class="table table-bordered table-striped table-hover table-condensed">

@@ -7,6 +7,11 @@
       <p><strong>Find A File To Upload:</strong></p>
         <%= file_field_tag :file %>
         <br><br>
+      <p><strong>Select Source:</strong></p>
+      <%= select_tag "employer_source_id",
+            options_for_select(employer_sources_collection.pluck(:name, :id),
+                              current_user.default_employer_source_id)
+      %>
       <p><strong>Select Sectors:</strong></p>
       <%= select_tag "sector_ids[]", options_for_select(Sector.selection_list), {multiple: :multiple, size: 10} %>
       <div class='form-actions'>

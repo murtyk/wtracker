@@ -13,7 +13,6 @@ describe "Employer and Class Interaction" do
     visit '/klass_interactions/new'
     wait_for_ajax
     fill_in 'Name', with: 'Company Abc Inc.'
-    fill_in 'Source', with: 'test'
 
     select('banking', from: 'Sectors')
 

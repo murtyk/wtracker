@@ -52,4 +52,14 @@ class UserDecorator < Draper::Decorator
   def assigned_county_names
     counties.pluck(:name).join('; ')
   end
+
+  def employer_sources_list
+    employer_sources.map do |s|
+      if default_employer_source_id.to_i == s.id
+        "<li><b>#{s.name}</b></li>"
+      else
+        "<li>#{s.name}</li>"
+      end
+    end.join.html_safe
+  end
 end

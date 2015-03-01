@@ -10,12 +10,15 @@ class EmployersImporter < Importer
   def initialize(all_params = nil, current_user = nil)
     return unless current_user && all_params
 
+    @employer_source_id = all_params[:employer_source_id]
+    fail 'source required for employers import' if @employer_source_id.blank?
+
     @sector_ids = all_params[:sector_ids]
     @sector_ids.delete('')
     sectors = @sector_ids.any? ? Sector.where(id: @sector_ids) : []
     fail 'sectors required for employers import' if sectors.empty?
 
-    params = { sector_ids: @sector_ids }
+    params = { employer_source_id: @employer_source_id, sector_ids: @sector_ids }
     file_name = all_params[:file].original_filename
     @import_status = EmployerImportStatus.create(user_id: current_user.id,
                                                  file_name: file_name,
@@ -64,8 +67,9 @@ class EmployersImporter < Importer
     employer          = Employer.new
     employer.address  = map_address_attributes row
     employer.name     = row['company:name']
-    employer.source   = row['source'] || 'not available'
+    # employer.source   = row['source'] || 'not available'
     employer.phone_no = clean_phone_no(row['phone_no'])
+    employer.employer_source_id = @employer_source_id
 
     cn = 1
 

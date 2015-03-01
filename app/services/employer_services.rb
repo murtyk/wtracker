@@ -24,7 +24,9 @@ class EmployerServices
     employers = all_employers(no_includes)
     employers = employers.in_counties(county_ids) unless county_ids.empty?
     employers = employers.in_sector(sector_id) if sector_id > 0
-    employers = employers.from_source(source) unless source.blank?
+    unless employer_source_id.blank?
+      employers = employers.where(employer_source_id: employer_source_id)
+    end
 
     employers
   end
@@ -33,13 +35,13 @@ class EmployerServices
     return [] unless search_parameters?
     employer_ids = search(true).pluck(:id)
     Employer.joins(:contacts)
-            .select("contacts.id as id,
+      .select("contacts.id as id,
                     first || ' ' || last || '(' || employers.name || ')' as name,
                     employers.name as employer_name")
-            .where("not contacts.email = '' and
+      .where("not contacts.email = '' and
                     not contacts.email is null and
                     employers.id in (?)", employer_ids)
-            .order('employer_name, name')
+      .order('employer_name, name')
   end
 
   private
@@ -87,5 +89,9 @@ class EmployerServices
 
   def source
     filters[:source]
+  end
+
+  def employer_source_id
+    filters[:employer_source_id]
   end
 end

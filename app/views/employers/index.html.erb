@@ -7,7 +7,7 @@
       </div>
       <div class='span3'>
         Sector<br><%= f.input_field :sector_id, label: 'Sector', collection: employer_sectors_for_selection, class: "search-query input-block-level", width:'50%'%><br>
-        Source<br><%= f.input_field :source, label: 'Source', collection: employer_sources_for_selection, class: "search-query input-block-level"%>
+        Source<br><%= f.input_field :employer_source_id, label: 'Source', collection: employer_sources_for_selection, class: "search-query input-block-level"%>
       </div>
       <div class='span2'>
         Name starts with
@@ -76,7 +76,7 @@
       <% end %>
       </ol>
     </td>
-    <td><%= employer.source %></td>
+    <td><%= employer.employer_source_name %></td>
     <td>
       <% confirm_msg = "Are your sure you want to delete employer #{employer.name}?" %>
       <%= render('shared/show_edit_destroy_buttons', resource: employer,
@@ -95,7 +95,7 @@
   $('.form-search').submit(function() {
     sector_id  = $('#filters_sector_id :selected').text();
     county_ids = $('#filters_county_ids :selected').text();
-    source     = $('#filters_source :selected').text();
+    source     = $('#filters_employer_source_id :selected').text();
     name       = $('#filters_name').val();
     if (sector_id == 0 && county_ids == 0 && source == 0 && name == ''){
       alert("Please select at least one of sector / county / source OR enter name");

@@ -103,13 +103,13 @@ namespace :testprep do
     create_program('Big program 2', 'description of program12', transport.id, 600)
 
     address = ['100 South Main Street', 'Jersey Shore', 'PA', '17740', 41.2025, -77.2535]
-    emp1 = create_employer('Wawa', 'test', address)
+    emp1 = create_employer('Wawa', address)
 
     emp1.sectors << manufacturing
     emp1.contacts.create!(email: 'johnny@mail.com', first: 'Johnny', last: 'Darko')
 
     address = ['1 Metroplex Dr', 'Edison', 'NJ', '08817', 40.5230, -74.4135]
-    emp2 = create_employer('Trigyn', 'test', address)
+    emp2 = create_employer('Trigyn', address)
     emp2.contacts.create!(email: 'mason@mail.com', first: 'Mason', last: 'Saari')
 
     emp2.sectors << manufacturing
@@ -472,7 +472,9 @@ namespace :testprep do
   end
 
   def create_employer(*a)
-    Employer.create!(name: a[0], source: a[1], address_attributes: address_hash(a[2]))
+    Employer.create!(name: a[0],
+      employer_source_id: EmployerSource.first.id,
+      address_attributes: address_hash(a[1]))
   end
 
   def de_state

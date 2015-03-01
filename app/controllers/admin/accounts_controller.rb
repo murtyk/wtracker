@@ -69,7 +69,14 @@ class Admin
     # DELETE /accounts/1
     def destroy
       @account = Account.find(params[:id])
+      prev_id = Account.current_id
+      Account.current_id = @account.id
+      @account.grants.each do |g|
+        Grant.current_id = g.id
+        g.destroy
+      end
       @account.destroy
+      Account.current_id = prev_id
     end
 
     def stats

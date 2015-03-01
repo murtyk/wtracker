@@ -64,7 +64,7 @@ module EmployersHelper
 
   def employer_county_counts
     sql_query(
-      %Q{
+      %{
         SELECT COUNT(*) AS count, counties.name as name,
         addresses.state as state, county_id
         FROM addresses inner join counties
@@ -78,7 +78,7 @@ module EmployersHelper
 
   def employer_sector_counts
     sql_query(
-      %Q{
+      %{
         select count(*) as count, sectors.name as name, sectors.id as id
         from employer_sectors inner join sectors
         on sectors.id = employer_sectors.sector_id
@@ -94,7 +94,7 @@ module EmployersHelper
 
   def employer_source_counts
     sql_query(
-      %Q{
+      %{
         SELECT COUNT(source) AS count_source, source AS source
         FROM employers
         WHERE employers.account_id = #{Account.current_id}
@@ -104,12 +104,19 @@ module EmployersHelper
   end
 
   def employer_sources_for_selection
-    employer_source_counts.map { |row| [row[1] + ' - ' + row[0], row[1]] }
+    sources = if current_user.admin_access?
+                EmployerSource.all
+              else
+                current_user.employer_sources
+              end
+    counts = Employer.where(employer_source_id: sources.pluck(:id))
+                     .group(:employer_source_id).count
+    sources.map { |es| [es.name + ' - ' + counts[es.id].to_s, es.id] }
   end
 
   def address_less_employers
     sql_query(
-      %Q(
+      %(
         SELECT employers.id, employers.name FROM employers
         LEFT OUTER JOIN addresses
         ON employers.id = addresses.addressable_id

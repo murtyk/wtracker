@@ -9,7 +9,6 @@ describe "Employers" do
     it "does not create no address duplicate" do
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 1'
-        fill_in 'Source', with: 'test'
         select('banking', from: 'Sectors')
 
         click_button 'Save'
@@ -17,7 +16,6 @@ describe "Employers" do
 
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 1'
-        fill_in 'Source', with: 'rspec'
         select('manufacturing', from: 'Sectors')
         click_button 'Save'
 
@@ -28,7 +26,6 @@ describe "Employers" do
         VCR.use_cassette('employer_create') do
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 2'
-        fill_in 'Source', with: 'test'
         select('banking', from: 'Sectors')
         fill_in 'Street', with: '25 Rembrandt'
         fill_in 'City', with: 'East Windsor'
@@ -41,7 +38,6 @@ describe "Employers" do
 
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 2'
-        fill_in 'Source', with: 'rspec'
         select('manufacturing', from: 'Sectors')
         fill_in 'Street', with: '25 Rembrandt'
         fill_in 'City', with: 'East Windsor'
@@ -58,7 +54,6 @@ describe "Employers" do
 
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 3'
-        fill_in 'Source', with: 'test'
         select('banking', from: 'Sectors')
         fill_in 'Street', with: '25 Rembrandt'
         fill_in 'City', with: 'East Windsor'
@@ -70,7 +65,6 @@ describe "Employers" do
 
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 4'
-        fill_in 'Source', with: 'test'
         select('banking', from: 'Sectors')
         fill_in 'Street', with: '25 Rembrandt'
         fill_in 'City', with: 'East Windsor'
@@ -85,7 +79,6 @@ describe "Employers" do
 
         visit "/employers/#{employer.id}/edit"
         fill_in 'Name', with: 'Name 3'
-        fill_in 'Source', with: 'trasssssh'
         click_button 'Save'
 
         expect(page).to have_text "duplicate employer Name 3"
@@ -95,7 +88,6 @@ describe "Employers" do
     it "prevents update without address duplicate" do
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 5'
-        fill_in 'Source', with: 'test'
         select('banking', from: 'Sectors')
 
         click_button 'Save'
@@ -103,7 +95,6 @@ describe "Employers" do
 
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 6'
-        fill_in 'Source', with: 'junk'
         select('banking', from: 'Sectors')
 
         click_button 'Save'
@@ -114,7 +105,6 @@ describe "Employers" do
 
         visit "/employers/#{employer.id}/edit"
         fill_in 'Name', with: 'Name 5'
-        fill_in 'Source', with: 'trasssssssh'
         click_button 'Save'
 
         expect(page).to have_text "duplicate employer Name 5"

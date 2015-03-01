@@ -18,9 +18,10 @@
 #     update company to {found: true, employer_id: ID, company_info: text}
 class CompanyListFinder
   HEADER_FIELDS = %w(company zip)
-  attr_reader :error, :process_id
+  attr_reader :error, :process_id, :user
 
   def initialize(params, user)
+    @user              = user
     @account_id        = user.account.id
     @count_success     = 0
     @count_fails       = 0
@@ -54,7 +55,7 @@ class CompanyListFinder
     employer = Employer.find_by_name_and_zip(cc[:company], zip)
     return cc.merge(employer_or_oc_found_data(employer, 'EMP')) if employer
 
-    company = Company.new(row[:company], zip)
+    company = Company.new(row[:company], zip, user)
     company.search
     cc.merge(company_details(company))
 
@@ -103,12 +104,7 @@ class CompanyListFinder
   end
 
   def init_company_hash(row, zip)
-    info =  { found:      false,
-              company:    row[:company].to_s.squish,
-              street:     row[:street].to_s.squish,
-              city:       row[:city].to_s.squish,
-              state_code: row[:state].to_s.squish,
-              zip:        zip }
+    info =  build_info_hash(row, zip)
 
     return { error: 'name is missing' }.merge(info) if info[:company].blank?
     return { error: 'invalid or missing zip' }.merge(info) if zip.blank?
@@ -117,6 +113,15 @@ class CompanyListFinder
     return { error: "city not found for zip #{zip}" }.merge(info) unless city
     info.merge(city_id: city.id, city: city.name,
                city_state: city.city_state, county: city.county_name)
+  end
+
+  def build_info_hash(row, zip)
+    { found:      false,
+      company:    row[:company].to_s.squish,
+      street:     row[:street].to_s.squish,
+      city:       row[:city].to_s.squish,
+      state_code: row[:state].to_s.squish,
+      zip:        zip }
   end
 
   def open_reader
@@ -133,7 +138,7 @@ class CompanyListFinder
   def valid_header
     open_reader
     return false if errors?
-    header = @reader.header.map { |c| c.downcase }
+    header = @reader.header.map(&:downcase)
     valid = (header & HEADER_FIELDS).size == HEADER_FIELDS.size
     @error = 'Invalid Header Row.' unless valid
     close_reader
@@ -189,17 +194,21 @@ class CompanyListFinder
     companies_data(process_id)
   end
 
-  def self.create_employer_with_file_data(company, source, sector_ids, user)
-    data = { name: company[:company].squish, source: source, sector_ids: sector_ids }
-    data[:address_attributes]        = { zip: company[:zip] }
-    data[:address_attributes][:city] = company[:city]
-    data[:address_attributes][:line1] = company[:street]
-    data[:address_attributes][:state] = company[:state_code]
+  def self.create_employer_with_file_data(company, sector_ids, user)
+    data = { name: company[:company].squish, sector_ids: sector_ids }
+    data[:address_attributes]        = extract_address_attr(company)
 
     employer, saved = EmployerFactory.create_employer(user, data)
     error = employer.errors.map { |k, v| "#{k}-#{v}" }.join(';') unless saved
 
-    [employer, error]
+    [employer, false, error]
+  end
+
+  def self.extract_address_attr(company)
+    { zip: company[:zip],
+      city: company[:city],
+      line1: company[:street],
+      state: company[:state_code] }
   end
 
   def self.add_employer(params, user)
@@ -209,17 +218,9 @@ class CompanyListFinder
 
     index      = params[:index].to_i
     company    = companies[index]
-    source     = params[:source]
-    sector_ids = params[:sector_ids]
-    if company[:oc_id]
-      employer, _exists, error = EmployerFactory.create_from_opero(company[:oc_id],
-                                                                   source, sector_ids)
-    elsif company[:google_info]
-      employer, _exists, error = EmployerFactory.create_from_gi(company[:google_info],
-                                                                source, sector_ids)
-    else
-      employer, error = create_employer_with_file_data(company, source, sector_ids, user)
-    end
+
+    employer, _exists, error = add_employer_from_data(company, user, params)
+
     return [employer, error] if error
     company[:employer_id] = employer.id
     companies[index]      = company
@@ -228,13 +229,25 @@ class CompanyListFinder
     [employer, nil]
   end
 
+  def self.add_employer_from_data(company, user, params)
+    sector_ids = params[:sector_ids]
+    source_id  = user.default_employer_source_id
+    if company[:oc_id]
+      EmployerFactory.create_from_opero(company[:oc_id], source_id, sector_ids)
+    elsif company[:google_info]
+      EmployerFactory.create_from_gi(company[:google_info], source_id, sector_ids)
+    else
+      create_employer_with_file_data(company, sector_ids, user)
+    end
+  end
+
   # for reading input file - excel data
   class FileReader
     attr_reader :header
 
     def initialize(file_path, file_name)
       @spreadsheet = open_spreadsheet(file_path, file_name)
-      @header = @spreadsheet.row(1).map { |c| c.downcase }
+      @header = @spreadsheet.row(1).map(&:downcase)
       @next_row = 2
     end
 

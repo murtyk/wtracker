@@ -4,9 +4,10 @@
 # each company will have a collections of jobs
 class JobsAnalyzer
   attr_reader :job_store, :companies, :county_counts, :includes_google_places,
-              :name_locations, :jobs_count, :error, :job_search
+              :name_locations, :jobs_count, :error, :job_search, :user
 
-  def initialize(js, ip)
+  def initialize(js, ip, user)
+    @user = user
     @job_search = js
 
     if js.in_state
@@ -20,41 +21,55 @@ class JobsAnalyzer
 
   def analyze_slice(page_no)
     cache_id = cache_id_page(page_no)
-    unless cache_exist?(cache_id)
-      jobs = job_store.get_jobs(page_no)
-      companies = analyze_jobs(jobs)
-      write_cache(cache_id, companies, 30.minutes)
-    end
+    return if cache_exist?(cache_id)
+
+    jobs = job_store.get_jobs(page_no)
+    companies = analyze_jobs(jobs)
+    write_cache(cache_id, companies, 30.minutes)
   end
 
   def complete_analysis
     return if cache_exist?(cache_id_analyzed) && cache_exist?(cache_id_counties_analyzed)
 
     merge_companies_from_all_slices
+    assign_company_counts
+    sort_companies_by_name
 
+    cache_completed_analysis
+
+    # we dont need slice analysis anymore. delete them all.
+    clear_slice_analysis
+  end
+
+  def assign_company_counts
     @county_counts = Hash.new(0)
-
     companies.each { |company| @county_counts[company.county] += company.job_count }
+  end
+
+  def sort_companies_by_name
     @companies.sort! do |a, b|
       v = a.poster_name.blank? ? 1 : nil
       v || (b.poster_name.blank? ? -1 : a.poster_name.downcase <=> b.poster_name.downcase)
     end
+  end
 
+  def cache_completed_analysis
     write_cache(cache_id_analyzed, companies, 3.hours)
     write_cache(cache_id_counties_analyzed, county_counts, 3.hours)
+  end
 
-    # we dont need slice analysis anymore. delete them all.
+  def clear_slice_analysis
     (1..slices).each { |slice| Rails.cache.delete(cache_id_page(slice)) }
   end
 
-  def sort_and_filter(sort_by = 'score', county_names)
+  def sort_and_filter(_sort_by = 'score', county_names)
     @county_counts = read_cache(cache_id_counties_analyzed)
     unless county_counts
       @error = 'county analysis missing'
       return false
     end
 
-    @companies = read_cache(cache_id_sorted_by_score) || sort_companies_by_score
+    @companies = read_sorted_companies || sort_companies_by_score
 
     unless county_names.blank?
       companies_in_counties = []
@@ -68,7 +83,7 @@ class JobsAnalyzer
 
   def analyze
     @county_counts = read_cache(cache_id_counties_analyzed)
-    @companies = read_cache(cache_id_sorted_by_score)
+    @companies = read_sorted_companies
 
     @error = nil
     return @includes_google_places = true if @companies
@@ -95,16 +110,15 @@ class JobsAnalyzer
   end
 
   def update_company_employer(employer)
-    @companies = read_cache(cache_id_sorted_by_score)
+    @companies = read_sorted_companies
     @companies.each do |company|
-      if company.name == employer.name &&
-         company.latitude == employer.latitude &&
-         company.longitude == employer.longitude
+      next unless company.name == employer.name &&
+                  company.latitude == employer.latitude &&
+                  company.longitude == employer.longitude
 
-        company.employer_id = employer.id
-      end
+      company.employer_id = employer.id
     end
-    write_cache(cache_id_sorted_by_score, companies, 2.hours)
+    cache_sorted_companies
   end
 
   private
@@ -117,7 +131,7 @@ class JobsAnalyzer
     companies = {}
     jobs.each do |job|
       key = "#{job.company}--#{job.location}"
-      companies[key] ||= Company.new(job.company, job.location)
+      companies[key] ||= Company.new(job.company, job.location, user)
       companies[key].add_title [job.title, job.details_url, job.date_posted]
     end
     # return array of unique companies (name+location)
@@ -156,13 +170,7 @@ class JobsAnalyzer
   end
 
   def sort_companies_by_score
-    @companies = read_cache(cache_id_analyzed)
-
-    unless companies
-      @error = 'companies missing in cache for cache_id_analyzed'
-      return nil
-    end
-
+    read_analyzed_companies
     assign_scores
 
     @companies.sort! do |company1, company2|
@@ -172,29 +180,46 @@ class JobsAnalyzer
     end
 
     # now check for duplicates
-
     # mark_duplicates
 
-    write_cache(cache_id_sorted_by_score, companies, 2.hours)
+    cache_sorted_companies
 
     companies
   end
 
-  def assign_scores
-    @companies.each { |company| company.refresh_info }
+  def read_analyzed_companies
+    @companies = read_cache(cache_id_analyzed)
+
+    unless companies
+      @error = "companies missing in cache for cache_id_analyzed = #{cache_id_analyzed}"
+      return false
+    end
+    true
   end
 
-  def mark_duplicates
-    info_hash = {}
-    @companies.each do |company|
-      if company.found && !compnay.employer_id
-        key = info[:name] + ':' + info[:latitude].to_s + ':' + info[:longitude].to_s
-        info[:duplicate] = info_hash[key]
-        company.info = info
-        info_hash[key] ||= true
-      end
-    end
+  def assign_scores
+    @companies.each(&:refresh_info)
   end
+
+  def cache_sorted_companies
+    write_cache(cache_id_sorted_by_score, companies, 2.hours)
+  end
+
+  def read_sorted_companies
+    read_cache(cache_id_sorted_by_score)
+  end
+
+  # def mark_duplicates
+  #   info_hash = {}
+  #   @companies.each do |company|
+  #     next unless company.found && !compnay.employer_id
+
+  #     key = info[:name] + ':' + info[:latitude].to_s + ':' + info[:longitude].to_s
+  #     info[:duplicate] = info_hash[key]
+  #     company.info = info
+  #     info_hash[key] ||= true
+  #   end
+  # end
 
   def slices
     return 0 if jobs_count < 0

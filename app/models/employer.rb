@@ -27,13 +27,15 @@ class Employer < ActiveRecord::Base
   scope :sources, -> { select('DISTINCT source as source').reorder('source') }
 
   attr_accessible :name, :source, :address_attributes,
-                  :phone_no, :website, :sector_ids, :trainee_ids
+                  :phone_no, :website, :sector_ids, :trainee_ids, :employer_source_id
   validates :name, presence: true, length: { minimum: 3, maximum: 100 }
-  validates :source, presence: true, length: { minimum: 3, maximum: 100 }
+  # validates :source, presence: true, length: { minimum: 3, maximum: 100 }
 
+  delegate :employer_source_name, to: :employer_source
   before_save :cb_before_save
 
   belongs_to :account
+  belongs_to :employer_source
 
   has_one :address, as: :addressable, dependent: :destroy
   accepts_nested_attributes_for :address
@@ -83,17 +85,18 @@ class Employer < ActiveRecord::Base
     false
   end
 
-  def self.existing_employer_id(name, lat, lng)
-    emp = existing_employer(name, lat, lng)
+  def self.existing_employer_id(name, employer_source_id, lat, lng)
+    emp = existing_employer(name, employer_source_id, lat, lng)
     emp && emp.id
   end
 
-  def self.existing_employer(name, lat, lng)
+  def self.existing_employer(name, employer_source_id, lat, lng)
     Employer.joins(:address)
       .where(
-        'name ILIKE ? and round(addresses.latitude::numeric, 2)= ?
+        'name ILIKE ? and employer_source_id = ? and
+        round(addresses.latitude::numeric, 2)= ?
         and round(addresses.longitude::numeric, 2) = ?',
-        name, lat.to_f.round(2), lng.to_f.round(2)
+        name, employer_source_id, lat.to_f.round(2), lng.to_f.round(2)
             )
       .first
   end
@@ -101,28 +104,24 @@ class Employer < ActiveRecord::Base
   def duplicate?(assume_no_address = false)
     return duplicate_with_address if !assume_no_address && address
 
-    existing_employers = Employer.where('name ILIKE ? ', name)
+    dupes = Employer.where('name ILIKE ? ', name)
+      .where(employer_source_id: employer_source_id)
+      .where.not(id: id)
 
-    existing_employers.each do |employer|
-      unless employer.address
-        return true if new_record?
-        return true unless employer.id == id
-      end
-    end
+    # do we have one without address?
+
+    dupes.each{ |d| return true if !d.address }
     false
   end
 
   def duplicate_with_address
-    dupes = Employer.joins(:address)
-            .where(
-              'name ILIKE ? and addresses.line1 ILIKE ?
-              and addresses.city ILIKE ? and state ILIKE ?',
-              name, address.line1, address.city, address.state
-                    )
-
-    return dupes.first if new_record?
-
-    dupes.where('not employers.id = ?', id).first
+    Employer.joins(:address)
+      .where('name ILIKE ?', name)
+      .where(employer_source_id: employer_source_id)
+      .where.not(id: id)
+      .where('addresses.line1 ILIKE ? and addresses.city ILIKE ? and state ILIKE ?',
+             address.line1, address.city, address.state)
+      .first
   end
 
   def self.find_by_name_and_zip(name, zip)

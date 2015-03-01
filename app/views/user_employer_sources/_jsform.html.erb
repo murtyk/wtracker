@@ -1,0 +1,13 @@
+<%= simple_form_for(user_employer_source,remote: true) do |f| %>
+	<hr>
+	<div class="form-inputs">
+		<%= f.hidden_field :user_id %>
+		<%= f.association :employer_source, collection: user.employer_sources_for_selection,
+                               label: 'Select a source:',
+                               include_blank: false%>
+	</div>
+	<div class="form-actions">
+		<%= ajax_cancel_and_submit_buttons(f) %>
+	</div>
+  <%= ajax_form_cancel_script(user_employer_source) %>
+<% end %>

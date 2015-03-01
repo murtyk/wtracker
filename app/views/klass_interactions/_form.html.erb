@@ -16,7 +16,6 @@
             <div class ='span6'>
                 <%= employer_fields.input :name %>
                 <%= employer_fields.input :phone_no %>
-                <%= employer_fields.input :source %>
                 <%= employer_fields.association :sectors, label: 'Sectors', collection: Sector.all, required: true, input_html: {multiple: true} %>
             </div>
             <div class ='span6'>

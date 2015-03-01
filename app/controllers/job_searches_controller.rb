@@ -1,11 +1,12 @@
+# searches jobs and analyzes
+# REFACTOR: It has too many custom routes
 class JobSearchesController < ApplicationController
   before_filter :authenticate_user!
 
+  # perhaps this should be on States routes
   def valid_state
     valid = State.valid_state_code?(params[:state_code])
-    respond_to do |format|
-      format.json { render json: valid }
-    end
+    render json: valid
   end
 
   def search_and_filter_in_state
@@ -13,9 +14,7 @@ class JobSearchesController < ApplicationController
     @job_search = JobSearch.find(params[:job_search_id])
     job_search_service = JobSearchServices.new(@job_search, request_ip)
     job_search_service.search_and_filter_in_state(@slice)
-    respond_to do |format|
-      format.json { render json: @slice }
-    end
+    render json: @slice
   end
 
   def analysis_present
@@ -24,23 +23,21 @@ class JobSearchesController < ApplicationController
     cache_id_a = cache_id_analyzed(job_search_id)
     cache_id_c =  cache_id_counties_analyzed(job_search_id)
     present = cache_exist?(cache_id_a) && cache_exist?(cache_id_c)
-    respond_to do |format|
-      format.json { render json: present }
-    end
+    render json: present
   end
 
   def analyze_slice
     @slice = params[:slice].to_i
 
     @job_search = JobSearch.find(params[:job_search_id].to_i)
-    analyzer = @job_search.analyzer(request_ip)
+    analyzer = @job_search.analyzer(current_user, request_ip)
     analyzer.analyze_slice(@slice)
   end
 
   def complete_analysis
     @job_search = JobSearch.find(params[:job_search_id])
 
-    @analyzer = @job_search.analyzer
+    @analyzer = @job_search.analyzer(current_user)
     @analyzer.complete_analysis
     @analyzer.analyze
 
@@ -54,17 +51,15 @@ class JobSearchesController < ApplicationController
     @job_search = JobSearch.find(params[:id])
     authorize @job_search
 
-    @analyzer = @job_search.analyzer
-    unless @analyzer.analyze
-      flash[:error] = @analyzer.error
-      redirect_to @job_search
-      return
-    end
+    @analyzer = @job_search.analyzer(current_user)
+    return if @analyzer.analyze
+    flash[:error] = @analyzer.error
+    redirect_to @job_search
   end
 
   def sort_and_filter
     @job_search = JobSearch.find(params[:id])
-    @analyzer   = @job_search.analyzer
+    @analyzer   = @job_search.analyzer(current_user)
 
     unless @analyzer.sort_and_filter(params[:sort_by], county_names(params))
       flash[:error] = @analyzer.error
@@ -84,28 +79,6 @@ class JobSearchesController < ApplicationController
     end
   end
 
-  # def retrycompanysave
-  #   @company = params[:company]
-  #   @sector_ids  = params[:sector_ids]
-  #   @error = nil
-  #   begin
-  #     attrs = Hash[%w(name phone_no website).zip @company]
-  #     attrs['source'] = 'job search'
-  #     attrs['address_attributes'] = %w(line1 city state zip).zip @company
-  #     e = Employer.new(attrs)
-  #     @sector_ids.each do |sid|
-  #       e.employer_sectors.new(sector_id: sid.to_i)
-  #     end
-  #     e.save
-  #   rescue StandardError => error
-  #     @error = error.to_s
-  #   end
-  #   respond_to do |format|
-  #     format.html
-  #     format.js
-  #   end
-  # end
-
   def show
     @job_search = JobSearch.find(params[:id])
     authorize @job_search
@@ -122,16 +95,11 @@ class JobSearchesController < ApplicationController
     # end
   end
 
-  # GET /job_searches/new
-  # GET /job_searches/new.json
   def new
     @job_search = current_user.job_searches.build
-
     authorize @job_search
   end
 
-  # POST /job_searches
-  # POST /job_searches.json
   def create
     @job_search = find_or_new_job_search(params)
     authorize @job_search

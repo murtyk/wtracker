@@ -48,10 +48,10 @@ class Account < ActiveRecord::Base
   has_many :import_statuses, dependent: :destroy
 
   has_many :job_searches, dependent: :destroy
+  has_many :employer_sources, dependent: :destroy
 
   before_save :save_demo_option
   after_save :generate_demo_data
-  before_destroy { |record| destroy_account(record) }
 
   after_find :initialize_option_accessors
 
@@ -162,18 +162,6 @@ class Account < ActiveRecord::Base
 
   def account_import_statuses
     ImportStatus.unscoped.where(account_id: id).order('created_at desc')
-  end
-
-  def destroy_account(account)
-    ActiveRecord::Base.connection.tables.each do |table|
-      next if table.match(/\Aschema_migrations\Z/)
-      next if table.match(/\Aaccounts\Z/)
-      next if table.match(/\Adelayed_jobs\Z/)
-      klass = table.singularize.camelize.constantize
-      if klass.instance_methods.include?(:account)
-        klass.where(account_id: account.id).each(&:destroy)
-      end
-    end
   end
 
   private

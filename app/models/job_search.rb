@@ -44,8 +44,8 @@ class JobSearch < ActiveRecord::Base
     parts.count > 1 ? parts[1].squish.upcase : nil
   end
 
-  def analyzer(request_ip = nil)
-    @analyzer ||= JobsAnalyzer.new(self, request_ip)
+  def analyzer(user, request_ip = nil)
+    @analyzer ||= JobsAnalyzer.new(self, request_ip, user)
   end
 
   def search_criteria
