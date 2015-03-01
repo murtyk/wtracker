@@ -1,9 +1,11 @@
 # for rendering employers on map
 class EmployersMap < MapService
   attr_reader :filters, :employers, :employers_addresses,
-              :state_county_polygons, :state_county_names
+              :state_county_polygons, :state_county_names,
+              :user
 
-  def initialize(in_filters)
+  def initialize(user, in_filters)
+    @user = user
     @filters = in_filters || {}
     return unless in_filters
 
@@ -81,15 +83,22 @@ class EmployersMap < MapService
   end
 
   def init_employer_and_addresses
-    return unless !name.blank? || county_ids.size > 0 || sector_id > 0
-    employer_ids = EmployerServices.new(filters).search.pluck(:id)
+    return unless valid_filters
     return if employer_ids.empty?
     @employers_addresses = Address.where(addressable_type: 'Employer',
                                          addressable_id: employer_ids)
-    employer_ids = @employers_addresses.pluck(:addressable_id)
-    return if employer_ids.empty?
+    e_ids = @employers_addresses.pluck(:addressable_id)
+    return if e_ids.empty?
     @employers = Employer.includes(:sectors, :contacts)
-                         .where(id: employer_ids).order(:name)
+                 .where(id: e_ids).order(:name)
+  end
+
+  def valid_filters
+    !name.blank? || county_ids.size > 0 || sector_id > 0
+  end
+
+  def employer_ids
+    @employer_ids ||= EmployerServices.new(user, filters).search.pluck(:id)
   end
 
   def college_addresses
@@ -101,7 +110,7 @@ class EmployersMap < MapService
     return [] unless klass_id > 0
     trainee_ids = Klass.find(klass_id).trainees.pluck(:id)
     HomeAddress.includes(:addressable)
-               .where(addressable_type: 'Trainee', addressable_id: trainee_ids)
+      .where(addressable_type: 'Trainee', addressable_id: trainee_ids)
   end
 
   def init_addresses
@@ -113,11 +122,11 @@ class EmployersMap < MapService
     @state_county_polygons = []
     @state_county_names = []
     state = Account.states.first
-    if state
-      state.counties.each do |county|
-        @state_county_polygons += county.polygons_json
-        @state_county_names.push county.name
-      end
+    return unless state
+
+    state.counties.each do |county|
+      @state_county_polygons += county.polygons_json
+      @state_county_names.push county.name
     end
   end
 end

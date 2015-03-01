@@ -34,13 +34,14 @@ class EmployersController < ApplicationController
 
   # for trainee interactions
   def list_for_trainee
-    employers = EmployerServices.new(params).employers_for_trainee_interaction
+    employers = EmployerServices.new(current_user, params)
+                .employers_for_trainee_interaction
     render json: employers
   end
 
   # ajax request from klass events for adding employers to an event
   def search
-    employers = EmployerServices.new(params[:filters]).search
+    employers = EmployerServices.new(current_user, params[:filters]).search
 
     respond_to do |format|
       format.json { render json: employers }
@@ -49,21 +50,21 @@ class EmployersController < ApplicationController
 
   # for sending emails
   def contacts_search
-    contacts = EmployerServices.new(params[:filters]).search_contacts
+    contacts = EmployerServices.new(current_user, params[:filters]).search_contacts
     respond_to do |format|
       format.json { render json: contacts }
     end
   end
 
   def index
-    @employers = EmployerServices.new(params[:filters]).search
+    @employers = EmployerServices.new(current_user, params[:filters]).search
     @employers_count = @employers.count
     return if request.format.xls?
     @employers = @employers.to_a.paginate(page: params[:page], per_page: 20)
   end
 
   def mapview
-    @employer_map = EmployersMap.new(params[:filters])
+    @employer_map = EmployersMap.new(current_user, params[:filters])
   end
 
   def analysis
@@ -71,7 +72,7 @@ class EmployersController < ApplicationController
   end
 
   def show
-    @employer = Employer.find(params[:id]).decorate
+    @employer = current_user.employers.find(params[:id]).decorate
     authorize @employer
   end
 

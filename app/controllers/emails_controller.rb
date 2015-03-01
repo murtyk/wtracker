@@ -4,7 +4,11 @@ class EmailsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @emails = Email.includes(:user).order('created_at desc').to_a
+    if current_user.admin_access?
+      @emails = Email.includes(:user).order('created_at desc').to_a
+    else
+      @emails = current_user.emails.order('created_at desc').to_a
+    end
     @emails = @emails.paginate(page: params[:page], per_page: 15)
   end
 

@@ -1,8 +1,9 @@
 # wrapper for rendering trainee(s) and near by employers
 class TraineesMap < MapService
-  attr_reader :employers, :trainee_address, :error
+  attr_reader :employers, :trainee_address, :error, :user
 
-  def initialize(filters)
+  def initialize(user, filters)
+    @user = user
     defaults
     @filters = filters
     return unless filters && filters[:klass_id]
@@ -78,26 +79,29 @@ class TraineesMap < MapService
 
   def init_employer_addresses
     @trainee_address = trainee.home_address
-    if trainee_address
-      employers_ids = Employer.select(:id)
-                               .joins(:sectors)
-                               .where(sectors: { id: sector_id })
-                               .pluck(:id)
-      # since @trainee_address is HOME_ADDRESS,
-      # geocoder.nearby looks for only HOME_ADDRESSES
-      # SOLUTION: create a new address with same coordinates but don't save it
-      a = Address.new(latitude: trainee_address.latitude,
-                      longitude: trainee_address.longitude)
-      a.id = trainee_address.id
-      employers_addresses = a.nearbys(radius)
-                             .where(addressable_type: 'Employer',
-                                    addressable_id: employers_ids)
-      @addresses = [trainee_address] + employers_addresses
-      @employers = employers_addresses.map { |ea| ea.addressable }
-      a.id = nil
-      a.delete
-    else
+
+    unless trainee_address
       @error = "Home Address is not available for #{trainee.name}"
+      return
     end
+
+    employers_ids = Employer.select(:id)
+                    .joins(:sectors)
+                    .where(sectors: { id: sector_id })
+                    .where(employers: { id: user.employers.pluck(:id) })
+                    .pluck(:id)
+    # since @trainee_address is HOME_ADDRESS,
+    # geocoder.nearby looks for only HOME_ADDRESSES
+    # SOLUTION: create a new address with same coordinates but don't save it
+    a = Address.new(latitude: trainee_address.latitude,
+                    longitude: trainee_address.longitude)
+    a.id = trainee_address.id
+    employers_addresses = a.nearbys(radius)
+                          .where(addressable_type: 'Employer',
+                                 addressable_id: employers_ids)
+    @addresses = [trainee_address] + employers_addresses
+    @employers = employers_addresses.map(&:addressable)
+    a.id = nil
+    a.delete
   end
 end

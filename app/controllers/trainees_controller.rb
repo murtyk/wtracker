@@ -47,7 +47,7 @@ class TraineesController < ApplicationController
 
   def mapview
     # debugger
-    @trainees_map = TraineesMap.new(params[:filters])
+    @trainees_map = TraineesMap.new(current_user, params[:filters])
   end
 
   def near_by_colleges

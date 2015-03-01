@@ -26,7 +26,7 @@
         <%= f.input :address_city, label: 'City', required: true %>
       </div>
       <div class='span3'>
-        <%= f.input :address_state, label: 'State', collection: current_account.states.pluck(:code), include_blank: false%>
+        <%= f.input :address_state, label: 'State', disabled: true%>
       </div>
     </div>
 

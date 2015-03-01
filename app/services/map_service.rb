@@ -37,24 +37,27 @@ class MapService
 
   def get_info_window(address)
     obj = address.addressable
-    if obj
-      color =  'lightsalmon' if obj.is_a?(Employer)
-      color ||= obj.is_a?(Trainee) ? 'lightgreen' : 'lightgrey'
-      if obj.is_a?(Employer)
-        sectors =  '<ol>' +
-                    obj.sectors.map { |sector| "<li>#{sector.name}</li>" }.join +
-                    '</ol>'
-      else
-        sectors =  ''
-      end
-      "<div style='background-color:#{color}'>
-        <p><b>#{obj.name}</b></p>
-        #{address.line1}<br>
-        #{address.city}<br>
-        #{address.state} #{address.zip}<br>
-        #{sectors}
-      </div>"
+
+    return unless obj
+
+    color =  'lightsalmon' if obj.is_a?(Employer)
+    color ||= obj.is_a?(Trainee) ? 'lightgreen' : 'lightgrey'
+    if obj.is_a?(Employer)
+      source  = "Source: #{obj.employer_source_name}<br>".html_safe
+      sectors =  '<ol>' +
+                 obj.sectors.map { |sector| "<li>#{sector.name}</li>" }.join +
+                 '</ol>'
+    else
+      sectors =  ''
     end
+    "<div style='background-color:#{color}'>
+      <p><b>#{obj.name}</b></p>
+      #{address.line1}<br>
+      #{address.city}<br>
+      #{address.state} #{address.zip}<br>
+      #{source}
+      #{sectors}
+    </div>"
   end
 
   def get_marker_pic(obj)

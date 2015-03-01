@@ -56,7 +56,7 @@
       <tbody>
       <% @analysis.by_source.each do |data| %>
         <tr>
-          <td><%= link_to data.name, employers_path(filters: { source: data.name }) %></td>
+          <td><%= link_to data.name, employers_path(filters: { employer_source_id: data.id }) %></td>
           <td><%= data.count %></td>
         </tr>
       <% end %>

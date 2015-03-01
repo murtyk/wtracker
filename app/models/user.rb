@@ -77,7 +77,6 @@ class User < ActiveRecord::Base
 
   has_many :user_employer_sources, dependent: :destroy
   has_many :employer_sources, through: :user_employer_sources
-  has_many :employers, through: :employer_sources
 
   def copy_job_shares?
     return true unless options[:copy_job_shares]
@@ -148,6 +147,11 @@ class User < ActiveRecord::Base
 
   def employer_sources_for_selection
     EmployerSource.all - employer_sources
+  end
+
+  def employers
+    return Employer if admin_access?
+    Employer.where(employer_source_id: employer_sources.pluck(:id))
   end
 
   private

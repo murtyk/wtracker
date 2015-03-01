@@ -2,8 +2,9 @@
 # for searching employers, contacts
 # or interested in trainees
 class EmployerServices
-  attr_reader :filters
-  def initialize(search_filters = {})
+  attr_reader :filters, :user
+  def initialize(user, search_filters = {})
+    @user = user
     @filters = search_filters
   end
 
@@ -34,7 +35,7 @@ class EmployerServices
   def search_contacts
     return [] unless search_parameters?
     employer_ids = search(true).pluck(:id)
-    Employer.joins(:contacts)
+    user.employers.joins(:contacts)
       .select("contacts.id as id,
                     first || ' ' || last || '(' || employers.name || ')' as name,
                     employers.name as employer_name")
@@ -47,12 +48,12 @@ class EmployerServices
   private
 
   def all_employers(no_includes = false)
-    return Employer.order_by_name if no_includes
-    Employer.includes(:address, :sectors, :employer_notes, :contacts).order_by_name
+    return user.employers.order_by_name if no_includes
+    user.employers.includes(:address, :sectors, :employer_notes, :contacts).order_by_name
   end
 
   def search_by_name
-    Employer.where('name ilike ?', name + '%') unless name.blank?
+    user.employers.where('name ilike ?', name + '%') unless name.blank?
   end
 
   def employers_currently_interested_in_trainee

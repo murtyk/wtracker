@@ -51,6 +51,12 @@ class Applicant < ActiveRecord::Base
   validates_uniqueness_of :email, scope: :grant_id
   validate :validate_applicant_data
 
+  after_initialize :init
+
+  def init
+    self.address_state ||= Account.current_account.states.first.code
+  end
+
   def week
     created_at.strftime('%Y-%W')
   end
