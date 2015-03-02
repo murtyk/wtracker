@@ -18,7 +18,7 @@
         <td>
           <%=
               if trainee.email.blank?
-                "<b style='color: red'>email missing or invalid</b>"
+                "<b style='color: red'>email missing or invalid</b>".html_safe
               else
                 link_to 'Send Reminder', remind_job_search_profiles_path(trainee_id: trainee.id)
               end
