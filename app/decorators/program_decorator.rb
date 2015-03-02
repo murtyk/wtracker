@@ -12,12 +12,11 @@ class ProgramDecorator < Draper::Decorator
   #   end
 
   def user_klasses(user)
-    grant = Grant.find Grant.current_id
     return klasses if user.admin_access? || user.grants.include?(grant)
     assigned_klasses(user)
   end
 
   def assigned_klasses(user)
-    user.navigator_klasses.where(program_id: id)
+    user.klasses.where(program_id: id)
   end
 end

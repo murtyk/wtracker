@@ -1,6 +1,6 @@
-<%= render 'navigator_klass_titles' %>
+<%= render 'navigator_klass_titles' if show_titles_job_counts%>
 <div class = 'row-fluid' style = 'margin-top: 20px'>
-<%= render 'form', job_search: @job_search %>
+  <%= render 'form', job_search: @job_search %>
 </div>
 
 

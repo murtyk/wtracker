@@ -134,9 +134,9 @@ class User < ActiveRecord::Base
   end
 
   def klasses
-    return Klass.all if admin_or_director? || grant_admin?
-    return navigator_klasses.uniq if navigator?
-    return instructor_klasses.uniq if instructor?
+    return Klass.all if admin_access?
+    return navigator_klasses if navigator?
+    return instructor_klasses if instructor?
   end
 
   def klasses_for_selection(all_option = false)
