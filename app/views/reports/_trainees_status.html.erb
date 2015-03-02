@@ -32,7 +32,7 @@
       <td><%= trainee_status.college_name_location%></td>
       <td><%= trainee_status.notes %></td>
       <td><%= trainee_status.status %></td>
-      <td><%= link_to(trainee_status.hired_employer_name, trainee_status.hired_employer) if trainee_status.hired %></td>
+      <td><%= employer_link_or_name(trainee_status.hired_employer) if trainee_status.hired %></td>
       <td><%= trainee_status.employer_location%></td>
       <td><%= trainee_status.hire_title%> </td>
       <td><%= trainee_status.job_start_date %></td>

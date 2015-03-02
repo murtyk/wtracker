@@ -13,7 +13,7 @@
   <% report.employers.each do |employer| %>
     <% employer.employer_notes.each do |employer_note| %>
       <tr>
-        <td><%= link_to(employer.name, employer)  %></td>
+        <td><%= employer_link_or_name(employer)  %></td>
         <td><%= employer_note.created_at.to_date.to_s %></td>
         <td><%= employer_note.note %></td>
       </tr>

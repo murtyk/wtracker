@@ -16,7 +16,7 @@
 
   <% report.employers_klasses.each do |employer, klass| %>
       <tr>
-        <td><%= link_to(employer.name, employer) %></td>
+        <td><%= employer_link_or_name(employer) %></td>
         <td><%= "#{employer.city} - #{employer.county}" %></td>
         <td>
             <p><%= employer.phone_no%></p>

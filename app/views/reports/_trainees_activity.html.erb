@@ -36,7 +36,7 @@
       <td>
           <% trainee_activity.employer_interactions.each do |employer_interaction| %>
           <p>
-              <%= link_to(employer_interaction.employer_name, employer_interaction.employer) %>  - <%=employer_interaction.status_name %>
+              <%= employer_link_or_name(employer_interaction.employer) %>  - <%=employer_interaction.status_name %>
           </p>
           <% end %>
       </td>

@@ -44,7 +44,7 @@
         <td><%= trainee.land_no%></td>
         <td><%= trainee.mobile_no%></td>
         <td><%= trainee.email%></td>
-        <td><%= link_to(trainee.hired_employer.name, trainee.hired_employer) if trainee.hired %></td>
+        <td><%= employer_link_or_name(trainee.hired_employer) if trainee.hired %></td>
         <td><%= trainee.employer_location %></td>
         <td><%= trainee.job_start_date %></td>
         <td><%= trainee.pay %></td>

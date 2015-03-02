@@ -19,13 +19,12 @@ describe "companies finder" do
       expect(page).to have_text 'Not Found'
       expect(page).to have_text '(609) 465-1368'
 
-      fill_in 'source', with: 'rspec'
       select 'banking', from: 'sector_ids'
       click_button 'Select All'
       click_button 'Add Selected'
       wait_for_ajax
 
-      expect(page).to have_text 'error'
+      expect(page).to have_text 'city not found'
       expect(page).to have_text 'added'
 
     end

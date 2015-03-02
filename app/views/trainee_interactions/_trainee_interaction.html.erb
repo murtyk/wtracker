@@ -5,7 +5,7 @@
   <%= button_edit_association(trainee_interaction, trainee_page: trainee_page, title: 'Edit') %>
   <% confirm_message = trainee_interaction.delete_confirm_message %>
   <%= button_destroy_association(trainee_interaction, trainee_page: trainee_page, confirm_message: confirm_message) %>
-  <%= link_to(trainee_interaction.employer.name, trainee_interaction.employer) if trainee_page %>
+  <%= employer_link_or_name(trainee_interaction.employer) if trainee_page %>
   <%= link_to(trainee_interaction.trainee.name, trainee_interaction.trainee)  unless trainee_page %>
   <br>
   <%= trainee_interaction.short_comment %>

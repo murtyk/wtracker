@@ -23,7 +23,7 @@
       <% applied_dates = employers = titles = ""%>
       <% trainee.trainee_submits.each do |job_applied| %>
         <% applied_dates += "<p>#{job_applied.applied_on ? job_applied.applied_on.to_s : ""}</p>" %>
-        <% employers += "<p>#{link_to job_applied.employer.name, job_applied.employer}</p>" %>
+        <% employers += "<p>#{employer_link_or_name job_applied.employer}</p>" %>
         <% titles += "<p>#{job_applied.title}</p>" %>
       <% end %>
       <td><%= applied_dates.html_safe %></td>

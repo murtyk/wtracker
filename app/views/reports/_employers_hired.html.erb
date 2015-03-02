@@ -17,7 +17,7 @@
 
   <% report.hired_interactions.each do |ti| %>
     <tr>
-      <td><%= link_to(ti.employer_name, ti.employer)%></td>
+      <td><%= employer_link_or_name(ti.employer)%></td>
       <td><%= ti.employer_location%></td>
       <td><%= link_to(ti.trainee_name, trainee_path(ti.trainee)) %></td>
       <td><%= ti.trainee.funding_source_name %></td>

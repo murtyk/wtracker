@@ -7,7 +7,6 @@
   </div>
   <div class = 'span8'>
     <h4>Please enter the information below if you wish to save companies in Employer Database</h4>
-    *Source: <%= text_field_tag 'source' %>
     *Sectors:<%= select_tag "sector_ids", options_for_select(Sector.selection_list), {multiple: :multiple, size: 6} %>
   </div>
 </div>
@@ -94,12 +93,6 @@ Select All
   $("#addSelected").click(function() {
     companies = <%= raw @companies.to_json %>;
     process_id = '<%= raw @process_id %>';
-    source = $('#source').val();
-    if (source.length < 3)
-    {
-      alert('source should be minimum 3 characters');
-      return false;
-    }
     if ($('#sector_ids :selected').length == 0){
       alert("Please select at least one sector");
       return false;
@@ -114,7 +107,7 @@ Select All
       id = '#' + index;
       if($(id).prop('checked')) {
         url = '/companies_finder/add_employer';
-        params = {process_id: process_id, index: index, source: source, sector_ids: sector_ids};
+        params = {process_id: process_id, index: index, sector_ids: sector_ids};
         $.post(url, params, function(data){
           save_add_results(index, data);
           ++add_success;

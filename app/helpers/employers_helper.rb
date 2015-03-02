@@ -99,4 +99,10 @@ module EmployersHelper
       .where(id: employer_ids - emp_with_address_ids)
       .pluck(:id, :name)
   end
+
+  def employer_link_or_name(emp)
+    return emp.name unless current_user.admin_access? ||
+                           employer_sources.include?(emp.employer_source)
+    link_to(emp.name, emp)
+  end
 end

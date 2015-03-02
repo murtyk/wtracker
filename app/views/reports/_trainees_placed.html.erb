@@ -51,7 +51,7 @@
       <td><%= klass.end_date.to_s%></td>
       <td><%= klass.college_name_location%></td>
       <td><%= trainee.klass_trainees.first.notes%></td>
-      <td><%= link_to(employer.name, employer)%></td>
+      <td><%= employer_link_or_name(employer)%></td>
       <td><%= employer.location%></td>
       <td><%= (ti.hire_title.blank? || ti.hire_title == 'missing') ? "<b style='color:red'>N/A</b>".html_safe : ti.hire_title %> </td>
       <td><%= ti.start_date.to_s %></td>

@@ -11,7 +11,7 @@
 
   <% report.employers.each do |employer| %>
       <tr>
-        <td><%= link_to(employer.name, employer) %></td>
+        <td><%= employer_link_or_name(employer) %></td>
         <td>
             <p>Main Number: <%= employer.phone_no%></p>
             <% employer.contacts.each do |contact| %>
