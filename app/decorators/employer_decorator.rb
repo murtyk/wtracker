@@ -78,7 +78,7 @@ class EmployerDecorator < Draper::Decorator
     html = '<h4>' \
            'Short Listed Trainees ' +
            h.button_new_association(TraineeInteraction, employer_id: id) +
-          '</h4>'
+           '</h4>'
     html.html_safe
   end
 
@@ -156,13 +156,12 @@ class EmployerDecorator < Draper::Decorator
     return nil unless EmployerFilePolicy.new.index?
 
     html = '<hr>'  \
-           '<h4>'  +
+           '<h4>'  \
            'Files ' +
            h.button_new_association(EmployerFile, employer_id: object.id,
-                                                 title: 'Add Document',
-                                                 skip_policy_check: true) +
+                                                  title: 'Add Document',
+                                                  skip_policy_check: true) +
            '</h4>'
     html.html_safe
   end
-
 end

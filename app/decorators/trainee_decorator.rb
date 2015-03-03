@@ -25,9 +25,9 @@ class TraineeDecorator < Draper::Decorator
     return nil unless object.home_address
 
     addr = '' + h.h(line1) + '<br>' +
-                h.h(city) + '<br>' +
-                h.h("#{state} #{zip}") +
-                '<br>county: <b>' + h.h(county_name) + '</b><br>'
+           h.h(city) + '<br>' +
+           h.h("#{state} #{zip}") +
+           '<br>county: <b>' + h.h(county_name) + '</b><br>'
 
     addr.html_safe
   end
@@ -50,7 +50,7 @@ class TraineeDecorator < Draper::Decorator
     return nil unless TraineeFilePolicy.new.index?
 
     html = '<hr>'  \
-           '<h4>'  +
+           '<h4>'  \
            'Files ' +
            h.button_new_association(TraineeFile, trainee_id: object.id,
                                                  title: 'Add Document',
@@ -115,7 +115,7 @@ class TraineeDecorator < Draper::Decorator
            'Interested Employers ' +
            h.button_new_association(TraineeInteraction, trainee_id: id,
                                                         title: 'New Employer Interest') +
-          '</h4>'
+           '</h4>'
     html.html_safe
   end
 
@@ -126,8 +126,8 @@ class TraineeDecorator < Draper::Decorator
 
   def klass_trainees
     kts = object.klass_trainees
-                .joins(:klass)
-                .where(klasses: { grant_id: Grant.current_id })
+          .joins(:klass)
+          .where(klasses: { grant_id: Grant.current_id })
     kts.decorate
   end
 end

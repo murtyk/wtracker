@@ -14,7 +14,7 @@ class KlassInteractionDecorator < Draper::Decorator
   def status
     return KlassInteraction::STATUSES[object.status] unless klass_event.cancelled?
     "<span style='color: red'>".html_safe +
-    KlassInteraction::STATUSES[object.status] +
-    '</span>'.html_safe
+      KlassInteraction::STATUSES[object.status] +
+      '</span>'.html_safe
   end
 end

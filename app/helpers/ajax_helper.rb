@@ -67,7 +67,7 @@ module AjaxHelper
   def ajax_form_cancel_button(resource)
     id = cancel_button_id(resource)
     "<input id='#{id}' class='btn btn-flat btn-danger' type='button' value='Cancel'>" \
-    "</input>".html_safe
+    '</input>'.html_safe
   end
 
   def ajax_cancel_and_submit_buttons(f, submit_label = nil)

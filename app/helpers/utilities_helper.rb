@@ -13,16 +13,22 @@ module UtilitiesHelper
     return nil if s_date.blank?
     m, d, y = s_date.split('/') # making an assumption %m/%d/%Y.delete("^0-9")
     return nil unless Date.valid_date?(y.to_i, m.to_i, d.to_i)
+
     s_dt = s_date
+
     format ||= Date::DATE_FORMATS[:default]
-    if format == '%m/%d/%Y'
-      date_parts = s_dt.split('/')
-      if date_parts[2].size == 2
-        date_parts[2] = '20' + date_parts[2]
-        s_dt = date_parts.join('/')
-      end
-    end
+    s_dt = build_mm_dd_yyyy(s_dt) if format == '%m/%d/%Y'
+
     DateTime.strptime(s_dt, format).to_date
+  end
+
+  # input is either mm/dd/yy or mm/dd/yyyy
+  # output should be mm/dd/yyyy
+  def build_mm_dd_yyyy(dt)
+    dp = dt.split('/')
+    return dt if dp[2].size == 4
+    dt[2] = '20' + dt[2] if dt[2].size == 2
+    dp.join('/')
   end
 
   def name_and_link(object, to_label = false)
@@ -34,7 +40,7 @@ module UtilitiesHelper
     return nil if calendar.invalid_dates
     link_to(visits_calendar_klass_path(calendar.klass)) do
       "<i class = 'icon-calendar icon-2x green'></i>" \
-      "<strong> Full Calendar</strong>".html_safe
+      '<strong> Full Calendar</strong>'.html_safe
     end
   end
 end

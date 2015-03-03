@@ -13,17 +13,22 @@ module ButtonsHelper
 
   def add_button(btn_class, name, resource, params = {}, tip = nil)
     return nil unless policy(resource).create?
-    name = name.nil? ? '' : ' ' + name.to_s.squish
-    id = 'new_' + resource.name.underscore.downcase + '_link'
-    title = tip || "New #{resource.name}"
+
+    name     = name.nil? ? '' : ' ' + name.to_s.squish
+    title    = tip || "New #{resource.name}"
     params ||= {}
+
     link_to(new_polymorphic_path(resource, params),
-            id: id,
+            id: build_add_button_id(resource),
             class: btn_class,
             rel: 'tooltip',
             title: title) do
       "<i class='icon-plus'>#{name}</i>".html_safe
     end
+  end
+
+  def build_add_button_id(resource)
+    'new_' + resource.name.underscore.downcase + '_link'
   end
 
   def plus_button(resource, params = {}, tip = nil) # resource is Class

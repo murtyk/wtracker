@@ -16,12 +16,12 @@ class KlassEventDecorator < Draper::Decorator
     event_date_name = "#{event_date} - #{name}"
 
     return "<p style='margin-left: 10px'>".html_safe +
-           event_date_name +
-           '</p>'.html_safe unless cancelled?
+      event_date_name +
+      '</p>'.html_safe unless cancelled?
 
     "<p style='margin-left: 10px; color: red'>".html_safe +
-    event_date_name +
-    '</p>'.html_safe
+      event_date_name +
+      '</p>'.html_safe
   end
 
   def klass_interaction_status
@@ -38,8 +38,10 @@ class KlassEventDecorator < Draper::Decorator
 
   def time
     return 'All Day' unless start_time_hr
-    "#{start_time_hr}:#{'%02d' % start_time_min.to_i} #{start_ampm} to" \
-    "#{end_time_hr}:#{'%02d' % end_time_min.to_i} #{end_ampm}"
+
+    format('%s:%02d%s', start_time_hr, start_time_min.to_i, start_ampm) +
+      ' to ' +
+      format('%s:%02d%s', end_time_hr, end_time_min.to_i, end_ampm)
   end
 
   def edit_link_id
@@ -57,18 +59,16 @@ class KlassEventDecorator < Draper::Decorator
   end
 
   def interactions_grouped_by_status
-    interaction_statuses = []
-    KlassInteraction::STATUSES.each do |k, v|
+    KlassInteraction::STATUSES.map do |k, v|
       klass_interactions = interactions_by_status(k)
-      if klass_interactions.any?
-        data = OpenStruct.new
-        data.status = k
-        data.header = "<p><strong>#{v} " \
-                      "(#{klass_interactions.count})</strong></p>".html_safe
-        data.klass_interactions = klass_interactions
-        interaction_statuses << data
-      end
-    end
-    interaction_statuses
+      next if klass_interactions.empty?
+
+      data = OpenStruct.new
+      data.status = k
+      data.header = "<p><strong>#{v} " \
+                    "(#{klass_interactions.count})</strong></p>".html_safe
+      data.klass_interactions = klass_interactions
+      data
+    end.compact
   end
 end
