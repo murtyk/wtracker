@@ -4,7 +4,7 @@ class Report
   extend ActiveModel::Naming
 
   attr_accessor :report_name, :start_date, :end_date, :include_all_dates,
-                :klass_id, :klass_ids, :include_all_dates, :user_id
+                :klass_id, :klass_ids, :include_all_dates, :user_id, :user
 
   TRAINEES_DETAILS                = 'trainees_details'
   TRAINEES_DETAILS_WITH_PLACEMENT = 'trainees_details_with_placement'
@@ -43,6 +43,7 @@ class Report
     init_klass_ids(user, params) if params
     init_dates(params) if params && params[:start_date]
     @user_id = user.id
+    @user = user
     post_initialize(params)
   end
 
@@ -50,10 +51,10 @@ class Report
     false
   end
 
-  def self.reports_by_type
+  def self.reports_by_type(user)
     [['Class Reports', class_reports],
      ['Trainee Reports', trainee_reports],
-     ['Employer Reports', employer_reports]]
+     ['Employer Reports', employer_reports(user)]]
   end
 
   def self.class_reports
@@ -66,7 +67,9 @@ class Report
      TRAINEES_NEAR_BY_EMPLOYERS]
   end
 
-  def self.employer_reports
+  def self.employer_reports(user)
+    return [EMPLOYERS_HIRED, EMPLOYERS_ADDRESS_MISSING] unless user.admin_access?
+
     [EMPLOYERS_HIRED, EMPLOYERS_INTERESTED_TRAINEES, ACTIVE_EMPLOYERS,
      EMPLOYERS_ACTIVITIES_WITH_NOTES, EMPLOYERS_ADDRESS_MISSING]
   end

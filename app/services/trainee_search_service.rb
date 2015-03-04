@@ -20,7 +20,7 @@ class TraineeSearchService
       [results, trainee_email]
     end
 
-    def search(params)
+    def search(user, params)
       return [] unless params[:filters]
 
       last_name     = params[:filters][:last_name]
@@ -28,11 +28,27 @@ class TraineeSearchService
 
       return [] if klass_id == 0 && last_name.blank?
 
-      return Klass.find(klass_id).trainees.order(:first, :last) if last_name.blank?
-      Trainee.where('last ilike ?', last_name + '%').order(:first, :last)
+      return search_by_last_name(user, last_name) unless last_name.blank?
+
+      Klass.find(klass_id).trainees.order(:first, :last)
     end
 
     private
+
+    # since only users with admin_access can add trainees, their scope should include all
+    # Nav Level 3 can only see the trainees added to classes
+    def search_by_last_name(user, last_name)
+
+      if user.admin_access?
+       return Trainee.where('trainees.last ilike ?', last_name + '%').order(:first, :last)
+      end
+
+      Trainee.joins(:klass_trainees)
+        .where(klass_trainees: { klass_id: user.klasses.pluck(:id) })
+        .where('trainees.last ilike ?', last_name + '%')
+        .order(:first, :last)
+        .uniq
+    end
 
     def build_email(user, results)
       ids   = results.map(&:id)

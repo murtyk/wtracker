@@ -80,11 +80,6 @@ describe "Job Search" do
           sleep 1
           expect(page).to have_text "Shared Job Information"
         end
-
-        visit('/job_shares')
-        select(klass_label, from: 'select_klass')
-        click_on 'Find'
-        expect(page).to have_text title2
       end
     end
   end

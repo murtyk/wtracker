@@ -42,7 +42,7 @@ class TraineesController < ApplicationController
 
   def index
     @filter_info  = params[:filters] || {}
-    @trainees = TraineeSearchService.search(params)
+    @trainees = TraineeSearchService.search(current_user, params)
   end
 
   def mapview

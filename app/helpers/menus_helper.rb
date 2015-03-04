@@ -35,6 +35,7 @@ module MenusHelper
   end
 
   def dashboard_menu
+    return unless current_user.admin_access?
     menu_link('Dashboard', summary_dashboards_path)
   end
 
@@ -44,7 +45,11 @@ module MenusHelper
 
   def grants_menu
     return grants_grants_menu unless grants_dropdown_menu?
-    items = grants_list_menu + grant_context_change_menu
+    if current_user.admin_access?
+      items = grants_list_menu + grant_context_change_menu
+    else
+      items = grant_context_change_menu
+    end
     build_dropdown_menu('Grants', items)
   end
 
@@ -161,7 +166,8 @@ module MenusHelper
 
   def trainees_menu
     items = trainees_search_menu +
-            trainees_search_by_skills_menu
+            trainees_search_by_skills_menu +
+            trainees_advanced_search_menu
     items +=  trainees_create_menu_items
     items +=  trainees_mapview_menu_items
     items +=  divider_menu +
@@ -191,6 +197,7 @@ module MenusHelper
   end
 
   def trainees_advanced_search_menu
+    return unless current_user.admin_access?
     menu_link('Advanced Search', advanced_search_trainees_path)
   end
 
@@ -199,7 +206,7 @@ module MenusHelper
   end
 
   def trainees_import_menu
-    return unless policy(Trainee).create?
+    return unless policy(Trainee).import?
     menu_link('Import from a file', new_import_status_path(resource: 'trainees'))
   end
 
@@ -249,17 +256,17 @@ module MenusHelper
   end
 
   def employers_add_menu
-    return nil unless policy(Employer).create?
+    return unless policy(Employer).create?
     menu_link('Add', new_employer_path)
   end
 
   def employers_import_menu
-    return nil unless policy(Employer).create?
+    return unless policy(Employer).import?
     menu_link('Import from a file', new_import_status_path(resource: 'employers'))
   end
 
   def companies_search_menu
-    return nil unless policy(Employer).create?
+    return unless current_user.admin_access? && policy(Employer).create?
     menu_link('Search for Companies in a File', new_companies_finder_path)
   end
 
@@ -304,7 +311,7 @@ module MenusHelper
   end
 
   def reports_menu_items
-    Report.reports_by_type.map do |type, reports|
+    Report.reports_by_type(current_user).map do |type, reports|
       '<li class="dropdown-submenu">' \
         '<a tabindex="-1" href="#">' + type + '</a>' \
         '<ul class="dropdown-menu">' +

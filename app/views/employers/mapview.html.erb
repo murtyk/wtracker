@@ -5,7 +5,13 @@
 
     <div class='span3'>
       Counties<br>
-      <%= f.input_field :county_ids, label: 'County', collection: employer_counties_for_selection, selected: @employer_map.selected_county_ids, class: "search-query input-block-level", style: 'height: 90px', multiple: true, include_blank: true %>
+      <%= f.input_field :county_ids, label: 'County',
+                                     collection: employer_counties_for_selection,
+                                     selected: @employer_map.selected_county_ids,
+                                     class: "search-query input-block-level",
+                                      style: 'height: 90px',
+                                      multiple: true,
+                                      include_blank: true %>
     </div>
 
     <div class='span5'>
@@ -14,7 +20,11 @@
           Sector
         </div>
         <div class = 'span8'>
-          <%= f.input_field :sector_id, label: 'Sector', collection: employer_sectors_for_selection, selected: @employer_map.sector_id, include_blank: true, class: "search-query input-block-level" %>
+          <%= f.input_field :sector_id, label: 'Sector',
+                                        collection: employer_sectors_for_selection,
+                                        selected: @employer_map.sector_id,
+                                        include_blank: true,
+                                        class: "search-query input-block-level" %>
         </div>
       </div>
       <div class = 'row-fluid' style='margin-left: 10px'>
@@ -22,7 +32,10 @@
           Trainees of Class
         </div>
         <div class = 'span8'>
-          <%= f.input_field :klass_id, collection: Klass.all, selected: @employer_map.klass_id, include_blank: true, class: "search-query input-block-level" %>
+          <%= f.input_field :klass_id, collection: current_user.klasses_for_selection,
+                                       selected: @employer_map.klass_id,
+                                       include_blank: true,
+                                       class: "search-query input-block-level" %>
         </div>
       </div>
 
@@ -35,7 +48,9 @@
         </div>
       </div>
 
-      <%= f.check_box :show_colleges, checked: @employer_map.show_colleges?, style: 'margin: 0 5px 0 10px'%><span class="lbl" style='padding-top: 0px'>Show Colleges</span>
+      <%= f.check_box :show_colleges, checked: @employer_map.show_colleges?,
+                                      style: 'margin: 0 5px 0 10px'%>
+        <span class="lbl" style='padding-top: 0px'>Show Colleges</span>
     </div>
 
     <div class='span3' style = 'margin-top: 10px'>

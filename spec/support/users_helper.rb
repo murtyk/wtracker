@@ -91,4 +91,13 @@ module  UserHelper
     fill_in 'user_password', with: "password"
     click_button 'Sign in'
   end
+
+  def signin_applicants_nav
+    switch_to_applicants_domain #apple
+    visit root_path
+    # click_link 'Sign In'
+    fill_in 'user_email', with: "cameron@nomail.net"
+    fill_in 'user_password', with: "password"
+    click_button 'Sign in'
+  end
 end

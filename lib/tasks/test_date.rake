@@ -217,8 +217,8 @@ namespace :testprep do
     create_employment_statuses
     create_grant_trainee_statuses(grant)
 
-    create_college('Newark Campus', '765 Newman Springs Rd', 'Middletown', 'NJ',
-                   '07738', 40.3279, -74.1334)
+    c1 = create_college('Newark Campus', '765 Newman Springs Rd', 'Middletown', 'NJ',
+                        '07738', 40.3279, -74.1334)
 
     create_user('Mariane', 'Hilpert', 'Middletown', 1, 1, 'hilpert@mail.com')
     create_user('Chris',   'Corkery', 'Middletown', 1, 2, 'corkery@mail.com')
@@ -226,6 +226,14 @@ namespace :testprep do
 
     nav1.counties << nj_state.counties.where(name: 'Middlesex').first
     nav1.grants << grant
+
+    nav2 = create_user('Cameron', 'Diaze', 'Camden', 1, 3, 'cameron@nomail.net')
+    p1 = create_program('program 1', 'description of program11',
+                          Sector.last.id, 400)
+
+    k1 = create_klass(p1, 'CNC 101', '', 'June 27, 2012',  'Aug 17, 2018',
+                        3, 272, c1.id)
+    KlassNavigator.create(klass_id: k1.id, user_id: nav2.id)
   end
 
   def create_grant_trainee_statuses(grant)

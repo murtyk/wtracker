@@ -3,9 +3,14 @@
   <%= simple_form_for :filters, method: :get, url: [:mapview, :trainees], html: { class: 'form-search', style: 'margin-bottom: 0px' } do |f| %>
 
     Class
-    <%= f.input_field :klass_id, collection: Klass.all, selected: @trainees_map.klass_id, style: 'width: 350px', include_blank: true %>
+    <%= f.input_field :klass_id, collection: current_user.klasses_for_selection,
+                                 selected: @trainees_map.klass_id,
+                                 style: 'width: 350px',
+                                 include_blank: true %>
     Trainee
-    <%= f.input_field :trainee_id, collection: @trainees_map.klass_trainees, selected: @trainees_map.trainee_id, include_blank: 'All'%>
+    <%= f.input_field :trainee_id, collection: @trainees_map.klass_trainees,
+                                   selected: @trainees_map.trainee_id,
+                                   include_blank: 'All'%>
     <button type='submit' id='submit-button' class="btn btn-flat btn-primary btn-small btn-spinner" data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Processing...">
       <i class='icon-search icon-white'></i> Find
     </button>
@@ -13,9 +18,14 @@
       <i class='icon-question-sign icon-white icon-2x'></i>
     </button>
     <br><br>
-    <%= f.check_box :near_by_employers, checked: @trainees_map.near_by_employers?, style: 'margin: 0 5px 0 0;'%> Search Near By Employers
-    in Sector <%= f.input_field :sector_id, collection: employer_sectors_for_selection, selected: @trainees_map.sector_id%>
-    within <%=f.number_field :radius, value: @trainees_map.radius, step: 1, in: 5..30, style: 'width: 40px'%> miles
+    <%= f.check_box :near_by_employers, checked: @trainees_map.near_by_employers?,
+                                        style: 'margin: 0 5px 0 0;'%> Search Near By Employers
+    in Sector <%= f.input_field :sector_id, collection: employer_sectors_for_selection,
+                                            selected: @trainees_map.sector_id%>
+    within <%=f.number_field :radius, value: @trainees_map.radius,
+                                      step: 1,
+                                      in: 5..30,
+                                      style: 'width: 40px'%> miles
 
   <% end %>
 </div>

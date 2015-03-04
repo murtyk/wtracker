@@ -1,10 +1,12 @@
 module TraineesHelper
-  def create_trainees(n = 1, klass = nil)
+  def create_trainees(n = 1, klass = nil, seq = nil)
 
     klass ||= get_an_existing_klass
     klass_label = klass.to_label
 
-    seq = get_trainee_ids.count
+    seq ||= get_trainee_ids.count
+    seq = seq.to_i
+
     n.times do
       seq += 1
       visit '/trainees/new'

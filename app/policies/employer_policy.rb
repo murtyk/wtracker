@@ -8,6 +8,10 @@ class EmployerPolicy < Struct.new(:user, :employer)
     new?
   end
 
+  def import?
+    user.admin_access?
+  end
+
   def edit?
     new?
   end

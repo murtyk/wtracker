@@ -156,11 +156,14 @@ class Klass < ActiveRecord::Base
   end
 
   def klass_instructors_sorted
-    klass_instructors.joins(:user).order('users.first, users.last')
+    klass_instructors.joins(:user)
+      .where(users: { status: 1 })
+      .order('users.first, users.last')
   end
 
   def klass_navigators_sorted
-    klass_navigators.joins(:user).order('users.first, users.last')
+    klass_navigators.joins(:user)
+      .where(users: { status: 1 }).order('users.first, users.last')
   end
 
   def instructors_for_selection

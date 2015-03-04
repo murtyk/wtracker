@@ -7,6 +7,7 @@
 <% end %>
 
 <% @programs.each do |program| %>
+  <% next if program.user_klasses(current_user).empty? %>
   <h4>
     <%= program.name%>
     <%= new_button(Klass, {program_id: program.id}, "New Class for #{program.name}")%>

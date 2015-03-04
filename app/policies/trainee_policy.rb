@@ -9,6 +9,10 @@ class TraineePolicy < Struct.new(:user, :trainee)
     new?
   end
 
+  def import?
+    new?
+  end
+
   def edit?
     user.admin_or_director? || user.navigator?
   end

@@ -29,12 +29,16 @@ class DashboardsController < ApplicationController
     end
 
     # we come here when there is only one grant and user is not admin_or_director
-    redirect_to current_user.klasses.first
+    redirect_to klasses_path
   end
 
   def grantselected
     Grant.current_id = session[:grant_id] = params[:grant][:id].to_i
-    redirect_to summary_dashboards_path
+    if current_user.admin_access?
+      redirect_to summary_dashboards_path
+    else
+      redirect_to klasses_path
+    end
   end
 
   def summary

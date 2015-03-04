@@ -3,30 +3,43 @@ require 'rails_helper'
 describe "Trainees" do
     before :each do
       signin_admin
-      destroy_all_created
+      Account.current_id = 1
+      Grant.current_id = 1
+      klass = Klass.first
+      @klass_label = klass.to_label
     end
     it 'create' do
-      create_trainees(1)
-      expect(page).to have_text 'First1 Last1'
+      visit '/trainees/new'
+      fill_in 'First Name', with: "First1000"
+      fill_in 'Last Name', with: "Last1000"
+      fill_in 'Email', with: "Last2000@nomail.net"
+      select(@klass_label, from: 'trainee_klass_ids')
+      click_button 'Save'
+      expect(page).to have_text 'First1000 Last1000'
     end
 
     it 'update' do
-      trainee_ids = create_trainees(1)
-      click_on "edit_trainee_#{trainee_ids[0]}"
+
+      trainee = Trainee.create(first: 'First2000', last: 'Last2000')
+
+      trainee_id = trainee.id
+
+      visit "/trainees/#{trainee_id}"
+      click_on "edit_trainee_#{trainee_id}"
       select 'Male',     from: 'trainee_gender'
       fill_in 'Land no', with: '7778882222'
       fill_in 'Dob',     with: '06/07/1992'
       select 'Asian',    from: 'trainee_race_id'
       select 'GED',      from: 'trainee_tact_three_attributes_education_level'
-      fill_in 'Email',   with: 'last1@mail.com'
+      fill_in 'Email',   with: 'last2000@nomail.net'
 
       click_button 'Save'
-      expect(page).to have_text 'last1@mail.com'
+      expect(page).to have_text 'last2000@nomail.net'
       expect(page).to have_text '(777) 888-2222'
 
       expect(page).to_not have_text 'Mercer' # not entered the address yet so no county
 
-      click_on "edit_trainee_#{trainee_ids[0]}"
+      click_on "edit_trainee_#{trainee_id}"
       VCR.use_cassette('trainee_update') do
         fill_in 'trainee_home_address_attributes_line1', with: '10 Rembrandt'
         fill_in 'trainee_home_address_attributes_city', with: 'East Windsor'
@@ -43,8 +56,8 @@ describe "Trainees" do
       Account.current_id = 1
       Grant.current_id = 1
 
-      t1 = Trainee.create(first: 'First1', last: 'Last1', email: 'one@nomail.com')
-      t2 = Trainee.create(first: 'First2', last: 'Last2', email: 'two@nomail.com')
+      t1 = Trainee.create(first: 'First51', last: 'Last51', email: 'one@nomail.com')
+      t2 = Trainee.create(first: 'First52', last: 'Last52', email: 'two@nomail.com')
 
       program = Program.first
       college = College.first
@@ -56,10 +69,8 @@ describe "Trainees" do
       k2.trainees << t1
       k2.trainees << t2
 
-      # create_klasses(2, 2)
-
       href_link('trainees').click
-      # klass = get_klasses.first
+
       klass = k1
       select(klass.name, from: 'filters_klass_id')
       click_button 'Find'
@@ -70,22 +81,25 @@ describe "Trainees" do
 
       fill_in 'filters_last_name', with: 'last'
       click_button 'Find'
-      (1..2).each {|n| expect(page).to have_text "First#{n} Last#{n}"}
-
+      (1..2).each {|n| expect(page).to have_text "First#{50+n} Last#{50+n}"}
+    end
+end
+describe "Trainees" do
+    before :each do
+      signin_admin
     end
 
     it 'delete', js: true do
-      create_trainees(2)
+      create_trainees(2, nil, 3000)
       visit '/trainees'
       fill_in 'filters_last_name', with: 'last'
       click_button 'Find'
-      (1..2).each {|n| expect(page).to have_text "First#{n} Last#{n}"}
+      (1..2).each {|n| expect(page).to have_text "First#{3000+n} Last#{3000+n}"}
       get_trainees.each do |trainee|
         click_on "destroy_trainee_#{trainee.id}_link"
         page.driver.browser.switch_to.alert.accept
         wait_for_ajax
       end
-      (1..2).each {|n| expect(page).to_not have_text "First#{n} Last#{n}"}
-      destroy_all_created
+      (1..2).each {|n| expect(page).to_not have_text "First#{3000+n} Last#{3000+n}"}
     end
 end
