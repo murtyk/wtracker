@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 
   store_accessor :data, :acts_as_admin, :default_employer_source_id
 
-  delegate :account_name, to: :account
+  delegate :name, to: :account, prefix: true
 
   validates :first, presence: true, length: { minimum: 2, maximum: 20 }
   validates :last, presence: true, length: { minimum: 2, maximum: 20 }

@@ -4,9 +4,9 @@ class TraineesNotPlacedReport < Report
     return unless params
 
     kts = KlassTrainee.includes(:trainee, :klass)
-                      .where(klass_trainees: { status: [2, 3] })
-                      .where(klasses: { id: klass_ids })
-                      .references(:trainees)
+          .where(klass_trainees: { status: [2, 3] })
+          .where(klasses: { id: klass_ids })
+          .references(:trainees)
     kts.to_a.sort! { |a, b| a.trainee.name <=> b.trainee.name }
 
     @trainees_not_placed = kts.map { |kt| TraineeNotPlaced.new(kt) }
@@ -20,7 +20,5 @@ class TraineesNotPlacedReport < Report
     'Trainees Dropped or Not Placed'
   end
 
-  def count
-    trainees_not_placed.count
-  end
+  delegate :count, to: :trainees_not_placed
 end

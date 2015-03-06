@@ -18,7 +18,5 @@ class KlassInteraction < ActiveRecord::Base
     klass_event.name
   end
 
-  def employer_name
-    employer.name
-  end
+  delegate :name, to: :employer, prefix: true
 end

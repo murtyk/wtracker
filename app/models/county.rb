@@ -7,7 +7,6 @@ class County < ActiveRecord::Base
 
   has_many :polygons, as: :mappable, dependent: :destroy
   attr_accessible :name
-  alias_attribute(:county_name, :name)
 
   def self.search(filters, include_polygons = false)
     counties = find_counties(filters)

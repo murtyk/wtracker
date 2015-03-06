@@ -16,13 +16,11 @@ class EmployersHiredReport < Report
     'Employers Hired'
   end
 
-  def count
-    hired_interactions.count
-  end
+  delegate :count, to: :hired_interactions
 
   def trainee_interactions
     TraineeInteraction.joins(trainee: :klasses)
-                      .includes(employer: :address)
-                      .where(status: 4, klasses: { id: klass_ids }).to_a
+      .includes(employer: :address)
+      .where(status: 4, klasses: { id: klass_ids }).to_a
   end
 end

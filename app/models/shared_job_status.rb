@@ -36,9 +36,7 @@ class SharedJobStatus < ActiveRecord::Base
     trainee.email
   end
 
-  def trainee_name
-    trainee.name
-  end
+  delegate :name, to: :trainee, prefix: true
 
   def job_details_url
     shared_job.details_url

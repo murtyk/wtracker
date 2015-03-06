@@ -31,7 +31,7 @@ class Employer < ActiveRecord::Base
   validates :name, presence: true, length: { minimum: 3, maximum: 100 }
   # validates :source, presence: true, length: { minimum: 3, maximum: 100 }
 
-  delegate :employer_source_name, to: :employer_source
+  delegate :name, to: :employer_source, prefix: true
   before_save :cb_before_save
 
   belongs_to :account
@@ -105,12 +105,12 @@ class Employer < ActiveRecord::Base
     return duplicate_with_address if !assume_no_address && address
 
     dupes = Employer.where('name ILIKE ? ', name)
-      .where(employer_source_id: employer_source_id)
-      .where.not(id: id)
+            .where(employer_source_id: employer_source_id)
+            .where.not(id: id)
 
     # do we have one without address?
 
-    dupes.each{ |d| return true if !d.address }
+    dupes.each { |d| return true unless d.address }
     false
   end
 

@@ -14,9 +14,7 @@ class EmployersActivitiesWithNotesReport < Report
     'employers_activities_selection'
   end
 
-  def count
-    employers.count
-  end
+  delegate :count, to: :employers
 
   def employers
     @employers || []

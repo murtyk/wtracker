@@ -77,7 +77,7 @@ class KlassInteractionFactory
 
   def self.update_or_create_klass_interaction(klass_event, employer, status)
     ki = klass_event.klass_interactions
-                    .find_or_initialize_by(employer_id: employer.id)
+         .find_or_initialize_by(employer_id: employer.id)
     ki.status = status
     ki.save!
   end

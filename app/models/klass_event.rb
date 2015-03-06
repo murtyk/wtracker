@@ -40,9 +40,7 @@ class KlassEvent < ActiveRecord::Base
     klass == k
   end
 
-  def klass_name
-    klass.name
-  end
+  delegate :name, to: :klass, prefix: true
 
   def employer_names
     employers.pluck(:name)

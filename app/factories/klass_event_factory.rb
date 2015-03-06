@@ -32,7 +32,7 @@ class KlassEventFactory
     employer_ids = params[:klass_event].delete(:employer_ids)
     employer_ids.delete('')
 
-    new_ids             = employer_ids.map { |id| id.to_i }
+    new_ids             = employer_ids.map(&:to_i)
     existing_ids        = klass_event.klass_interactions.pluck(:employer_id)
     delete_ids, add_ids = delete_and_add_ids(existing_ids, new_ids)
 

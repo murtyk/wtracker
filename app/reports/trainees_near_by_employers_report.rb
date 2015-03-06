@@ -5,7 +5,6 @@ class TraineesNearByEmployersReport < Report
 
   attr_reader :data, :max_contacts, :status, :report_id
 
-
   def post_initialize(params)
     return unless params && (params[:klass_id] || params[:report_id])
     init_filter_values(params) if params[:klass_id]
@@ -22,12 +21,8 @@ class TraineesNearByEmployersReport < Report
     trainee = @data.trainees_data[next_index].trainee
 
     near_by_emp_ids = near_by_employer_ids(trainee)
-    employers_data = near_by_emp_ids.map do |employer_id|
-      employer_data = OpenStruct.new
-      employer_data.employer_id = employer_id
-      employer_data.contact_ids = Contact.where(contactable_id: employer_id).pluck(:id)
-      employer_data
-    end
+    employers_data  = build_employers_data(near_by_emp_ids)
+
     @data.employer_ids |= near_by_emp_ids
     @data.contact_ids |= Contact.where(contactable_id: near_by_emp_ids).pluck(:id)
     @data.trainees_data[next_index].employers_data = employers_data
@@ -37,6 +32,13 @@ class TraineesNearByEmployersReport < Report
     determine_processing_status
     write_cache
     @status
+  end
+
+  def build_employers_data(near_by_emp_ids)
+    near_by_emp_ids.map do |e_id|
+      contact_ids = Contact.where(contactable_id: e_id).pluck(:id)
+      OpenStruct.new(employer_id: e_id, contact_ids: contact_ids)
+    end
   end
 
   def title
@@ -128,9 +130,9 @@ class TraineesNearByEmployersReport < Report
                     longitude: trainee_address.longitude)
     a.id = trainee_address.id
     near_by_emp_ids = a.nearbys(radius)
-                       .where(addressable_type: 'Employer',
-                              addressable_id: sector_employers_ids)
-                       .map { |addr| addr.addressable_id }
+                      .where(addressable_type: 'Employer',
+                             addressable_id: sector_employers_ids)
+                      .map(&:addressable_id)
 
     a.id = nil
     a.delete
@@ -161,7 +163,7 @@ class TraineesNearByEmployersReport < Report
 
   def find_sector_employers
     @data[:sector_employers_ids] = EmployerSector.where(sector_id: sector_id)
-                                                 .pluck(:employer_id)
+                                   .pluck(:employer_id)
   end
 
   def generate_report_id
@@ -187,7 +189,8 @@ class TraineesNearByEmployersReport < Report
   end
 
   def fetch_employers_and_contacts
-    employers = Employer.includes(:address).where(id: @data.employer_ids).decorate
+    employers = Employer.includes(:address, :employer_source)
+                .where(id: @data.employer_ids).decorate
     @employers_hash = Hash[*employers.map { |employer| [employer.id, employer] }.flatten]
 
     contacts = Contact.where(id: @data.contact_ids).decorate

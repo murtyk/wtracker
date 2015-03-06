@@ -15,7 +15,7 @@ class ImportStatus < ActiveRecord::Base
   belongs_to :account
   has_many :import_fails, dependent: :destroy
 
-  delegate :account_name, to: :account
+  delegate :name, to: :account, prefix: true
 
   before_save :default_values
   before_destroy :delete_aws_file

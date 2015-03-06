@@ -2,13 +2,16 @@
 class KlassTraineeStatus < DelegateClass(KlassTrainee)
   attr_reader :hired_employer, :hired
 
+  delegate :name, to: :hired_employer, prefix: true
+  delegate :id, to: :klass, prefix: true
+  delegate :funding_source_name, to: :trainee
+
   def initialize(obj)
     super(obj)
     @hired_interaction = trainee.hired_employer_interaction
-    if @hired_interaction
-      @hired = true
-      @hired_employer = @hired_interaction.employer
-    end
+    return unless @hired_interaction
+    @hired = true
+    @hired_employer = @hired_interaction.employer
   end
 
   def status
@@ -35,23 +38,11 @@ class KlassTraineeStatus < DelegateClass(KlassTrainee)
     @hired_interaction.hire_salary if @hired_interaction
   end
 
-  def hired_employer_name
-    hired_employer.name
-  end
-
   def employer_location
     hired_employer.location if hired_employer
   end
 
   def student_id
     trainee.trainee_id
-  end
-
-  def klass_id
-    klass.id
-  end
-
-  def funding_source_name
-    trainee.funding_source_name
   end
 end

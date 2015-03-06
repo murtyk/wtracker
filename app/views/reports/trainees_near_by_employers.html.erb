@@ -1,21 +1,25 @@
 <h1><%= @report.title%></h1>
 
 <div class = 'row-fluid filters-div' style='margin-bottom:10px'>
-<%= simple_form_for @report, as: :report, method: :post, url: '/reports', html: { class: 'form-search form-horizontal'}, remote: true do |f| %>
+<%= simple_form_for @report, as: :report, method: :post, url: '/reports',
+                             html: { class: 'form-search form-horizontal'},
+                             remote: true do |f| %>
     <%= f.hidden_field :report_name %>
     <div class='span7'>
     <%= f.input :klass_id, collection: current_user.klasses_for_selection(false),
                            label: 'Class', include_blank: false,
                            input_html: { class: "search-query", style: 'width: 490px;' } %>
 
-    <%= f.input :sector_id, collection: Sector.all, label: 'Sector',
+    <%= f.input :sector_id, collection: employer_sectors_for_selection, label: 'Sector',
                             include_blank: false,
-                            input_html: { class: "search-query" }%>
+                            input_html: { class: "search-query", style: 'width: 490px;' }%>
 
     <%= f.input :distance, input_html: { style: 'width: 50px;' } %>
     </div>
     <div class='span2'>
-    <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+    <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
+            style='margin-left: 20px'
+            data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
         <i class="icon-search icon-white"></i>Find
     </button>
     </div>
@@ -64,7 +68,11 @@
           <td><%= trainee.email %></td>
           <td><%= trainee.land_no %></td>
           <td><%= trainee.home_address %></td>
-          <td><%= employer.name %></td>
+          <td>
+              <%= employer.name %>
+              <br> Source:
+              <%= employer.employer_source_name %>
+          </td>
           <td><%= employer.address_details(true) %></td>
           <% contacts.each do |contact| %>
             <td><%= contact.details %></td>

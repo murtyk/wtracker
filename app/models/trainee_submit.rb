@@ -13,9 +13,7 @@ class TraineeSubmit < ActiveRecord::Base
   validates :title, presence: true
   validates :applied_on, presence: true
 
-  def employer_name
-    employer.name
-  end
+  delegate :name, to: :employer, prefix: true
 
   def by_trainee?
     email_id.nil?

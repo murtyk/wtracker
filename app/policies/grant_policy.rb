@@ -1,3 +1,4 @@
+# Only Director, Admin and L1 Navs have access
 class GrantPolicy < Struct.new(:user, :grant)
   def edit?
     user.admin_access?
@@ -12,6 +13,6 @@ class GrantPolicy < Struct.new(:user, :grant)
   end
 
   def index?
-    edit? || user.navigator?
+    edit?
   end
 end

@@ -67,7 +67,7 @@ class Grant < ActiveRecord::Base
 
   after_find :initialize_option_accessors
 
-  delegate :account_name, to: :account
+  delegate :name, to: :account, prefix: true
 
   def initialize_option_accessors
     self.options ||= {}

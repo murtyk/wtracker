@@ -20,11 +20,10 @@ class TraineesDetailsReport < Report
     @klasses_and_trainees = []
     klasses.each do |klass|
       trainees = klass.trainees.includes(:home_address, :tact_three)
-      if trainees.any?
-        trainees_details = trainees.map { |t| TraineeDetails.new(t) }
-        @klasses_and_trainees.push [klass, trainees_details]
-        @count += trainees.count
-      end
+      next if trainees.empty?
+      trainees_details = trainees.map { |t| TraineeDetails.new(t) }
+      @klasses_and_trainees.push [klass, trainees_details]
+      @count += trainees.count
     end
   end
 end

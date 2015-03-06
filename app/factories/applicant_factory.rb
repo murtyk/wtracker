@@ -59,8 +59,8 @@ class ApplicantFactory
     return nil if applicant.county_id.blank?
     users = applicant.grant.navigators
     user  = users.joins(:user_counties)
-                 .where(user_counties: { county_id: applicant.county_id })
-                 .first
+            .where(user_counties: { county_id: applicant.county_id })
+            .first
     unless user
       msg = "navigator not found for #{applicant.first_name} #{applicant.last_name}" \
             " county_id #{applicant.county_id}"

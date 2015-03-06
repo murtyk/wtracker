@@ -3,7 +3,7 @@ include UtilitiesHelper
 class Importer
   attr_reader :import_status, :import_status_id
 
-  def initialize(all_params = nil, current_user = nil)
+  def initialize(all_params = nil, _current_user = nil)
     @aws_file_name = Amazon.store_file(all_params[:file], 'imports')
     @original_filename = all_params[:file].original_filename
     @account_id = Account.current_id
@@ -83,16 +83,18 @@ class Importer
   def validate_header
     return unless open_reader
     valid_header = (@reader.header & header_fields).size == header_fields.size
-    unless valid_header
-      error_message = 'Invalid Header Row.'
-      import_status.import_fails.create(can_retry: false, error_message: error_message,
-                                        geocoder_fail: false,
-                                        row_data: @reader.header * ',')
-      import_status.rows_successful = -1
-      import_status.rows_failed = 1
-      import_status.save
-    end
+    create_import_fail_for_invalid_header unless valid_header
     close_reader
+  end
+
+  def create_import_fail_for_invalid_header
+    error_message = 'Invalid Header Row.'
+    import_status.import_fails.create(can_retry: false, error_message: error_message,
+                                      geocoder_fail: false,
+                                      row_data: @reader.header * ',')
+    import_status.rows_successful = -1
+    import_status.rows_failed = 1
+    import_status.save
   end
 
   def close_reader
@@ -103,7 +105,7 @@ class Importer
     file_url = Amazon.file_url @aws_file_name
     return false unless @import_status
     begin
-      @reader = FileReader.new(file_url, @original_filename)
+      @reader = ImportFileReader.new(file_url, @original_filename)
     rescue StandardError => e
       import_status.import_fails.create(row_no: 0, can_retry: false,
                                         error_message: e.to_s,
@@ -114,7 +116,7 @@ class Importer
     @count_fails = 0
   end
 
-  def import_row(row, skip_fail_entry = false)
+  def import_row(_row, _skip_fail_entry = false)
     fail 'subclass should implement import_row'
   end
 
@@ -131,7 +133,7 @@ class Importer
     import_status.rows_failed = @count_fails
     import_status.status = status
     if status == 'completed' && !@objects.empty?
-      import_status.data = @objects.map { |obj| obj.id }
+      import_status.data = @objects.map(&:id)
     end
     import_status.save
   end
@@ -194,45 +196,5 @@ class Importer
 
   def valid_integer(s)
     true if Integer(s) rescue false
-  end
-
-  # import file reader
-  class FileReader
-    attr_reader :header
-
-    def initialize(file, file_name)
-      extension = File.extname(file_name).downcase
-      if extension.downcase == '.csv'
-        @file_type = :CSV
-        @csv = CSV.open(open(file), 'rb', headers: true,
-                                          return_headers: true, row_sep: :auto)
-        @header = @csv.shift.to_hash.values
-      else
-        @file_type = :EXCEL
-        @spreadsheet = open_spreadsheet(file, file_name)
-        @header = @spreadsheet.row(1)
-        @next_row = 2
-      end
-    end
-
-    def next_row
-      if @file_type == :CSV
-        r = @csv.shift
-        return r && r.to_hash
-      elsif @next_row <= @spreadsheet.last_row
-        row = Hash[[@header, @spreadsheet.row(@next_row)].transpose]
-        @next_row += 1
-        return row
-      end
-      nil
-    end
-
-    def open_spreadsheet(file, file_name)
-      case File.extname(file_name)
-      when '.xls' then Roo::Excel.new(file.to_s, nil, :ignore)
-      when '.xlsx' then Roo::Excelx.new(file.to_s, packed: nil, file_warning: :ignore)
-      else fail "Invalid file type: #{file_name}"
-      end
-    end
   end
 end

@@ -13,7 +13,7 @@ class EmailFactory
 
     if trainee_ids.size > 0
       trainees        = Trainee.where(id: trainee_ids)
-      trainee_names   = trainees.map { |t| t.name }
+      trainee_names   = trainees.map(&:name)
       email_addresses = trainees.pluck(:email)
 
       e_params      = params.merge(trainee_ids: trainee_ids, trainee_names: trainee_names)
@@ -71,7 +71,7 @@ class EmailFactory
     end
 
     if file_attachments
-      file_attachments.each do |key, attached_file|
+      file_attachments.each do |_key, attached_file|
         name = attached_file.original_filename
         s3file = Amazon.store_file(attached_file, 'attachments')
         email.attachments.new(name: name, file: s3file)

@@ -8,6 +8,4 @@ class EmployerSource < ActiveRecord::Base
   has_many :employers, dependent: :destroy
   has_many :user_employer_sources, dependent: :destroy
   has_many :users, through: :user_employer_sources
-
-  alias_attribute :employer_source_name, :name
 end

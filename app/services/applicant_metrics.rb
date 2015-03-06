@@ -95,7 +95,7 @@ class ApplicantMetrics
       metric.fs_counts = fs_counts
       applicant_ids = Applicant.where(trainee_id: trainees.pluck(:id)).pluck(:id)
       ss_count = ApplicantSpecialService.where(applicant_id: applicant_ids)
-                                        .group(:applicant_id).count.count
+                 .group(:applicant_id).count.count
       metric.ss_count = ss_count
       metric
     end
@@ -111,7 +111,7 @@ class ApplicantMetrics
   end
 
   def navigator_names
-    @navigators.map { |id, name| name }
+    @navigators.map { |_id, name| name }
   end
 
   def generate_navigator_metrics
@@ -143,7 +143,7 @@ class ApplicantMetrics
     # Navigator is determined by navigator_id.
     trainees_reported_placements_counts = ['# of Applicants Reported Placement']
 
-    navigators.each do |id, name|
+    navigators.each do |id, _name|
       links = navigator_dashboard_counts_links(id)
       new_applicants_counts               << links[0]
       trainees_not_in_class_counts        << links[1]
@@ -197,8 +197,8 @@ class ApplicantMetrics
 
   def new_applicants
     @new_applicants ||= Applicant.joins(:trainee)
-                                 .where(trainees: { funding_source_id: nil })
-                                 .order(:first_name, :last_name)
+                        .where(trainees: { funding_source_id: nil })
+                        .order(:first_name, :last_name)
   end
 
   def navigator_new_applicants(params)
@@ -267,12 +267,12 @@ class ApplicantMetrics
 
   def trainees_from_navigator_counites(navigator_id)
     Trainee.joins(:applicant)
-           .where(applicants: { county_id: navigator_county_ids(navigator_id) })
+      .where(applicants: { county_id: navigator_county_ids(navigator_id) })
   end
 
   def navigator_trainees(navigator_id)
     Trainee.joins(:applicant)
-           .where(applicants: { navigator_id: navigator_id }).order(:first, :last)
+      .where(applicants: { navigator_id: navigator_id }).order(:first, :last)
   end
 
   def navigator_trainee_ids(navigator_id)
@@ -291,9 +291,9 @@ class ApplicantMetrics
     navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
     trainee_ids = navigator_trainee_ids(navigator_id)
     Trainee.joins(:trainee_interactions)
-           .where(trainee_interactions: { trainee_id: trainee_ids })
-           .order(:first, :last)
-           .uniq
+      .where(trainee_interactions: { trainee_id: trainee_ids })
+      .order(:first, :last)
+      .uniq
   end
 
   def trainees_not_placed(params)
@@ -305,16 +305,16 @@ class ApplicantMetrics
     navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
     trainee_ids = navigator_trainee_ids(navigator_id)
     Trainee.joins(:trainee_placements)
-           .where(trainee_placements: { trainee_id: trainee_ids })
-           .order(:first, :last)
-           .uniq
+      .where(trainee_placements: { trainee_id: trainee_ids })
+      .order(:first, :last)
+      .uniq
   end
 
   def new_applicants_link(id, count)
     applicants_link('navigator_new_applicants', id, count)
   end
 
-  def trainees_not_in_class_link(id, count)
+  def trainees_not_in_class_link(_id, count)
     href = url_helpers.near_by_colleges_trainees_path
 
     link_to(count, href)

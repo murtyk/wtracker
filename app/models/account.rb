@@ -19,8 +19,6 @@ class Account < ActiveRecord::Base
   # mark_jobs_applied:  when trainee resumes (or any doc) emailed to employers,
   # treat them as jobs applied (trainee submits)
 
-  alias_attribute :account_name, :name
-
   validates :name, presence: true, length: { minimum: 4, maximum: 60 }
   validates :description, presence: true, length: { minimum: 10, maximum: 100 }
   validates :subdomain, presence: true, length: { minimum: 3, maximum: 12 }

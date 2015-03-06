@@ -11,9 +11,7 @@ class EmployersInterestedReport < Report
     'Employers Interested in Trainees Not Placed'
   end
 
-  def count
-    interested_interactions.count
-  end
+  delegate :count, to: :interested_interactions
 
   def interested_interactions
     @interactions || []
@@ -25,8 +23,8 @@ class EmployersInterestedReport < Report
 
   def trainee_interactions
     tis = TraineeInteraction.joins(trainee: :klasses)
-                            .includes(employer: :address)
-                            .where(klasses: { id: klass_ids })
+          .includes(employer: :address)
+          .where(klasses: { id: klass_ids })
 
     return tis if placed_trainee_ids.blank?
 

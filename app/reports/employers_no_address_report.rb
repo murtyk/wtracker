@@ -17,7 +17,5 @@ class EmployersNoAddressReport < Report
     'none'
   end
 
-  def count
-    employers.count
-  end
+  delegate :count, to: :employers
 end

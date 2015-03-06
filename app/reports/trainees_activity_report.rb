@@ -27,9 +27,7 @@ class TraineesActivityReport < Report
     'trainees_activity_selection'
   end
 
-  def count
-    trainee_activities.count
-  end
+  delegate :count, to: :trainee_activities
 
   def render_counts
     strong_class = "<strong class='align-right' style='font-color: blue'>"
@@ -49,8 +47,8 @@ class TraineesActivityReport < Report
 
   def build_trainees
     ts = Trainee.joins(:klass_trainees)
-                .preload(:klasses, :trainee_notes, :trainee_interactions)
-                .order(:first, :last)
+         .preload(:klasses, :trainee_notes, :trainee_interactions)
+         .order(:first, :last)
     ts = ts.where(klass_trainees: { klass_id: klass_ids })
     ts = ts.where('klass_trainees.status = ?', status) if status > 0
     ts.uniq

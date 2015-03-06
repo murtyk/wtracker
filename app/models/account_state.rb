@@ -4,7 +4,5 @@ class AccountState < ActiveRecord::Base
   belongs_to :account
   belongs_to :state
   attr_accessible :account_id, :state_id
-  def name
-    state.name
-  end
+  delegate :name, to: :state
 end

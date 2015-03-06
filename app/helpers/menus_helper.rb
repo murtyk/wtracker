@@ -55,7 +55,6 @@ module MenusHelper
 
   def grants_dropdown_menu?
     current_account.grant_recipient? &&
-      policy(Grant).index? &&
       current_user.active_grants.count > 1
   end
 
@@ -197,7 +196,7 @@ module MenusHelper
   end
 
   def trainees_advanced_search_menu
-    return unless current_user.admin_access?
+    return if current_user.instructor?
     menu_link('Advanced Search', advanced_search_trainees_path)
   end
 

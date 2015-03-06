@@ -21,9 +21,7 @@ class ActiveEmployersReport < Report
     'Active Employers'
   end
 
-  def count
-    employers_klasses.count
-  end
+  delegate :count, to: :employers_klasses
 
   def employers_klasses
     @employers_klasses || []
@@ -44,23 +42,23 @@ class ActiveEmployersReport < Report
 
   def employers_any_interest_ids(klass)
     Employer.joins(klass_interactions: { klass_event: :klass })
-            .where(klasses: { id: klass.id })
-            .pluck('employers.id').uniq
+      .where(klasses: { id: klass.id })
+      .pluck('employers.id').uniq
   end
 
   def employers_hired_ids(klass)
     Employer.joins(trainee_interactions: { trainee: :klasses })
-            .where(trainee_interactions: { status: 4 })
-            .where(klasses: { id: klass.id })
-            .pluck('employers.id').uniq
+      .where(trainee_interactions: { status: 4 })
+      .where(klasses: { id: klass.id })
+      .pluck('employers.id').uniq
   end
 
   def init_trainees_hired
     @trainees_hired =
       TraineeInteraction.joins(trainee: :klasses)
-                        .select('employer_id, klasses.id as klass_id,
+      .select('employer_id, klasses.id as klass_id,
                                  trainee_interactions.trainee_id')
-                        .where(trainee_interactions: { status: 4 })
-                        .where(klasses: { id: klasses.map { |k| k.id } })
+      .where(trainee_interactions: { status: 4 })
+      .where(klasses: { id: klasses.map(&:id) })
   end
 end

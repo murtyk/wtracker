@@ -20,9 +20,7 @@ class JobSearchProfile < ActiveRecord::Base
            :applied_job_leads_count,
            :not_interested_job_leads_count, to: :trainee
 
-  def name
-    trainee.name
-  end
+  delegate :name, to: :trainee
 
   def valid_profile?
     !skills.blank? && !location.blank? && distance

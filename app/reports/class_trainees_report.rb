@@ -1,3 +1,4 @@
+# trainees info in ONE selected class
 class ClassTraineesReport < TraineesDetailsReport
   # Report class expects klass_ids where as for this report we get :klass_id
   def initialize(user, params = nil)

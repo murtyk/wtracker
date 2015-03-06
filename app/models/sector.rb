@@ -3,7 +3,6 @@
 class Sector < ActiveRecord::Base
   default_scope { order(:name) }
   attr_accessible :name
-  alias_attribute(:sector_name, :name)
 
   has_many :employer_sectors, dependent: :destroy
   has_many :employers, through: :employer_sectors

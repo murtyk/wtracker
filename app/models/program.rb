@@ -20,9 +20,7 @@ class Program < ActiveRecord::Base
   has_many :klass_trainees, through: :klasses
   has_many :trainees, -> { order(:first, :last).uniq }, through: :klass_trainees
 
-  def grant_name
-    grant.name
-  end
+  delegate :name, to: :grant, prefix: true
 
   def scheduled_classes
     klasses.where('DATE(start_date) > ?', Time.now.to_date).order('start_date')

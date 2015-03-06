@@ -36,7 +36,7 @@ class Report
     EMPLOYERS_INTERESTED_TRAINEES     => :EmployersInterestedReport,
     EMPLOYERS_ADDRESS_MISSING         => :EmployersNoAddressReport,
     CLASS_TRAINEES                    => :ClassTraineesReport
-    }
+  }
 
   def initialize(user, params = nil)
     @report_name = params && params[:report_name]
@@ -53,7 +53,7 @@ class Report
 
   def self.reports_by_type(user)
     [['Class Reports', class_reports],
-     ['Trainee Reports', trainee_reports],
+     ['Trainee Reports', trainee_reports(user)],
      ['Employer Reports', employer_reports(user)]]
   end
 
@@ -61,10 +61,15 @@ class Report
     [CLASS_TRAINEES]
   end
 
-  def self.trainee_reports
+  def self.trainee_reports(user)
+    list =
     [TRAINEES_DETAILS, TRAINEES_DETAILS_WITH_PLACEMENT, TRAINEES_PLACED,
-     TRAINEES_NOT_PLACED, TRAINEES_STATUS, TRAINEES_ACTIVITY, JOBS_APPLIED,
-     TRAINEES_NEAR_BY_EMPLOYERS]
+     TRAINEES_NOT_PLACED, TRAINEES_STATUS, TRAINEES_ACTIVITY, JOBS_APPLIED
+    ]
+
+    return list unless user.admin_access?
+
+    list + [TRAINEES_NEAR_BY_EMPLOYERS]
   end
 
   def self.employer_reports(user)
@@ -146,12 +151,20 @@ class Report
   end
 
   def init_klass_ids(user, params)
+    k_ids = k_ids_from_params(params)
+
+    return unless k_ids
+
+    all_klasses = k_ids.blank? || k_ids.include?('0')
+    @klass_ids = all_klasses ? user.klasses.pluck(:id) : k_ids
+  end
+
+  def k_ids_from_params(params)
     @klass_id = params[:klass_id]
     @klass_ids = params[:klass_ids]
     return unless @klass_id || @klass_ids
     k_ids = (@klass_id && [@klass_id]) || @klass_ids
     k_ids.delete('')
-    all_klasses = k_ids.blank? || k_ids.include?('0')
-    @klass_ids = all_klasses ? user.klasses.pluck(:id) : k_ids
+    k_ids
   end
 end

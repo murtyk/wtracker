@@ -15,9 +15,9 @@ class KlassTrainee < ActiveRecord::Base
 
   after_initialize :default_values
 
-  def name
-    trainee.name
-  end
+  delegate :name, to: :trainee
+  delegate :name, to: :klass, prefix: true
+  delegate :college_name_location, to: :klass
 
   def hired?
     status == 4
@@ -25,14 +25,6 @@ class KlassTrainee < ActiveRecord::Base
 
   def hired_employer
     Employer.find(@employer_id) if hired? && @employer_id
-  end
-
-  def klass_name
-    klass.name
-  end
-
-  def college_name_location
-    klass.college_name_location
   end
 
   private

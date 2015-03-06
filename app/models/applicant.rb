@@ -41,10 +41,11 @@ class Applicant < ActiveRecord::Base
   belongs_to :sector
   belongs_to :trainee
 
-  delegate :county_name,                    to: :county,    allow_nil: true
-  delegate :education_name,                 to: :education, allow_nil: true
+  delegate :name,  to: :county,    prefix: true, allow_nil: true
+  delegate :name,  to: :education, prefix: true, allow_nil: true
+  delegate :name,  to: :sector,    prefix: true, allow_nil: true
+
   delegate :ethnicity,                      to: :race,      allow_nil: true
-  delegate :sector_name,                    to: :sector,    allow_nil: true
   delegate :funding_source_name, :login_id, to: :trainee,   allow_nil: true
 
   validates :grant,  presence: true

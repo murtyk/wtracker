@@ -150,7 +150,7 @@ class TraineeFactory
       t = Trainee.unscoped.where(login_id: id).first
       break unless t
       n += 1
-      id = id + n.to_s
+      id += n.to_s
     end
     id
   end

@@ -5,7 +5,7 @@ class City < ActiveRecord::Base
 
   belongs_to :state
   belongs_to :county
-  delegate :county_name, to: :county, allow_nil: true
+  delegate :name, to: :county, prefix: true, allow_nil: true
 
   validates :latitude, presence: true
   validates :longitude, presence: true

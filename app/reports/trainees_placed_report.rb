@@ -5,7 +5,7 @@ class TraineesPlacedReport < Report
 
     @trainee_interactions = trainee_placed_interactions
 
-    t_ids = @trainee_interactions.map { |ti| ti.trainee_id }
+    t_ids = @trainee_interactions.map(&:trainee_id)
     @trainee_interactions.to_a.sort! do |a, b|
       a.trainee.name <=> b.trainee.name
     end
@@ -30,14 +30,14 @@ class TraineesPlacedReport < Report
 
   def trainee_placed_interactions
     TraineeInteraction.joins(trainee: :klasses)
-                      .includes(employer: :address)
-                      .where(status: 4, klasses: { id: klass_ids })
+      .includes(employer: :address)
+      .where(status: 4, klasses: { id: klass_ids })
   end
 
   def find_trainees_placed_no_employer(trainee_ids)
     KlassTrainee.includes(:trainee, klass: :college)
-                .where(status: 4)
-                .where(klass_id: klass_ids)
-                .where.not(trainee_id: trainee_ids)
+      .where(status: 4)
+      .where(klass_id: klass_ids)
+      .where.not(trainee_id: trainee_ids)
   end
 end

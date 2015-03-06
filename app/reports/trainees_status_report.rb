@@ -1,6 +1,6 @@
 # trainees status report show hired details for placed trainees
 class TraineesStatusReport < Report
-  def post_initialize(params)
+  def post_initialize(_params)
     return if klasses.blank?
 
     klass_trainees = klass_trainees_placed + klass_trainees_not_placed
@@ -16,20 +16,18 @@ class TraineesStatusReport < Report
     'Trainees Status'
   end
 
-  def count
-    trainee_statuses.count
-  end
+  delegate :count, to: :trainee_statuses
 
   def klass_trainees_placed
     KlassTrainee.joins(:klass, trainee: :trainee_interactions)
-                .where(klasses: { id: klass_ids })
-                .where(trainee_interactions: { status: 4 })
+      .where(klasses: { id: klass_ids })
+      .where(trainee_interactions: { status: 4 })
   end
 
   def klass_trainees_not_placed
     KlassTrainee.includes(:trainee, :klass)
-                .where.not(klass_trainees: { status: 4 })
-                .where(klasses: { id: klass_ids })
-                .references(:klasses)
+      .where.not(klass_trainees: { status: 4 })
+      .where(klasses: { id: klass_ids })
+      .references(:klasses)
   end
 end

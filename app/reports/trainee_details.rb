@@ -6,19 +6,16 @@ class TraineeDetails < DelegateClass(Trainee)
   def initialize(obj)
     super(obj)
     @hired_interaction = hired_employer_interaction
-    if @hired_interaction
-      @hired = true
-      @hired_employer = @hired_interaction.employer
-    end
+    return unless @hired_interaction
+    @hired = true
+    @hired_employer = @hired_interaction.employer
   end
 
   def hired_employer_interaction
     super
   end
 
-  def hired_employer
-    @hired_employer
-  end
+  attr_reader :hired_employer
 
   def hired_employer_name
     @hired_employer && @hired_employer.name

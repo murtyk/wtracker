@@ -50,7 +50,8 @@
       <% end %>
 
       <%= f.label :klasses_id_eq, 'Class' %>
-      <%= f.collection_select :klasses_id_eq, Klass.order(:name), :id, :name,
+      <%= f.collection_select :klasses_id_eq,
+                              current_user.klasses.order(:name), :id, :name,
                               include_blank: true %>
 
       <%= f.label :veteran_eq, 'Veteran' %>

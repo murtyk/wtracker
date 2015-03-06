@@ -9,9 +9,7 @@ class TraineeAssessment < ActiveRecord::Base
   delegate :grant, to: :assessment
 
   validates :assessment, presence: true
-  def assessment_name
-    assessment.name
-  end
+  delegate :name, to: :assessment, prefix: true
 
   def status
     pass ? 'Passed' : 'Failed'

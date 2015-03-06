@@ -126,7 +126,7 @@ class CompanyListFinder
 
   def open_reader
     file_path = Amazon.file_url(@aws_file_name).to_s
-    @reader = FileReader.new(file_path, @original_filename)
+    @reader = ImportFileReader.new(file_path, @original_filename)
     rescue StandardError => error
       @error = error
   end
@@ -138,7 +138,7 @@ class CompanyListFinder
   def valid_header
     open_reader
     return false if errors?
-    header = @reader.header.map(&:downcase)
+    header = @reader.header
     valid = (header & HEADER_FIELDS).size == HEADER_FIELDS.size
     @error = 'Invalid Header Row.' unless valid
     close_reader
@@ -238,31 +238,6 @@ class CompanyListFinder
       EmployerFactory.create_from_gi(company[:google_info], source_id, sector_ids)
     else
       create_employer_with_file_data(company, sector_ids, user)
-    end
-  end
-
-  # for reading input file - excel data
-  class FileReader
-    attr_reader :header
-
-    def initialize(file_path, file_name)
-      @spreadsheet = open_spreadsheet(file_path, file_name)
-      @header = @spreadsheet.row(1).map(&:downcase)
-      @next_row = 2
-    end
-
-    def next_row
-      return nil unless @next_row <= @spreadsheet.last_row
-      row = Hash[[@header, @spreadsheet.row(@next_row)].transpose]
-      @next_row += 1
-      row
-    end
-
-    def open_spreadsheet(file_path, file_name)
-      ext = File.extname(file_name).downcase
-      return Roo::Excel.new(file_path, nil, :ignore) if ext == '.xls'
-      return Roo::Excelx.new(file_path, packed: nil,
-                                        file_warning: :ignore)  if ext == '.xlsx'
     end
   end
 end

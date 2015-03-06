@@ -47,24 +47,13 @@ class Klass < ActiveRecord::Base
 
   before_create :create_events
 
+  delegate :grant,    to: :program
+  delegate :name,     to: :program, prefix: true
+  delegate :name,     to: :college, prefix: true
+  delegate :location, to: :college
+
   def calendar
     @calendar ||= KlassCalendar.new(self)
-  end
-
-  def grant
-    program.grant
-  end
-
-  def program_name
-    program.name
-  end
-
-  def college_name
-    college.name
-  end
-
-  def location
-    college.location
   end
 
   def college_name_location
