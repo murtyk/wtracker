@@ -10,7 +10,7 @@ class EmailSettings
     authentication: :login,
     user_name: ENV['AUTOLEAD_EMAIL_USERNAME'],
     password: ENV['AUTOLEAD_EMAIL_PASSWORD']
-    }
+  }
 
   STANDARD_SETTINGS = {
     enable_starttls_auto: true,
@@ -20,7 +20,7 @@ class EmailSettings
     authentication: :login,
     user_name: ENV['GMAIL_USER_NAME'],
     password: ENV['GMAIL_PASSWORD']
-    }
+  }
 
   def self.use_job_leads_email
     ActionMailer::Base.smtp_settings = JOB_LEADS_SETTINGS

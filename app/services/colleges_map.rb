@@ -8,6 +8,6 @@ class CollegesMap < MapService
 
   def init_addresses
     @colleges  = College.includes(:address).load
-    @addresses = @colleges.map { |college| college.address }
+    @addresses = @colleges.map(&:address)
   end
 end

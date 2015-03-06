@@ -11,7 +11,7 @@ class GoogleApi
   DETAILS_URL       = 'https://maps.googleapis.com/maps/api/place/details/json'
   TEXT_SEARCH_URL   = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
 
-  COUNTY_POLYGON_QRY = "SELECT geometry FROM 1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa " \
+  COUNTY_POLYGON_QRY = 'SELECT geometry FROM 1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa ' \
                        "WHERE 'State-County' = "
 
   SHORT_NAME        = 'short_name'

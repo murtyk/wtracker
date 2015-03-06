@@ -48,7 +48,7 @@ class SimplyHired
 
   def build_location
     loc = zip.to_s.size == 0 ? "#{city},#{state}" : zip
-    loc = loc.split(',').map { |part| part.squish }.join(',')
+    loc = loc.split(',').map(&:squish).join(',')
     loc.sub(' ', '+')
   end
 
@@ -112,10 +112,9 @@ class SimplyHired
   private
 
   def search(p = 0)
-
     @url = build_url(p)
     @url = URI.encode @url
-# debugger
+    # debugger
     begin
       response = HTTParty.get(@url)
       parse_header response.parsed_response['shrs']['rq']

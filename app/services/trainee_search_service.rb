@@ -38,9 +38,8 @@ class TraineeSearchService
     # since only users with admin_access can add trainees, their scope should include all
     # Nav Level 3 can only see the trainees added to classes
     def search_by_last_name(user, last_name)
-
       if user.admin_access?
-       return Trainee.where('trainees.last ilike ?', last_name + '%').order(:first, :last)
+        return Trainee.where('trainees.last ilike ?', last_name + '%').order(:first, :last)
       end
 
       Trainee.joins(:klass_trainees)

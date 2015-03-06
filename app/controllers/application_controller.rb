@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
   include EmployersHelper
 
   def after_sign_in_path_for(resource)
-    if resource.class == Admin
+    if resource.is_a? Admin
       admin_accounts_path
-    elsif resource.class == Trainee
+    elsif resource.is_a? Trainee
       portal_trainees_path
     else
       startingpage_dashboards_path

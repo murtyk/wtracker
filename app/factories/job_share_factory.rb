@@ -54,9 +54,9 @@ class JobShareFactory
   def self.build_job_share(job_ids, job_share)
     if job_ids.blank? # 1 job before analyze
 
-      job_share = JobShare.new(job_share.slice(:company, :location,
-                                               :excerpt, :details_url,
-                                               :source, :date_posted))
+      JobShare.new(job_share.slice(:company, :location,
+                                   :excerpt, :details_url,
+                                   :source, :date_posted))
     else # after analyze
       company = JobSearchServices.company_and_jobs_from_cache(job_ids)
       company_name = company.name

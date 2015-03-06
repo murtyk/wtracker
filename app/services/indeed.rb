@@ -1,7 +1,7 @@
 require 'httparty'
 require 'mechanize'
 
-Struct.new('Jd', :details_url_type, :destination_url, :details)
+# Struct.new('Jd', :details_url_type, :destination_url, :details)
 # wrapper for indeed api
 class Indeed
   ANY_KEYWORDS_SEARCH = 1
@@ -94,7 +94,9 @@ class Indeed
       end
     end
 
-    Struct::Jd.new(details_url_type, destination_url, details)
+    OpenStruct.new(details_url_type: details_url_type,
+                   destination_url: destination_url,
+                   details: details)
   end
 
   private
@@ -102,12 +104,13 @@ class Indeed
   def build_details(node)
     return node.children[4].text unless node.children.count > 5
 
-    details = node.children[0].text
-    details += '<ul>'
-    node.children[1].children.each do |child|
-      details += '<li>' + child.text + '</li>'
-    end
-    details + '</ul>'
+    node.children[0].text + build_details_list(node.children[1].children)
+  end
+
+  def build_details_list(nodes)
+    '<ul>' +
+      nodes.map { |node| '<li>' + node.text + '</li>' }.join +
+      '</ul>'
   end
 
   def search
@@ -127,20 +130,32 @@ class Indeed
     @count
   end
 
-  def build_url
-    q_v         = '&v=2'
-    q_format    = '&format=json'
-    q_query     = '&q=' + @keywords
-    q_location  = '&l=' + @location
-    q_radius    = '&radius=' + @distance.to_s
-    q_start     = '&start=' + ((@current_page - 1) * @page_size).to_s
-    q_limit     = '&limit=' + @page_size.to_s
-    q_fromage   = '&fromage=' + @days.to_s
-    q_userip    = '&userip=' + @ip
-    q_useragent = '&useragent=' + @browser
+  Q_V         = '&v=2'
+  Q_FORMAT    = '&format=json'
 
-    @url = INDEED_SITE + @publisher + q_v + q_format + q_query + q_location + q_radius +
-                         q_start + q_limit + q_fromage + q_userip + q_useragent
+  def build_url
+    @url = INDEED_SITE + @publisher + Q_V + Q_FORMAT + q_query +
+           q_start + q_limit + q_fromage + q_user_info
+  end
+
+  def q_query
+    "&q=#{@keywords}&l=#{@location}&radius=#{@distance}"
+  end
+
+  def q_start
+    '&start=' + ((@current_page - 1) * @page_size).to_s
+  end
+
+  def q_limit
+    '&limit=' + @page_size.to_s
+  end
+
+  def q_fromage
+    '&fromage=' + @days.to_s
+  end
+
+  def q_user_info
+    "&userip=#{@ip}&useragent=#{@browser}"
   end
 
   def parse_header(json)
@@ -172,7 +187,7 @@ class Indeed
     undef:            :replace,  # Replace anything not defined in ASCII
     replace:          '',        # Use a blank for those replacements
     universal_newline: true       # Always break lines with \n
-                      }
+  }
   def encode(s)
     s.encode Encoding.find('ASCII'), ENCODING_OPTIONS
   end

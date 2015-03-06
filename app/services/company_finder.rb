@@ -39,11 +39,11 @@ class CompanyFinder
   def find_google_places_company
     p_city = City.find(poster_city_id)
     gc     = GoogleApi.find_company(
-                                    poster_name,
-                                    p_city.name,
-                                    p_city.state_code,
-                                    p_city.latitude,
-                                    p_city.longitude)
+      poster_name,
+      p_city.name,
+      p_city.state_code,
+      p_city.latitude,
+      p_city.longitude)
 
     return nil unless gc && gc.longitude && gc.latitude
 

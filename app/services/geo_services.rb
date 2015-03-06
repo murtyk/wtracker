@@ -2,8 +2,8 @@
 # for finding valid address, city, county or latlong
 class GeoServices
   ADMIN_LVL2 = 'administrative_area_level_2'
-  def self.parse(location, zip = nil)
-     # debugger
+  def self.parse(location, _zip = nil)
+    # debugger
     searchres = perform_search location
     fail "Geocoding failed for address #{location}" if searchres.size == 0
 
@@ -15,12 +15,12 @@ class GeoServices
 
     county_components = result.address_components_of_type(ADMIN_LVL2)
     addr.county = county_components &&
-                  county_components[0] && county_components[0]['long_name']
+      county_components[0] && county_components[0]['long_name']
 
     unless addr.city
       sublocality_components = result.address_components_of_type('sublocality')
       addr.city = sublocality_components &&
-                  sublocality_components[0] && sublocality_components[0]['long_name']
+        sublocality_components[0] && sublocality_components[0]['long_name']
     end
 
     unless addr.county && addr.zip
@@ -34,7 +34,7 @@ class GeoServices
 
   def self.findcity(location, zip = nil)
     parts = location.downcase.split(',')
-    loc = parts.map { |p| p.squish }.join(',')
+    loc = parts.map(&:squish).join(',')
     city = City.where("REPLACE(city_state,' ','') = ? AND zip = ?", loc, zip).first if zip
     city ||= City.find_by_citystate(loc)
 

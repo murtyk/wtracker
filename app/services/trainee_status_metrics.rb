@@ -43,8 +43,8 @@ class TraineeStatusMetrics
       status_id = statuses[label]
 
       status_counts =  Applicant.joins(:trainee)
-                                .where(trainees: { gts_id: status_id })
-                                .group(:navigator_id).count
+                       .where(trainees: { gts_id: status_id })
+                       .group(:navigator_id).count
 
       @metrics.rows.each do |row|
         nav_id = row[0][0]
@@ -65,8 +65,8 @@ class TraineeStatusMetrics
 
     navigators.each do |nav|
       status_counts =  Trainee.joins(:applicant, :grant_trainee_status)
-                              .where(applicants: { navigator_id: nav[0] })
-                              .group('grant_trainee_statuses.name').count
+                       .where(applicants: { navigator_id: nav[0] })
+                       .group('grant_trainee_statuses.name').count
 
       @metrics.rows.each do |row|
         row << link(status_counts[row[0]].to_i.to_s,
@@ -86,17 +86,9 @@ class TraineeStatusMetrics
     @statuses ||= Hash[*GrantTraineeStatus.pluck(:name, :id).flatten]
   end
 
-  # navs in sorted by name. current_user(nav) is brought to front.
-  def navigators
-    return @navigators if @navigators
-    navs        = grant.navigators
-    navs        = ([@user] + navs).uniq if @user && @user.navigator?
-    @navigators = Hash[navs.map { |n| [n.id, n.name] }]
-  end
-
   # names of navs sorted. current_user(nav) is brought to front.
   def navigator_names
-    navigators && navigators.map { |id, name| name }
+    navigators && navigators.map { |_id, name| name }
   end
 
   def grant

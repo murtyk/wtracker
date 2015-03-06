@@ -19,7 +19,7 @@ class AutoLeadTrainees
     asjs                  = AutoSharedJob.where(trainee_id: source.trainee_ids)
     job_leads_counts      = asjs.group(:trainee_id).count
     jobs_viewed_counts    = asjs.where('status > 0 and status < 4')
-                                .group(:trainee_id).count
+                            .group(:trainee_id).count
     jobs_applied_counts   = asjs.where(status: 2).group(:trainee_id).count
     not_interested_counts = asjs.where(status: [3, 4]).group(:trainee_id).count
 

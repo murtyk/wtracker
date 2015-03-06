@@ -2,8 +2,13 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses, input_html: {id: 'select_klass', style: 'width: 350px;'}%>
-    <%= f.input :trainee_ids, label: "Select Trainees", collection: [], input_html: {multiple: true, id: 'select_trainees',include_blank: false}, include_blank: false%>
+    <%= f.input :klass_id, label: 'Select a Class',
+                           collection: current_user.klasses,
+                           input_html: {id: 'select_klass', style: 'width: 350px;'}%>
+    <%= f.input :trainee_ids, label: "Select Trainees",
+                              collection: [],
+                              input_html: {multiple: true, id: 'select_trainees'},
+                              include_blank: false%>
 
     <%= f.input :subject, input_html: {style: 'width: 50%'} %>
     <%= f.input :content, input_html: {style: 'width: 50%; height: 120px'} %>
@@ -35,19 +40,4 @@
       $('#select_klass').change();
     }
   });
-</script>
-
-
-<script type="text/javascript">
-
-  $(".simple_form").submit(function(e){
-
-    count = $('#select_trainees option:selected').length;
-    if (count == 0){
-      alert("Please select at least one trainee");
-      return false;
-    }
-
-  });
-
 </script>

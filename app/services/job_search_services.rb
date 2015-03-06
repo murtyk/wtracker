@@ -33,7 +33,7 @@ class JobSearchServices
     job_board_search(page)
 
     @jobs = nil if in_state # important it should be nil not [].
-                            # [] means no jobs found in case of in state
+    # [] means no jobs found in case of in state
 
     [@jobs, @jobs_count, @pages, @new_job_search]
   end
@@ -74,7 +74,7 @@ class JobSearchServices
       end
     end
 
-     # company will have all the jobs. we just need the selected ones
+    # company will have all the jobs. we just need the selected ones
 
     title_ids = job_ids.map { |job_id| job_id.split('::')[3].to_i }
 
@@ -158,5 +158,4 @@ class JobSearchServices
   def state_code
     state
   end
-
 end

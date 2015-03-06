@@ -159,14 +159,14 @@ class Importer
 
   def clean_zip(zip)
     return nil if zip.blank?
-    zip = zip.to_i.to_s if zip.class == Float
+    zip = zip.to_i.to_s if zip.is_a? Float
     zip = zip.to_s.delete('^0-9')
     zip = '0' * (5 - zip.size) + zip if zip.size < 5
     zip
   end
 
   def clean_date(dt)
-    dt.class == Date ? dt : opero_str_to_date(clean_field(dt))
+    dt.is_a?(Date) ? dt : opero_str_to_date(clean_field(dt))
   end
 
   def map_address_attributes(params, prefix = 'address:')

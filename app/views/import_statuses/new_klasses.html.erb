@@ -1,9 +1,9 @@
 <div class = 'row-fluid page-caption-div' >
   <h1>Import Classes</h1>
 </div>
-<% if Program.count == 0 %>
+<% if !Program.any? %>
   <h4 style='color: brown'>At least one Program should be defined before importing classes.</h4>
-<% elsif College.count == 0 %>
+<% elsif !College.any? %>
   <h4 style='color: brown'>At least one College should be defined before importing classes.</h4>
 <% else %>
   <div class = 'row-fluid'>

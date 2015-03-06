@@ -40,19 +40,23 @@ class NearByCollegesMap < MapService
   # value: college name and trainess
   def build_colleges
     os_colleges  = College.order(:name).map do |college|
-      os = OpenStruct.new(name: college.name, id: college.id,
-                          county_id: college.county_id,
-                          object: college, trainees: [], trainees_count: 0)
-
-      klasses   = college.klasses.where('start_date > ?', Date.today)
-                                    .order(:start_date)
-
-      os.klasses = klasses.map do |k|
-        k.name + '-' + k.start_date.to_s + " (#{k.trainees.count})"
-      end.join('<br/>').html_safe
+      os         = build_college_open_struct(college)
+      os.klasses = open_klasses(college)
       [college.id, os]
     end
     @colleges = Hash[os_colleges]
+  end
+
+  def build_college_open_struct(college)
+    OpenStruct.new(name: college.name, id: college.id,
+                   county_id: college.county_id,
+                   object: college, trainees: [], trainees_count: 0)
+  end
+
+  def open_klasses(college)
+    college.klasses.where('start_date > ?', Date.today).order(:start_date).map do |k|
+      k.name + '-' + k.start_date.to_s + " (#{k.trainees.count})"
+    end.join('<br/>').html_safe
   end
 
   # build a collection of trainees where address missing
@@ -60,11 +64,11 @@ class NearByCollegesMap < MapService
   # added to this collection in attach_trainees_to_colleges
   def build_trainees_no_college
     no_address_ids = trainee_ids - Address.where(addressable_type: 'Trainee')
-                                          .pluck(:addressable_id)
+                                   .pluck(:addressable_id)
     invalid_address_msg  = 'Trainee address missing or invalid. Check applicant details.'
     @trainees_no_college = Trainee.where(id: no_address_ids)
-                                  .order(:first, :last)
-                                  .map { |t| [t, nil, invalid_address_msg] }
+                           .order(:first, :last)
+                           .map { |t| [t, nil, invalid_address_msg] }
   end
 
   def build_addresses
@@ -80,23 +84,27 @@ class NearByCollegesMap < MapService
       addr        = t.home_address
       next unless addr
       trainee     = OpenStruct.new(name: "#{t.name} - #{t.funding_source_name}", id: t.id)
-
-      a.id        = addr.id
-      a.latitude  = addr.latitude
-      a.longitude = addr.longitude
-      c_address   = a.nearbys(15).where(addressable_type: 'College').first
-
-      if c_address
-        @colleges[c_address.addressable_id].trainees << trainee
+      college_id  = nearest_college(t, a)
+      if college_id
+        @colleges[college_id].trainees << trainee
       else
         @trainees_no_college << [trainee, addr.gmaps4rails_address, no_college_msg]
       end
     end
   end
 
+  def nearest_college(t, a)
+    addr        = t.home_address
+    a.id        = addr.id
+    a.latitude  = addr.latitude
+    a.longitude = addr.longitude
+    c_address   = a.nearbys(15).where(addressable_type: 'College').first
+    c_address && c_address.addressable_id
+  end
+
   def attach_colleges_to_navigators
     @colleges_no_navigator = []
-    @colleges.each do |id, college|
+    @colleges.each do |_id, college|
       college.trainees_count = college.trainees.count
       navigator = college_navigator(college)
 

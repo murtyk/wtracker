@@ -96,7 +96,7 @@ class CompanyListFinder
 
   def clean_zip(zip)
     return nil if zip.blank?
-    zip = zip.to_i.to_s if zip.class == Float
+    zip = zip.to_i.to_s if zip.is_a? Float
     zip = zip.to_s.delete('^0-9')
     zip = zip[0..4]
     zip = '0' * (5 - zip.size) + zip if zip.size < 5

@@ -11,7 +11,8 @@ class City < ActiveRecord::Base
   validates :longitude, presence: true
   validates :name, presence: true
 
-  validate :validate_state_and_county
+  validate :validate_state
+  validate :validate_county
 
   before_save :determine_city_state
 
@@ -57,22 +58,26 @@ class City < ActiveRecord::Base
 
   private
 
-  def validate_state_and_county
-    return false unless state_id && county_id
-
-    s = State.where(id: state_id).first
-    errors.add(:state_id, 'invalid state id') unless s
-
-    c = County.where(id: county_id).first
-    errors.add(:county_id, 'invalid county id') unless c
-
-    errors.add(:county_id, 'county not in given state') unless c && c.state == s
-
-    s && c && c.state == s
-  end
-
   def determine_city_state
     self.state_code ||= state.code
     self.city_state ||= name + ',' + state_code
+  end
+
+  def validate_state
+    return false unless state_id
+    s = State.where(id: state_id).first
+    errors.add(:state_id, 'invalid state id') unless s
+    s
+  end
+
+  def validate_county
+    return false unless county_id
+    c = County.where(id: county_id).first
+    errors.add(:county_id, 'invalid county id') unless c
+    unless c && c.state.id == state_id
+      errors.add(:county_id, 'county not in given state')
+      return false
+    end
+    true
   end
 end

@@ -205,7 +205,7 @@ class DemoData
     @camden_klass.klass_trainees.each { |kt| kt.update(status: 2) }
     @camden_klass.klass_trainees[2].update(status: 3)
     klass_trainees = @camden_klass.klass_trainees[4..9]
-    trainees = klass_trainees.map { |kt| kt.trainee }
+    trainees = klass_trainees.map(&:trainee)
     employer_ids = fetch_companies(CAMDEN, 6).pluck(:id)
     (0..5).each do |n|
       attributes = { employer_id: employer_ids[n],
@@ -224,7 +224,7 @@ class DemoData
     @bergen_klass.klass_trainees.each { |kt| kt.update(status: 2) }
     @bergen_klass.klass_trainees[2].update(status: 5)
     klass_trainees = @bergen_klass.klass_trainees[4..6]
-    trainees = klass_trainees.map { |kt| kt.trainee }
+    trainees = klass_trainees.map(&:trainee)
     employer_ids = fetch_companies(BERGEN, 3).pluck(:id)
     (0..2).each do |n|
       attributes = { employer_id: employer_ids[n],
@@ -309,7 +309,7 @@ class DemoData
      40.199136, -74.642453],
     ['Synerfac Inc', '3023249400', 'www.synerfac.com',
      '2 Reads Way', 'New Castle', 'New Castle', 315, 'DE', '19720', 39.687631, -75.609367]
-              ]
+  ]
   BERGEN_COMPANIES = [
     ['Arlington Machine & Tool Co', '9732761377', 'http://www.arlingtonmachine.com/',
      '90 New Dutch Ln', 'Fairfield', 'Essex', 1776, 'NJ', '07004', 40.881664, -74.278388],

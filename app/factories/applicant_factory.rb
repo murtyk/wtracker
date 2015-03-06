@@ -71,7 +71,7 @@ class ApplicantFactory
 
   def self.process_applicant(applicant)
     if applicant.accepted?
-      trainee, _pwd = TraineeFactory.create_trainee_from_applicant(applicant)
+      trainee = TraineeFactory.create_trainee_from_applicant(applicant)
       if trainee.errors.any?
         copy_error_messages(applicant, trainee)
         fail ActiveRecord::Rollback, 'Inform Grant Staff'

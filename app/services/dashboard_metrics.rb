@@ -75,8 +75,8 @@ class DashboardMetrics
     @new_applicants.header = ['', 'Total', 'Accepted', 'Declined']
     totals   = Applicant.group(:navigator_id).count
     accepted = Applicant.joins(:trainee)
-                        .where(trainees: { funding_source_id: nil })
-                        .group(:navigator_id).count
+               .where(trainees: { funding_source_id: nil })
+               .group(:navigator_id).count
     declined = Applicant.where(status: 'Declined').group(:navigator_id).count
     @tsm.navigators.each do |id, name|
       @new_applicants.rows << [name, totals[id], accepted[id], declined[id]]

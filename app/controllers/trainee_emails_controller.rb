@@ -21,13 +21,11 @@ class TraineeEmailsController < ApplicationController
   def create
     @trainee_email = EmailFactory.create_trainee_email(params, current_user)
 
-    respond_to do |format|
-      if @trainee_email.errors.count == 0
-        notice = 'email was successfully scheduled for delivery.'
-        format.html { redirect_to @trainee_email, notice: notice }
-      else
-        format.html { render :new }
-      end
+    if @trainee_email.errors.empty?
+      notice = 'email was successfully scheduled for delivery.'
+      redirect_to @trainee_email, notice: notice
+    else
+      render :new
     end
   end
 

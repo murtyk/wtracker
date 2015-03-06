@@ -30,6 +30,8 @@ class TraineeFactory
     trainee
   end
 
+  # in case of applicants grant, a trinee should provide ssn and bd
+  #    after signing in for first time
   def self.update_trainee_by_trainee(all_params)
     params   = all_params[:trainee].clone
     trainee  = Trainee.find(all_params[:id])
@@ -37,24 +39,29 @@ class TraineeFactory
     trainee.dob        = opero_str_to_date(params[:dob])
     trainee.trainee_id = params[:trainee_id]
 
-    ssn = params[:trainee_id].delete('^0-9')
-    if trainee.dob.blank?
-      trainee.errors.add(:dob, "Can't be blank. Please enter valid date.")
-    end
-    trainee.errors.add(:trainee_id, 'Enter 9 digits') unless ssn.size == 9
+    validate_trainee_entered_data(trainee, params)
     return trainee if trainee.errors.any?
 
     trainee.save
     trainee
   end
 
-  def self.add_trainee_file(params, user)
-    if user.class == Trainee
-      filename = params[:file].original_filename
-      valid    = %w(doc docx pdf).include?(filename.split('.')[-1])
-      return [false, 'invalid file type', nil] unless valid
+  def self.validate_trainee_entered_data(trainee, params)
+    ssn = params[:trainee_id].delete('^0-9')
+    if trainee.dob.blank?
+      trainee.errors.add(:dob, "Can't be blank. Please enter valid date.")
     end
-    trainee = user.class == Trainee ? user : Trainee.find(params[:trainee_id])
+    trainee.errors.add(:trainee_id, 'Enter 9 digits') unless ssn.size == 9
+  end
+
+  # in case of applicants grant, a trainee also can add a file
+  def self.add_trainee_file(params, user)
+    if user.is_a? Trainee
+      trainee  = user
+      return [false, 'invalid file type', nil] unless valid_file?(params)
+    end
+
+    trainee ||= Trainee.find(params[:trainee_id])
     saved   = false
 
     begin
@@ -66,6 +73,11 @@ class TraineeFactory
       error_message = e.to_s
     end
     [saved, error_message, trainee_file]
+  end
+
+  def self.valid_file?(params)
+    filename = params[:file].original_filename
+    %w(doc docx pdf).include?(filename.split('.')[-1])
   end
 
   def self.build_addresses_and_tact3(trainee)
@@ -88,43 +100,40 @@ class TraineeFactory
 
   def self.create_trainee_from_applicant(applicant)
     grant   = applicant.grant
+    attrs   = build_trainee_attrs(applicant)
+    attrs   = attrs.merge(credentials_attrs(applicant))
 
+    trainee = grant.trainees.new(attrs)
+    trainee.build_job_search_profile(account_id: trainee.account_id)
+    trainee.trainee_statuses
+      .new(grant_trainee_status_id: grant.default_trainee_status_id.to_i)
+    trainee.save
+    trainee
+  end
+
+  private
+
+  def self.build_trainee_attrs(applicant)
     tact_three_attributes = build_tact3_attrs(applicant)
-
     attrs = { first: applicant.first_name, last: applicant.last_name,
               email: applicant.email, mobile_no: applicant.mobile_phone_no,
               legal_status: applicant.legal_status, veteran: applicant.veteran,
               gender: applicant.gender, race_id: applicant.race_id,
               tact_three_attributes: tact_three_attributes
             }
-
     geocode_applicant(applicant)
+
     if applicant.valid_address?
       attrs[:home_address_attributes] = build_address_attrs(applicant)
     end
-
-    pwd                           = password_for(applicant)
-    attrs[:login_id]              = login_id_for(applicant)
-    attrs[:password]              = pwd
-    attrs[:password_confirmation] = pwd
-
-    trainee = grant.trainees.new(attrs)
-    trainee.build_job_search_profile(account_id: trainee.account_id)
-    trainee.trainee_statuses.new(grant_trainee_status_id: grant.default_trainee_status_id.to_i)
-    trainee.save
-    [trainee, pwd]
+    attrs
   end
 
-  private
-
   def self.build_address_attrs(applicant)
-    { line1:     applicant.address_line1,
-      line2:     applicant.address_line2,
-      city:      applicant.address_city,
-      state:     applicant.address_state,
+    { line1:     applicant.address_line1, line2:     applicant.address_line2,
+      city:      applicant.address_city,  state:     applicant.address_state,
       zip:       applicant.address_zip,
-      longitude: applicant.longitude,
-      latitude:  applicant.latitude
+      longitude: applicant.longitude,     latitude:  applicant.latitude
     }
   end
 
@@ -133,6 +142,12 @@ class TraineeFactory
       recent_employer: applicant.last_employer_name,
       job_title:       applicant.last_job_title
     }
+  end
+
+  def self.credentials_attrs(applicant)
+    pwd = password_for(applicant)
+
+    { login_id: login_id_for(applicant), password: pwd, password_confirmation: pwd }
   end
 
   def self.password_for(ap)

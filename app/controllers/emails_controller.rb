@@ -38,7 +38,7 @@ class EmailsController < ApplicationController
     @email = EmailFactory.create_email(params, current_user)
 
     respond_to do |format|
-      if @email.errors.count == 0
+      if @email.errors.empty?
         notice = 'email was successfully scheduled for delivery.'
         format.html { redirect_to @email, notice: notice }
       else

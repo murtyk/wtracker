@@ -58,11 +58,12 @@ class JobSharesController < ApplicationController
   # POST /job_shares.json
   def create
     # authorize @job_share
+
     @job_share = JobShareFactory.create_job_share(params, current_user)
     json_job_share = { job_share_id: @job_share.id, errors: @job_share.errors }
 
     respond_to do |format|
-      if @job_share.errors.count == 0
+      if @job_share.errors.empty?
         format.html { redirect_to @job_share, notice: 'Job(s) shared successfully.' }
         format.json { render json: json_job_share, status: :created }
       else

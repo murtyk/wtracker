@@ -5,7 +5,7 @@ end
 
 describe "shared job" do
 
-  describe "update status" do
+  describe "update status", js: true, noheadless: true do
     before(:each) do
       signin_admin
     end

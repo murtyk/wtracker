@@ -15,7 +15,7 @@ class ShJob
         undef:            :replace,  # Replace anything not defined in ASCII
         replace:          '',        # Use a blank for those replacements
         universal_newline: true       # Always break lines with \n
-                          }
+      }
       name = job_json['cn']['__content__'].encode Encoding.find('ASCII'), encoding_options
       @company = name.gsub('&amp;', '&')
     end

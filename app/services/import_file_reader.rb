@@ -1,3 +1,4 @@
+# for reading data records from excel file
 class ImportFileReader
   attr_reader :header
 
