@@ -26,6 +26,12 @@ module UserRoleMixins
     role == 4
   end
 
+  def navigator_through_klasses?
+    navigator? && !grant_admin?
+  end
+
+  # for externral navigators, grants can be assigned
+  # navigator will have access to all classes in the assigned grants
   def grant_admin?
     grant_admins.where(grant_id: Grant.current_id).any?
   end
@@ -56,10 +62,26 @@ module UserRoleMixins
     klass_ids = klasses.map(&:id)
     klass_instructors.destroy_all
     klass_navigators.destroy_all
-    if new_role == 3
-      klass_ids.each { |kid| klass_navigators.create!(klass_id: kid) }
-    elsif new_role == 4
-      klass_ids.each { |kid| klass_instructors.create!(klass_id: kid) }
+    navigate_klasses(klass_ids) if new_role == 3
+    instruct_klassess(klass_ids) if new_role == 4
+  end
+
+  def trainees_for_search
+    if navigator_through_klasses?
+      if !params[:q] || params[:q]['klasses_id_eq'].blank?
+        klass_ids = klasses.pluck(:id)
+        trainee_ids = KlassTrainee.where(klass_id: klass_ids).pluck(:trainee_id)
+        return Trainee.where(id: trainee_ids)
+      end
     end
+    Trainee
+  end
+
+  def navigate_klasses(klass_ids)
+    klass_ids.each { |kid| klass_navigators.create!(klass_id: kid) }
+  end
+
+  def instruct_klassess(klass_ids)
+    klass_ids.each { |kid| klass_instructors.create!(klass_id: kid) }
   end
 end

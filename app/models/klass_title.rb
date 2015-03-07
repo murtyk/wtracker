@@ -13,7 +13,7 @@ class KlassTitle < ActiveRecord::Base
 
   def get_job_search(refresh = false)
     return job_search if !refresh && valid_job_search_count?
-    address = klass.college.address
+    address = klass.address
     count = JobBoard.job_count(title, address.city, address.state, 25, 30)
     return create_job_search(count) unless job_search
     job_search.update_attributes(count: count)

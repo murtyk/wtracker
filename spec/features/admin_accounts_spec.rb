@@ -39,26 +39,8 @@ describe "Administration" do
     end
 
     it 'can update an account' do
-      click_on 'New Account'
-
-      fill_in 'Name', with: 'Test Client', match: :prefer_exact
-      fill_in 'Description', with: 'Test Client for testing'
-      fill_in 'Subdomain', with: 'test'
-      select('Grant Recipient', from: 'Client Type')
-      select('Active', from: 'Status')
-
-      fill_in 'First Name', with: 'Robin'
-      fill_in 'Last Name', with: 'Hood'
-      fill_in 'Email', with: 'robin@mail.com'
-      fill_in 'Password', with: 'password'
-      fill_in 'Location', with: 'Edison, NJ'
-
-      click_on 'Save'
-      expect(page).to have_text 'Account was successfully created.'
-      expect(page).to have_text 'Test Client'
-
       click_on 'Accounts'
-      click_on 'Test Client'
+      click_on 'PAWF Org'
       click_on 'Edit'
       fill_in 'Name', with: 'Updated Client', match: :prefer_exact
       click_on 'Save'

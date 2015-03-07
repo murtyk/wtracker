@@ -5,6 +5,7 @@ def full_menu_list
     ['Dashboard',            '/dashboards/summary'       ],
     ['Users',                '/users'                    ],
 
+    ['Settings',             '#'                         ],
     ['Applicant Source',     '/applicant_sources'        ],
     ['Assessment',           '/assessments'              ],
     ['Employment Status',    '/employment_statuses'      ],
@@ -61,6 +62,11 @@ describe 'all menus' do
   it 'has relevant menu list for applicants grant' do
     full_menu_list.each do |name, href|
       expect(find_link(name)[:href]).to eq(href)
+    end
+
+    list_menus = page.all('a', text: 'List')
+    list_menus.each do |m|
+      expect(['/klasses', '/job_shares', '/grants'].include?(m[:href])).to be true
     end
 
     expect(page).to have_xpath("//a[@href='/grants']")

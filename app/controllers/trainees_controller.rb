@@ -26,7 +26,9 @@ class TraineesController < ApplicationController
   end
 
   def advanced_search
-    @q = Trainee.ransack(params[:q])
+    trainees = current_user.trainees_for_search
+
+    @q = trainees.ransack(params[:q])
     # @trainees = @q.result(distinct: true)
     if current_grant.trainee_applications?
       @trainees = @q.result.includes(:klasses, :job_search_profile, :assessments,
@@ -80,15 +82,7 @@ class TraineesController < ApplicationController
   end
 
   def update
-    if current_trainee
-      @trainee = TraineeFactory.update_trainee_by_trainee(params)
-      if @trainee.errors.empty?
-        portal
-      else
-        render 'trainee_data_form'
-      end
-      return
-    end
+    return update_by_trainee if current_trainee
 
     authorize Trainee.find(params[:id])
     @trainee = TraineeFactory.update_trainee(params)
@@ -96,6 +90,15 @@ class TraineesController < ApplicationController
       redirect_to(@trainee, notice: 'Trainee was successfully updated.')
     else
       render :edit
+    end
+  end
+
+  def update_by_trainee
+    @trainee = TraineeFactory.update_trainee_by_trainee(params)
+    if @trainee.errors.empty?
+      portal
+    else
+      render 'trainee_data_form'
     end
   end
 

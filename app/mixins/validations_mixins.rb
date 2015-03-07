@@ -1,7 +1,7 @@
+# for validations in Trainee, Contact and Address
 module ValidationsMixins
   def validate_email
     return true if email.blank?
-    valid_email = true
     parts = email.split('@')
     valid_email = parts.count == 2
     if valid_email

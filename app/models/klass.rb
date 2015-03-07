@@ -21,6 +21,7 @@ class Klass < ActiveRecord::Base
   belongs_to :program
   belongs_to :college
   delegate :line1, :city, :county, :state, :zip, to: :college
+  delegate :address, to: :college
 
   has_many :klass_schedules, -> { order 'dayoftheweek' }, dependent: :destroy
   accepts_nested_attributes_for :klass_schedules

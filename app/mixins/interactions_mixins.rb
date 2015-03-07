@@ -1,3 +1,4 @@
+# status of employers interested in trainees
 module InteractionsMixins
   def trainee_interactions_by_status
     status_tis = {}
