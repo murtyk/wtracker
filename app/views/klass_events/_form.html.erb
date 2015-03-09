@@ -231,11 +231,8 @@ $(function(){
   }
 
 </script>
-<script type="text/javascript">
-  $(document).ready(function(){
-  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
-  })
-</script>
+<%= render 'shared/date_script' %>
+
 <script type="text/javascript">
   $(document).ready(function(){
     $('.combobox').combobox();

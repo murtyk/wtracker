@@ -21,13 +21,7 @@
     </div>
 <% end %>
 
-<script type="text/javascript">
-$(document).ready(function() {
-  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
-  $('.btn-spinner').button();
-
-})
-</script>
+<%= render 'shared/date_script' %>
 
 <script type="text/javascript">
   $('#new_klass_event').submit(function() {

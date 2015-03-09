@@ -10,12 +10,10 @@
   <div class="form-actions">
     <%= ajax_cancel_and_submit_buttons(f) %>
   </div>
+
   <%= ajax_form_cancel_script(trainee_submit) %>
-  <script type="text/javascript">
-    $(document).ready(function(){
-    $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
-    })
-  </script>
+
+  <%= render 'shared/date_script' %>
 
 <% end %>
 

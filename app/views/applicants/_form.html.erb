@@ -217,11 +217,7 @@
     <%= f.button :submit, 'Submit', class: 'btn btn-flat btn-primary' %>
   </div>
 <% end %>
-<script type="text/javascript">
-  $(document).ready(function(){
-  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
-  })
-</script>
+<%= render 'shared/date_script' %>
 <script type="text/javascript">
   jQuery(function() {
     return $('#applicant_source').change(function() {

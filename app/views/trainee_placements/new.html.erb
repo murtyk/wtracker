@@ -27,11 +27,9 @@
       <% end %>
   </div>
 </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
-  })
-</script>
+
+<%= render 'shared/date_script' %>
+
 <script type="text/javascript">
 jQuery(function($){
   <% @trainee_placement.mask_fields.each do |field, mask, placeholder| %>

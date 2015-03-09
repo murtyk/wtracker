@@ -29,11 +29,8 @@
   </div>
   <%= ajax_form_cancel_script(klass_trainee) %>
 
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
-    })
-  </script>
+  <%= render 'shared/date_script' %>
+
   <script type="text/javascript">
     $('#klass_trainee_status').change(function() {
       status_id = $('#klass_trainee_status :selected').val();

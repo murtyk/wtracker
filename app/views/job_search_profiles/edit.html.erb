@@ -55,11 +55,7 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  $(document).ready(function(){
-  $('[data-behaviour~=datepicker]').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});
-  })
-</script>
+<%= render 'shared/date_script' %>
 
 <script type="text/javascript">
   $('#job_search_profile_opt_out_reason_code').change(function() {
