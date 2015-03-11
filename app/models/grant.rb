@@ -3,9 +3,13 @@
 # grant has end date after which it should become read only
 class Grant < ActiveRecord::Base
   STATUSES = { 1 => 'Planning', 2 => 'Started', 3 => 'Closed' }
-  serialize :options
   default_scope { where(account_id: Account.current_id) }
 
+  store_accessor :specific_data, :hidden_sidebars
+
+  include Sidebars
+
+  serialize :options
   attr_accessible :account_id, :end_date, :name, :start_date, :status, :spots, :amount,
                   :auto_job_leads, :profile_request_content_attributes,
                   :profile_request_subject_attributes, :job_leads_subject_attributes,

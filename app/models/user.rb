@@ -134,7 +134,8 @@ class User < ActiveRecord::Base
   end
 
   def klasses
-    return Klass.all if admin_access?
+    current_grant = Grant.find Grant.current_id
+    return Klass.all if admin_access? || grants.include?(current_grant)
     return navigator_klasses if navigator?
     return instructor_klasses if instructor?
   end

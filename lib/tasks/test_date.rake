@@ -227,13 +227,13 @@ namespace :testprep do
     nav1.counties << nj_state.counties.where(name: 'Middlesex').first
     nav1.grants << grant
 
-    nav2 = create_user('Cameron', 'Diaze', 'Camden', 1, 3, 'cameron@nomail.net')
+    nav3 = create_user('Cameron', 'Diaze', 'Camden', 1, 3, 'cameron@nomail.net')
     p1 = create_program('program 1', 'description of program11',
                           Sector.last.id, 400)
 
     k1 = create_klass(p1, 'CNC 101', '', 'June 27, 2012',  'Aug 17, 2018',
                         3, 272, c1.id)
-    KlassNavigator.create(klass_id: k1.id, user_id: nav2.id)
+    KlassNavigator.create(klass_id: k1.id, user_id: nav3.id)
   end
 
   def create_grant_trainee_statuses(grant)

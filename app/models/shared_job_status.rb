@@ -53,7 +53,7 @@ class SharedJobStatus < ActiveRecord::Base
     ord = 'shared_job_statuses.created_at desc'
 
     return includes(:trainee)
-      .where(trainees_id: trainee_id).order(ord) if trainee_id > 0
+      .where(trainee_id: trainee_id).order(ord) if trainee_id > 0
 
     includes(trainee: :klass_trainees)
       .where(klass_trainees: { klass_id: klass_id }).order(ord)

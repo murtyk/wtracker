@@ -77,9 +77,14 @@
   <div class='span9'>
     <div class='row-fluid'>
       <div class='span3'>
-        <h4>Trainee Count: <%= @trainees.count %></h4>
+        <h4>Count: <%= @trainees_count %></h4>
       </div>
-      <div class='span9'>
+      <div class='span6'>
+        <% if @trainees.any? %>
+          <div align="center" class='span8'><%= will_paginate @trainees%></div>
+        <% end %>
+      </div>
+      <div class='span3'>
         <button type='button' id = 'btnExport' name='export'
                 class='btn btn-flat btn-small btn-primary pull-right'>
           <i class='icon-cloud-download icon-2x'></i>

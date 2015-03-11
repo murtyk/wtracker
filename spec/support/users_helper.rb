@@ -2,8 +2,8 @@ module  UserHelper
 
   def signin_opero_admin
     visit ('/admins/sign_in')
-    fill_in 'Email', with: "admin@opero.com"
-    fill_in 'Password', with: "adminpassword"
+    fill_in 'Email', with: 'admin@opero.com'
+    fill_in 'Password', with: 'adminpassword'
     click_button 'Log in'
   end
 
@@ -12,58 +12,27 @@ module  UserHelper
   end
 
   def signin_director
-    switch_to_main_domain
-    visit root_path
-    # click_link 'Sign In'
-    fill_in 'email', with: "sher@mail.com"
-    fill_in 'password', with: "password"
-    click_button 'Sign in'
+    sign_in_user('www', 'sher@mail.com')
   end
 
   def signin_admin
-    switch_to_main_domain
-    visit root_path
-    # click_link 'Sign In'
-    fill_in 'user_email', with: "ballu@mail.com"
-    fill_in 'user_password', with: "password"
-    click_button 'Sign in'
+    sign_in_user('www', 'ballu@mail.com')
   end
 
   def signin_navigator
-    switch_to_main_domain
-    visit root_path
-    # click_link 'Sign In'
-    fill_in 'email', with: "melinda@mail.com"
-    fill_in 'password', with: "password"
-    click_button 'Sign in'
+    sign_in_user('www', 'melinda@mail.com')
   end
 
   def signin_instructor
-    switch_to_main_domain
-    visit root_path
-    # click_link 'Sign In'
-    fill_in 'email', with: "eric@mail.com"
-    fill_in 'password', with: "password"
-    click_button 'Sign in'
+    sign_in_user('www', 'eric@mail.com')
   end
 
-
   def signin_college_admin
-    switch_to_subdomain('brookdale')
-    visit root_path
-    # click_link 'Sign In'
-    fill_in 'user_email', with: "michele@mail.com"
-    fill_in 'user_password', with: "password"
-    click_button 'Sign in'
+    sign_in_user('brookdale', 'michele@mail.com')
   end
 
   def signin_autolead_director
-    switch_to_subdomain('njit')
-    visit root_path
-    # click_link 'Sign In'
-    fill_in 'user_email', with: "njit@mail.com"
-    fill_in 'user_password', with: "password"
-    click_button 'Sign in'
+    sign_in_user('njit', 'njit@mail.com')
   end
 
   def signout
@@ -74,30 +43,25 @@ module  UserHelper
   end
 
   def sign_in_demo_user
-    switch_to_demo_domain
-    visit root_path
-    # click_link 'Sign In'
-    # fill_in 'user_email', with: "aandrola@gmail.com"
-    fill_in 'user_email', with: User.unscoped.last.email
-    fill_in 'user_password', with: "password"
-    click_button 'Sign in'
+    Account.current_id = Account.find_by(subdomain: 'demo').id
+    email = User.unscoped.last.email
+
+    sign_in_user('demo', email)
   end
 
   def signin_applicants_admin
-    switch_to_applicants_domain #apple
-    visit root_path
-    # click_link 'Sign In'
-    fill_in 'user_email', with: "corkery@mail.com"
-    fill_in 'user_password', with: "password"
-    click_button 'Sign in'
+    sign_in_user('apple', 'corkery@mail.com')
   end
 
   def signin_applicants_nav
-    switch_to_applicants_domain #apple
+    sign_in_user('apple', 'cameron@nomail.net')
+  end
+
+  def sign_in_user(sub, email, pwd = 'password')
+    switch_to_subdomain(sub)
     visit root_path
-    # click_link 'Sign In'
-    fill_in 'user_email', with: "cameron@nomail.net"
-    fill_in 'user_password', with: "password"
+    fill_in 'user_email', with: email
+    fill_in 'user_password', with: pwd
     click_button 'Sign in'
   end
 end

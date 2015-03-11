@@ -28,7 +28,7 @@ class KlassPolicy < Struct.new(:user, :klass)
   end
 
   def show?
-    new? || user.klasses.include?(klass)
+    new? || user.grants.include?(klass.grant) || user.klasses.include?(klass)
   end
 
   def destroy?
