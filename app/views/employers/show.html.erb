@@ -8,9 +8,11 @@
     <%= render 'panel_basic_info', employer: @employer %>
   </div>
 
+  <% if current_grant.show_side_bar?(Sidebars::EMPLOYER_PAGE_TRAINEE_INFO) %>
   <div class = 'span4'>
     <%= render 'panel_trainee_info', employer: @employer %>
   </div>
+  <% end %>
 
   <div class='span4'>
     <%= render 'panel_notes_and_klass_info', employer: @employer %>

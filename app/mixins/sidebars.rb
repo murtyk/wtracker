@@ -22,11 +22,13 @@ module Sidebars
   def hide_a_side_bar(sidebar)
     self.hidden_sidebars ||= []
     self.hidden_sidebars += [sidebar]
+    save
   end
 
   def show_a_side_bar(sidebar)
     self.hidden_sidebars ||= []
     self.hidden_sidebars -= [sidebar]
+    save
   end
 
   def pages
@@ -44,6 +46,6 @@ module Sidebars
 
   def show_side_bar?(sidebar)
     return true if hidden_sidebars.blank?
-    !hidden_sidebars.include?(sidebar)
+    !hidden_sidebars.include?(sidebar.to_s)
   end
 end
