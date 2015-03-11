@@ -66,7 +66,7 @@ module UserRoleMixins
     instruct_klassess(klass_ids) if new_role == 4
   end
 
-  def trainees_for_search
+  def trainees_for_search(params)
     if navigator_through_klasses?
       if !params[:q] || params[:q]['klasses_id_eq'].blank?
         klass_ids = klasses.pluck(:id)

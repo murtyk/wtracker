@@ -26,7 +26,7 @@ class TraineesController < ApplicationController
   end
 
   def advanced_search
-    trainees = current_user.trainees_for_search
+    trainees = current_user.trainees_for_search(params)
 
     @q = trainees.ransack(params[:q])
     # @trainees = @q.result(distinct: true)
