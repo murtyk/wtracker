@@ -71,6 +71,8 @@ module WTracker
     config.assets.version = '1.0'
     config.assets.initialize_on_precompile = false
 
+    GC::Profiler.enable
+
     #customizations for generators
     config.generators do |g|
       g.orm :active_record
