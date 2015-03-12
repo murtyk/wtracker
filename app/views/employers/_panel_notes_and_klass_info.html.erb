@@ -2,6 +2,14 @@
 <div id='<%=div_id_for_collection(JobOpening)%>'>
   <%= render employer.job_openings %>
 </div>
+<% if employer.address %>
+  <%= link_to near_by_trainees_employer_path,
+              id: 'near_by_trainees',
+              class: 'btn btn-flat btn-primary' do %>
+    <i class="icon-search"> Near By Trainees</i>
+  <% end %>
+  <hr>
+<% end %>
 <hr>
 
 <%= employer.notes_header %>

@@ -108,6 +108,9 @@ WTracker::Application.routes.draw do
   end
 
   resources :employers do
+    member do
+      get :near_by_trainees
+    end
     collection do
       get :mapview
       get :analysis

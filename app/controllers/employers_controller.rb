@@ -67,6 +67,14 @@ class EmployersController < ApplicationController
     @employer_map = EmployersMap.new(current_user, params[:filters])
   end
 
+  def near_by_trainees
+    @employer_map = EmployersMap.new(current_user, params.merge(near_by_trainees: true))
+    @trainee_email = current_user.trainee_emails
+                     .new(trainee_ids: @employer_map.trainee_ids,
+                          trainee_names: @employer_map.trainee_names,
+                          klass_id: 0)
+  end
+
   def analysis
     @analysis = employer_analysis
   end

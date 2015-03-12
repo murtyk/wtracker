@@ -76,19 +76,16 @@
   </div>
   <div class='span9'>
     <div class='row-fluid'>
-      <div class='span3'>
+      <div class='span2'>
         <h4>Count: <%= @trainees_count %></h4>
       </div>
-      <div class='span6'>
+      <div class='span9'>
         <% if @trainees.any? %>
           <div align="center" class='span8'><%= will_paginate @trainees%></div>
         <% end %>
       </div>
-      <div class='span3'>
-        <button type='button' id = 'btnExport' name='export'
-                class='btn btn-flat btn-small btn-primary pull-right'>
-          <i class='icon-cloud-download icon-2x'></i>
-        </button><br>
+      <div class='span1'>
+        <%= download_button %>
       </div>
     </div>
 

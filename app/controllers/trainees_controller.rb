@@ -40,6 +40,7 @@ class TraineesController < ApplicationController
       @trainees = @q.result.includes(:klasses, :funding_source, :home_address,
                                      :assessments, tact_three: [:education])
     end
+    return if request.format.xls?
     @trainees_count = @trainees.count
     @trainees = @trainees.to_a.paginate(page: params[:page], per_page: 20)
   end

@@ -17,7 +17,7 @@ class EmailFactory
     trainee_ids = params[:trainee_ids]
     klass_id    = params[:klass_id]
 
-    trainee_ids = JSON.parse trainee_ids if trainee_ids.is_a? String
+    trainee_ids = trainee_ids.split if trainee_ids.is_a? String
 
     trainee_ids.delete('')
 

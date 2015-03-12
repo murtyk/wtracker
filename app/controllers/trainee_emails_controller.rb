@@ -1,7 +1,7 @@
 # an user typically sends emails to 1 or more trainees in a class
 class TraineeEmailsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_trainee_email, only: [:show, :update, :destroy]
+  before_action :set_trainee_email, only: [:show, :destroy]
 
   # GET /trainee_emails
   def index
