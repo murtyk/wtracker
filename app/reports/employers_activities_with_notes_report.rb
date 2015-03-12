@@ -3,7 +3,10 @@ include UtilitiesHelper
 class EmployersActivitiesWithNotesReport < Report
   def post_initialize(params)
     return unless params
-    @employers = Employer.includes(:employer_notes).where(id: employer_ids)
+    @employers = user.employers
+                 .includes(:employer_notes)
+                 .includes(:employer_source)
+                 .where(id: employer_ids)
   end
 
   def title

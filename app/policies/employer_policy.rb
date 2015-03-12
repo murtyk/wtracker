@@ -13,11 +13,12 @@ class EmployerPolicy < Struct.new(:user, :employer)
   end
 
   def edit?
-    new?
+    return true if user.admin_access?
+    user.employer_sources.include? (employer.employer_source)
   end
 
   def update?
-    new?
+    edit?
   end
 
   def index?
@@ -25,42 +26,42 @@ class EmployerPolicy < Struct.new(:user, :employer)
   end
 
   def show?
-    true
+    edit?
   end
 
   def destroy?
-    new?
+    edit?
   end
 
   def show_address?
-    new?
+    edit?
   end
 
   def show_source?
-    new?
+    edit?
   end
 
   def show_contacts?
-    new?
+    edit?
   end
 
   def show_trainee_interactions?
-    new?
+    edit?
   end
 
   def show_trainee_submits?
-    new?
+    edit?
   end
 
   def show_job_openings?
-    new?
+    edit?
   end
 
   def show_notes?
-    new?
+    edit?
   end
 
   def show_klass_interactions?
-    true
+    edit?
   end
 end

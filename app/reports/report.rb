@@ -73,7 +73,9 @@ class Report
   end
 
   def self.employer_reports(user)
-    return [EMPLOYERS_HIRED, EMPLOYERS_ADDRESS_MISSING] unless user.admin_access?
+    return [EMPLOYERS_HIRED,
+            EMPLOYERS_ADDRESS_MISSING,
+            EMPLOYERS_ACTIVITIES_WITH_NOTES] unless user.admin_access?
 
     [EMPLOYERS_HIRED, EMPLOYERS_INTERESTED_TRAINEES, ACTIVE_EMPLOYERS,
      EMPLOYERS_ACTIVITIES_WITH_NOTES, EMPLOYERS_ADDRESS_MISSING]
