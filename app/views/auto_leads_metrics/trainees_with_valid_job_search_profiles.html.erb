@@ -3,7 +3,7 @@
     <h2>Following trainees have updated job search profile </h2>
   </div>
   <div class='span2' style='margin-top:10px'>
-    <%= link_to 'Map View', trainees_by_auto_lead_status_program_path(@program, status: :NOT_PENDING, map: true) %>
+    <%= link_to 'Map View', auto_leads_metrics_path(status: :NOT_PENDING, map: true) %>
   </div>
 </div>
 

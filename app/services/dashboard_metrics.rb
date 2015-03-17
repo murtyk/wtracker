@@ -2,7 +2,7 @@
 class DashboardMetrics
   # need this for link_to
   include ActionView::Helpers::UrlHelper
-  attr_reader :metrics, :new_applicants
+  attr_reader :metrics
 
   def initialize
     @metrics = OpenStruct.new
@@ -78,9 +78,13 @@ class DashboardMetrics
                .where(trainees: { funding_source_id: nil })
                .group(:navigator_id).count
     declined = Applicant.where(status: 'Declined').group(:navigator_id).count
-    @tsm.navigators.each do |id, name|
-      @new_applicants.rows << [name, totals[id], accepted[id], declined[id]]
+    @new_applicants.rows = @tsm.navigators.map do |id, name|
+      [name, totals[id], accepted[id], declined[id]]
     end
+    # @tsm.navigators.each do |id, name|
+    #   @new_applicants.rows << [name, totals[id], accepted[id], declined[id]]
+    # end
+    @metrics.new_applicants = @new_applicants
   end
 
   def fs_names

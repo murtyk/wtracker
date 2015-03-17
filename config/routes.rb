@@ -26,17 +26,12 @@ WTracker::Application.routes.draw do
 
   resources :grants, only: [:show, :index, :edit, :update] do
     collection do
-      get :skill_metrics
       get :reapply_message
     end
   end
 
   resources :colleges
-  resources :programs, except: [:destroy] do
-    member do
-      get :trainees_by_auto_lead_status
-    end
-  end
+  resources :programs, except: [:destroy]
 
   resources :klasses do
     member do
@@ -224,15 +219,18 @@ WTracker::Application.routes.draw do
 
   get 'static_pages/home'
 
-  resources :dashboards, only: [] do
+  resources :dashboards, only: [:index] do
     collection do
-      get :startingpage
-      get :summary
-      post :grantselected
+      get :starting_page
+      post :grant_selected
     end
   end
 
-  root to: 'dashboards#startingpage'
+  resources :auto_leads_metrics, only: [:index]
+  resources :applicants_metrics, only: [:index]
+  resources :standard_metrics,   only: [:index]
+
+  root to: 'dashboards#starting_page'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

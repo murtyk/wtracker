@@ -3,11 +3,11 @@
 <h4>All Trainees</h4>
 <table class="table table-condensed table-bordered table-striped table-hover">
   <tr>
-    <% @applicant_metrics.header.each do |h| %>
+    <% @data.header.each do |h| %>
       <th><%= h %></th>
     <% end %>
   </tr>
-  <% @applicant_metrics.rows.each do |row| %>
+  <% @data.rows.each do |row| %>
     <tr>
       <% row.each do |d| %>
         <td><%= d %></td>
@@ -19,11 +19,11 @@
 <h4>New Applicants (Funding Source has not been assigned)</h4>
 <table class="table table-condensed table-bordered table-striped table-hover">
   <tr>
-    <% @dm.new_applicants.header.each do |h| %>
+    <% @data.new_applicants.header.each do |h| %>
       <th><%= h %></th>
     <% end %>
   </tr>
-  <% @dm.new_applicants.rows.each do |row| %>
+  <% @data.new_applicants.rows.each do |row| %>
     <tr>
       <% row.each do |d| %>
         <td><%= d %></td>

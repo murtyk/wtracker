@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     elsif resource.is_a? Trainee
       portal_trainees_path
     else
-      startingpage_dashboards_path
+      starting_page_dashboards_path
     end
   end
 

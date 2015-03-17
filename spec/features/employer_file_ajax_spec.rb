@@ -25,12 +25,8 @@ describe "EmployerFile", js: true do
     end
 
     it 'allows attachments' do
-      # VCR.configure do |config|
-      #   config.allow_http_connections_when_no_cassette = true
-      # end
-
       click_link "new_employer_file_link"
-      # puts filepath
+
       page.attach_file "employer_file_file", @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Resume'
@@ -41,7 +37,7 @@ describe "EmployerFile", js: true do
 
       click_link "new_employer_file_link"
       @filepath = cover_letter
-      # puts filepath
+
       page.attach_file "employer_file_file", @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Cover Letter'

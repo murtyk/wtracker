@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       # Sign in the user by passing validation in case his password changed
       sign_in @user, bypass: true
       flash[:notice] = 'Password successfully updated'
-      redirect_to '/dashboards/summary'
+      redirect_to dashboards_path
     else
       render 'edit_password'
     end

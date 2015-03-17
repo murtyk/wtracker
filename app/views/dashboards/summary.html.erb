@@ -1,7 +1,0 @@
-<% if current_user.director? %>
-  <%= render 'director' %>
-<% elsif current_user.admin? || current_user.grant_admin? %>
-  <%= render 'admin' %>
-<% else %>
-  <%= render 'navigator' %>
-<% end %>

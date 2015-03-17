@@ -2,7 +2,7 @@ require 'rails_helper'
 
 def full_menu_list
   [
-    ['Dashboard',            '/dashboards/summary'       ],
+    ['Dashboard',            '/dashboards'               ],
     ['Users',                '/users'                    ],
 
     ['Settings',             '#'                         ],

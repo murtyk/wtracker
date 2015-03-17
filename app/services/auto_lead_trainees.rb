@@ -1,6 +1,6 @@
 # trainee metrics for a grant with auto job leads
 class AutoLeadTrainees
-  attr_accessor :program
+  attr_accessor :grant, :template
   def initialize
     @grant = Grant.find(Grant.current_id)
   end
@@ -38,7 +38,9 @@ class AutoLeadTrainees
   end
 
   def by_status(status)
-    ids = source.send(METHOD_MAP[status.to_sym])
+    @template = METHOD_MAP[status.to_sym]
+    ids = source.send(template)
+
     return [] if ids.empty?
     Trainee.where(id: ids).order(:first, :last)
   end
@@ -52,6 +54,10 @@ class AutoLeadTrainees
   end
 
   def source
-    @program || @grant
+    @grant
+  end
+
+  def job_leads_sent_count
+    @grant.job_leads_sent_count
   end
 end

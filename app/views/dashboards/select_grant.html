@@ -6,7 +6,7 @@
   <h4> Your working context is set to Grant: <%= current_grant.name %></h4>
   <hr>
   <div class = 'span3'>
-    <%= simple_form_for :grant, { url: grantselected_dashboards_path } do |f| %>
+    <%= simple_form_for :grant, { url: grant_selected_dashboards_path } do |f| %>
       <%= f.input :id, collection: @grants, include_blank: false, label: 'Change Current Grant To' %>
       <div class='form-actions'>
         <%= submit_button(f, "Set Grant") %>

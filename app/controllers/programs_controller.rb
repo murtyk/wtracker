@@ -1,25 +1,6 @@
 class ProgramsController < ApplicationController
   before_filter :authenticate_user!
 
-  TRAINEE_STATUS_TEMPLATES = { PENDING:     'trainees_pending_job_search_profile',
-                               NOT_PENDING: 'trainees_updated_job_search_profile',
-                               VIEWED:      'trainees_viewed_auto_leads',
-                               NOT_VIEWED:  'trainees_not_viewed_auto_leads',
-                               APPLIED:     'trainees_applied_auto_leads',
-                               NOT_APPLIED: 'trainees_not_applied_auto_leads',
-                               OPTED_OUT:   'trainees_opted_out'
-                              }
-
-  def trainees_by_auto_lead_status
-    @program = Program.find(params[:id])
-    alt         = AutoLeadTrainees.new
-    alt.program = @program
-    @trainees   = alt.by_status(params[:status])
-
-    @job_search_profiles_map = JobSearchProfilesMap.new(@trainees) if params[:map]
-    render template
-  end
-
   # GET /programs
   # GET /programs.json
   def index

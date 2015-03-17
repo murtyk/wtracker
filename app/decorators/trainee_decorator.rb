@@ -13,28 +13,30 @@ class TraineeDecorator < Draper::Decorator
   #   end
   def land_no
     return nil unless object.land_no?
-    ''.html_safe + h.format_phone_no(object.land_no) + '(h)<br>'.html_safe
+    (h.format_phone_no(object.land_no) + '<br>').html_safe
   end
 
   def mobile_no
     return nil unless object.mobile_no?
-    ''.html_safe + h.format_phone_no(object.mobile_no) + '(m)<br>'.html_safe
+    (h.format_phone_no(object.mobile_no) + '(m)<br>').html_safe
   end
 
   def home_address
     return nil unless object.home_address
 
-    addr = '' + h.h(line1) + '<br>' +
-           h.h(city) + '<br>' +
-           h.h("#{state} #{zip}") +
-           '<br>county: <b>' + h.h(county_name) + '</b><br>'
+    formatted_address.html_safe
+  end
 
-    addr.html_safe
+  def formatted_address
+    ['' + h.h(line1),
+     h.h(city),
+     "#{state} #{zip}",
+     'county: <b>' + county_name + '</b>'].join('<br>') + '</br>'
   end
 
   def email
     return unless object.email
-    ''.html_safe + object.email + '<br>'.html_safe
+    (object.email + '<br>').html_safe
   end
 
   def funding_source

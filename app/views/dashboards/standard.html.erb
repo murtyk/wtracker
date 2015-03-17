@@ -44,11 +44,8 @@
       <% ['scheduled_classes', 'ongoing_classes', 'completed_classes'].each do |klass_state| %>
         <% klasses = program.send(klass_state) %>
         <% if klasses.any? %>
-          <% n_enrolled, n_completed, n_dropped, n_continuing, n_not_placed, n_placed = 0, 0, 0, 0, 0, 0 %>
           <% klasses.each do |klass| %>
             <tr class = '<%= klass_state%>'>
-              <% status_counts = klass.trainees_status_counts %>
-
               <td><%= klass.college_name %></td>
               <td><%= request.format.xls? ? klass.name : link_to(klass.name, klass) %></td>
               <td><%= klass.start_date.to_s%></td>

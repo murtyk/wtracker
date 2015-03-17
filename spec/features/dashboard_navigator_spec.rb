@@ -12,17 +12,9 @@ describe "Dashboard" do
 
       signin_navigator
 
-      expect(page).to_not have_text 'Interviews'
-
-      visit '/dashboards/summary'
-      # click_on 'Dashboard'
-      expect(page).to have_text 'Interviews'
-      expect(page).to have_text 'Visits'
+      expect(page).to have_selector('h1', text: 'Classes')
 
       signout
-      signin_admin
-
-      destroy_klasses
     end
   end
 end

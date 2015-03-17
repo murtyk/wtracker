@@ -4,75 +4,50 @@
 class DashboardsController < ApplicationController
   before_filter :authenticate_user!
 
-  def startingpage
-    @grants = current_user.active_grants
-    if @grants.empty?
-      redirect_to_not_assigned_path
-      return
-    end
+  def starting_page
+    db = Dashboard.new(current_user)
 
-    if @grants.count > 1
+    return redirect_to_not_assigned_path if db.not_assigned?
+    return redirect_to db.path if db.redirect?
+
+    if db.select_grant?
+      @grants = current_user.active_grants
       render 'select_grant'
-      return
     end
-
-    session[:grant_id] = Grant.current_id = @grants.first.id
-
-    if current_grant.trainee_applications?
-      redirect_to_applicant_grant_start_page
-      return
-    end
-
-    if current_user.admin_or_director? || current_user.grant_admin?
-      render 'summary'
-      return
-    end
-
-    # we come here when there is only one grant and user is not admin_or_director
-    redirect_to klasses_path
   end
 
-  def grantselected
+  def grant_selected
     Grant.current_id = session[:grant_id] = params[:grant][:id].to_i
-    if current_user.admin_access?
-      redirect_to summary_dashboards_path
-    else
-      redirect_to klasses_path
-    end
+    index
   end
 
-  def summary
-    if current_grant.trainee_applications?
-      @dm = DashboardMetrics.new
-      @applicant_metrics = @dm.generate
-      render 'applicant_metrics'
-      return
-    end
-    init_data if current_user.navigator? || current_user.instructor?
+  def index
+    db = Dashboard.new(current_user, Grant.find(Grant.current_id))
+    redirect_to db.path
   end
 
   private
 
-  def init_data
-    klass_ids = current_user.klasses.map(&:id)
-    trainee_ids = KlassTrainee.where(klass_id: klass_ids).pluck(:trainee_id)
-    status_interview = TraineeInteraction::STATUSES.key('Interview')
-    @interviews = TraineeInteraction.where(trainee_id: trainee_ids,
-                                           status: status_interview)
-                  .where('DATE(interview_date) > ?',
-                         7.days.ago.to_date)
-                  .order('interview_date desc')
-    @visits = KlassEvent.where(klass_id: klass_ids)
-              .where('name ilike ?', '%visit%')
-              .where('DATE(event_date) >= ?', Time.now.to_date)
-              .order('event_date desc')
-  end
+  # def init_data
+  #   klass_ids = current_user.klasses.map(&:id)
+  #   trainee_ids = KlassTrainee.where(klass_id: klass_ids).pluck(:trainee_id)
+  #   status_interview = TraineeInteraction::STATUSES.key('Interview')
+  #   @interviews = TraineeInteraction.where(trainee_id: trainee_ids,
+  #                                          status: status_interview)
+  #                 .where('DATE(interview_date) > ?',
+  #                        7.days.ago.to_date)
+  #                 .order('interview_date desc')
+  #   @visits = KlassEvent.where(klass_id: klass_ids)
+  #             .where('name ilike ?', '%visit%')
+  #             .where('DATE(event_date) >= ?', Time.now.to_date)
+  #             .order('event_date desc')
+  # end
 
   def redirect_to_applicant_grant_start_page
     if current_user.navigator?
       redirect_to analysis_applicants_path
     else
-      redirect_to summary_dashboards_path
+      redirect_to dashboards_path
     end
   end
 

@@ -36,7 +36,7 @@ module MenusHelper
 
   def dashboard_menu
     return unless current_user.admin_access?
-    menu_link('Dashboard', summary_dashboards_path)
+    menu_link('Dashboard', dashboards_path)
   end
 
   def users_menu
@@ -68,7 +68,7 @@ module MenusHelper
   end
 
   def grant_context_change_menu
-    menu_link('Change Current Grant', startingpage_dashboards_path)
+    menu_link('Change Current Grant', starting_page_dashboards_path)
   end
 
   def settings_menu

@@ -30,16 +30,22 @@ class KlassDecorator < Draper::Decorator
 
       next unless event_type_events.any?
 
-      data = OpenStruct.new
-
-      data.accordion_group_id = "accordion-group-#{event_type}s"
-      data.accordian_href     = '#' + "#{event_type.gsub(' ', '_')}_events"
-      data.accordion_heading  = "#{event_type.pluralize} (#{event_type_events.count})"
-      data.accoridon_body_id  = "#{event_type.gsub(' ', '_')}_events"
-
-      data.klass_events       = event_type_events
+      data = accordion_fields(event_type, event_type_events.count)
+      data.klass_events = event_type_events
       data
     end.compact
+  end
+
+  def accordion_fields(event_type, count)
+    group_id = "accordion-group-#{event_type}s"
+    href     = '#' + "#{event_type.gsub(' ', '_')}_events"
+    heading  = "#{event_type.pluralize} (#{count})"
+    body_id  = "#{event_type.gsub(' ', '_')}_events"
+
+    OpenStruct.new(accordion_group_id: group_id,
+                   accordion_href: href,
+                   accordion_heading: heading,
+                   accoridon_body_id: body_id)
   end
 
   NOT_OTHER_EVENTS = ['class visit', 'site visit', 'information session']
