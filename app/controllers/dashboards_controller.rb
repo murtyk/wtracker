@@ -8,7 +8,7 @@ class DashboardsController < ApplicationController
     db = Dashboard.new(current_user)
 
     return redirect_to_not_assigned_path if db.not_assigned?
-    return redirect_to db.path if db.redirect?
+    return redirect_for_single_grant(db.path) if db.redirect?
 
     if db.select_grant?
       @grants = current_user.active_grants
@@ -56,5 +56,11 @@ class DashboardsController < ApplicationController
     flash[:error] = 'You are not assigned to any classes yet.
                      Please inform your administrator'
     redirect_to new_user_session_path # Force a full reload
+  end
+
+  def redirect_for_single_grant(path)
+    grant = current_user.active_grants.first
+    Grant.current_id = session[:grant_id] = grant.id
+    redirect_to path
   end
 end
