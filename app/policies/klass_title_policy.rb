@@ -7,18 +7,6 @@ class KlassTitlePolicy < Struct.new(:user, :klass_title)
     new?
   end
 
-  def edit?
-    new?
-  end
-
-  def update?
-    new?
-  end
-
-  def index?
-    true
-  end
-
   def show?
     true
   end

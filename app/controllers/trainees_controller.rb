@@ -29,20 +29,12 @@ class TraineesController < ApplicationController
     trainees = current_user.trainees_for_search(params)
 
     @q = trainees.ransack(params[:q])
-    # @trainees = @q.result(distinct: true)
-    if current_grant.trainee_applications?
-      @trainees = @q.result.includes(:klasses, :job_search_profile, :assessments,
-                                     :funding_source, :home_address,
-                                     :grant_trainee_status,
-                                     tact_three: [:education],
-                                     applicant: [:navigator, :sector])
-    else
-      @trainees = @q.result.includes(:klasses, :funding_source, :home_address,
-                                     :assessments, tact_three: [:education])
-    end
+    @trainees = search_by_grant_type
+
     return if request.format.xls?
-    @trainees_count = @trainees.count
-    @trainees = @trainees.to_a.paginate(page: params[:page], per_page: 20)
+
+    assign_trainees_count
+    paginate
   end
 
   def index
@@ -153,5 +145,25 @@ class TraineesController < ApplicationController
     grant_id = current_trainee.grant_id
     session[:grant_id] = grant_id
     Grant.current_id = grant_id
+  end
+
+  def search_by_grant_type
+    if current_grant.trainee_applications?
+      return @q.result.includes(:klasses, :job_search_profile, :assessments,
+                                :funding_source, :home_address,
+                                :grant_trainee_status,
+                                tact_three: [:education],
+                                applicant: [:navigator, :sector])
+    end
+    @q.result.includes(:klasses, :funding_source, :home_address,
+                       :assessments, tact_three: [:education])
+  end
+
+  def assign_trainees_count
+    @trainees_count = @trainees.count
+  end
+
+  def paginate
+    @trainees = @trainees.to_a.paginate(page: params[:page], per_page: 20)
   end
 end

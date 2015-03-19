@@ -4,9 +4,8 @@
 <h2>
   <%= link_to 'Skill Metrics', auto_leads_metrics_path(skill_metrics: true) %>
 </h2>
-<% auto_lead_trainees = AutoLeadTrainees.new %>
 <div class='row'>
-  <% trainee_counts     = auto_lead_trainees.counts_by_status %>
+  <% trainee_counts = @data.counts_by_status %>
   <div id = 'jobs_leads_metrics' class='span4'>
     <table class="table table-condensed table-bordered table-striped table-hover">
       <tr>
@@ -15,15 +14,11 @@
       </tr>
       <tr>
         <td>Total Job Leads Sent</td>
-        <td><b><%= auto_lead_trainees.job_leads_sent_count%></b></td>
+        <td><b><%= @data.job_leads_sent_count%></b></td>
       </tr>
       <tr>
         <td>Job Leads / Student </td>
-        <td>
-          <b>
-          <%= auto_lead_trainees.job_leads_sent_count / trainee_counts[:NOT_PENDING] if trainee_counts[:NOT_PENDING] > 0 %>
-          </b>
-        </td>
+        <td><b><%= @data.average_leads %></b></td>
       </tr>
     </table>
     <table class="table table-condensed table-bordered table-striped table-hover">
@@ -88,7 +83,7 @@
         <th>Applied</th>
         <th>Not Interested</th>
       </tr>
-      <% trainee_metrics = auto_lead_trainees.metrics_by_trainee%>
+      <% trainee_metrics = @data.metrics_by_trainee%>
       <% trainee_metrics.each do |tm| %>
       <tr>
         <td><%= tm[:name] %></td>

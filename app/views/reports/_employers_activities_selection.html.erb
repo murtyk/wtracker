@@ -1,5 +1,5 @@
 <div class = 'row-fluid filters-div' style='margin-bottom: 10px'>
-  <%= simple_form_for @report, as: :report, method: :post, url: '/reports', html: { class: 'form-search'} do |f| %>
+  <%= simple_form_for report, as: :report, method: :post, url: '/reports', html: { class: 'form-search'} do |f| %>
     <%= f.hidden_field :report_name %>
     <div class='span2'>
       <%= f.input :start_date, label: 'From', required: false, as: :string,

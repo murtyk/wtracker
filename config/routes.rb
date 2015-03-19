@@ -9,7 +9,7 @@ WTracker::Application.routes.draw do
 
   resources :trainee_placements, only: [:new, :create, :index]
 
-  resources :auto_shared_jobs, only: [:edit, :update]
+  resources :auto_shared_jobs, only: [:edit, :update, :index]
 
   resources :job_search_profiles, path: '/profiles', only: [:show, :edit, :update, :index] do
     collection do

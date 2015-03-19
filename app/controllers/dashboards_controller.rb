@@ -43,14 +43,6 @@ class DashboardsController < ApplicationController
   #             .order('event_date desc')
   # end
 
-  def redirect_to_applicant_grant_start_page
-    if current_user.navigator?
-      redirect_to analysis_applicants_path
-    else
-      redirect_to dashboards_path
-    end
-  end
-
   def redirect_to_not_assigned_path
     sign_out :user
     flash[:error] = 'You are not assigned to any classes yet.

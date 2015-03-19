@@ -9,12 +9,12 @@
         <th>No. of Trainees</th>
       </tr>
       <% n = 0 %>
-      <% @skill_metrics.metrics.each do |metric| %>
+      <% @skill_metrics.metrics.each do |skills, count| %>
         <% n += 1%>
         <tr>
           <td><%= n %></td>
-          <td><%= metric[0] %></td>
-          <td><%= metric[1] %></td>
+          <td><%= skills %></td>
+          <td><%= count %></td>
         </tr>
       <% end %>
     </table>
@@ -29,12 +29,12 @@
           <th>No. of Trainees</th>
         </tr>
         <% n = 0 %>
-        <% @skill_metrics.top_skills.each do |top_skill| %>
+        <% @skill_metrics.top_skills.each do |skill, count| %>
           <% n += 1%>
           <tr>
             <td><%= n %></td>
-            <td><%= top_skill[0] %></td>
-            <td><%= top_skill[1] %></td>
+            <td><%= skill %></td>
+            <td><%= count %></td>
           </tr>
         <% end %>
       </table>

@@ -1,0 +1,68 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Job Leads Sent to <%= @trainee.name %></h1>
+</div>
+
+<div class = 'row-fluid'>
+  <div class = 'span2' style = 'padding-top: 10px'>
+    <p><b>Total: <%= @count %></b></p>
+  </div>
+  <% if @auto_shared_jobs.any? %>
+    <div align="center" class='span8'><%= will_paginate @auto_shared_jobs %></div>
+  <% end %>
+</div>
+
+<% page = (params[:page] || 1).to_i - 1 %>
+<% n = page * 25 %>
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <% @auto_shared_jobs.each do |job| %>
+  <tr>
+    <td>
+      <%= n += 1 %>
+    </td>
+    <td>
+    <% bgcolor = joblead_status_color(job) %>
+    <div class = 'row-fluid' >
+      <div class = 'span4'>
+        <strong>
+          <%= job.title || 'Title Missing' %>
+        </strong><br>
+      </div>
+      <div class = 'span3'>
+        <strong><%=job.company%></strong><br>
+      </div>
+      <div class = 'span2'>
+        <strong><%=job.location%></strong><br>
+      </div>
+      <div class = 'span1'>
+        <strong><%=job.date_posted.to_date.to_s%></strong><br>
+      </div>
+      <div class = 'span2'>
+      </div>
+    </div>
+    <div class = 'row-fluid'>
+      <div class = 'span'>
+        <b>Excerpt:</b> <%= job.excerpt %>
+      </div>
+    </div>
+    <div class = 'row-fluid' >
+      <div class = 'span'>
+        <p>
+          <span style='margin-right: 5px'>
+          Status: <b><span id = 'status_<%=job.id%>' style='color: <%=bgcolor%>;'><%= job.status_text %></span></b>
+          </span>
+          <% if current_grant.trainee_applications? && job.notes %>
+            <span class='job_notes pull-right' id = 'job_note_<%=job.id%>' >
+                <strong>
+                  <span id='notes_label_<%=job.id%>'><%= job.notes_label %></span>
+                </strong>
+                <span class = 'full_notes' id = 'full_notes_<%= job.id %>' style='display: none;'>
+                  <%= job.notes %>
+                </span>
+            </span>
+          <% end %>
+        </p>
+      </div>
+    </div>
+    </td></tr>
+  <% end %>
+</table>

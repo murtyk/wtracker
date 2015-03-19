@@ -13,7 +13,6 @@ class UserEmployerSourcesController < ApplicationController
                                  .new(employer_source_id:
                                  params[:user_employer_source][:employer_source_id])
     authorize @user_employer_source
-# debugger
     @user_employer_source.save
   end
 

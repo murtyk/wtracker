@@ -165,8 +165,9 @@ module MenusHelper
 
   def trainees_menu
     items = trainees_search_menu +
-            trainees_search_by_skills_menu +
-            trainees_advanced_search_menu
+            trainees_advanced_search_menu +
+            trainee_auto_leads_items
+
     items +=  trainees_create_menu_items
     items +=  trainees_mapview_menu_items
     items +=  divider_menu +
@@ -190,8 +191,19 @@ module MenusHelper
     menu_link('Search', trainees_path)
   end
 
-  def trainees_search_by_skills_menu
+  def trainee_auto_leads_items
     return unless current_grant.auto_job_leads?
+    items = divider_menu +
+            trainees_search_by_skills_menu
+    return items unless trainee_applications?
+    items + auto_job_leads_metrics_menu
+  end
+
+  def auto_job_leads_metrics_menu
+    menu_link('Job Leads Metrics', auto_leads_metrics_path)
+  end
+
+  def trainees_search_by_skills_menu
     menu_link('Search by skills', search_by_skills_trainees_path)
   end
 

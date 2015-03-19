@@ -17,13 +17,14 @@
     <th>Leads Count</th>
   </tr>
   <% @trainees.each do |trainee| %>
-  <tr>
-    <td><%= name_and_link trainee %></td>
-    <td><%= trainee.job_search_profile && trainee.job_search_profile.updated_at.to_date.to_s%></td>
-    <td><%= trainee.job_search_profile && trainee.job_search_profile.skills%></td>
-    <td><%= trainee.job_search_profile && trainee.job_search_profile.location%></td>
-    <td><%= trainee.job_search_profile && trainee.job_search_profile.distance%></td>
-    <td><%= trainee.auto_shared_jobs.count%></td>
-  </tr>
+    <% jsp = trainee.job_search_profile %>
+    <tr>
+      <td><%= name_and_link trainee %></td>
+      <td><%= jsp && jsp.updated_at.to_date.to_s%></td>
+      <td><%= jsp && jsp.skills%></td>
+      <td><%= jsp && jsp.location%></td>
+      <td><%= jsp && jsp.distance%></td>
+      <td><%= link_to trainee.auto_shared_jobs.count, auto_shared_jobs_path(trainee_id: trainee.id) %></td>
+    </tr>
   <% end %>
 </table>

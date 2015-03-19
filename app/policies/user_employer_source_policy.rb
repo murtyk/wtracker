@@ -7,22 +7,6 @@ class UserEmployerSourcePolicy < Struct.new(:user, :employer_sector)
     new?
   end
 
-  def edit?
-    new?
-  end
-
-  def update?
-    new?
-  end
-
-  def index?
-    new?
-  end
-
-  def show?
-    new?
-  end
-
   def destroy?
     new?
   end

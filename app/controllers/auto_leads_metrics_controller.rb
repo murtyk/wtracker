@@ -4,7 +4,7 @@ class AutoLeadsMetricsController < ApplicationController
   def index
     return skill_metrics if params[:skill_metrics]
 
-    @data = AutoLeadTrainees.new
+    @data = AutoLeadsMetrics.new
     return unless params[:status]
 
     @trainees   = @data.by_status(params[:status])

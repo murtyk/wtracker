@@ -1,8 +1,16 @@
 # for trainee (aka applicant, candidate, student) to
 #    view and update status on a job lead
 class AutoSharedJobsController < ApplicationController
-  # before_filter :authenticate_user!, only: [:index]
-  before_filter :init_auto_shared_job
+  before_filter :authenticate_user!, only: [:index]
+  before_filter :init_auto_shared_job, only: [:edit, :update]
+
+  def index
+    @trainee = Trainee.find params[:trainee_id]
+    @auto_shared_jobs = AutoSharedJob.where(trainee_id: params[:trainee_id])
+                        .order(created_at: :desc)
+    @count = @auto_shared_jobs.count
+    @auto_shared_jobs = @auto_shared_jobs.to_a.paginate(page: params[:page], per_page: 25)
+  end
 
   # REFACTOR explore adding another action for updating notes
   #          status update can be moved to update action?

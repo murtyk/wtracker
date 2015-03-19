@@ -1,5 +1,5 @@
 <div class = 'row-fluid filters-div'>
-  <%= simple_form_for @report, as: :report, method: :post, url: '/reports',
+  <%= simple_form_for report, as: :report, method: :post, url: '/reports',
                                html: { class: 'form-search form-horizontal'} do |f| %>
     <%= f.hidden_field :report_name %>
 

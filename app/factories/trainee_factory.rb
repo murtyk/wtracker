@@ -48,7 +48,7 @@ class TraineeFactory
 
   def self.validate_trainee_entered_data(trainee, params)
     ssn = params[:trainee_id].delete('^0-9')
-    if trainee.dob.blank?
+    unless trainee.dob?
       trainee.errors.add(:dob, "Can't be blank. Please enter valid date.")
     end
     trainee.errors.add(:trainee_id, 'Enter 9 digits') unless ssn.size == 9
