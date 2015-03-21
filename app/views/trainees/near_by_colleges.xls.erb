@@ -1,0 +1,55 @@
+<h4><%= "Colleges - Near By Trainees" %></h4>
+
+<table border="1">
+<% @trainees_map.navigators.each do |id, navigator| %>
+    <tr>
+      <td colspan="4" style='color: blue;'>
+        <strong><%= navigator.name + " - #{navigator.trainees_count}"%></strong>
+      </td>
+    </tr>
+    <tr>
+      <th>Classes</th>
+      <th>College</th>
+      <th>Count</th>
+      <th>Trainees</th>
+    </tr>
+    <% navigator_name = navigator.name %>
+    <% navigator.colleges.each do |college| %>
+      <% next if college.klasses.empty? && college.trainees.empty? %>
+      <tr>
+        <td><%= college.klasses %></td>
+        <td><%= college.name %></td>
+        <td><%= college.trainees.count %></td>
+        <td>
+          <%=
+            college.trainees.map do |t|
+              t.name
+            end.join('<br>').html_safe
+          %>
+        </td>
+      </tr>
+      <% navigator_name = '' %>
+    <% end %>
+    <tr style='border-left: none; border-right: none; border-bottom: none'>
+      <td colspan="4"></td>
+    </tr>
+<% end %>
+</table>
+
+<% if @trainees_map.trainees_no_college.any? %>
+  <p>No college found for the following</p>
+  <table border="1">
+    <tr>
+      <th>Trainee</th>
+      <th>Address</th>
+      <th>Reason</th>
+    </tr>
+    <% @trainees_map.trainees_no_college.each do |trainee, address, reason, county| %>
+    <tr>
+      <td><%= "#{trainee.name} - #{trainee.funding_source_name}" %></td>
+      <td><%= address && (address.to_s + ' county: ' + county.to_s) %> </td>
+      <td><%= reason %></td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>

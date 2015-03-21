@@ -1,0 +1,26 @@
+<table border="1">
+  <tr>
+    <th>Name</th>
+    <th>Applied On</th>
+    <th>Email</th>
+    <th>Phone No</th>
+    <th>County</th>
+    <th>Source</th>
+    <th>Sector</th>
+    <th>Employment Status</th>
+    <th>Status</th>
+  </tr>
+  <% @applicants.each do |applicant| %>
+    <tr>
+      <td><%= applicant.name %></td>
+      <td><%= applicant.created_at.to_date.to_s %></td>
+      <td><%= applicant.email %></td>
+      <td><%= applicant.mobile_phone_number %></td>
+      <td><%= applicant.county_name %></td>
+      <td><%= applicant.source %></td>
+      <td><%= applicant.sector_name %></td>
+      <td><%= applicant.current_employment_status %></td>
+      <td><%= applicant.status %></td>
+    </tr>
+  <% end %>
+</table>

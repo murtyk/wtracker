@@ -3,6 +3,12 @@
   <%= edit_button(trainee) %>
 </h4>
 
+<% if trainee.login_id? %>
+<p>
+  Login ID: <%= trainee.login_id %>
+</p>
+<% end %>
+
 <p>
   <b>Address:</b><br>
   <%= trainee.home_address %>

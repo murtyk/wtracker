@@ -61,12 +61,20 @@ class ApplicationController < ActionController::Base
   def scope_current_account
     # puts request.path_parameters.to_s
     Account.current_id = current_account.id
+    grant_for_trainee_sign_in
     Grant.current_id = current_grant.id
     ActionMailer::Base.default_url_options = { host: request.host_with_port }
     yield
   ensure
     Account.current_id = nil
     Grant.current_id = nil
+  end
+
+  def grant_for_trainee_sign_in
+    return unless request.path == '/trainees/sign_in'
+    grant = Grant.all.select(&:trainee_applications?).first
+    return unless grant
+    session[:grant_id] = grant.id
   end
 
   # def user_activity

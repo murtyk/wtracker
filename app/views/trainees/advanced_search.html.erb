@@ -102,6 +102,7 @@
       <th><%= sort_link(@q, :home_address_county, "County") %></th>
       <% if current_grant.trainee_applications? %>
         <th>Last Job Title</th>
+        <th>Last Salary</th>
         <th><%= sort_link(@q, :applicant_sector_name, "Industry") %></th>
       <% end %>
       <th><%= sort_link(@q, :funding_source_name, "Funding Source") %></th>
@@ -128,6 +129,7 @@
       <td><%= t.home_address && t.home_address.county %></td>
       <% if current_grant.trainee_applications? %>
         <td><%= t.applicant.last_job_title %></td>
+        <td><%= t.applicant.last_wages %></td>
         <td><%= t.applicant.sector_name %></td>
       <% end %>
       <td><%= t.funding_source && t.funding_source.name %></td>

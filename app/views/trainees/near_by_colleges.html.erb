@@ -1,10 +1,14 @@
-<h1><%= "Colleges - Near By Trainees" %></h1>
+<div class = 'row-fluid page-caption-div' >
+  <h1><%= "Colleges - Near By Trainees" %></h1>
+</div>
+
+<div class = 'pull-right' style = 'padding-top: 5px; margin-bottom: 10px'><%= download_button %></div>
 
 <table class="table table-condensed table-bordered table-striped table-hover">
 <% @trainees_map.navigators.each do |id, navigator| %>
     <tr>
       <td colspan="4" style='color: blue;'>
-        <strong><%= navigator.name %></strong>
+        <strong><%= navigator.name + " - #{navigator.trainees_count}"%></strong>
         <button type = 'button' class = 'pull-right btn btn-flat btn-small btn-primary add_trainees_to_class'>
           Add Trainees To Class
         </button>
@@ -31,26 +35,21 @@
                 "<a href='/trainees/#{t.id}'>#{t.name}</a>".html_safe
               end
           %>
-          <% if count > 1 %>
-            <button type = 'button' id = 'show_all_trainees_<%= college.id%>'
-                    class = 'btn btn-flat btn-mini btn-primary show_or_hide_trainees'>
-              Show All
-            </button>
-            <br>
-          <% end %>
-          <% if count > 1 %>
-            <div class = 'all_trainees' id = 'all_trainees_<%=college.id%>' style='display: none;'>
-          <% end %>
-          <%= if count > 1
-              college.trainees[1..-1].map do |t|
-                check_box_tag(t.id, true, false, class: 'chk-add-trainee', style: 'margin-top: 0px; margin-right: 5px') +
-                "<a href='/trainees/#{t.id}'>#{t.name}</a>".html_safe
-              end.join('<br/>').html_safe
-            end
+          <% next unless count > 1 %>
+
+          <button type = 'button' id = 'show_all_trainees_<%= college.id%>'
+                  class = 'btn btn-flat btn-mini btn-primary show_or_hide_trainees'>
+            Show All
+          </button>
+          <br>
+          <div class = 'all_trainees' id = 'all_trainees_<%=college.id%>' style='display: none;'>
+          <%=
+            college.trainees[1..-1].map do |t|
+              check_box_tag(t.id, true, false, class: 'chk-add-trainee', style: 'margin-top: 0px; margin-right: 5px') +
+              "<a href='/trainees/#{t.id}'>#{t.name}</a>".html_safe
+            end.join('<br/>').html_safe
           %>
-          <% if count > 1 %>
-            </div>
-          <% end %>
+          </div>
         </td>
       </tr>
       <% navigator_name = '' %>
@@ -69,10 +68,10 @@
       <th>Address</th>
       <th>Reason</th>
     </tr>
-    <% @trainees_map.trainees_no_college.each do |trainee, address, reason| %>
+    <% @trainees_map.trainees_no_college.each do |trainee, address, reason, county| %>
     <tr>
       <td><%= "<a href='/trainees/#{trainee.id}'>#{trainee.name} - #{trainee.funding_source_name}</a>".html_safe %></td>
-      <td><%= address %> </td>
+      <td><%= address && (address.to_s + ' county: ' + county.to_s) %> </td>
       <td><%= reason %></td>
     </tr>
     <% end %>

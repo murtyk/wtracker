@@ -4,6 +4,7 @@
 # a navigator has bunch of counties assigned to them through UserCounty
 # a college gets assigned to a navigator based the college county
 class NearByCollegesMap < MapService
+  NO_COLLEGE_MSG = 'No college within 15 miles'
   attr_reader :navigators, :colleges_no_navigator, :trainees_no_college, :error
 
   def initialize(user)
@@ -78,7 +79,6 @@ class NearByCollegesMap < MapService
   # for each trainee, finds colleges within 15 miles
   # and assigns trainee to nearest college
   def attach_trainees_to_colleges
-    no_college_msg = 'No college within 15 miles'
     a = Address.new
     trainees.each do |t|
       addr        = t.home_address
@@ -88,7 +88,7 @@ class NearByCollegesMap < MapService
       if college_id
         @colleges[college_id].trainees << trainee
       else
-        @trainees_no_college << [trainee, addr.gmaps4rails_address, no_college_msg]
+        @trainees_no_college << build_no_college_trainee(trainee, addr)
       end
     end
   end
@@ -100,6 +100,10 @@ class NearByCollegesMap < MapService
     a.longitude = addr.longitude
     c_address   = a.nearbys(15).where(addressable_type: 'College').first
     c_address && c_address.addressable_id
+  end
+
+  def build_no_college_trainee(t, addr)
+    [t, addr.gmaps4rails_address, NO_COLLEGE_MSG, addr.county]
   end
 
   def attach_colleges_to_navigators
@@ -122,7 +126,7 @@ class NearByCollegesMap < MapService
 
   def trainee_ids
     @trainee_ids ||= Trainee.pluck(:id) -
-                     KlassTrainee.joins(:klass).pluck(:trainee_id)
+                     KlassTrainee.pluck(:trainee_id)
   end
 
   def trainees

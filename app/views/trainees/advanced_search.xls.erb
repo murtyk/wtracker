@@ -11,6 +11,7 @@
     <th>County</th>
     <% if current_grant.trainee_applications? %>
       <th>Last Job Title</th>
+      <th>Last Salary</th>
       <th>Industry</th>
     <% end %>
     <th>Funding Source</th>
@@ -37,6 +38,7 @@
     <td><%= t.home_address && t.home_address.county %></td>
     <% if current_grant.trainee_applications? %>
       <td><%= t.applicant.last_job_title %></td>
+      <td><%= t.applicant.last_wages %></td>
       <td><%= t.applicant.sector_name %></td>
     <% end %>
     <td><%= t.funding_source && t.funding_source.name %></td>
