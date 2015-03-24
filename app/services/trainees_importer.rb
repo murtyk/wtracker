@@ -9,19 +9,18 @@ TRAINEE_FIELDS1 = %w(first_name last_name middle_name dob gender veteran land_no
 # imports trainees from a file
 class TraineesImporter < Importer
   def initialize(all_params = nil, current_user = nil)
-    if current_user && all_params
+    return unless current_user && all_params
 
-      @klass_id = all_params[:klass_id].to_i
-      fail 'class required for trainees import' unless @klass_id > 0
+    @klass_id = all_params[:klass_id].to_i
+    fail 'class required for trainees import' unless @klass_id > 0
 
-      params = { klass_id: @klass_id }
-      file_name = all_params[:file].original_filename
-      @import_status = TraineeImportStatus.create(user_id: current_user.id,
-                                                  file_name: file_name,
-                                                  params: params)
+    params = { klass_id: @klass_id }
+    file_name = all_params[:file].original_filename
+    @import_status = TraineeImportStatus.create(user_id: current_user.id,
+                                                file_name: file_name,
+                                                params: params)
 
-      super
-    end
+    super
   end
 
   def header_fields

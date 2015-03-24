@@ -139,11 +139,9 @@ class Importer
   end
 
   def clean_field(s)
-    if s && s.is_a?(String)
-      s = s.strip
-      s = nil if s.length == 0
-    end
-    s
+    return s unless s.is_a?(String)
+    s = s.strip
+    s.blank? ? nil : s
   end
 
   def clean_phone_no(phone_no = '')
@@ -153,7 +151,7 @@ class Importer
   PLEASE_CORRECT = ' Please correct the file and upload again.'
   def clean_state(s)
     fail 'State can not be null.' + PLEASE_CORRECT unless s
-    fail 'State should 2 be chars.' + PLEASE_CORRECT unless s.length == 2
+    fail 'State should be 2 chars.' + PLEASE_CORRECT unless s.length == 2
     s
   end
 

@@ -3,7 +3,6 @@ class SkillMetrics
   attr_reader :metrics, :top_skills
   def generate
     metrics_hash = Hash.new(0) # 0 is default value
-    profiles = JobSearchProfile.where(trainee_id: Trainee.pluck(:id))
     profiles.each do |profile|
       next if profile.skills.blank?
       skills = parse_skills(profile.skills)
@@ -22,8 +21,16 @@ class SkillMetrics
   def generate_top_skills
     @top_skills = []
     return metrics if metrics.size < 20
-    count = metrics.map { |m| m[1] }.sort.reverse[9]
+    count = top_count
     metrics.each { |m| @top_skills << m if m[1] >= count }
     @top_skills.sort! { |a, b| b[1] <=> a[1] }
+  end
+
+  def profiles
+    JobSearchProfile.where(trainee_id: Trainee.pluck(:id))
+  end
+
+  def top_count
+    metrics.map { |m| m[1] }.sort.reverse[9]
   end
 end

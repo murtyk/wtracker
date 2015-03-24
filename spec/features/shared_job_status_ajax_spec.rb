@@ -9,7 +9,7 @@ describe "shared job" do
     before(:each) do
       signin_admin
     end
-    it "set trainee communication options", js: true do
+    it "set trainee communication options" do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       visit '/accounts/trainee_options'
       expect(page).to have_text('Set Trainee Options')
@@ -19,10 +19,9 @@ describe "shared job" do
 
       click_on 'Update'
       expect(page).to have_text 'Status (of shared jobs) is tracked'
-
     end
 
-    it "share jobs with status tracking", js: true do
+    it "share jobs with status tracking" do
 
       if ENV['JOB_BOARD'] == 'Indeed'
         cassette = 'indeed_shared_job_status'
@@ -84,7 +83,7 @@ describe "shared job" do
       end
     end
 
-    it "simulate trainee click on job lead link to change state to viewed", js: true do
+    it "simulate trainee click on job lead link to change state to viewed" do
       Account.current_id = 1
       job_share = JobShare.last
       shared_job = job_share.shared_jobs.first
@@ -111,10 +110,9 @@ describe "shared job" do
       shared_job_status = SharedJobStatus.find(id)
 
       expect(shared_job_status.status).to eq(SharedJobStatus::STATUSES[:VIEWED])
-
     end
 
-    it "click job leadlink and update status and provide feedback", js: true do
+    it "click job leadlink and update status and provide feedback" do
 
       Account.current_id = 1
       job_share = JobShare.last
@@ -136,7 +134,6 @@ describe "shared job" do
 
       expect(shared_job_status.status).to eq(SharedJobStatus::STATUSES[:APPLIED])
       expect(shared_job_status.feedback).to eq('Thank You')
-
     end
 
     it "status on trainee page" do
@@ -150,8 +147,8 @@ describe "shared job" do
 
       visit "/trainees/#{trainee_id}"
 
+      maximize_window
       expect(page).to have_selector("td", text: "Applied")
-
     end
 
     it 'status on job statuses page' do
@@ -162,8 +159,8 @@ describe "shared job" do
       visit '/sjs' #we used alias - see routes
       select klass_label, from: 'select_klass'
       click_on 'Find'
+
       expect(page).to have_text 'Applied'
     end
-
   end
 end

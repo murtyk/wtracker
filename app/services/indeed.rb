@@ -33,12 +33,16 @@ class Indeed
     @current_page = args[:page] || 1
     @keywords     = args[:keywords].join('+OR+')
 
-    @location     = "#{city},#{state}"
-    @location.sub! ' ', '+'
+    init_location
 
     @url = ''
     @jobs = nil
     search
+  end
+
+  def init_location
+    @location     = "#{city},#{state}"
+    @location.sub! ' ', '+'
   end
 
   def validate(args)
@@ -82,16 +86,8 @@ class Indeed
     destination_url  = page.uri.to_s
 
     if destination_url.include? INDEED_HOME
-      # find details and destination get_destination_url
-      begin
-        doc   = page.parser
-        nx  = doc.css('.summary') # Nokogiri::XML::NodeSet
-        details = build_details(nx[0])
-        details = encode(details)
-      rescue
-        destination_url  = url
-        details = ''
-      end
+      details = parse_details(page)
+      destination_url  = url if details.blank?
     end
 
     OpenStruct.new(details_url_type: details_url_type,
@@ -100,6 +96,15 @@ class Indeed
   end
 
   private
+
+  def self.parse_details(page)
+    doc   = page.parser
+    nx  = doc.css('.summary') # Nokogiri::XML::NodeSet
+    details = build_details(nx[0])
+    encode(details)
+  rescue
+    ''
+  end
 
   def build_details(node)
     return node.children[4].text unless node.children.count > 5
@@ -168,16 +173,10 @@ class Indeed
 
   def symbolize(obj)
     if obj.is_a? Hash
-      return obj.reduce({}) do |memo, (k, v)|
-        memo[k.to_sym] =  symbolize(v)
-        memo
-      end
+      return obj.each_with_object({}) { |(k, v), memo| memo[k.to_sym] =  symbolize(v) }
     end
     if obj.is_a? Array
-      return obj.reduce([]) do |memo, v|
-        memo << symbolize(v)
-        memo
-      end
+      return obj.each_with_object([]) { |v, memo| memo << symbolize(v) }
     end
     obj
   end

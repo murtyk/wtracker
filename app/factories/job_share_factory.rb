@@ -17,16 +17,9 @@ class JobShareFactory
   end
 
   def self.create_job_share(params, current_user)
-    job_share = build_job_share(params[:job_ids], params[:job_share])
-    titles    = job_titles(params[:job_ids], params[:job_share])
-    build_shared_jobs(job_share, titles)
-    job_share.from_id = current_user.id
+    job_share = build_job_share(params, current_user)
 
-    to_ids = trainee_ids(params[:job_share])
-
-    to_ids.each { |tid| job_share.job_shared_tos.new(trainee_id: tid.to_i) }
-
-    if job_share.save && to_ids.size > 0
+    if job_share.save && job_share.job_shared_tos.any?
       UserMailer.share_jobs(job_share, job_share.sent_to_emails.join(';')).deliver_now
     end
     job_share
@@ -39,19 +32,37 @@ class JobShareFactory
     trainee = Trainee.find(trainee_id)
     job_share.job_shared_tos.create(trainee_id: trainee.id)
     if Account.track_trainee_status?
-      job_share.shared_jobs.each do |shared_job|
-        sjs = shared_job.shared_job_statuses.new(trainee_id: trainee_id,
-                                                 key: SecureRandom.urlsafe_base64(4))
-        sjs.save
-        # debugger unless saved
-        UserMailer.forward_job_lead(sjs).deliver_now
-      end
+      send_jobs_and_track_status(job_share, trainee)
     else
       UserMailer.share_jobs(job_share, trainee.email).deliver_now
     end
   end
 
-  def self.build_job_share(job_ids, job_share)
+  def self.send_jobs_and_track_status(job_share, trainee)
+    job_share.shared_jobs.each do |shared_job|
+      sjs = shared_job.shared_job_statuses.new(trainee_id: trainee.id,
+                                               key: SecureRandom.urlsafe_base64(4))
+      sjs.save
+      # debugger unless saved
+      UserMailer.forward_job_lead(sjs).deliver_now
+    end
+  end
+
+  def self.build_job_share(params, current_user)
+    job_share = new_job_share(params[:job_ids], params[:job_share])
+
+    titles    = job_titles(params[:job_ids], params[:job_share])
+    build_shared_jobs(job_share, titles)
+    job_share.from_id = current_user.id
+
+    to_ids = trainee_ids(params[:job_share])
+
+    to_ids.each { |tid| job_share.job_shared_tos.new(trainee_id: tid.to_i) }
+
+    job_share
+  end
+
+  def self.new_job_share(job_ids, job_share)
     if job_ids.blank? # 1 job before analyze
 
       JobShare.new(job_share.slice(:company, :location,

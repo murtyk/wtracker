@@ -23427,4 +23427,353 @@ http_interactions:
         }
     http_version: 
   recorded_at: Thu, 29 Jan 2015 22:04:15 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=<googleapis_key>&location=39.9525839,-75.1652215&name=Amtex%20Systems%20Inc&radius=50000&sensor=false&types=establishment
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 23 Mar 2015 13:49:37 GMT
+      Expires:
+      - Mon, 23 Mar 2015 13:54:37 GMT
+      Cache-Control:
+      - public, max-age=300
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic,p=0.5
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Language,Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "html_attributions" : [],
+           "results" : [],
+           "status" : "ZERO_RESULTS"
+        }
+    http_version: 
+  recorded_at: Mon, 23 Mar 2015 13:49:36 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/place/details/json?key=<googleapis_key>&reference=CoQBcQAAABgGJQemCSN1FN31ijmZ3rmv6K95XOj2rxoxUYuHhPOHEeV-4XGY0W_XWnNcsWmzTd2vRUG5ihccwWM4SHeqv7RmrwgwaUB9LoJq0u40JVkADMr8ircxitwUw8DtfM8k-8vAhDtwDVUHJvGrU-ZeciZzjeWX0KQT53jWgG88kQYdEhBGpCc7p9TIjW4qI7OVECzpGhRolghs148AlKBMapNpipUtX_eTyw&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 23 Mar 2015 13:49:38 GMT
+      Expires:
+      - Mon, 23 Mar 2015 13:54:38 GMT
+      Cache-Control:
+      - public, max-age=300
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 443:quic,p=0.5
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Language,Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICAiaHRtbF9hdHRyaWJ1dGlvbnMiIDogW10sCiAgICJyZXN1bHQiIDog
+        ewogICAgICAiYWRkcmVzc19jb21wb25lbnRzIiA6IFsKICAgICAgICAgewog
+        ICAgICAgICAgICAibG9uZ19uYW1lIiA6ICI0MTciLAogICAgICAgICAgICAi
+        c2hvcnRfbmFtZSIgOiAiNDE3IiwKICAgICAgICAgICAgInR5cGVzIiA6IFsg
+        InN0cmVldF9udW1iZXIiIF0KICAgICAgICAgfSwKICAgICAgICAgewogICAg
+        ICAgICAgICAibG9uZ19uYW1lIiA6ICJXZXN0IE9sbmV5IEF2ZW51ZSIsCiAg
+        ICAgICAgICAgICJzaG9ydF9uYW1lIiA6ICJXIE9sbmV5IEF2ZSIsCiAgICAg
+        ICAgICAgICJ0eXBlcyIgOiBbICJyb3V0ZSIgXQogICAgICAgICB9LAogICAg
+        ICAgICB7CiAgICAgICAgICAgICJsb25nX25hbWUiIDogIlBoaWxhZGVscGhp
+        YSIsCiAgICAgICAgICAgICJzaG9ydF9uYW1lIiA6ICJQaGlsYWRlbHBoaWEi
+        LAogICAgICAgICAgICAidHlwZXMiIDogWyAibG9jYWxpdHkiLCAicG9saXRp
+        Y2FsIiBdCiAgICAgICAgIH0sCiAgICAgICAgIHsKICAgICAgICAgICAgImxv
+        bmdfbmFtZSIgOiAiUGVubnN5bHZhbmlhIiwKICAgICAgICAgICAgInNob3J0
+        X25hbWUiIDogIlBBIiwKICAgICAgICAgICAgInR5cGVzIiA6IFsgImFkbWlu
+        aXN0cmF0aXZlX2FyZWFfbGV2ZWxfMSIsICJwb2xpdGljYWwiIF0KICAgICAg
+        ICAgfSwKICAgICAgICAgewogICAgICAgICAgICAibG9uZ19uYW1lIiA6ICJV
+        bml0ZWQgU3RhdGVzIiwKICAgICAgICAgICAgInNob3J0X25hbWUiIDogIlVT
+        IiwKICAgICAgICAgICAgInR5cGVzIiA6IFsgImNvdW50cnkiLCAicG9saXRp
+        Y2FsIiBdCiAgICAgICAgIH0sCiAgICAgICAgIHsKICAgICAgICAgICAgImxv
+        bmdfbmFtZSIgOiAiMTkxMjAiLAogICAgICAgICAgICAic2hvcnRfbmFtZSIg
+        OiAiMTkxMjAiLAogICAgICAgICAgICAidHlwZXMiIDogWyAicG9zdGFsX2Nv
+        ZGUiIF0KICAgICAgICAgfQogICAgICBdLAogICAgICAiYWRyX2FkZHJlc3Mi
+        IDogIlx1MDAzY3NwYW4gY2xhc3M9XCJzdHJlZXQtYWRkcmVzc1wiXHUwMDNl
+        NDE3IFdlc3QgT2xuZXkgQXZlbnVlXHUwMDNjL3NwYW5cdTAwM2UsIFx1MDAz
+        Y3NwYW4gY2xhc3M9XCJsb2NhbGl0eVwiXHUwMDNlUGhpbGFkZWxwaGlhXHUw
+        MDNjL3NwYW5cdTAwM2UsIFx1MDAzY3NwYW4gY2xhc3M9XCJyZWdpb25cIlx1
+        MDAzZVBBXHUwMDNjL3NwYW5cdTAwM2UgXHUwMDNjc3BhbiBjbGFzcz1cInBv
+        c3RhbC1jb2RlXCJcdTAwM2UxOTEyMFx1MDAzYy9zcGFuXHUwMDNlLCBcdTAw
+        M2NzcGFuIGNsYXNzPVwiY291bnRyeS1uYW1lXCJcdTAwM2VVbml0ZWQgU3Rh
+        dGVzXHUwMDNjL3NwYW5cdTAwM2UiLAogICAgICAiZm9ybWF0dGVkX2FkZHJl
+        c3MiIDogIjQxNyBXZXN0IE9sbmV5IEF2ZW51ZSwgUGhpbGFkZWxwaGlhLCBQ
+        QSAxOTEyMCwgVW5pdGVkIFN0YXRlcyIsCiAgICAgICJmb3JtYXR0ZWRfcGhv
+        bmVfbnVtYmVyIiA6ICIoMjE1KSA1NDktOTYwMCIsCiAgICAgICJnZW9tZXRy
+        eSIgOiB7CiAgICAgICAgICJsb2NhdGlvbiIgOiB7CiAgICAgICAgICAgICJs
+        YXQiIDogNDAuMDM2NTEsCiAgICAgICAgICAgICJsbmciIDogLTc1LjEyOTMw
+        Mjk5OTk5OTk5CiAgICAgICAgIH0KICAgICAgfSwKICAgICAgImljb24iIDog
+        Imh0dHA6Ly9tYXBzLmdzdGF0aWMuY29tL21hcGZpbGVzL3BsYWNlX2FwaS9p
+        Y29ucy9nZW5lcmljX2J1c2luZXNzLTcxLnBuZyIsCiAgICAgICJpZCIgOiAi
+        MGUyYzk0Yzk3MTlmN2JkMTExYzkzYmI2MWFkODU3YzRjOWM0MjBmYSIsCiAg
+        ICAgICJpbnRlcm5hdGlvbmFsX3Bob25lX251bWJlciIgOiAiKzEgMjE1LTU0
+        OS05NjAwIiwKICAgICAgIm5hbWUiIDogIldlbGxzIEZhcmdvIEJhbmsiLAog
+        ICAgICAib3BlbmluZ19ob3VycyIgOiB7CiAgICAgICAgICJvcGVuX25vdyIg
+        OiB0cnVlLAogICAgICAgICAicGVyaW9kcyIgOiBbCiAgICAgICAgICAgIHsK
+        ICAgICAgICAgICAgICAgImNsb3NlIiA6IHsKICAgICAgICAgICAgICAgICAg
+        ImRheSIgOiAxLAogICAgICAgICAgICAgICAgICAidGltZSIgOiAiMTcwMCIK
+        ICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIm9wZW4iIDogewog
+        ICAgICAgICAgICAgICAgICAiZGF5IiA6IDEsCiAgICAgICAgICAgICAgICAg
+        ICJ0aW1lIiA6ICIwOTAwIgogICAgICAgICAgICAgICB9CiAgICAgICAgICAg
+        IH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgImNsb3NlIiA6IHsK
+        ICAgICAgICAgICAgICAgICAgImRheSIgOiAyLAogICAgICAgICAgICAgICAg
+        ICAidGltZSIgOiAiMTcwMCIKICAgICAgICAgICAgICAgfSwKICAgICAgICAg
+        ICAgICAgIm9wZW4iIDogewogICAgICAgICAgICAgICAgICAiZGF5IiA6IDIs
+        CiAgICAgICAgICAgICAgICAgICJ0aW1lIiA6ICIwOTAwIgogICAgICAgICAg
+        ICAgICB9CiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAg
+        ICAgICAgImNsb3NlIiA6IHsKICAgICAgICAgICAgICAgICAgImRheSIgOiAz
+        LAogICAgICAgICAgICAgICAgICAidGltZSIgOiAiMTcwMCIKICAgICAgICAg
+        ICAgICAgfSwKICAgICAgICAgICAgICAgIm9wZW4iIDogewogICAgICAgICAg
+        ICAgICAgICAiZGF5IiA6IDMsCiAgICAgICAgICAgICAgICAgICJ0aW1lIiA6
+        ICIwOTAwIgogICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0sCiAgICAg
+        ICAgICAgIHsKICAgICAgICAgICAgICAgImNsb3NlIiA6IHsKICAgICAgICAg
+        ICAgICAgICAgImRheSIgOiA0LAogICAgICAgICAgICAgICAgICAidGltZSIg
+        OiAiMTcwMCIKICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIm9w
+        ZW4iIDogewogICAgICAgICAgICAgICAgICAiZGF5IiA6IDQsCiAgICAgICAg
+        ICAgICAgICAgICJ0aW1lIiA6ICIwOTAwIgogICAgICAgICAgICAgICB9CiAg
+        ICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgImNs
+        b3NlIiA6IHsKICAgICAgICAgICAgICAgICAgImRheSIgOiA1LAogICAgICAg
+        ICAgICAgICAgICAidGltZSIgOiAiMTgwMCIKICAgICAgICAgICAgICAgfSwK
+        ICAgICAgICAgICAgICAgIm9wZW4iIDogewogICAgICAgICAgICAgICAgICAi
+        ZGF5IiA6IDUsCiAgICAgICAgICAgICAgICAgICJ0aW1lIiA6ICIwOTAwIgog
+        ICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsK
+        ICAgICAgICAgICAgICAgImNsb3NlIiA6IHsKICAgICAgICAgICAgICAgICAg
+        ImRheSIgOiA2LAogICAgICAgICAgICAgICAgICAidGltZSIgOiAiMTIwMCIK
+        ICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIm9wZW4iIDogewog
+        ICAgICAgICAgICAgICAgICAiZGF5IiA6IDYsCiAgICAgICAgICAgICAgICAg
+        ICJ0aW1lIiA6ICIwOTAwIgogICAgICAgICAgICAgICB9CiAgICAgICAgICAg
+        IH0KICAgICAgICAgXSwKICAgICAgICAgIndlZWtkYXlfdGV4dCIgOiBbCiAg
+        ICAgICAgICAgICJNb25kYXk6IDk6MDAgYW0g4oCTIDU6MDAgcG0iLAogICAg
+        ICAgICAgICAiVHVlc2RheTogOTowMCBhbSDigJMgNTowMCBwbSIsCiAgICAg
+        ICAgICAgICJXZWRuZXNkYXk6IDk6MDAgYW0g4oCTIDU6MDAgcG0iLAogICAg
+        ICAgICAgICAiVGh1cnNkYXk6IDk6MDAgYW0g4oCTIDU6MDAgcG0iLAogICAg
+        ICAgICAgICAiRnJpZGF5OiA5OjAwIGFtIOKAkyA2OjAwIHBtIiwKICAgICAg
+        ICAgICAgIlNhdHVyZGF5OiA5OjAwIGFtIOKAkyAxMjowMCBwbSIsCiAgICAg
+        ICAgICAgICJTdW5kYXk6IENsb3NlZCIKICAgICAgICAgXQogICAgICB9LAog
+        ICAgICAicGhvdG9zIiA6IFsKICAgICAgICAgewogICAgICAgICAgICAiaGVp
+        Z2h0IiA6IDI1MCwKICAgICAgICAgICAgImh0bWxfYXR0cmlidXRpb25zIiA6
+        IFtdLAogICAgICAgICAgICAicGhvdG9fcmVmZXJlbmNlIiA6ICJDblJuQUFB
+        QVA4TXd0cldULWhPVWJWM2FtVU8zamxtbnFpbEN2WVFNZ3FkSzREb0J6LXo5
+        MDE5bHVlT2NWYVJZRFptZEwxcllYN0luSlMxM2tZdHE0MTBPdl9pX0xHWWxO
+        LVVtRlcxTW50cW9QSEpHTlFOQk5NMXBHWXRRU2RUZzFMSkRMa3NpYnJhYjIw
+        eTJOZk1iczBManl2cEdUaElRM1FxSl9ybjVmeXdJZXZXXy0yUmI3Qm9VaHBi
+        UVJPUmpiaE9maThjZlZhT3NqSjJ0SlFNIiwKICAgICAgICAgICAgIndpZHRo
+        IiA6IDI1MAogICAgICAgICB9CiAgICAgIF0sCiAgICAgICJwbGFjZV9pZCIg
+        OiAiQ2hJSjJTYXM3QXEzeG9rUkJLZHZjMUdNRFhnIiwKICAgICAgInJlZmVy
+        ZW5jZSIgOiAiQ25SakFBQUFIWmg1V2RPNUx5d0NCZ294RUlHVndUb3A4dGJf
+        eW5wUWRBQWtCajJBb3B0VXZvVGcySFY2QjBNZVJhYVR1bGx6bEpzOTEwMFRH
+        a2QycHJZekZTNzh0M2lYY2xqYnQwdldONll1Tk1HY0xkQktwalM2My1iRVdJ
+        TmRTNUhpcDJiTzBHSGxrVVdfNDdzbkFIRWpYWnRGcXhJUU1oMDY0SW9SSGNk
+        ZU5iREZOWFo0ZWhvVUVxazFNY0x4Z0F0ZGVLYkVuNkZUVTVuN2daQSIsCiAg
+        ICAgICJyZXZpZXdzIiA6IFsKICAgICAgICAgewogICAgICAgICAgICAiYXNw
+        ZWN0cyIgOiBbCiAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAg
+        InJhdGluZyIgOiAzLAogICAgICAgICAgICAgICAgICAidHlwZSIgOiAib3Zl
+        cmFsbCIKICAgICAgICAgICAgICAgfQogICAgICAgICAgICBdLAogICAgICAg
+        ICAgICAiYXV0aG9yX25hbWUiIDogIkxlb3BvbGRvIFF1ZXN0ZWxsIiwKICAg
+        ICAgICAgICAgImF1dGhvcl91cmwiIDogImh0dHBzOi8vcGx1cy5nb29nbGUu
+        Y29tLzExMDIwNDAyODgzMjQwNDU0MDgxOSIsCiAgICAgICAgICAgICJsYW5n
+        dWFnZSIgOiAiZW4iLAogICAgICAgICAgICAicmF0aW5nIiA6IDUsCiAgICAg
+        ICAgICAgICJ0ZXh0IiA6ICJHUkVBVCBURUNITk9MT0dZIEFXRVNPTUUgSEVM
+        UCAiLAogICAgICAgICAgICAidGltZSIgOiAxMzk1NTA3OTQ2CiAgICAgICAg
+        IH0sCiAgICAgICAgIHsKICAgICAgICAgICAgImFzcGVjdHMiIDogWwogICAg
+        ICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICJyYXRpbmciIDogMCwK
+        ICAgICAgICAgICAgICAgICAgInR5cGUiIDogInF1YWxpdHkiCiAgICAgICAg
+        ICAgICAgIH0KICAgICAgICAgICAgXSwKICAgICAgICAgICAgImF1dGhvcl9u
+        YW1lIiA6ICJTb3BoYXRoIEtoaW0iLAogICAgICAgICAgICAiYXV0aG9yX3Vy
+        bCIgOiAiaHR0cHM6Ly9wbHVzLmdvb2dsZS5jb20vMTA5NjM4NzQ5NzgwNDQ0
+        MTc5NjQxIiwKICAgICAgICAgICAgImxhbmd1YWdlIiA6ICJlbiIsCiAgICAg
+        ICAgICAgICJyYXRpbmciIDogMiwKICAgICAgICAgICAgInRleHQiIDogIlRo
+        aXMgcGxhY2UgaXMgdmVyeSBwb29yIGluIHNlcnZpY2UuIEkgd2FzIHRoZXJl
+        IHRvIGNsb3NlIGEgZGVwb3NpdCBib3ggZm9yIG15IG1vbSBhbmQgdGhleSBt
+        YWRlIHVzIHdhaXRlZCBmb3IgYWxtb3N0IDMgaG91cnMgYmVmb3JlIGNhbGxp
+        bmcgbWUgaW4gYW5kIHdoZW4gSSB0b2xkIHRoZW0gd2hhdCB3ZSB3YW50ZWQg
+        dG8gZG8sIHNoZSB0ZWxsIHVzIHNoZSBjYW4ndCBkbyBpdCB0b2RheSBjb21l
+        IGJhY2sgdG9tb3Jyb3cuIEhlciBhY2N1c2Ugd2FzIHRoYXQgc2hlIG5lZWQg
+        dG8gb3JkZXIgdGhpcyBmb3JtIGluIG9yZGVyIHRvIGRvIGl0LCB3aGljaCBJ
+        IGZvdW5kIG91dCB3YXMgQi5TLiBTaGUgd2FzIHRyeWluZyB0byBjaGFzZSB1
+        cyBvdXQgYmVjYXVzZSBpdCB3YXMgY2xvc2luZyB0aW1lLiBJIHdpbGwgbmV2
+        ZXIgcmVjb21tZW5kIGFueW9uZSB0byBvcGVuIGFuIGFjY291bnQgaGVyZSBh
+        bmQgbXkgbW9tIHdpbGwgYmUgdGFraW5nIGhlciBtb25leSB0byBhIGJldHRl
+        ciBiYW5rLiAiLAogICAgICAgICAgICAidGltZSIgOiAxMzU2MTg5NzkxCiAg
+        ICAgICAgIH0KICAgICAgXSwKICAgICAgInNjb3BlIiA6ICJHT09HTEUiLAog
+        ICAgICAidHlwZXMiIDogWyAiYXRtIiwgImJhbmsiLCAiZmluYW5jZSIsICJl
+        c3RhYmxpc2htZW50IiBdLAogICAgICAidXJsIiA6ICJodHRwczovL3BsdXMu
+        Z29vZ2xlLmNvbS8xMDA4NDc3MjYzMDM5NjEyNTI2NzEvYWJvdXQ/aGw9ZW4t
+        VVMiLAogICAgICAidXNlcl9yYXRpbmdzX3RvdGFsIiA6IDIsCiAgICAgICJ1
+        dGNfb2Zmc2V0IiA6IC0yNDAsCiAgICAgICJ2aWNpbml0eSIgOiAiNDE3IFdl
+        c3QgT2xuZXkgQXZlbnVlLCBQaGlsYWRlbHBoaWEiLAogICAgICAid2Vic2l0
+        ZSIgOiAiaHR0cHM6Ly93d3cud2VsbHNmYXJnby5jb20vbG9jYXRvci9iYW5r
+        LzQxN19fV19fT0xORVlfX0FWRV9QSElMQURFTFBISUFfUEFfMTkxMjAvIgog
+        ICB9LAogICAic3RhdHVzIiA6ICJPSyIKfQo=
+    http_version: 
+  recorded_at: Mon, 23 Mar 2015 13:49:38 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=417%20West%20Olney%20Avenue,%20Philadelphia,%20PA%2019120,%20United%20States&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 23 Mar 2015 13:49:39 GMT
+      Expires:
+      - Tue, 24 Mar 2015 13:49:39 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.5
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "417",
+                       "short_name" : "417",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "West Olney Avenue",
+                       "short_name" : "W Olney Ave",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Olney",
+                       "short_name" : "Olney",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Philadelphia",
+                       "short_name" : "Philadelphia",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Philadelphia County",
+                       "short_name" : "Philadelphia County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "19120",
+                       "short_name" : "19120",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "417 West Olney Avenue, Philadelphia, PA 19120, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.0365355,
+                       "lng" : -75.12934659999999
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.0378844802915,
+                          "lng" : -75.12799761970848
+                       },
+                       "southwest" : {
+                          "lat" : 40.0351865197085,
+                          "lng" : -75.1306955802915
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJX-x-7Aq3xokRuwRl-BfPmxE",
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Mon, 23 Mar 2015 13:49:38 GMT
 recorded_with: VCR 2.9.2

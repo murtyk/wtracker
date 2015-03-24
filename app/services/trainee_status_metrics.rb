@@ -34,17 +34,12 @@ class TraineeStatusMetrics
   # row[1]         n01        n02     n03     ...
   # row[0]  ->  nav = [id, name]
   def generate_for_dashboard
-    @metrics.headers = status_labels
-
-    # build rows with first colums as label
-    @metrics.rows = navigators.to_a.map { |n| [n] }
+    init_metrics_for_dashboard
 
     status_labels.each do |label|
       status_id = statuses[label]
 
-      status_counts =  Applicant.joins(:trainee)
-                       .where(trainees: { gts_id: status_id })
-                       .group(:navigator_id).count
+      status_counts =  applicant_counts_by_nav_for_status(status_id)
 
       @metrics.rows.each do |row|
         nav_id = row[0][0]
@@ -55,18 +50,26 @@ class TraineeStatusMetrics
     @metrics
   end
 
+  def init_metrics_for_dashboard
+    @metrics.headers = status_labels
+
+    # build rows with first column as label
+    @metrics.rows = navigators.to_a.map { |n| [n] }
+  end
+
+  def applicant_counts_by_nav_for_status(status_id)
+    Applicant.joins(:trainee)
+      .where(trainees: { gts_id: status_id })
+      .group(:navigator_id).count
+  end
+
   # header:    blank    nav1  nav2  nav3 ...
   # row[0]     status1   c1    c2    c3  ...
   def generate_for_analysis
-    @metrics.headers = [''] + navigator_names
-
-    # build rows with first column as label
-    @metrics.rows = status_labels.map { |l| [l] }
+    init_metrics_for_analysis
 
     navigators.each do |nav|
-      status_counts =  Trainee.joins(:applicant, :grant_trainee_status)
-                       .where(applicants: { navigator_id: nav[0] })
-                       .group('grant_trainee_statuses.name').count
+      status_counts =  trainee_status_counts_for_nav(nav)
 
       @metrics.rows.each do |row|
         row << link(status_counts[row[0]].to_i.to_s,
@@ -74,6 +77,19 @@ class TraineeStatusMetrics
       end
     end
     @metrics
+  end
+
+  def init_metrics_for_analysis
+    @metrics.headers = [''] + navigator_names
+
+    # build rows with first column as label
+    @metrics.rows = status_labels.map { |l| [l] }
+  end
+
+  def trainee_status_counts_for_nav(nav)
+    Trainee.joins(:applicant, :grant_trainee_status)
+      .where(applicants: { navigator_id: nav[0] })
+      .group('grant_trainee_statuses.name').count
   end
 
   # names list of applicable trainee statuses for this grant
