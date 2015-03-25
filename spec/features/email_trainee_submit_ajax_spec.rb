@@ -43,7 +43,8 @@ describe "email to employer" do
       click_button 'add-selected-contacts'
 
       select('Engineering1', from: 'select_klass_id')
-      wait_for_ajax
+
+      # wait_for_ajax
       # check 'RESUME.docx'
 
       find(:css, "[value='RESUME.docx']").set(true)

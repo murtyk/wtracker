@@ -55,14 +55,6 @@
 
       e.preventDefault();
   });
-
-  function populateDropdown(select, data) {
-      select.html('');
-      $.each(data, function(id, option) {
-          select.append($('<option></option>').val(option.id).html(option.name));
-      });
-  }
-
 </script>
 
 <%= ajax_form_cancel_script(trainee_interaction) %>

@@ -64,16 +64,5 @@
   <hr>
 <% end %>
 
-<script type="text/javascript">
-$(document).ready(function() {
-  var grant_ids = <%= raw @grants.map{ |grant| grant.id } %>;
-
-  $.each(grant_ids, function( index, value ){
-    leftHeight = $('#left_' + value).height();
-    rightHeight = $('#right_' + value).height();
-    if (leftHeight < rightHeight){
-      $('#left_' + value).css({'height':rightHeight});
-    }
-  });
-});
-</script>
+<%= content_tag :div, class: "page_data", data: { grant_ids: @grants.map{ |g| g.id } } do %>
+<% end %>

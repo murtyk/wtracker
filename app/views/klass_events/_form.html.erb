@@ -136,14 +136,6 @@
 
   });
 
-
-  function populateDropdown(select, data) {
-      select.html('');
-      $.each(data, function(id, option) {
-          select.append($('<option></option>').val(option.id).html(option.name));
-      });
-  }
-
   $("#add-selected-employers").click(function(){
     var str = '';
     var e_option;
