@@ -33,6 +33,8 @@
     <%= render 'layouts/notsigned' %>
   <% end %>
 
+  <%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>
+
   <%=  render'layouts/footer' %>
 
 

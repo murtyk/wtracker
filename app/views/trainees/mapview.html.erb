@@ -65,125 +65,41 @@
       <th>Notes</th>
     </tr>
 
-  	<% @trainees_map.employers.each do |employer| %>
-  		<tr>
-  		    <td><%= link_to employer.name, employer %></td>
-  		    <td><%= employer.city%></td>
-  		    <td><%= "#{employer.county} - #{employer.state}" %></td>
-  		    <td>
-  		      <ol>
-  		      <% employer.employer_notes.each do |notes|%>
-  		        <li><%= notes.note %></li>
-  		      <% end %>
-  		      </ol>
-  		    </td>
-  		</tr>
-  	<% end %>
+    <% @trainees_map.employers.each do |employer| %>
+      <tr>
+          <td><%= link_to employer.name, employer %></td>
+          <td><%= employer.city%></td>
+          <td><%= "#{employer.county} - #{employer.state}" %></td>
+          <td>
+            <ol>
+            <% employer.employer_notes.each do |notes|%>
+              <li><%= notes.note %></li>
+            <% end %>
+            </ol>
+          </td>
+      </tr>
+    <% end %>
   </table>
 
 <% elsif @trainees_map.trainees && !@trainees_map.error%>
 
-	<!-- list view -->
-	<a name="list"></a>
-	<h4>Trainees List</h4>
+  <!-- list view -->
+  <a name="list"></a>
+  <h4>Trainees List</h4>
 
-	<table class="table table-condensed table-bordered table-striped table-hover">
-		<tr>
-			<th>Name</th>
-			<th>Address</th>
-			<th>County</th>
-		</tr>
-		<% @trainees_map.trainees.each do |t| %>
-		<tr>
-			<td><%= link_to t.name, t %></td>
-			<td><%= t.home_address && t.home_address.gmaps4rails_address %></td>
-			<td><%= t.home_address && t.home_address.county %></td>
-		</tr>
+  <table class="table table-condensed table-bordered table-striped table-hover">
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>County</th>
+    </tr>
+    <% @trainees_map.trainees.each do |t| %>
+    <tr>
+      <td><%= link_to t.name, t %></td>
+      <td><%= t.home_address && t.home_address.gmaps4rails_address %></td>
+      <td><%= t.home_address && t.home_address.county %></td>
+    </tr>
 
-		<% end %>
-	</table>
+    <% end %>
+  </table>
 <% end %>
-
-<script type="text/javascript">
-  var selected = new Array();
-  $('.form-search').submit(function() {
-    klass_id = $('#filters_klass_id :selected').text();
-    if (klass_id == 0 ){
-      alert("Please select a class");
-      return false;
-    }
-    if ($('#filters_near_by_employers').is(':checked'))
-    {
-      trainee_id = $('#filters_trainee_id :selected').val();
-      if (trainee_id == 0 ){
-        alert("Please select ONE trainee to find near by employers");
-        return false;
-      }
-      sector_id = $('#filters_sector_id :selected').val();
-      if (sector_id == 0 ){
-        alert("Please select a sector to find near by employers");
-        return false;
-      }
-    }
-    $('#submit-button').button('loading');
-  });
-</script>
-
-<script type="text/javascript">
-  $('.btn-spinner').button();
-</script>
-<script type="text/javascript">
-  jQuery(function() {
-    	return $('#filters_klass_id').change(function(e) {
-      	klass_id = $('#filters_klass_id :selected').val();
-
-      	if (klass_id > 0){
-  	    	$.get("/klasses/" + klass_id + "/trainees", function(data) {
-  	            populateDropdown($("#filters_trainee_id"), data);
-  	      	}, "json");
-
-  	    	e.preventDefault();
-      	}
-      	else{
-      		$("#filters_trainee_id").html('');
-  			$('#filters_near_by_employers').prop("checked", false);
-      	}
-    	});
-  });
-</script>
-
-<script type="text/javascript">
-  function populateDropdown(select, data) {
-    select.html('');
-    select.append($('<option></option>').val(0).html('All'));
-    var name = ""
-    $.each(data, function(id, option) {
-      if (!option.middle)
-      {
-      name = option.first + " " + option.last;
-      }
-      else
-      {
-      name = option.first + " " + option.middle + " " + option.last;
-      }
-      select.append($('<option></option>').val(option.id).html(name));
-    });
-  }
-</script>
-<script type="text/javascript">
-
-  $('#filters_trainee_id').change(function(e){
-    trainee_id = $('#filters_trainee_id :selected').val();
-    if (trainee_id > 0 ){
-      $('#filters_near_by_employers').prop("checked", true);
-    }
-    else{
-      $('#filters_near_by_employers').prop("checked", false);
-    }
-  });
-
-  $('#help-button').click(function() {
-    $('#helpModal').modal();
-  });
-
-</script>

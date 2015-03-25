@@ -12,5 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require_tree ./global
+//= require_tree ./gmaps4rails
 //= require bootstrap-datepicker

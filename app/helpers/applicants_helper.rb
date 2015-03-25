@@ -27,4 +27,18 @@ module ApplicantsHelper
       .group('sectors.id', 'sectors.name')
       .count
   end
+
+  def asset_exists?(filename, extension)
+    asset_pathname = "#{Rails.root}/app/assets/"
+    asset_file_path = "#{asset_pathname}/#{filename}".split(".")[0]
+    !Dir.glob("#{asset_file_path}.#{extension}*").empty?
+  end
+
+  def js_asset_exists?(filename)
+    asset_exists?("javascripts/#{filename}", "js")
+  end
+
+  def css_asset_exists?(filename)
+    asset_exists?("stylesheets/#{filename}", "css")
+  end
 end
