@@ -49,15 +49,3 @@
     </tr>
   <% end %>
 </table>
-
-<script type="text/javascript">
-  var selected = new Array();
-  $('.form-search').submit(function() {
-    klass_id = $('#filters_klass_id :selected').text();
-    last_name = $('#filters_last_name').val();
-    if (klass_id == 0 & last_name == 0){
-      alert("Please select a class or enter last name");
-      return false;
-    }
-  });
-</script>

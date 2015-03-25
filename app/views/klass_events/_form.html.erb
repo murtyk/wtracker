@@ -90,43 +90,6 @@
   </div>
 </div>
 
-<script type="text/javascript">
-jQuery(function() {
-    return $('#klass_interaction_klass_id').change(function(e) {
-      klass_id = $('#klass_interaction_klass_id :selected').val();
-
-      if (klass_id > 0){
-        $.get("/klasses/" + klass_id + "/events", function(data) {
-              populateEvents($("#klass_interaction_klass_event_id"), data);
-          }, "json");
-
-        e.preventDefault();
-      }
-      else{
-        $("#klass_interaction_klass_event_id").html('');
-      }
-    });
-});
-</script>
-
-<script type="text/javascript">
-  function populateEvents(select, data) {
-      select.html('');
-      var name = ""
-      $.each(data, function(id, option) {
-          d = option.event_date.split('-')
-          name = option.name + ' - ' + d[1] + '/' + d[2] + '/' + d[0];
-          select.append($('<option></option>').val(option.id).html(name));
-      });
-    }
-</script>
-
-<script type="text/javascript">
-$(function(){
-    $('#klass_interaction_klass_id').trigger("change");
-});
-</script>
-
 <% if employer %>
 
 <script type="text/javascript">
@@ -231,7 +194,6 @@ $(function(){
   }
 
 </script>
-<%= render 'shared/date_script' %>
 
 <script type="text/javascript">
   $(document).ready(function(){
