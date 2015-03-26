@@ -29,8 +29,10 @@
   </div>
   <%= ajax_form_cancel_script(klass_trainee) %>
 
-  <%= render 'shared/date_script' %>
-
+  <%#= render 'shared/date_script' %>
+<script type="text/javascript">
+$("input.date").datepicker({dateFormat: 'mm/dd/yyyy'});
+</script>
   <script type="text/javascript">
     $('#klass_trainee_status').change(function() {
       status_id = $('#klass_trainee_status :selected').val();

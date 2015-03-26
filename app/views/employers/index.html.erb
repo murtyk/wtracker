@@ -89,21 +89,3 @@
 <% if @employers.any? %>
   <div align="center"><%= will_paginate @employers%></div>
 <% end %>
-
-<script type="text/javascript">
-  var selected = new Array();
-  $('.form-search').submit(function() {
-    sector_id  = $('#filters_sector_id :selected').text();
-    county_ids = $('#filters_county_ids :selected').text();
-    source     = $('#filters_employer_source_id :selected').text();
-    name       = $('#filters_name').val();
-    if (sector_id == 0 && county_ids == 0 && source == 0 && name == ''){
-      alert("Please select at least one of sector / county / source OR enter name");
-      return false;
-    }
-    $('#submit-button').button('loading');
-  });
-</script>
-<script type="text/javascript">
-  $('.btn-spinner').button();
-</script>

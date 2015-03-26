@@ -6,7 +6,6 @@
       <div class = 'span5'>
         <%= f.input :name %>
         <%= f.input :phone_no %>
-        <%= f.input :source %>
         <%= f.association :sectors, selected: employer.sector_ids, required: true, input_html: { multiple: true } %>
       </div>
       <div class = 'span5'>
@@ -23,42 +22,4 @@
     <% end %>
   </div>
 <% end %>
-<script type="text/javascript">
-  var selected = new Array();
-  $('#form_employer').submit(function() {
-
-    name = $('#employer_name').val();
-    if (name.length < 3)
-    {
-      alert('name should be minimum 3 characters');
-      return false;
-    }
-
-    source = $('#employer_source').val();
-    if (source.length < 3)
-    {
-      alert('source should be minimum 3 characters');
-      return false;
-    }
-
-    var count = $('#employer_sector_ids option:selected').length;
-    if (count == 0){
-      alert("Please select at least one sector");
-      return false;
-    }
-    var line1 =  $('#employer_address_attributes_line1').val();
-    var city  =  $('#employer_address_attributes_city').val();
-    var state =  $('#employer_address_attributes_state').val();
-    var zip   =  $('#employer_address_attributes_zip').val();
-    if (line1.length > 0 || city.length > 0 || state.length > 0 || zip.length > 0){
-      if (city.length == 0){
-        alert("Please enter city");
-        return false;
-      }
-      if (state.length == 0){
-        alert("Please select state");
-        return false;
-      }
-    }
-  });
-</script>
+<%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>

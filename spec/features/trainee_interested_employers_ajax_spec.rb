@@ -45,7 +45,6 @@ describe "Trainee Interaction" do
       employer_name = 'Company101'
       click_on 'New'
       fill_in 'Name', with: employer_name
-      fill_in 'Source', with: 'rspec'
       select 'banking', from: 'Sectors'
       click_on 'Save'
       sleep 0.2

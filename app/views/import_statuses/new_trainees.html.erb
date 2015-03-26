@@ -35,15 +35,3 @@
 <% else %>
   <h4 style='color: brown'>At least one class should be defined before importing trainees.</h4>
 <% end %>
-<script type="text/javascript">
-  $('#form-import').submit(function() {
-    if ($('#file').val() == ""){
-      alert("Please select a file");
-      return false;
-    }
-      $('#submit-button').button('loading');
-  });
-</script>
-<script type="text/javascript">
-  $('.btn-spinner').button();
-</script>

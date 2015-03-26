@@ -39,26 +39,5 @@
       <li>After loading data into the file, save the file in excel format and import</li>
       <li><b>Important:</b> Delete the 2 example companies from the file before import</li>
     </ol>
-
   </div>
 </div>
-
-<script type="text/javascript">
-  var selected = new Array();
-  $('#form-import').submit(function() {
-    var count = $('#sector_ids_ option:selected').length;
-    if (count == 0){
-      alert("Please select at least one sector");
-      return false;
-    }
-    if ($('#file').val() == ""){
-      alert("Please select a file");
-      return false;
-    }
-      $('#submit-button').button('loading');
-  });
-</script>
-
-<script type="text/javascript">
-  $('.btn-spinner').button();
-</script>
