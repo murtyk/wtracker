@@ -1,0 +1,24 @@
+<table border='1'>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Skills</th>
+    <th>Last Salary</th>
+    <th>Job Title</th>
+    <th>Sector</th>
+    <th>Funding Source</th>
+  </tr>
+  <% @employer_map.trainees.each do |trainee| %>
+    <tr>
+      <td><%= trainee.name %></td>
+      <td><%= trainee.email %></td>
+      <td><%= trainee.mobile_no %></td>
+      <td><%= trainee.skills %></td>
+      <td><%= trainee.last_wages%></td>
+      <td><%= trainee.last_job_title%></td>
+      <td><%= trainee.sector_name%></td>
+      <td><%= trainee.funding_source_name%></td>
+    </tr>
+  <% end %>
+</table>

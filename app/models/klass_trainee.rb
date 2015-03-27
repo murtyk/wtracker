@@ -27,6 +27,10 @@ class KlassTrainee < ActiveRecord::Base
     Employer.find(@employer_id) if hired? && @employer_id
   end
 
+  def status_text
+    KlassTrainee::STATUSES[status]
+  end
+
   private
 
   EMP_ATTRS = %w(employer_id employer_name hire_title hire_salary start_date)

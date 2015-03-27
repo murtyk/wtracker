@@ -4,7 +4,7 @@
   <div class="form-inputs">
     <%= f.input :klass_id, label: 'Select a Class',
                            collection: current_user.klasses,
-                           input_html: {id: 'select_klass', style: 'width: 350px;'}%>
+                           input_html: {id: 'select_klass', style: 'width: 50%;'}%>
     <%= f.input :trainee_ids, label: "Select Trainees",
                               collection: [],
                               input_html: {multiple: true, id: 'select_trainees'},

@@ -16,9 +16,9 @@ class Applicant < ActiveRecord::Base
                   :salt, :humanizer_answer, :humanizer_question_id,
                   :trainee_id, :navigator_id, :sector_id, :race_id, :last_wages,
                   :gender, :unemployment_proof, :special_service_ids, :reapply_key,
-                  :applied_on
+                  :applied_on, :email_confirmation
 
-  attr_accessor :salt, :bypass_humanizer
+  attr_accessor :salt, :bypass_humanizer, :email_confirmation
   attr_accessor :latitude, :longitude
   attr_accessor :reapply_key
 
@@ -47,6 +47,9 @@ class Applicant < ActiveRecord::Base
 
   delegate :ethnicity,                      to: :race,      allow_nil: true
   delegate :funding_source_name, :login_id, to: :trainee,   allow_nil: true
+
+  validates :address_line1, presence: true, length: { minimum: 5, maximum: 50 }
+  validates :address_city,  presence: true, length: { minimum: 3, maximum: 30 }
 
   validates :grant,  presence: true
   validates_uniqueness_of :email, scope: :grant_id
@@ -233,6 +236,10 @@ class Applicant < ActiveRecord::Base
       valid_email = parts.count > 1
     end
     errors.add(:email, 'invalid email address') unless valid_email
+    if new_record? && email.downcase != email_confirmation.downcase
+      errors.add(:email_confirmation, 'does not match email')
+      valid_email = false
+    end
     valid_email
   end
 

@@ -138,7 +138,7 @@ class Klass < ActiveRecord::Base
   end
 
   def to_label
-    "#{name} - #{college.name}"
+    "#{college.name} - #{name} - #{start_date.to_s} - #{end_date.to_s}"
   end
 
   def trainees_for_selection

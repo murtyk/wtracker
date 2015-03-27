@@ -20,7 +20,8 @@ describe "Employers" do
       click_link 'new_trainee_interaction_link'
       wait_for_ajax
       klass = get_klasses.first
-      select klass.to_label, from: 'trainee_interaction_klass_id'
+      klass_label = "#{klass.college.name} - #{klass.name}"
+      select klass_label, from: 'trainee_interaction_klass_id'
       wait_for_ajax
 
       get_trainees.each do |t|

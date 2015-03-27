@@ -22,7 +22,7 @@ class DashboardsController < ApplicationController
   end
 
   def index
-    db = Dashboard.new(current_user, Grant.find(Grant.current_id))
+    db = Dashboard.new(current_user, Grant.find(Grant.current_id), action_name)
     redirect_to db.path
   end
 

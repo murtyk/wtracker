@@ -26,7 +26,7 @@ describe "Employers" do
       wait_for_ajax
       expect(page).to have_text "New Class Interaction"
       klass = get_klasses.first
-      klass_name = klass.to_label
+      klass_name = "#{klass.college.name} - #{klass.name}"
       select(klass_name, from: 'klass_interaction_klass_id')
       klass_event = klass.klass_events.first
       event_label = "#{klass_event.event_date.to_s} - #{klass_event.name}"

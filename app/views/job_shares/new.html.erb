@@ -22,7 +22,7 @@
     <%#= f.hidden_field :details_url_type %>
     <%#= f.hidden_field :from_id %>
 
-    <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses, input_html: {id: 'select_klass', style: 'width: 350px;'}%>
+    <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses, input_html: {id: 'select_klass', style: 'width: 500px;'}%>
     <%= f.input :to_ids, label: "Select Trainees", collection: [], input_html: {multiple: true, id: 'select_trainees',include_blank: false}, include_blank: false%>
     <%= f.input :comment %>
   </div>

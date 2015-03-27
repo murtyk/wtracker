@@ -13,12 +13,12 @@ class TraineeDecorator < Draper::Decorator
   #   end
   def land_no
     return nil unless object.land_no?
-    (h.format_phone_no(object.land_no) + '<br>').html_safe
+    h.format_phone_no(object.land_no) + '<br>'.html_safe
   end
 
   def mobile_no
     return nil unless object.mobile_no?
-    (h.format_phone_no(object.mobile_no) + '(m)<br>').html_safe
+    h.format_phone_no(object.mobile_no) + '(m)<br>'.html_safe
   end
 
   def home_address

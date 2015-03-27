@@ -2,7 +2,7 @@ module TraineesHelper
   def create_trainees(n = 1, klass = nil, seq = nil)
 
     klass ||= get_an_existing_klass
-    klass_label = klass.to_label
+    klass_label = "#{klass.college.name} - #{klass.name}"
 
     seq ||= get_trainee_ids.count
     seq = seq.to_i

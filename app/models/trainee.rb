@@ -84,8 +84,10 @@ class Trainee < ActiveRecord::Base
 
   has_one :job_search_profile, dependent: :destroy
   has_many :auto_shared_jobs, dependent: :destroy
+  delegate :skills, to: :job_search_profile, allow_nil: :true
 
   has_one :applicant, dependent: :destroy
+  delegate :last_wages, :last_job_title, :sector_name, to: :applicant, allow_nil: true
   has_many :trainee_placements, dependent: :destroy
 
   after_initialize :init

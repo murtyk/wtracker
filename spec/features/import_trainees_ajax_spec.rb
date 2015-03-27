@@ -20,7 +20,7 @@ describe "trainees" do
         Delayed::Worker.delay_jobs = false
         visit '/import_statuses/new?resource=trainees'
         attach_file "file", @filepath
-        select('CNC 101 - Bucks county community college', from: 'klass_id')
+        select('Bucks county community college - CNC 101', from: 'klass_id')
         click_button 'Import'
         wait_for_ajax
         visit '/import_statuses/' + ImportStatus.unscoped.last.id.to_s

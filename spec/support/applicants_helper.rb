@@ -51,7 +51,7 @@ module ApplicantsHelper
     os
   end
 
-  def fill_applicant_form(a)
+  def fill_applicant_form(a, re_apply = false)
 
     fill_in 'applicant_first_name',      with: a.first_name
     fill_in 'applicant_last_name',       with: a.last_name
@@ -59,7 +59,12 @@ module ApplicantsHelper
     fill_in 'applicant_address_city',    with: a.address_city
     fill_in 'applicant_address_zip',     with: a.address_zip
     select  a.county,                    from: 'applicant_county_id'
-    fill_in 'applicant_email',           with: a.email
+
+    unless re_apply
+        fill_in 'applicant_email',           with: a.email
+        fill_in 'applicant_email_confirmation', with: a.email
+    end
+
     fill_in 'applicant_mobile_phone_no', with: a.mobile_phone_no
     select a.sector,             from: 'applicant_sector_id'
 

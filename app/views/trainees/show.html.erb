@@ -2,7 +2,8 @@
   <h1>Trainee Information
   <% if @trainee.applicant %>
       <span class='pull-right' style='font-size: medium'>
-        <%= link_to('Go To Applicant Page', @trainee.applicant) %>
+        <%= link_to('Applicant Page', @trainee.applicant) %> |
+        <%= link_to('Job Leads', auto_shared_jobs_path(trainee_id: @trainee.id)) %>
       </span>
   <% end %>
   </h1>

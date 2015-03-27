@@ -67,7 +67,7 @@ describe "applicants" do
       signin_applicants_admin
       visit "/trainees/#{trainee_id}"
       expect(page).to have_text(ts_display)
-      click_on 'Go To Applicant Page'
+      click_on 'Applicant Page'
 
       expect(page).to have_text(os_applicant.name)
       expect(page).to have_text('(626) 656-2323')

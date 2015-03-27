@@ -113,7 +113,7 @@ describe "applicant re-apply" do
       os_applicant.employment_status = 'Employed Part Time'
       first_name = os_applicant.first_name
       os_applicant.first_name = ''
-      fill_applicant_form(os_applicant)
+      fill_applicant_form(os_applicant, true)
 
       click_on 'Submit'
       expect(page).to have_text "can't be blank"

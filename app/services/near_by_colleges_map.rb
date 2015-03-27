@@ -1,5 +1,6 @@
 # This is mainly for applicant grants
 # User wants to find near by colleges for each trainee who is not in any class
+# and who is NOT placed
 # Based on this info they might set up a class in a college that is close to trainees
 # a navigator has bunch of counties assigned to them through UserCounty
 # a college gets assigned to a navigator based the college county
@@ -126,7 +127,8 @@ class NearByCollegesMap < MapService
 
   def trainee_ids
     @trainee_ids ||= Trainee.pluck(:id) -
-                     KlassTrainee.pluck(:trainee_id)
+                     KlassTrainee.pluck(:trainee_id) -
+                     TraineeInteraction.where(status: 4).pluck(:trainee_id)
   end
 
   def trainees

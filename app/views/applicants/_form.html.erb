@@ -1,5 +1,9 @@
 <%= simple_form_for(applicant) do |f| %>
-  <%= f.error_notification %>
+  <% if applicant.errors.any? %>
+  <div class='row-fluid' style='margin-top: 10px'>
+    <%= f.error_notification %>
+  </div>
+  <% end %>
   <div class="form-inputs">
     <%= f.hidden_field :salt %>
     <% if applicant.persisted? %>
@@ -41,37 +45,44 @@
       </div>
     </div>
 
-    <div class='row-fluid'>
-      <div class='span3'>
-        <%= f.input :email, required: true %>
+    <% unless applicant.persisted? %>
+      <div class='row-fluid'>
+        <div class='span3'>
+          <%= f.input :email, required: true %>
+        </div>
+        <div class='span3'>
+          <%= f.input :email_confirmation, label: 'Re-Enter Email', required: true %>
+        </div>
       </div>
+    <% end %>
+
+    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :mobile_phone_no, label: 'Mobile Phone #', required: true %>
       </div>
-    </div>
-    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :veteran, label: 'Veteran', required: true,
                               collection: yes_or_no, include_blank: 'Please Select' %>
       </div>
+    </div>
+
+    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :legal_status, label: 'Legal Status',
                                    required: true,
                                    collection: trainee_legal_statues,
                                    include_blank: 'Please Select' %>
       </div>
-    </div>
-    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :gender, required: true, collection: genders,
                                              include_blank: 'Please Select' %>
       </div>
+    </div>
+    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :race_id, label: 'Ethnicity', collection: Race.all,
                               required: true, include_blank: 'Please Select'%>
       </div>
-    </div>
-    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :last_employed_on, label: 'Last Date of Full-Time Employment',
                                        required: true,
@@ -79,36 +90,38 @@
                                        value: applicant.last_employed_on },
                                        as: :string %>
       </div>
+    </div>
+    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :current_employment_status, label: 'Current Employment Status',
                                                 required: true,
                                                 collection: current_grant.collection_employment_statuses(applicant),
                                                 include_blank: 'Please Select' %>
       </div>
-    </div>
-    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :last_employer_name, label: 'Last or Current Employer', required: true %>
       </div>
+    </div>
+    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :sector_id, label: 'Industry',
                                 collection: Sector.all,
                                 required: true,
                                 include_blank: 'Please Select'%>
       </div>
-    </div>
-    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :last_employer_line1, label: 'Street Address 1', required: true %>
       </div>
-      <div class='span3'>
-        <%= f.input :last_employer_line2, label: 'Street Address 2' %>
-      </div>
     </div>
     <div class='row-fluid'>
       <div class='span3'>
+        <%= f.input :last_employer_line2, label: 'Street Address 2' %>
+      </div>
+      <div class='span3'>
         <%= f.input :last_employer_city, label: 'City', required: true %>
       </div>
+    </div>
+    <div class='row-fluid'>
       <div class='span3'>
         <%= f.input :last_employer_state, label: 'State', required: true, collection: State.collection_codes, include_blank: 'Please Select' %>
       </div>

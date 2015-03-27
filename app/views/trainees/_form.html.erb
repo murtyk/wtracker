@@ -46,7 +46,7 @@
 
             <% if trainee.new_record? %>
 
-              <%= f.association :klasses, label: 'Assign to Classes', collection: current_user.klasses, input_html:{style: 'width: 350px'}%>
+              <%= f.association :klasses, label: 'Assign to Classes', collection: current_user.klasses, input_html: { style: 'width: 500px'}%>
             <% end %>
 
           </div>

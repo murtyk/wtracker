@@ -42,9 +42,6 @@ describe "Klass trainee" do
       wait_for_ajax
       expect(page).to have_field('klass_trainee_employer_name', with: 'Company1')
       expect(page).to have_field('Hire salary', with: '12')
-
     end
-
   end
-
 end

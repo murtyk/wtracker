@@ -36,12 +36,12 @@
         </div>
       </div>
     <% end %>
-    <div class="span4">
+    <div class="span5">
       <div class="form-inputs">
         <%= f.hidden_field :employer_id %>
           <%= f.input :klass_id, label: 'Class',
                                  collection: current_user.klasses_for_selection,
-                                 style: 'width: 80%',
+                                 input_html: { style: 'width: 90%' },
                                  include_blank: false%>
           <div id = 'klass_event_id_fields'>
             <%= f.input :klass_event_id, label: 'Event', wrapper: :append, class: "inline" do%>

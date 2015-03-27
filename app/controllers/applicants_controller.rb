@@ -89,7 +89,7 @@ class ApplicantsController < ApplicationController
                   :legal_status, :veteran, :sector_id,
                   :last_employer_name, :last_employer_city, :last_employer_state,
                   :resume, :source, :signature, :humanizer_answer,
-                  :humanizer_question_id,
+                  :humanizer_question_id, :email_confirmation,
                   :gender, :race_id, :last_wages, :last_employer_line1,
                   :last_employer_line2, :last_employer_zip, :last_employer_manager_name,
                   :last_employer_manager_phone_no, :last_employer_manager_email,

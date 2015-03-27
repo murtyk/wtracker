@@ -18,15 +18,15 @@
 class Dashboard
   attr_reader :grant, :user
   attr_reader :template, :path
-  def initialize(user, g = nil)
+  def initialize(user, g = nil, controller_action = nil)
     @user  = user
     @grant = g || set_grant_context
-    determine_action if grant
+    determine_action(controller_action) if grant
   end
 
-  def determine_action
+  def determine_action(controller_action)
     return admin_action if user.admin? || user.director?
-    return nav_action if user.navigator?
+    return nav_action(controller_action) if user.navigator?
     instructor_action
   end
 
@@ -53,8 +53,12 @@ class Dashboard
   # Standard Grant
   #   Navigator(admin access) --> Render Common
   #   Navigator        --> Redirect to Classes
-  def nav_action
-    return applicant_analysis_action if grant.trainee_applications?
+  def nav_action(controller_action)
+
+    if grant.trainee_applications?
+      return trainee_applications_action if controller_action == 'index'
+      return applicant_analysis_action
+    end
 
     if user.admin_access?
       return auto_job_leads_action if grant.auto_job_leads?
