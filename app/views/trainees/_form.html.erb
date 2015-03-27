@@ -60,14 +60,3 @@
       <% end %>
   </div>
 </div>
-
-<%= render 'shared/date_script' %>
-<script type="text/javascript">
-  $('#new_trainee').submit(function() {
-    var count = $('#trainee_klass_ids option:selected').length;
-    if (count == 0){
-      alert("Please select at least one class");
-      return false;
-    }
-  })
-</script>

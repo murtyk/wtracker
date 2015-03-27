@@ -49,7 +49,7 @@ WTracker::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
   config.assets.precompile += ['emails/*.js', 'employers/*.js', 'grants/*.js',
-                               'import_statuses/*.js',
+                               'import_statuses/*.js', 'klasses/*.js',
                                'klass_interactions/*.js', 'standard_metrics/*.js',
                                'trainees/*.js']
 

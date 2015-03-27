@@ -10,7 +10,7 @@
     <%= simple_form_for(KlassTrainee.new) do |f| %>
       <%= f.hidden_field :trainee_ids, value: params[:trainee_ids] %>
       <%= f.input :klass_id, label: 'Class', collection: @klasses_collection,
-                             input_html: {style: 'width: 430px'}, include_blank: false%>
+                             input_html: {style: 'width: 500px'}, include_blank: false%>
       <div class="form-actions">
         <%= submit_button(f) %>
       </div>
