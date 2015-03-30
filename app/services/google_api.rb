@@ -135,7 +135,7 @@ class GoogleApi
   def self.get_best_matches(json, name, city_name, state_code)
     matches = []
     count = 0
-    json['results'][0..4].each do |result|
+    json['results'][0..6].each do |result|
       count += 1
       score = place_matching_score(result, name, city_name, state_code)
       match = { score: score, index: count, reference: result['reference'] }
@@ -202,8 +202,11 @@ class GoogleApi
     address = {}
 
     acs.each do |d|
-      ind = attrs.index(d['types'][0])
-      address[attrs_map[ind]] = d[SHORT_NAME] if ind
+      t = d['types'][0]
+      ind = attrs.index(t)
+      next unless ind
+      address[attrs_map[ind]] = d[SHORT_NAME] if t != 'locality'
+      address[attrs_map[ind]] = d[LONG_NAME] if t == 'locality'
     end
     address[:state] = address[:state_code]
     address[:city] ||= address[:sublocality]

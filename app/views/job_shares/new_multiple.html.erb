@@ -9,75 +9,38 @@
       <%= shared_job.title %> - <%= shared_job.date_posted.to_date.to_s %><br>
     <% end %>
     <hr>
-    <b>From: </b><%= current_user.name %></br>
+    <%= simple_form_for(@job_share,
+                        url: { controller: :job_shares, action: :create, job_ids: @job_share.job_ids },
+                        html: { class: "form-horizontal" } ) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+        <%= f.hidden_field :from_id %>
+        <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses,
+                               input_html: { id: 'select_klass',style: 'width: 90%;' } %>
+        <%= f.input :to_ids, label: "Select Trainees", collection: [],
+                             input_html: { multiple: true, id: 'select_trainees' },
+                             include_blank: false %>
+        <%= f.input :comment %>
+      </div>
+
+      <div class="form-actions">
+        <%= submit_button(f, 'Send') %>
+      </div>
+    <% end %>
   </div>
   <% if @job_share.found %>
-  <div class = 'span4' style = 'max-height: 200px'>
-    <%= gmaps @job_share.map %>
-  </div>
-  <div class='span2' style='padding-top: 100px'>
-    <%= render 'shared/circles_legend' %>
-  </div>
+    <div class = 'span4' style = 'max-height: 200px'>
+      <%= gmaps @job_share.map %>
+    </div>
+    <div class='span2' style='padding-top: 100px'>
+      <%= render 'shared/circles_legend' %>
+    </div>
   <% end %>
 </div>
 
-<%= simple_form_for(@job_share, url: {controller: :job_shares, action: :create, job_ids: @job_share.job_ids}, html: { class: "form-horizontal"}) do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-    <%= f.hidden_field :from_id %>
-
-    <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses, input_html: {id: 'select_klass',style: 'width: 500px;'}%>
-    <%= f.input :to_ids, label: "Select Trainees", collection: [], input_html: {multiple: true, id: 'select_trainees',include_blank: false}, include_blank: false%>
-    <%= f.input :comment %>
-
-  </div>
-
-  <div class="form-actions">
-    <%= submit_button(f, 'Send') %>
-  </div>
+<%= render 'status_modal' %>
+<%= content_tag :div, class: "page_data",
+                      data: { job_info: @job_share.to_json,
+                              job_ids: @job_share.job_ids } do %>
 <% end %>
-<%= render 'script', job_share: @job_share %>
-
-<script type="text/javascript">
-  var employer_marker;
-  jQuery(function() {
-    return $('#select_klass').change(function() {
-      if (Gmaps.map)
-      {
-        if (!employer_marker)
-        {
-          employer_marker = Gmaps.map.markers[0];
-        }
-        else
-        {
-            markers_array = [];
-            markers_array[0] = employer_marker;
-            Gmaps.map.replaceMarkers(markers_array);
-            Gmaps.map.replaceMarkers([{"lat":employer_marker.lat,"lng":employer_marker.lng,"name":employer_marker.name,"title":employer_marker.title}]);
-        }
-      }
-
-      klass_id = $('#select_klass :selected').val();
-      $.ajax({
-            url: "/klasses/" + klass_id + "/trainees?markers=true",
-            beforeSend: function(xhr, settings) {
-              xhr.setRequestHeader('accept', "text/javascript");
-              }
-            });
-    });
-
-    $('#select_klass').change();
-  });
-</script>
-
-<script type="text/javascript">
-  $(window).load(function() {
-    klass_id = $('#select_klass :selected').val();
-    if (klass_id > 0)
-    {
-      $('#select_klass').change();
-    }
-  });
-
-</script>

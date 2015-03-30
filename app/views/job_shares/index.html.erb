@@ -1,9 +1,14 @@
 <h1>Shared Jobs</h1>
 
 <div class = 'row-fluid filters-div' >
-  <%= simple_form_for :filters, method: :get, url: url_for(action: :index, controller: :job_shares),html: { class: 'form-search' } do |f| %>
-    Class<%= f.input_field :klass_id, collection: Klass.all, id: 'select_klass', selected: params[:filters] && params[:filters][:klass_id], class: "search-query", style: 'width: 300px;' %>
-    Trainee<%= f.input_field :trainee_id, collection: [], id: 'select_trainees', class: "search-query" %>
+  <%= simple_form_for :filters, method: :get,
+                                url: url_for(action: :index, controller: :job_shares),
+                                html: { class: 'form-search' } do |f| %>
+    Class<%= f.input_field :klass_id, collection: Klass.all, id: 'select_klass',
+                                      selected: params[:filters] && params[:filters][:klass_id],
+                                      class: "search-query", style: 'width: 500px;' %>
+    Trainee<%= f.input_field :trainee_id, collection: [],
+                                          id: 'select_trainees', class: "search-query" %>
     <%= submit_button(f,'Find') %>
   <% end %>
 </div>
@@ -17,7 +22,6 @@
   </div>
 </div>
 
-
 <div class = 'row-fluid'>
     <table class="table table-bordered table-striped table-hover table-condensed">
       <tr>
@@ -26,50 +30,16 @@
         <th>Comment</th>
         <th>Company</th>
         <th>Location</th>
-        <!-- <th>Excerpt</th> -->
         <th>Sent To</th>
         <th></th>
       </tr>
-
       <%= render @job_shares %>
-
-
-    <% @job_shares.each do |job_share| %>
-    <% end %>
-
     </table>
     <div class = 'row-fluid'>
       <div class = 'span4 offset4'>
         <%= will_paginate @job_shares%>
       </div>
     </div>
-
 </div>
-
-<script type="text/javascript">
-
-  $('#select_klass').change(function() {
-
-    klass_id = $('#select_klass :selected').val();
-
-    if (klass_id == "")
-        {
-            $('#select_trainees').html('<option value=""></option>');
-        }
-    else
-        {
-
-          $.ajax({
-                url: "/klasses/" + klass_id + "/trainees",
-                beforeSend: function(xhr, settings) {
-                  xhr.setRequestHeader('accept', "text/javascript");
-                  }
-                });
-
-        }
-  });
-
-  $('#select_klass').change();
-  $('#select_trainee').delay(500).val(<%=params[:filters] && params[:filters][:trainee_id]%>);
-
-</script>
+<%= content_tag :div, class: "page_data", data: { trainee_id: params[:filters] && params[:filters][:trainee_id] || 0 } do %>
+<% end %>

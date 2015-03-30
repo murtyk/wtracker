@@ -18,26 +18,3 @@
     <%= submit_button(f, 'Send') %>
   </div>
 <% end %>
-
-<script type="text/javascript">
-  jQuery(function() {
-    return $('#select_klass').change(function() {
-      klass_id = $('#select_klass :selected').val();
-      $.ajax({
-            url: "/klasses/" + klass_id + "/trainees_with_email",
-            beforeSend: function(xhr, settings) {
-              xhr.setRequestHeader('accept', "text/javascript");
-              }
-            });
-    });
-
-  });
-
-  $(window).load(function() {
-    klass_id = $('#select_klass :selected').val();
-    if (klass_id > 0)
-    {
-      $('#select_klass').change();
-    }
-  });
-</script>

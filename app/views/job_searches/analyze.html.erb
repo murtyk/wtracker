@@ -221,33 +221,36 @@
     var company_num = tokens[2];
     // alert(job_search_id);
     // alert(company_num);
-    var job_ids = new Array();
     var checkbox_id = job_search_id + ':' + company_num + ':'
 
-    $("input[type='checkbox'][id*='" + checkbox_id + "']:checked").each(function() {
-    job_ids.push(this.value);
-    // alert(this.id);
-    });
+    var job_ids =
+      $("input[type='checkbox'][id*='" + checkbox_id + "']:checked").map(function(){
+        return $(this).val();
+      }).get();
 
-    if (job_ids.length == 0)
-    {
-    alert('check the titles and click share');
-    return false;
+    console.log(job_ids);
+
+    if (job_ids.length == 0){
+      alert('check the titles and click share');
+      return false;
     }
 
     href = "/job_shares/new_multiple?job_ids=" + encodeURIComponent(job_ids);
     jQuery.ajaxSetup({async:false});
     $.get("/job_shares/company_status", {job_id: job_ids[0]}, function(status) {
 
-      // -1:name/location blank so no search 0:not searched, 1:not found, 2:found but not added, 3:found and added
+      // -1: name/location blank so no search
+      //  0: not searched,
+      //  1: not found
+      //  2: found but not added
+      //  3: found and added
       if (status == 0){
         alert('Please search google places before sharing jobs');
       }
       else if (status == 2){
         alert('Please add employer before sharing jobs');
       }
-      else
-      {
+      else{
         window.open(href, '_blank');
       }
     });

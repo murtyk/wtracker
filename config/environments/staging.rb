@@ -48,10 +48,11 @@ WTracker::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
-  config.assets.precompile += ['emails/*.js', 'employers/*.js', 'grants/*.js',
-                               'import_statuses/*.js', 'klasses/*.js',
-                               'klass_interactions/*.js', 'standard_metrics/*.js',
-                               'trainees/*.js']
+  config.assets.precompile += ['applicants/*.js', 'emails/*.js', 'employers/*.js',
+                               'grants/*.js', 'import_statuses/*.js', 'job_shares/*.js',
+                               'klasses/*.js', 'klass_interactions/*.js',
+                               'standard_metrics/*.js',
+                               'trainees/*.js', 'trainee_emails/*.js']
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

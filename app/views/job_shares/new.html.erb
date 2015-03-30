@@ -7,23 +7,15 @@
 <hr>
 <p><b>From: </b><%= current_user.name %></p>
 
-
 <%= simple_form_for(@job_share) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.hidden_field :title %>
-    <%= f.hidden_field :company %>
-    <%= f.hidden_field :date_posted %>
-    <%= f.hidden_field :excerpt %>
-    <%= f.hidden_field :location %>
-    <%= f.hidden_field :source %>
-    <%= f.hidden_field :details_url %>
-    <%#= f.hidden_field :details_url_type %>
-    <%#= f.hidden_field :from_id %>
-
-    <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses, input_html: {id: 'select_klass', style: 'width: 500px;'}%>
-    <%= f.input :to_ids, label: "Select Trainees", collection: [], input_html: {multiple: true, id: 'select_trainees',include_blank: false}, include_blank: false%>
+    <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses,
+                           input_html: {id: 'select_klass', style: 'width: 500px;'}%>
+    <%= f.input :to_ids, label: "Select Trainees", collection: [],
+                         input_html: { multiple: true, id: 'select_trainees' },
+                         include_blank: false%>
     <%= f.input :comment %>
   </div>
 
@@ -32,13 +24,6 @@
   </div>
 <% end %>
 
-<%= render 'script', job_share: @job_share, job_ids: nil %>
-<script type="text/javascript">
-  $(window).load(function() {
-    klass_id = $('#select_klass :selected').val();
-    if (klass_id > 0)
-    {
-      $('#select_klass').change();
-    }
-  });
-</script>
+<%= render 'status_modal' %>
+<%= content_tag :div, class: "page_data", data: { job_info: @job_share.to_json } do %>
+<% end %>

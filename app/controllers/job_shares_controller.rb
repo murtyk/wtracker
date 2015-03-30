@@ -30,25 +30,21 @@ class JobSharesController < ApplicationController
   end
 
   # GET /job_shares/new
-  # GET /job_shares/new.json
   def new
     @job_share = JobShare.new(params[:job_info])
     authorize @job_share
     @job_share.klass_id = current_user.last_klass_selected
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @job_share }
-    end
   end
 
   def new_multiple
     @job_share  = JobShareFactory.new_multiple(params, current_user)
+    authorize @job_share
+    @job_share.klass_id = current_user.last_klass_selected
   end
 
   def company_status
     company = JobSearchServices.company_and_jobs_from_cache([params[:job_id]])
     status  = company.status
-    # debugger
     respond_to do |format|
       format.json { render json: status }
     end

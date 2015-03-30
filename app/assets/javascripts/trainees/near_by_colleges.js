@@ -1,10 +1,10 @@
 $('.show_or_hide_trainees').click(function () {
   var button_id, college_id, div_id, f_show;
 
-  button_id = $(this).attr('id');
+  button_id  = $(this).attr('id');
   college_id = button_id.split('_')[3];
-  div_id = '#all_trainees_' + college_id;
-  f_show = $(div_id).is(':hidden');
+  div_id     = '#all_trainees_' + college_id;
+  f_show     = $(div_id).is(':hidden');
 
   if (f_show){
     $(div_id).show();
@@ -16,11 +16,10 @@ $('.show_or_hide_trainees').click(function () {
   }
 });
 $('.add_trainees_to_class').click(function () {
-  var trainee_ids = new Array();
-
-  $("input[type='checkbox']:checked").each(function() {
-    trainee_ids.push(this.id);
-  });
+  var trainee_ids =
+    $("input[type='checkbox']:checked").map(function() {
+      return $(this).attr('id');
+    }).get();
 
   if(trainee_ids.length == 0){
     alert('Please select some trainees');
