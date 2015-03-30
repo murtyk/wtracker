@@ -17,8 +17,7 @@ services:
 
 # ensure the test output and coverage dirs are created
 before_script:
-  - cp config/database.yml.shippable config/database.yml
-  - cp config/secrets.yml.shippable config/secrets.yml
+  - cp config/shippable.database.yml config/database.yml
   - psql -c 'create database wtracker_test;' -U postgres
   - RAILS_ENV=test rake db:migrate
   - RAILS_ENV=test rake testprep:load_data
