@@ -3,7 +3,7 @@
 language: ruby
 
 rvm:
-  - 2.0.0
+  - 2.2.0
 
 addons:
   selenium: "2.43"
