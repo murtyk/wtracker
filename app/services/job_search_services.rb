@@ -66,6 +66,7 @@ class JobSearchServices
     end
 
     company = find_company_from_cache(job_search_id, company_name, location)
+    company = company.clone
 
     # company will have all the jobs. we just need the selected ones
 
