@@ -6,7 +6,8 @@ class AutoSharedJobsController < ApplicationController
 
   def index
     @trainee = Trainee.find params[:trainee_id]
-    @auto_shared_jobs = AutoSharedJob.where(trainee_id: params[:trainee_id])
+
+    @auto_shared_jobs = AutoSharedJob.where(build_filters)
                         .order(created_at: :desc)
     @count = @auto_shared_jobs.count
     @auto_shared_jobs = @auto_shared_jobs.to_a.paginate(page: params[:page], per_page: 25)
@@ -46,5 +47,12 @@ class AutoSharedJobsController < ApplicationController
   def validate_key!
     valid_key = @auto_shared_job.valid_key?(params[:key])
     fail 'invalid key for auto job lead' unless valid_key
+  end
+
+  def build_filters
+    filters  =  { trainee_id: params[:trainee_id] }
+    return filter unless params[:status]
+    status_codes = AutoSharedJob.status_codes(params[:status])
+    filters.merge(status: status_codes)
   end
 end

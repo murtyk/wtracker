@@ -4,19 +4,47 @@
     <td><%= job_search_profile.job_leads_count %></td>
   </tr>
   <tr>
-    <td>Not Viewed</td>
-    <td><span id='not_viewed_count'><%= job_search_profile.not_viewed_job_leads_count %></span></td>
+    <td>
+      <%= link_to('Not Viewed',
+                  auto_shared_jobs_path(trainee_id: @trainee.id, status: 'Not Viewed')) %>
+    </td>
+    <td>
+      <span id='not_viewed_count'>
+        <%= job_search_profile.not_viewed_job_leads_count %>
+      </span>
+    </td>
   </tr>
   <tr>
-    <td>Viewed</td>
-    <td><span id='viewed_count'><%= job_search_profile.viewed_job_leads_count %></span></td>
+    <td>
+      <%= link_to('Viewed',
+                  auto_shared_jobs_path(trainee_id: @trainee.id, status: 'Viewed')) %>
+    </td>
+    <td>
+      <span id='viewed_count'>
+        <%= job_search_profile.viewed_job_leads_count %>
+      </span>
+    </td>
   </tr>
   <tr>
-    <td>Applied</td>
-    <td><span id='applied_count'><%= job_search_profile.applied_job_leads_count %></span></td>
+    <td>
+      <%= link_to('Applied',
+                  auto_shared_jobs_path(trainee_id: @trainee.id, status: 'Applied')) %>
+    </td>
+    <td>
+      <span id='applied_count'>
+        <%= job_search_profile.applied_job_leads_count %>
+      </span>
+    </td>
   </tr>
   <tr>
-    <td>Not Interested</td>
-    <td><span id='not_interested_count'><%= job_search_profile.not_interested_job_leads_count %></span></td>
+    <td>
+      <%= link_to('Not Interested',
+                  auto_shared_jobs_path(trainee_id: @trainee.id, status: 'Not Interested')) %>
+    </td>
+    <td>
+      <span id='not_interested_count'>
+        <%= job_search_profile.not_interested_job_leads_count %>
+      </span>
+    </td>
   </tr>
 </table>
