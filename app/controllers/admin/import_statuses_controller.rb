@@ -10,6 +10,7 @@ class Admin
 
     def create
       @importer = Importer.new_importer(params)
+      Delayed::Job.enqueue CustomJob.new(current_account)
       @importer.delay.import unless @importer.errors?
     end
 

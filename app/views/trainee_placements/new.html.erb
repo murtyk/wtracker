@@ -27,13 +27,3 @@
       <% end %>
   </div>
 </div>
-
-<%= render 'shared/date_script' %>
-
-<script type="text/javascript">
-jQuery(function($){
-  <% @trainee_placement.mask_fields.each do |field, mask, placeholder| %>
-  $("#trainee_placement_<%=field%>").mask("<%=mask%>",{placeholder:"<%=placeholder%>"});
-  <% end %>
-});
-</script>

@@ -47,10 +47,14 @@
         <h4>
           <% if params[:show_all] %>
             All Suggestions
-            <%= link_to('Show Recent Only', job_search_profile_path(@job_search_profile, key: @job_search_profile.key)) %>
+            <%= link_to('Show Recent Only',
+                        job_search_profile_path(@job_search_profile,
+                                                key: @job_search_profile.key)) %>
           <% else %>
             Recent Suggestions
-            <%= link_to('Show All', job_search_profile_path(@job_search_profile, key: @job_search_profile.key, show_all: true )) %>
+            <%= link_to('Show All', job_search_profile_path(@job_search_profile,
+                                                            key: @job_search_profile.key,
+                                                            show_all: true )) %>
           <% end %>
         </h4>
         <h4>    Status: <%= params[:status] %></h4>
@@ -148,53 +152,3 @@
   <!-- gets filled by js response -->
   </div>
 </div>
-
-
-<script type="text/javascript">
-  $('.joblink').click(function() {
-    arr = $(this).attr('id').split('-');
-    url = '/auto_shared_jobs/' + arr[0] + '/edit?key=' + arr[1] + '&status=1',
-    $.ajax({
-          url: url,
-          beforeSend: function(xhr, settings) {
-            xhr.setRequestHeader('accept', "text/javascript");
-            }
-          });
-  });
-</script>
-
-<% if current_grant.trainee_applications? %>
-<script type="text/javascript">
-$(document).ready(function() {
-  $('.job-note-show-more-or-less').click(function() {
-    button_id = $(this).attr('id');
-    job_id = button_id.split('_')[4];
-    div_short_notes_id = '#short_notes_' + job_id;
-    div_full_notes_id = '#full_notes_' + job_id;
-    f_show = $(div_full_notes_id).is(':hidden');
-
-    if (f_show)
-    {
-      $(div_short_notes_id).hide();
-      $(div_full_notes_id).show();
-
-      $('#' + button_id + " i").removeClass("icon-arrow-down").addClass("icon-arrow-up");
-    }
-    else
-    {
-      $(div_short_notes_id).show();
-      $(div_full_notes_id).hide();
-      $('#' + button_id + " i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
-    }
-  });
-});
-</script>
-<script type="text/javascript">
-function after_note_updated(job_id, short_notes, full_notes, notes_label) {
-  $("#modal_edit_notes").modal("hide");
-  $('#full_notes_' + job_id).text(full_notes);
-  $('#short_notes_' + job_id).text(short_notes);
-  $('#notes_label_' + job_id).text(notes_label);
-}
-</script>
-<% end %>

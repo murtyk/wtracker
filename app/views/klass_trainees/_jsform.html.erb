@@ -18,21 +18,14 @@
      end
   %>
 
+  <%= if klass_trainee.klass
+        content_tag("div", id: "page_data", data: { klass_page: 1 }){}
+      end
+  %>
+
   <div class="form-actions">
     <%= ajax_cancel_and_submit_buttons(f) %>
   </div>
   <%= ajax_form_cancel_script(klass_trainee) %>
-
-  <% if klass_trainee.klass %>
-    <script type="text/javascript">
-      $("form.new_klass_trainee").submit(function(e){
-        var toid = $('#klass_trainee_trainee_id :selected').text();
-        if (toid == ""){
-          alert("Please select trainees");
-          return false;
-        }
-      });
-    </script>
-  <% end %>
 <% end %>
-
+<%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>

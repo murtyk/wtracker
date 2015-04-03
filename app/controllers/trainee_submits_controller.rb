@@ -5,14 +5,7 @@ class TraineeSubmitsController < ApplicationController
   # GET /trainee_submits/new.json
   def new
     @trainee_submit = Trainee.find(params[:trainee_id]).trainee_submits.new
-    # logger.info { "[#{current_user.name}] [trainee_submit new]" }
     authorize @trainee_submit
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.js
-      format.json { render json: @trainee_submit }
-    end
   end
 
   # POST /trainee_submits

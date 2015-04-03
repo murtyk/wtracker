@@ -9,17 +9,3 @@
     </button>
   <% end %>
 </div>
-
-<script type="text/javascript">
-  $('#form-import').submit(function() {
-    if ($('#file').val() == ""){
-      alert("Please select a file");
-      return false;
-    }
-    $('#submit-button').button('loading');
-  });
-</script>
-
-<script type="text/javascript">
-  $('.btn-spinner').button();
-</script>

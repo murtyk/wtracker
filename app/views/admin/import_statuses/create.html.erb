@@ -8,38 +8,13 @@
       </div>
     </div>
     <div class="modal-body">
-
       <b>Records Successful:</b> <span id='ROWS_SUCCESSFUL'></span><br>
       <b>Records Failed:</b> <span id='ROWS_FAILED'></span>
     </div>
   </div>
 
-  <script type="text/javascript">
-    $(window).load(function() {
-      processing = true
-      console.log("fetching importer status");
-      $("#pleaseWaitDialog").modal();
-      $("body").css("cursor", "progress");
-      jQuery.ajaxSetup({async:false});
-      interval = setInterval(function(){
-        $.get("/admin/import_statuses/<%=@importer.import_status_id%>/status", function(data){
-          $('#ROWS_SUCCESSFUL').html(data['rows_successful']);
-          $('#ROWS_FAILED').html(data['rows_failed']);
-          processing = data['status'] != 'completed';
-        }, "json")
-        .fail(function(jqXHR, textStatus, errorThrown){
-          alert("error in importer " + textStatus + errorThrown);
-        });
-
-        if (!processing) {
-          clearInterval(interval);
-          jQuery.ajaxSetup({async:true});
-          $("body").css("cursor", "default");
-          location.href = '/admin/import_statuses/<%=@importer.import_status_id%>';
-        }
-      }, 1000);
-
-    });
-  </script>
-
+  <%= content_tag "div", id: "page_data",
+                         data: { import_status_id: @importer.import_status_id,
+                                 admin: 1 } do %>
+  <% end %>
 <% end %>
