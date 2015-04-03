@@ -38,127 +38,14 @@
   </div>
 </div>
 
- <hr>
+<hr>
 
 <%= render('jobs', jobs: @job_search.jobs) if @job_search.jobs %>
-
 <%= render 'shared/sh_attribution' %>
 
-<script type="text/javascript">
-  var total_slices_count = <%= @job_search.slices %>;
-  var job_search_id = <%= @job_search.id %>;
-</script>
-<script type="text/javascript">
-  function complete_analysis() {
-    console.log('complete_analysis');
-    $('.bar').width("95%");
-    $.get("/job_searches/complete_analysis", { job_search_id: job_search_id }, function(data) {
-    }, "script");
-  }
-</script>
-
-<script type="text/javascript">
-
-  <% if @job_search.first_page?  %>
-    $('#prev-button').attr('disabled', true);
-    $('#prev-button').prop('disabled', true);
-  <% end %>
-  <% if @job_search.last_page? %>
-    $('#next-button').attr('disabled', true);
-    $('#next-button').prop('disabled', true);
-  <% end %>
-
-
-  $('#analyze_all').click(function(){
-
-    // first check if analysis exists
-    $.get("/job_searches/analysis_present", { job_search_id: job_search_id }, function(data) {
-
-      if (data == null || data == false)
-      {
-        var slice = 1;
-        // var $bar = $('.bar');
-
-        $("#pleaseWaitDialog").modal();
-
-        interval = setInterval(function(){
-          count = 1
-          while (count < 4 && slice <= total_slices_count)
-          {
-            console.log("analyze request for slice = ", slice);
-            $.get("/job_searches/analyze_slice", { slice: slice, job_search_id: job_search_id }, function(data) {
-            }, "script")
-            .fail(function(jqXHR, textStatus, errorThrown){
-              alert('error in analyzing job search id = ' + job_search_id + ' slice = ' + slice + ' ' + errorThrown);
-            });
-
-            slice += 1;
-            count += 1;
-          }
-
-          if (slice > total_slices_count) {
-            clearInterval(interval);
-          }
-        }, 20);
-      }
-      else
-      {
-        location.href = '/job_searches/' + job_search_id + '/analyze';
-      }
-
-    }, "json");
-
-  });
-
-</script>
-
-<% if @job_search.process_in_state_jobs? %>
-<script type="text/javascript">
-  function complete_search_and_filter_in_state() {
-    $('.bar').width('95%');
-    location.href = '/job_searches/' + job_search_id;
-  }
-
-  function in_state_slice_searched(slice) {
-    $('#slices_searched_and_filtered_in_state').append($('<option></option>').val(slice).html(slice));
-    searched_and_filtered_in_state_slices_count = $('#slices_searched_and_filtered_in_state option').size();
-    console.log("searched_and_filtered_in_state_slices_count = ", searched_and_filtered_in_state_slices_count);
-    $('.bar').width((80 * searched_and_filtered_in_state_slices_count / total_slices_count) + "%");
-    if (searched_and_filtered_in_state_slices_count == total_slices_count){
-      complete_search_and_filter_in_state();
-    }
-  }
-
-</script>
-<script type="text/javascript">
-	$( window ).load(function() {
-		// perform search and filter for each slice
-    var slice = 1;
-    // var $bar = $('.bar');
-    $("#pleaseWaitDialog").modal();
-    $("#modal_title").html('Searching and filtering jobs within the state');
-    interval = setInterval(function(){
-      count = 1
-      while (count < 4 && slice <= total_slices_count)
-      {
-        console.log("search and filter request for slice = ", slice);
-        $.get("/job_searches/search_and_filter_in_state", {slice: slice, job_search_id: job_search_id }, function(data) {
-          in_state_slice_searched(data);
-        }, "json")
-        .fail(function(jqXHR, textStatus, errorThrown){
-          alert("error in search and filter by state");
-        });
-
-        slice += 1;
-        count += 1;
-      }
-
-      if (slice > total_slices_count) {
-        clearInterval(interval);
-      }
-    }, 20);
-	});
-</script>
+<%= content_tag "div", id: "page_data", data: { slices: @job_search.slices,
+                                                job_search_id: @job_search.id,
+                                                page_position: @job_search.page_position,
+                                                in_state: @job_search.process_in_state_jobs?,
+                                                processes_count: @processes_count } do %>
 <% end %>
-
-<%= render 'get_google_companies_script' %>

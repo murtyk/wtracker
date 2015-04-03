@@ -17,31 +17,7 @@
     </div>
   </div>
 
-  <script type="text/javascript">
-    $(window).load(function() {
-      processing = true
-      console.log("fetching companies finder status");
-      $("#pleaseWaitDialog").modal();
-      $("body").css("cursor", "progress");
-      jQuery.ajaxSetup({async:false});
-      interval = setInterval(function(){
-        $.get("/companies_finder/status?process_id=<%=@companies_finder.process_id%>", function(data){
-          $('#ROWS_SUCCESSFUL').html(data['success_count']);
-          $('#ROWS_FAILED').html(data['fail_count']);
-          processing = data['status'] != 'FINISHED';
-        }, "json")
-        .fail(function(jqXHR, textStatus, errorThrown){
-          alert("error in companies finder " + textStatus + errorThrown);
-        });
-
-        if (!processing) {
-          clearInterval(interval);
-          jQuery.ajaxSetup({async:true});
-          $("body").css("cursor", "default");
-          location.href = '/companies_finder?process_id=<%=@companies_finder.process_id%>';
-        }
-      }, 1000);
-
-    });
-  </script>
+  <%= content_tag "div", id: "page_data",
+                         data: { process_id: @companies_finder.process_id } do %>
+  <% end %>
 <% end %>

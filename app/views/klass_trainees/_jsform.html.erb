@@ -26,7 +26,7 @@
   <% if klass_trainee.klass %>
     <script type="text/javascript">
       $("form.new_klass_trainee").submit(function(e){
-        toid = $('#klass_trainee_trainee_id :selected').text();
+        var toid = $('#klass_trainee_trainee_id :selected').text();
         if (toid == ""){
           alert("Please select trainees");
           return false;

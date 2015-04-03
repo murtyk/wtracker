@@ -1,7 +1,7 @@
 <%= simple_form_for employment_status do |f| %>
   <%= f.error_notification %>
   <div class='form-inputs'>
-    <%= f.input :status %>
+    <%= f.input :status, required: true %>
     <%= f.input :action, collection: applicant_employment_statuses, include_blank: false %>
     <%= f.input :email_subject %>
     <%= f.input :email_body, input_html: { style: 'width: 400px; height: 100px' }, hint: "meta key words for applicant's name: $FIRSTNAME$, $LASTNAME$, $LOGIN_ID$" %>
@@ -11,17 +11,3 @@
     <%= submit_button(f) %>
   </div>
 <% end %>
-<script type="text/javascript">
-
-  $('#new_employment_status').submit(function() {
-    if ($('#employment_status_status').val() == ""){
-      alert("Please enter an employment_status");
-      return false;
-    }
-    if ($('#employment_status_status').val().length < 3){
-      alert("Status should be minimum 3 characters");
-      return false;
-    }
-
-  });
-</script>

@@ -20,12 +20,13 @@ class GrantTraineeStatusesController < ApplicationController
   end
 
   def create
-    grant_trainee_status = GrantTraineeStatus.new(params[:grant_trainee_status])
-    grant_trainee_status.save
+    @grant_trainee_status = GrantTraineeStatus.new(params[:grant_trainee_status])
+    @grant_trainee_status.save
+    @grant_trainee_statuses = GrantTraineeStatus.all
   end
 
   def destroy
-    grant_trainee_status = GrantTraineeStatus.find(params[:id])
-    grant_trainee_status.destroy
+    @grant_trainee_status = GrantTraineeStatus.find(params[:id])
+    @grant_trainee_status.destroy
   end
 end

@@ -12,7 +12,7 @@
   </div>
   <div class='span5 offset1'>
     <% if policy(GrantTraineeStatus).index? %>
-      <div id='grant_trainee_statuss'>
+      <div id='grant_trainee_statuses'>
         <%= render @grant_trainee_statuss %>
       </div>
         <%= link_to new_grant_trainee_status_path, class: "btn btn-flat btn-small btn-primary", id: 'new_grant_trainee_status_link', remote: true, rel:"tooltip", title:"Add Funding Source" do%>

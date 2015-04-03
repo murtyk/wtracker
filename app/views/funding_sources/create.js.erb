@@ -1,3 +1,8 @@
-$('#new_funding_source').remove();
-$('#funding_sources').html('<%= j render @funding_sources %>');
-$('#new_funding_source_link').show();
+<% if @funding_source.errors.any? %>
+  $('#error_text').text('<%= @funding_source.errors.first[1] %>');
+<% else %>
+  $('#error_text').text('');
+  $('#new_funding_source').remove();
+  $('#funding_sources').html('<%= j render @funding_sources %>');
+  $('#new_funding_source_link').show();
+<% end %>

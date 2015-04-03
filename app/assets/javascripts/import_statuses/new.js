@@ -13,6 +13,6 @@ $('#form-import').submit(function() {
     alert("Please select a file");
     return false;
   }
-    $('#submit-button').button('loading');
+  $('#submit-button').button('loading');
 });
 $('.btn-spinner').button();

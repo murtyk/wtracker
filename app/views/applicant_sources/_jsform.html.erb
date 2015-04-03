@@ -7,18 +7,5 @@
 		<%= ajax_cancel_and_submit_buttons(f) %>
 	</div>
 <% end %>
-<script type="text/javascript">
-
-  $('#new_applicant_source').submit(function() {
-    if ($('#applicant_source_source').val() == ""){
-      alert("Please enter an applicant source");
-      return false;
-    }
-    if ($('#applicant_source_source').val().length < 3){
-      alert("Source should be minimum 3 characters");
-      return false;
-    }
-
-  });
-</script>
 <%= ajax_form_cancel_script(applicant_source) %>
+<%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>

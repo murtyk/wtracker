@@ -1,21 +1,2 @@
 <%= render 'form' %>
-<script type="text/javascript">
-  var selected = new Array();
-  $('#form-process-companies').submit(function() {
-    add_to_db = $('#add_to_database').is(':checked');
-    sectors_count = $('#sector_ids_ option:selected').length;
-    if (sectors_count == 0 && add_to_db){
-      alert("Please select at least one of sector");
-      return false;
-    }
-    if ($('#file').val() == ""){
-      alert("Please select a file");
-      return false;
-    }
-    $('#submit-button').button('loading');
-  });
-</script>
-<script type="text/javascript">
-  $('.btn-spinner').button();
-</script>
 

@@ -84,6 +84,7 @@ class JobSearchesController < ApplicationController
     authorize @job_search
     page = (params[:page] || 1).to_i
     @job_search.perform_search(request_ip, page)
+    @processes_count = ENV['PROCESSES_COUNT'] ? ENV['PROCESSES_COUNT'].to_i : 3
   end
 
   def details

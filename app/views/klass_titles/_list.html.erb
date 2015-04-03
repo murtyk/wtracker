@@ -1,8 +1,7 @@
 <%= render klass_titles %>
-<% if klass = klass_titles.first && klass_titles.first.klass %>
-  <% if (kt_ids = klass.klass_titles_ids_to_refresh_counts).any? %>
-    <script type="text/javascript">
-      refresh_job_counts(<%= raw kt_ids.to_json %>);
-    </script>
+<% if klass_titles.any? %>
+  <% klass = klass_titles.first.klass %>
+  <% kt_ids = klass.klass_titles_ids_to_refresh_counts %>
+  <%= content_tag "div", id: "klass_titles_data", data: { kt_ids: kt_ids } do %>
   <% end %>
 <% end %>

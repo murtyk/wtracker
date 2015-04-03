@@ -2,8 +2,7 @@
 var employer_marker, markers_array;
 $('#select_klass').change(function() {
   var klass_id;
-  if (Gmaps.map)
-  {
+  if (Gmaps.map) {
     if (!employer_marker){
       employer_marker = Gmaps.map.markers[0];
     }

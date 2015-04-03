@@ -2,24 +2,12 @@
 	<%= f.error_notification %>
 	<div class='form-inputs'>
 		<%= f.input :name, input_html: {style: 'width: 400px'} %>
+    <div style='color: red'>
+      <span id='error_text'></span>
+    </div>
 	</div>
 	<div class="form-actions">
 		<%= ajax_cancel_and_submit_buttons(f) %>
 	</div>
 <% end %>
-<script type="text/javascript">
-
-  $('#new_unemployment_proof').submit(function() {
-    if ($('#unemployment_proof_name').val() == ""){
-      alert("Please enter funding soruce name");
-      return false;
-    }
-    if ($('#unemployment_proof_name').val().length < 3){
-      alert("Name should be minimum 3 characters");
-      return false;
-    }
-
-  });
-</script>
-
 <%= ajax_form_cancel_script(unemployment_proof) %>

@@ -1,5 +1,5 @@
 $('.klass_events_expand').click(function () {
-  var id, klass_id, div_id;
+  var id, ind, klass_id, div_id;
 
   id = $(this).attr('id');
   klass_id = id.split('_')[3];
@@ -15,8 +15,8 @@ $('.klass_events_expand').click(function () {
     $(this).html('Expand');
     $(div_id).hide();
   }
-
 });
+
 $('#employers_more_info_show').click(function () {
   var ind, div_id, employer_note_id, button_id, div_short_notes_id, div_full_notes_id;
 

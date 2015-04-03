@@ -110,7 +110,7 @@
   </div>
 
   <div class='span8'>
-    <button type="button" id = 'btnExport' class="btn btn-flat btn-small btn-primary pull-right" style='margin-left:20px' name='export'>
+    <button type="button" id = 'btnCustomExport' class="btn btn-flat btn-small btn-primary pull-right" style='margin-left:20px' name='export'>
       <i class="icon-cloud-download icon-2x"></i>
     </button>
   </div>
@@ -144,27 +144,8 @@
       </td>
    </tr>
   <% end %>
-
 </table>
-
-<% content_for :scripts do %>
-<script type="text/javascript">
-  Gmaps.map.callback = function(){
-    var c, county_polygons, county_names, county_count, polygon;
-
-    console.log("map callback");
-    console.log(Gmaps.map.polygons.length);
-
-    county_polygons = <%= raw @employer_map.state_county_polygons.to_json %>;
-    county_names = <%= raw @employer_map.state_county_names.to_json %>;
-    county_count = county_polygons.length;
-
-    for (c = 0; c < county_count; c++)
-    {
-      polygon = Gmaps.map.create_polygon(county_polygons[c]);
-      polygon.setOptions({clickable: true, fillColor: "#88F",strokeColor: "#383838",fillOpacity: 0.15, strokeWeight: 1});
-      attachPolygonInfoWindow(polygon, '<strong>' + county_names[c] + '</strong>');
-    }
-  }
-</script>
+<%= content_tag :div, class: "page_data",
+                      data: { county_polygons: @employer_map.state_county_polygons.to_json,
+                              county_names: @employer_map.state_county_names.to_json } do %>
 <% end %>

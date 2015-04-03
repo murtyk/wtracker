@@ -13,13 +13,5 @@
     </div>
 <% end %>
 
-<script type="text/javascript">
-  $('#new_klass_certificate').submit(function() {
-    if ($('#klass_certificate_name').val() == ""){
-      alert("Please enter certificate name");
-      return false;
-    }
-  });
-</script>
-
 <%= ajax_form_cancel_script(klass_certificate) %>
+<%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>

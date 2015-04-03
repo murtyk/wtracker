@@ -87,6 +87,10 @@ class JobSearch < ActiveRecord::Base
     page == pages
   end
 
+  def page_position
+    page == 1 ? 'first' : (page == pages ? 'last' : 'middle')
+  end
+
   def prev_page
     first_page? ? 1 : page - 1
   end

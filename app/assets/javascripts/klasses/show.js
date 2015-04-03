@@ -72,3 +72,10 @@ function refresh_job_counts(kt_ids) {
     }, "json");
   });
 }
+
+$(document).ready(function() {
+  var kt_ids = $('#klass_titles_data').data('kt-ids');
+  if (kt_ids != null) {
+    refresh_job_counts(kt_ids);
+  }
+});

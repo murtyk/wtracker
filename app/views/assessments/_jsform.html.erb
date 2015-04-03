@@ -8,17 +8,6 @@
   </div>
 
   <%= ajax_form_cancel_script(assessment) %>
-
-<script type="text/javascript">
-  $('#new_assessment').submit(function() {
-    if ($('#assessment_name').val() == ""){
-      alert("Please enter assessment name");
-      return false;
-    }
-    if ($('#assessment_name').val().length < 3){
-      alert("Name should be minimum 3 characters");
-      return false;
-    }
-  });
-</script>
 <% end %>
+<%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>
+

@@ -1,25 +1,14 @@
-<%= simple_form_for(funding_source,remote: true) do |f| %>
+<%= simple_form_for(funding_source, remote: true) do |f| %>
 	<%= f.error_notification %>
 	<div class='form-inputs'>
 		<%= f.input :name %>
+    <div style='color: red'>
+      <span id='error_text'></span>
+    </div>
 	</div>
 	<div class="form-actions">
 		<%= ajax_cancel_and_submit_buttons(f) %>
 	</div>
 <% end %>
-<script type="text/javascript">
-
-  $('#new_funding_source').submit(function() {
-    if ($('#funding_source_name').val() == ""){
-      alert("Please enter funding soruce name");
-      return false;
-    }
-    if ($('#funding_source_name').val().length < 3){
-      alert("Name should be minimum 3 characters");
-      return false;
-    }
-
-  });
-</script>
 
 <%= ajax_form_cancel_script(funding_source) %>

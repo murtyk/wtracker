@@ -1,3 +1,8 @@
-$('#new_unemployment_proof').remove();
-$('#unemployment_proofs').html('<%= j render @unemployment_proofs %>');
-$('#new_unemployment_proof_link').show();
+<% if @unemployment_proof.errors.any? %>
+  $('#error_text').text('<%= @unemployment_proof.errors.first[1] %>');
+<% else %>
+  $('#error_text').text('');
+  $('#new_unemployment_proof').remove();
+  $('#unemployment_proofs').html('<%= j render @unemployment_proofs %>');
+  $('#new_unemployment_proof_link').show();
+<% end %>

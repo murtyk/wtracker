@@ -1,3 +1,13 @@
+var attachment_number = 1;
+var tf_ids = []; //trainee file ids gets set when document ready
+
+/*
+  when user selects a klass, fetch the trainee and their documents through ajax request
+  the js returned by the ajax request show each trainee and checkboxes for each of their
+  documents.
+
+  call check_check_boxes to select all the documents by default
+*/
 $('#select_klass_id').change(function(e) {
   var klass_id = $('#select_klass_id :selected').val();
   $('#email_klass_id').val(klass_id);
@@ -12,7 +22,6 @@ $('#select_klass_id').change(function(e) {
   }
 });
 
-var attachment_number = 1;
 $('#new_attachment').click(function() {
   $.ajax({
       url: "/emails/new_attachment?number=" + attachment_number,
@@ -28,6 +37,7 @@ $(".simple_form").submit(function(e){
   var file_ids = [];
   var checkbox_id = 'tf_';
 
+  // REFACTOR: convert each to map function
   $("input[type='checkbox'][id*='" + checkbox_id + "']:checked").each(function() {
     id = this.id.split('_')[1];
     file_ids.push(id);
@@ -78,8 +88,6 @@ $("#add-selected-contacts").click(function(){
 $("#remove-selected-contacts").click(function(){
    $("#email_contact_ids option:selected").remove();
 });
-
-var tf_ids = [];
 
 function check_check_boxes() {
   tf_ids.forEach(function(tf_id) {

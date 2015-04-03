@@ -23,65 +23,7 @@ $('#clear-button').click(function() {
 
 $('.btn-spinner').button();
 
-function CustomMethodToExport(tblId){
-
-  var html;
-  var trhtml = "";
-  var gTable = document.getElementById(tblId);
-  var numofRows = gTable.rows.length-1;
-  var numofCells =  gTable.rows[0].cells.length-1  ;
-
-  var c, tdhtml, node, tokens, job_search_id, company_num, checkbox_id, titles;
-  for ( r = 0; r <= numofRows; r++)
-  {
-    c =0;
-    tdhtml =  "" ;
-
-    for (c = 0; c<=numofCells; c++)
-    {
-      node = gTable.rows[r].cells[c].childNodes[1];
-      if (node != null && node.nodeName == 'OL')
-      {
-        tokens = node.id.split('_');
-        job_search_id = tokens[1];
-        company_num = tokens[2];
-        checkbox_id = job_search_id + ':' + company_num
-        titles = '';
-        $("input[type='checkbox'][id*='" + checkbox_id + "']").each(function(){
-          titles += '<li>' + this.name + '</li>';
-        });
-        tdhtml = tdhtml + "<td><ol>" + titles + "</ol></td>";
-      }
-      else if(gTable.rows[r].cells[c].childNodes[0].nodeName == 'A')
-      {
-        tdhtml = tdhtml + '<td>' + gTable.rows[r].cells[c].textContent + '</td>'
-      }
-      else
-      {
-        if(gTable.rows[r].cells[c].innerHTML.indexOf("Add</a>") != -1)
-        {
-          tdhtml = tdhtml + "<td></td>";
-        }
-        else
-        {
-          tdhtml = tdhtml + gTable.rows[r].cells[c].outerHTML;
-        }
-      }
-    }
-
-    trhtml = trhtml + "<tr>" + tdhtml + "</tr>";
-  }
-
-  html = "<table border='1'>"+trhtml+"</table>";
-
-      // MS OFFICE 2003  : data:application/vnd.ms-excel
-      window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
-
-      // MS OFFICE 2007  : application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      // window.open('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' + encodeURIComponent(html));
-}
-
-$('#btnExport').click(function(e){
+$('#btnCustomExport').click(function(e){
   // window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#dvData').html()));
   CustomMethodToExport("companies-table");
   e.preventDefault();
@@ -106,3 +48,24 @@ function attachPolygonInfoWindow(polygon, html)
     polygon.infoWindow.close();
   });
 }
+
+$(document).ready(function() {
+  Gmaps.map.callback = function(){
+    var c, county_polygons, county_names, county_count, polygon;
+
+    console.log("map callback");
+    console.log(Gmaps.map.polygons.length);
+
+    county_polygons  = $('.page_data').data('county-polygons');
+    county_names  = $('.page_data').data('county-names');
+    county_count = county_polygons.length;
+
+    for (c = 0; c < county_count; c++)
+    {
+      polygon = Gmaps.map.create_polygon(county_polygons[c]);
+      polygon.setOptions({clickable: true, fillColor: "#88F",strokeColor: "#383838",fillOpacity: 0.15, strokeWeight: 1});
+      // alert(county_names[c]);
+      attachPolygonInfoWindow(polygon, '<div style="width: 100px;"><strong>' + county_names[c] + '</strong></div>');
+    }
+  }
+});

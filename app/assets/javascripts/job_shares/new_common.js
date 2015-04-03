@@ -30,12 +30,11 @@ function send_to_trainees(job_share_id, trainee_ids) {
       });
     }
     else{
-        clearInterval(interval);
+      clearInterval(interval);
     }
   }, 300);
 }
-function process_submit()
-{
+function process_submit() {
   var count = $('#select_trainees option:selected').length;
   if (count == 0){
     alert("Please select at least one trainee");
@@ -62,12 +61,13 @@ function process_submit()
   });
   return false;
 }
-$('#new_job_share').submit(function(e)
-{
+
+$('#new_job_share').submit(function(e){
   e.preventDefault();
   process_submit();
   return false;
 });
+
 $(window).load(function() {
   job_info = $('.page_data').data('job-info');
   job_ids = $('.page_data').data('job-ids');
