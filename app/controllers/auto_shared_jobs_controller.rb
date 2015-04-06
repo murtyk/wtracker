@@ -51,7 +51,7 @@ class AutoSharedJobsController < ApplicationController
 
   def build_filters
     filters  =  { trainee_id: params[:trainee_id] }
-    return filter unless params[:status]
+    return filters unless params[:status]
     status_codes = AutoSharedJob.status_codes(params[:status])
     filters.merge(status: status_codes)
   end
