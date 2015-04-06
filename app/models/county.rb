@@ -15,7 +15,7 @@ class County < ActiveRecord::Base
   end
 
   def polygons_json
-    GoogleApi.load_county_polygon(self) if polygons.empty?
+    FusionTable.load_county_polygon(self) if polygons.empty?
     [JSON.parse(polygons.first.json)]
   end
 

@@ -70,7 +70,7 @@ class MapService
   def build_circles(addr)
     return [] unless addr
     [10, 20].map do |radius|
-      GoogleApi.get_circle_marker(radius, addr.longitude, addr.latitude)
+      Circle.new(radius, addr.longitude, addr.latitude).marker
     end
   end
 end

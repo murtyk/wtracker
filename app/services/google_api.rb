@@ -1,29 +1,16 @@
 # encoding: utf-8
-
-require 'fusion_tables'
 require 'rest_client'
 require 'json'
 require 'fuzzystringmatch'
 
-# wrapper for google api to find companies and county polygons
+# wrapper for google api to find companies
 class GoogleApi
   NEARBY_SEARCH_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
   DETAILS_URL       = 'https://maps.googleapis.com/maps/api/place/details/json'
   TEXT_SEARCH_URL   = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
 
-  COUNTY_POLYGON_QRY = 'SELECT geometry FROM 1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa ' \
-                       "WHERE 'State-County' = "
-
   SHORT_NAME        = 'short_name'
   LONG_NAME         = 'long_name'
-
-  def self.get_circle_marker(radius, lng, lat, stroke_color = nil, fill_color = nil)
-    circle = { lng: lng, lat: lat, radius: radius * 1609.34,
-               fillOpacity: 0.15, strokeWeight: 1 }
-    circle[:strokeColor] = stroke_color || (radius == 10 ? '#00FF00' : '#FF0000')
-    circle[:fillColor] = fill_color || (radius == 10 ? '#8F8' : '#88F')
-    circle
-  end
 
   def self.search_for_companies(name, city_state)
     return nil if city_state.blank? || name.blank?
@@ -42,38 +29,32 @@ class GoogleApi
     companies[0..19]
   end
 
-  def self.load_county_polygon(county)
-    state_county = county.state_code.upcase + '-' + county.name
+  def self.find_company(name, city_name, state_code,
+                                           latitude, longitude)
+    score, json = find_company_with_score(name, city_name, state_code,
+                                          latitude, longitude)
+    return nil unless json
 
-    ft = GData::Client::FusionTables.new
-    ft.set_api_key(ENV['GOOGLE_KEY'])
-    qry = COUNTY_POLYGON_QRY + "'#{state_county}';"
+    addr_comp = json['address_components']
+    address_info = build_address_info(addr_comp, json['formatted_address'])
+    return nil unless address_info
 
-    data = ft.execute qry
+    json.merge!(address_info)
 
-    if data.empty? && state_county.include?(' ')
-      # try with a dash in the county name
-      qry =  COUNTY_POLYGON_QRY + "'#{state_county.gsub(' ', '-')}';"
-      data = ft.execute qry
-      return nil if data.empty?
-    end
+    json[:score] = score
+    json[:score] -= 30 unless json[:city]
 
-    geometry = data[0][:geometry]
+    GoogleCompany.new(json)
+  end
 
-    if geometry['geometry']
-      coordinates_array = geometry['geometry']['coordinates'][0]
-      coordinates_hashes = coordinates_array.map { |a| { 'lng' => a[0], 'lat' => a[1] } }
-      county.polygons.new(json: coordinates_hashes.to_json)
-    elsif geometry['geometries'] # some counties can have multiple polygons
-      geometry['geometries'].each do |g|
-        coordinates_array = g['coordinates'][0]
-        coordinates_hashes = coordinates_array.map do |a|
-                               { 'lng' => a[0], 'lat' => a[1] }
-                             end
-        county.polygons.new(json: coordinates_hashes.to_json)
-      end
-    end
-    county.save
+  private
+
+  def self.text_search(options)
+    search(TEXT_SEARCH_URL, options)
+  end
+
+  def self.near_by_search(options)
+    search(NEARBY_SEARCH_URL, options)
   end
 
   def self.find_company_with_score(name, city_name, state_code,
@@ -102,36 +83,6 @@ class GoogleApi
     [matches[0][:score], json]
   end
 
-  def self.find_company(name, city_name, state_code,
-                                           latitude, longitude)
-    score, json = find_company_with_score(name, city_name, state_code,
-                                          latitude, longitude)
-    return nil unless json
-
-    addr_comp = json['address_components']
-    address_info = build_address_info(addr_comp, json['formatted_address'])
-    return nil unless address_info
-
-    json.merge!(address_info)
-
-    json[:score] = score
-    json[:score] -= 30 unless json[:city]
-
-    GoogleCompany.new(json)
-  end
-
-  def self.place_matching_score(result, name, city_name, state_code)
-    jarow = FuzzyStringMatch::JaroWinklerPure.new
-    score = 5
-    score += 75 * jarow.getDistance(name.downcase, result['name'].downcase)
-    if result['formatted_address']
-      address = result['formatted_address'].downcase.split(',')
-      score += 10 * jarow.getDistance(address[1].squish, city_name.downcase) if address[1]
-      score += 10 if state_code.downcase == address[2].squish.downcase if address[2]
-    end
-    score.round
-  end
-
   def self.get_best_matches(json, name, city_name, state_code)
     matches = []
     count = 0
@@ -148,23 +99,16 @@ class GoogleApi
     matches
   end
 
-  def self.text_search(options)
-    search(TEXT_SEARCH_URL, options)
-  end
-
-  def self.near_by_search(options)
-    search(NEARBY_SEARCH_URL, options)
-  end
-
-  def self.details(options)
-    details = search(DETAILS_URL, options)
-    details['result']
-  end
-
-  def self.search(url, options)
-    options = options.merge(key: ENV['GOOGLE_KEY'], sensor: :false)
-    response = RestClient.get(url, params: options)
-    JSON.parse response.body
+  def self.place_matching_score(result, name, city_name, state_code)
+    jarow = FuzzyStringMatch::JaroWinklerPure.new
+    score = 5
+    score += 75 * jarow.getDistance(name.downcase, result['name'].downcase)
+    if result['formatted_address']
+      address = result['formatted_address'].downcase.split(',')
+      score += 10 * jarow.getDistance(address[1].squish, city_name.downcase) if address[1]
+      score += 10 if state_code.downcase == address[2].squish.downcase if address[2]
+    end
+    score.round
   end
 
   def self.build_address_info(address_components, formatted_address)
@@ -174,40 +118,37 @@ class GoogleApi
     # it should be a state in USA
     return nil if state_not_in_usa
 
-    parsed_address = parse_formatted_address(formatted_address)
-    address.merge!(parsed_address || {}) if address[:city].nil? && formatted_address
-    if address[:line1].nil? && address[:city] && formatted_address
-      address_parts = formatted_address.split(',')
-      address[:line1] = address_parts[0] if address_parts[1] &&
-                                            address_parts[1].squish == address[:city]
-    end
-
-    unless address[:county]
-      if address[:city] && address[:state]
-        city_state = "#{address[:city]},#{address[:state]}".downcase
-        city_result = GeoServices.findcity(city_state, address[:zip])
-        address[:county] = city_result && city_result.county_name
-      end
-    end
+    fill_missing_street_and_city(address, formatted_address)
+    fill_missing_county(address)
 
     address
   end
 
-  def self.parse_address_components(acs)
-    attrs     = %w(street_number route locality sublocality
-                   administrative_area_level_1 postal_code)
-    attrs_map = %i(street_number street city sublocality
-                   state_code zip)
+  def self.fill_missing_street_and_city(address, formatted_address)
+    return unless formatted_address
 
-    address = {}
-
-    acs.each do |d|
-      t = d['types'][0]
-      ind = attrs.index(t)
-      next unless ind
-      address[attrs_map[ind]] = d[SHORT_NAME] if t != 'locality'
-      address[attrs_map[ind]] = d[LONG_NAME] if t == 'locality'
+    unless address[:city]
+      parsed_address = parse_formatted_address(formatted_address)
+      address.merge!(parsed_address || {})
     end
+
+    return unless address[:line1].nil? && address[:city]
+    address_parts = formatted_address.split(',')
+
+    return unless address_parts[1] && address_parts[1].squish == address[:city]
+    address[:line1] = address_parts[0]
+  end
+
+  def self.fill_missing_county(address)
+    return if address[:county]
+    return unless address[:city] && address[:state]
+    city_state = "#{address[:city]},#{address[:state]}".downcase
+    city_result = GeoServices.findcity(city_state, address[:zip])
+    address[:county] = city_result && city_result.county_name
+  end
+
+  def self.parse_address_components(acs)
+    address = map_address_attributes(acs)
     address[:state] = address[:state_code]
     address[:city] ||= address[:sublocality]
     address[:line1] = build_line1(address)
@@ -215,9 +156,21 @@ class GoogleApi
     address
   end
 
-  def self.build_line1(address)
-    return nil unless address[:street] && address[:street_number]
-    address[:street_number] + ' ' + address[:street]
+  def self.map_address_attributes(acs)
+    attrs     = %w(street_number route locality sublocality
+                   administrative_area_level_1 postal_code)
+    attrs_map = %i(street_number street city sublocality
+                   state_code zip)
+
+    address = {}
+    acs.each do |d|
+      t = d['types'][0]
+      ind = attrs.index(t)
+      next unless ind
+      address[attrs_map[ind]] = d[SHORT_NAME] if t != 'locality'
+      address[attrs_map[ind]] = d[LONG_NAME] if t == 'locality'
+    end
+    address
   end
 
   def self.parse_formatted_address(fa)
@@ -266,5 +219,21 @@ class GoogleApi
     end
 
     addr
+  end
+
+  def self.details(options)
+    details = search(DETAILS_URL, options)
+    details['result']
+  end
+
+  def self.search(url, options)
+    options = options.merge(key: ENV['GOOGLE_KEY'], sensor: :false)
+    response = RestClient.get(url, params: options)
+    JSON.parse response.body
+  end
+
+  def self.build_line1(address)
+    return nil unless address[:street] && address[:street_number]
+    address[:street_number] + ' ' + address[:street]
   end
 end

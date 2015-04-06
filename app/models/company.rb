@@ -86,7 +86,7 @@ class Company
 
   def circles
     @circles ||= [10, 20].map do |radius|
-      GoogleApi.get_circle_marker(radius, longitude, latitude)
+      Circle.new(radius, longitude, latitude).marker
     end
   end
 
