@@ -29,7 +29,7 @@ describe "email to employer" do
       page.attach_file "trainee_file_file", @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Resume'
-      click_on 'Add'
+      click_on 'Add File'
       wait_for_ajax
 
       visit('/emails/new')

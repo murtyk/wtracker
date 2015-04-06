@@ -1,9 +1,9 @@
 <h1><%= @report.title%></h1>
 
 <div class = 'row-fluid filters-div' style='margin-bottom:10px'>
-<%= simple_form_for @report, as: :report, method: :post, url: '/reports',
-                             html: { class: 'form-search form-horizontal'},
-                             remote: true do |f| %>
+  <%= simple_form_for @report, as: :report, method: :post, url: '/reports',
+                               html: { class: 'form-search form-horizontal'},
+                               remote: true do |f| %>
     <%= f.hidden_field :report_name %>
     <div class='span7'>
     <%= f.input :klass_id, collection: current_user.klasses_for_selection(false),
@@ -24,15 +24,8 @@
     </button>
     </div>
 
-<% end %>
+  <% end %>
 </div>
-
-<script type="text/javascript">
-  $('.btn-spinner').button();
-  $('.form-search').submit(function() {
-    $('#submit-button').button('loading');
-  });
-</script>
 
 <% unless @report.data.blank? %>
   <%= @report.download_button %>
@@ -86,17 +79,3 @@
     <% end %>
   </table>
 <% end %>
-
-<script type="text/javascript">
-  function send_process_requests(trainees_count, request_url, show_url){
-    jQuery.ajaxSetup({async:false});
-    n = 0;
-    while(n < trainees_count){
-      n = n + 1;
-      $.get(request_url, function(status) {
-      }, "json");
-    }
-    jQuery.ajaxSetup({async:true});
-    location.href = show_url;
-  }
-</script>

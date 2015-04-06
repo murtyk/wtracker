@@ -1,1 +1,12 @@
-$('#<%=new_link_id("employer_file")%>').hide().after('<%= j render("jsform", employer_file: @employer_file) %>');
+$('#<%=new_link_id("employer_file")%>')
+  .hide()
+  .after('<%= j render("jsform", employer_file: @employer_file) %>');
+
+$('#cancel_new_employer_file').on('click', function(){
+  $('#employer_new_file_div').remove();
+  $('#new_employer_file_link').show();
+});
+
+$(function () {
+  bind_jquery_file_upload($('#employer_file_file'), $("#add_file"));
+});

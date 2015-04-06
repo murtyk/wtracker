@@ -30,7 +30,7 @@ describe "EmployerFile", js: true do
       page.attach_file "employer_file_file", @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Resume'
-      click_on 'Add'
+      click_on 'Add File'
       wait_for_ajax
 
       expect(page).to have_text 'Resume'
@@ -41,7 +41,7 @@ describe "EmployerFile", js: true do
       page.attach_file "employer_file_file", @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Cover Letter'
-      click_on 'Add'
+      click_on 'Add File'
       wait_for_ajax
 
       expect(page).to have_text 'Cover Letter'
@@ -69,7 +69,7 @@ describe "EmployerFile", js: true do
       page.attach_file "employer_file_file", filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Cover Letter'
-      click_on 'Add'
+      click_on 'Add File'
       wait_for_ajax
 
       expect(page).to have_text 'Cover Letter'

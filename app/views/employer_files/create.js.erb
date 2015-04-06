@@ -1,4 +1,3 @@
-$('#new_employer_file').remove();
-<% s = "#{@employer_file.created_at.to_date.to_s}:#{@employer_file.name}:#{@employer_file.notes} "%>
-$('#files').append(<%= ('"<p>'+ s +'</p>"').html_safe %>);
+$('#employer_new_file_div').remove();
+$('#employer_files').prepend('<%= j render(@employer_file) %>');
 $('#new_employer_file_link').show();

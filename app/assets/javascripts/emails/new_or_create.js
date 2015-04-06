@@ -48,9 +48,22 @@ $(".simple_form").submit(function(e){
   }
 
   $('#email_contact_ids option').prop('selected', true);
+
   count = $('#email_contact_ids option:selected').length;
   if (count == 0){
     alert("Please add at least one employer contact");
+    return false;
+  }
+
+  var s = $('#email_subject').val();
+  if (s.length < 5){
+    alert('Subject should be minimum of 5 characters');
+    return false;
+  }
+
+  s = $('#email_content').val();
+  if (s.length < 5){
+    alert('Content should be minimum of 5 characters');
     return false;
   }
 });

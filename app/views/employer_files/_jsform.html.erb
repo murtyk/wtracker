@@ -1,19 +1,18 @@
-<%= simple_form_for(employer_file, remote: true, html: { multipart: true },
-                                   authenticity_token: true) do |f| %>
-<hr>
-  <%= f.error_notification %>
+<div id = 'employer_new_file_div'>
+  <%= simple_form_for(employer_file, html: { multipart: true },
+                                     authenticity_token: true) do |f| %>
+    <hr>
+    <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.hidden_field :employer_id %>
-    Select a File:
-    <%= f.input :file, as: :file, label: false %>
-    <%= f.input :notes %>
-  </div>
-
-  <div class="form-actions">
-    <%= ajax_cancel_and_submit_buttons(f) %>
-  </div>
-<% end %>
-
-<%= ajax_form_cancel_script(@employer_file) %>
-
+    <div class="form-inputs">
+      <%= f.hidden_field :employer_id %>
+      Select a File:
+      <%= f.input :file, as: :file, label: false %>
+      <%= f.input :notes %>
+    </div>
+  <% end %>
+  <input id="cancel_new_employer_file" class="btn btn-flat btn-danger" value="Cancel" type="button">
+  <button class="btn btn-flat btn-small btn-primary" type="submit" id ='add_file'>
+    <i class="icon-ok"></i> Add File
+  </button>
+</div>
