@@ -13,10 +13,7 @@ class EmployersImporter < Importer
     @employer_source_id = all_params[:employer_source_id]
     fail 'source required for employers import' if @employer_source_id.blank?
 
-    @sector_ids = all_params[:sector_ids]
-    @sector_ids.delete('')
-    sectors = @sector_ids.any? ? Sector.where(id: @sector_ids) : []
-    fail 'sectors required for employers import' if sectors.empty?
+    init_sectors(all_params[:sector_ids])
 
     params = { employer_source_id: @employer_source_id, sector_ids: @sector_ids }
     file_name = all_params[:file].original_filename
@@ -63,44 +60,73 @@ class EmployersImporter < Importer
 
   private
 
+  def init_sectors(s_ids)
+    @sector_ids = s_ids
+    @sector_ids.delete('')
+
+    sectors = Sector.where(id: @sector_ids)
+
+    fail 'sectors required for employers import' if sectors.empty?
+  end
+
   def import_row(row)
     employer          = Employer.new
     employer.address  = map_address_attributes row
     employer.name     = row['company:name']
-    # employer.source   = row['source'] || 'not available'
     employer.phone_no = clean_phone_no(row['phone_no'])
     employer.employer_source_id = @employer_source_id
 
-    cn = 1
+    check_duplicate(employer)
 
-    while row["contact#{cn}" + ':first_name']
-      cprefix = "contact#{cn}"
-      # break unless row["contact#{cn}" + ':first_name']
-      c  = employer.contacts.new
-      import_contact(c, cprefix, row)
-      cn += 1
-    end
-
-    @sector_ids.each { |sid| employer.employer_sectors.new(sector_id: sid.to_i) }
-
-    if employer.duplicate?
-      dup_bad_address = "duplicate - #{employer.name} - with missing or invalid address"
-      fail dup_bad_address if employer.address.nil?
-      fail "duplicate - #{employer.name} - #{employer.city} - #{employer.state}"
-    end
+    build_contacts(employer, row)
+    build_sectors(employer)
 
     employer.save!
 
     employer
   end
 
-  def import_contact(c, cprefix, row)
-    c.first     = row[cprefix + ':first_name']
-    c.last      = row[cprefix + ':last_name']
+  def check_duplicate(employer)
+    return unless employer.duplicate?
+    dup_bad_address = "duplicate - #{employer.name} - with missing or invalid address"
+    fail dup_bad_address if employer.address.nil?
+    fail "duplicate - #{employer.name} - #{employer.city} - #{employer.state}"
+  end
+
+  def build_contacts(employer, row)
+    cn = 1
+
+    while row["contact#{cn}" + ':first_name']
+      cprefix = "contact#{cn}"
+      # break unless row["contact#{cn}" + ':first_name']
+      c  = employer.contacts.new
+      assign_contact_attributes(c, cprefix, row)
+      cn += 1
+    end
+  end
+
+  def build_sectors(employer)
+    @sector_ids.each { |sid| employer.employer_sectors.new(sector_id: sid.to_i) }
+  end
+
+  def assign_contact_attributes(c, cprefix, row)
+    c.first, c.last = contact_name_parts(row, cprefix)
     c.title     = row[cprefix + ':title']
     c.email     = row[cprefix + ':email']
-    c.land_no   = clean_phone_no(row[cprefix + ':land_no'] || '')
-    c.ext       = row[cprefix + ':ext']
-    c.mobile_no = clean_phone_no(row[cprefix + ':mobile_no'] || '')
+    c.land_no,
+    c.ext,
+    c.mobile_no = contact_phone_numbers(row, cprefix)
+  end
+
+  def contact_name_parts(row, cprefix)
+    [row[cprefix + ':first_name'], row[cprefix + ':last_name']]
+  end
+
+  def contact_phone_numbers(row, cprefix)
+    [
+      clean_phone_no(row[cprefix + ':land_no'] || ''),
+      row[cprefix + ':ext'],
+      clean_phone_no(row[cprefix + ':mobile_no'] || '')
+    ]
   end
 end

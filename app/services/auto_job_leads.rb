@@ -1,7 +1,7 @@
 # when a grant is set for auto job leads, the trainees in that grant get job leads daily
 # first check if trainee has updates job search profile. If not send an email
 # find matching jobs for each trainee and send them in an email
-# find the most recent (max) job posted date from the jobs leads sent earlier
+# find the most recent (max) job posted date from the leads sent earlier
 # only send the jobs with posted date later than above
 class AutoJobLeads
   include ActiveSupport
@@ -12,34 +12,49 @@ class AutoJobLeads
   end
 
   def perform
-    if ENV['SKIP_AUTO_LEADS'] == 'YES'
-      Rails.logger.info "AutoJobLeads: skipping auto leads env setting #{Date.today}"
-      return
-    else
-      Rails.logger.info "AutoJobLeads: started performing #{Date.today}"
-    end
-
-    asj = AutoSharedJob.last
-    if asj
-      prev_date = Date.parse(asj.created_at.to_s)
-      unless Date.today > prev_date
-        Rails.logger.info "AutoJobLeads: skipping  prev_date: #{prev_date}"
-        return
-      end
-    end
-
+    return if skip_lead_generation?
     Rails.logger.info 'AutoJobLeads: performing'
 
     use_job_leads_email
+
     send_leads
+    log_statuses
+    notify
+
+    use_standard_email
+  end
+
+  def log_statuses
     statuses.each do |status|
       status.error_messages.each { |msg| Rails.logger.info "AutoJobLeads error: #{msg}" }
       lm = "sent leads for account #{status.account_name} - grant #{status.grant_name}"
       Rails.logger.info lm
     end
     Rails.logger.info "done performing auto leads #{Date.today}"
-    notify
-    use_standard_email
+  end
+
+  def skip_lead_generation?
+    if ENV['SKIP_AUTO_LEADS'] == 'YES'
+      Rails.logger.info "AutoJobLeads: skipping auto leads env setting #{Date.today}"
+      return true
+    end
+
+    Rails.logger.info "AutoJobLeads: started today: #{Date.today}"
+
+    last_lead_sent_today?
+  end
+
+  def last_lead_sent_today?
+    asj = AutoSharedJob.last
+
+    return false unless asj
+
+    prev_date = Date.parse(asj.created_at.to_s)
+
+    return false if Date.today > prev_date
+
+    Rails.logger.info "AutoJobLeads: skipping  prev_date: #{prev_date}"
+    true
   end
 
   def send_leads
@@ -58,22 +73,41 @@ class AutoJobLeads
 
   def send_leads_for_grant_trainees(grant)
     init_trainee_stats
-    Trainee.unscoped.where(grant_id: grant.id).each do |trainee|
-      if trainee.valid_profile? && trainee.opted_out_from_auto_leads?
-        @trainees_opted_out << trainee
-      elsif trainee.valid_profile?
-        leads_sent_count = search_and_send_jobs(trainee)
-        @trainee_job_leads << [trainee, leads_sent_count]
-        sleep 1
-      elsif trainee.job_search_profile # trainee did not update with skills etc.
-        @incomplete_profiles << trainee.job_search_profile
-      elsif trainee.valid_email? # no profile
-        @job_search_profiles << solicit_profile(trainee) unless grant.trainee_applications?
-      else # no profile and email missing
-        @error_messages << "missing or invalid email for trainee #{trainee.name}"
-      end
+    grant.trainees.each do |trainee|
+      perform_action_for_trainee(trainee)
     end
     build_status(grant)
+  end
+
+  def perform_action_for_trainee(trainee)
+    action = action_for_trainee(trainee)
+    case action
+    when :OPTED_OUT
+      @trainees_opted_out << trainee
+    when :SEND_LEADS
+      send_leads_to_trainee(trainee)
+    when :INCOMPLETE
+      @incomplete_profiles << trainee.job_search_profile
+    when :SOLICIT_PROFILE
+      @job_search_profiles << solicit_profile(trainee) unless
+                                                       trainee.grant.trainee_applications?
+    end
+  end
+
+  def send_leads_to_trainee(trainee)
+    leads_sent_count = search_and_send_jobs(trainee)
+    @trainee_job_leads << [trainee, leads_sent_count]
+    sleep 1
+  end
+
+  def action_for_trainee(trainee)
+    return :OPTED_OUT if trainee.valid_profile? && trainee.opted_out_from_auto_leads?
+    return :SEND_LEADS if trainee.valid_profile?
+    # trainee did not update with skills etc.
+    return :INCOMPLETE if trainee.job_search_profile
+    return :SOLICIT_PROFILE if trainee.valid_email? # no profile
+    @error_messages << "missing or invalid email for trainee #{trainee.name}"
+    nil
   end
 
   def init_trainee_stats
@@ -123,12 +157,7 @@ class AutoJobLeads
   end
 
   def find_matching_jobs(job_search_profile, days)
-    skills = job_search_profile.skills.downcase
-    skills = skills.gsub(' and ', ',')
-    skills = skills.gsub(/[^,0-9a-z ]/i, ',')
-
-    keywords = skills.split(',')
-    keywords = keywords.map { |kw| kw.blank? ? nil : kw.squish }.compact
+    keywords = skills_keywords(job_search_profile)
 
     # now should have cleaned keywords similar to ['java' 'sdlc' 'project lead']
     # phrases should be escaped
@@ -136,35 +165,61 @@ class AutoJobLeads
     jobs = find_jobs(job_search_profile, keywords, days)
     return jobs unless jobs.empty?
     return [] if keywords.count < 6
-    # split keyword
-    half = keywords.count / 2
-    keywords1 = keywords[0..half - 1]
-    keywords2 = keywords[half..-1]
-    jobs1 = find_jobs(job_search_profile, keywords1, days)
-    jobs2 = find_jobs(job_search_profile, keywords2, days)
+
+    search_with_split_keywords(job_search_profile, keywords, days)
+  end
+
+  def skills_keywords(jsp)
+    skills = jsp.skills.downcase
+    skills = skills.gsub(' and ', ',')
+    skills = skills.gsub(/[^,0-9a-z ]/i, ',')
+
+    keywords = skills.split(',')
+    keywords.map { |kw| kw.blank? ? nil : kw.squish }.compact
+  end
+
+  def search_with_split_keywords(jsp, keywords, days)
+    keywords1, keywords2 = split_keywords(keywords)
+    jobs1 = find_jobs(jsp, keywords1, days)
+    jobs2 = find_jobs(jsp, keywords2, days)
     jobs = jobs1[0..11] + jobs2[0..12] + (jobs1[12..24] || []) + (jobs2[13..24] || [])
     jobs[0..24]
   end
 
+  def split_keywords(kw)
+    half = kw.count / 2
+    [kw[0..half - 1], keywords[half..-1]]
+  end
+
   def find_jobs(jsp, keywords, days)
-    search_params = { keywords: keywords, distance: jsp.distance, days: days,
-                      search_type: JobBoard::ANY_KEYWORDS_SEARCH }
+    search_params_by_city,
+    search_params_by_zip = build_search_params(jsp, keywords, days)
 
-    search_params_by_city = search_params.merge(city: jsp.location)
-    search_params_by_zip  = search_params.merge(zip: jsp.zip)
-
-    jobs = []
     attempts = 1
     3.times do
-      count = job_board.search_jobs(search_params_by_city)
-      count = job_board.search_jobs(search_params_by_zip) if count == 0
+      count = search_by_city_zip(search_params_by_city, search_params_by_zip)
       if count > 0 && attempts > 1
         Rails.logger.info "AutoJobLeads: JSP id = #{jsp.id} attempts = #{attempts}"
       end
-      break unless jobs.empty?
+      break if count > 0
       attempts += 1
     end
     job_board.jobs
+  end
+
+  def search_by_city_zip(by_city, by_zip)
+    count = job_board.search_jobs(by_city)
+    return count if count > 0
+    job_board.search_jobs(by_zip)
+  end
+
+  def build_search_params(jsp, keywords, days)
+    search_params = { keywords: keywords, distance: jsp.distance, days: days,
+                      search_type: JobBoard::ANY_KEYWORDS_SEARCH }
+
+    by_city = search_params.merge(city: jsp.location)
+    by_zip  = search_params.merge(zip: jsp.zip)
+    [by_city, by_zip]
   end
 
   def job_board

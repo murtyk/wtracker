@@ -22,6 +22,10 @@ class EmployerServices
     return all_employers if filters[:all]
     return search_by_name unless name.blank?
 
+    apply_filters(no_includes)
+  end
+
+  def apply_filters(no_includes)
     employers = all_employers(no_includes)
     employers = employers.in_counties(county_ids) unless county_ids.empty?
     employers = employers.in_sector(sector_id) if sector_id > 0

@@ -7,19 +7,27 @@ class GoogleCompany
   def initialize(json)
     @souce              = 'GP'
     @name               = json['name']
-    @latitude           = json['geometry']['location']['lat']
-    @longitude          = json['geometry']['location']['lng']
     @website            = json['website'] && URI.parse(json['website']).host
     @types              = json['types'].join(',')
     @formatted_address  = json['formatted_address']
     @score              = json[:score]
     @phone_no           = json['formatted_phone_number']
 
-    @line1              = json[:line1]
-    @city_name          = json[:city]
-    @state_code         = json[:state]
-    @zip                = json[:zip]
-    @county             = json[:county]
+    init_coordinates(json)
+    init_address_attributes(json)
+  end
+
+  def init_coordinates(json)
+    @latitude    = json['geometry']['location']['lat']
+    @longitude   = json['geometry']['location']['lng']
+  end
+
+  def init_address_attributes(json)
+    @line1       = json[:line1]
+    @city_name   = json[:city]
+    @state_code  = json[:state]
+    @zip         = json[:zip]
+    @county      = json[:county]
   end
 
   def info_for_add

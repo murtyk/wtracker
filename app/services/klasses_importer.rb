@@ -49,18 +49,29 @@ class KlassesImporter < Importer
 
   def import_row(row)
     klass = program.klasses.new
+    assign_klass_attributes(klass, row)
+    build_klass_schedules(klass)
+
+    klass.save!
+
+    klass
+  end
+
+  def assign_klass_attributes(klass, row)
     klass.name = clean_field(row['name'])
     klass.description = clean_field(row['description'])
     klass.credits = row['credits']
     klass.training_hours = row['training_hours']
     klass.college = college
+    assign_klass_dates(klass, row)
+  end
 
+  def assign_klass_dates(klass, row)
     klass.start_date = clean_date(row['start_date'])
     klass.end_date = clean_date(row['end_date'])
+  end
+
+  def build_klass_schedules(klass)
     (1..6).each { |d| klass.klass_schedules.build(dayoftheweek: d) }
-
-    klass.save!
-
-    klass
   end
 end

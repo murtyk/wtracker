@@ -51,12 +51,10 @@ class EmployerFactory
   end
 
   def self.build_address_attributes_from_oc(oc)
-    address_attributes = {}
-    ADDR_ATTR_LIST.each do |attr|
-      address_attributes[attr] = oc.send(attr)
-    end
-    address_attributes[:state] = oc.state_code
-    address_attributes
+    attrs = {}
+    ADDR_ATTR_LIST.each { |a| attrs[a] = oc.send(a) }
+    attrs[:state] = oc.state_code
+    attrs
   end
 
   def self.create_from_gi(gi, employer_source_id, sector_ids)
@@ -87,17 +85,19 @@ class EmployerFactory
     city = params[:address_attributes] && params[:address_attributes][:city]
     params.delete(:address_attributes) if city.blank? && params[:address_attributes]
     params[:employer_source_id] ||= user.default_employer_source_id
+
     employer = Employer.new(params)
 
-    if employer.duplicate?
-      employer.errors.add(:name, "duplicate employer #{params[:name]}")
-      saved = false
-    else
-      saved = save_employer(employer)
-    end
+    saved = save_if_not_duplicate(employer)
 
     employer.build_address unless saved || employer.address
     [employer, saved]
+  end
+
+  def self.save_if_not_duplicate(employer)
+    return save_employer(employer) unless employer.duplicate?
+    employer.errors.add(:name, "duplicate employer #{employer.name}")
+    false
   end
 
   def self.save_employer(employer)

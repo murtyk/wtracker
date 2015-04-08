@@ -6,11 +6,10 @@ class CitiesImporter < Importer
   attr_reader :cities
 
   def initialize(all_params = nil, current_user = nil)
-    if all_params
-      file_name = all_params[:file].original_filename
-      @import_status = CityImportStatus.create(user_id: nil, file_name: file_name)
-      super
-    end
+    return unless all_params
+    file_name = all_params[:file].original_filename
+    @import_status = CityImportStatus.create(user_id: nil, file_name: file_name)
+    super
   end
 
   def header_fields
@@ -27,19 +26,22 @@ class CitiesImporter < Importer
     lng, lat           = coordinates(row)
     zip, county, state = zip_county_state(row)
 
-    if city_exists?(row['city'], state.code, zip)
-      fail "city already exists #{row['city']},#{state.code}"
-    end
+    fail_on_duplicate_city(row['city'], state.code, zip)
 
-    city            = state.cities.new
-    city.name       = row['city']
-    city.zip        = zip
-    city.longitude  = lng
-    city.latitude   = lat
+    city = new_city(state, row['city'], lat, lng, zip)
     county        ||= findcounty(city, state)
     city.county_id  = county.id if county
     city.save!
 
+    city
+  end
+
+  def new_city(state, name, lat, lng, zip)
+    city            = state.cities.new
+    city.name       = name
+    city.zip        = zip
+    city.longitude  = lng
+    city.latitude   = lat
     city
   end
 
@@ -49,24 +51,12 @@ class CitiesImporter < Importer
     [row['longitude'].to_f, row['latitude'].to_f]
   end
 
-  def city_exists?(city_name, state_code, zip)
-    predicate = 'name ilike ? and state_code ilike ? and zip = ?'
-    City.where(predicate, city_name, state_code, zip).first
-  end
-
   def zip_county_state(row)
-    fail 'invalid longitude' unless valid_float row['longitude']
-    fail 'invalid latitude' unless valid_float row['latitude']
-
     zip = clean_zip_code(row['zip'])
 
-    state = State.check_and_get(row['state'])
-    fail "state does not exist #{row['state']}" unless state
+    state = valid_state(row)
 
-    unless row['county'].blank?
-      county = state.get_county(row['county'].downcase.gsub(' county', ''))
-      fail "county #{row['county']} not found in state #{state.code}" unless county
-    end
+    county = clean_county(row, state)
 
     [zip, county, state]
   end
@@ -78,13 +68,36 @@ class CitiesImporter < Importer
     zip
   end
 
+  def valid_state(row)
+    state = State.check_and_get(row['state'])
+    return state if state
+    fail "state does not exist #{row['state']}"
+  end
+
+  def clean_county(row, state)
+    return nil if row['county'].blank?
+    county = state.get_county(row['county'].downcase.gsub(' county', ''))
+    return county if county
+    fail_county_not_found(row['county'], state.code)
+  end
+
+  def fail_on_duplicate_city(city_name, state_code, zip)
+    predicate = 'name ilike ? and state_code ilike ? and zip = ?'
+    return unless City.where(predicate, city_name, state_code, zip).first
+    fail "city already exists #{city_name},#{state_code}"
+  end
+
   def findcounty(city, state)
     latlong = city.latitude.to_s + ',' + city.longitude.to_s
     county_name = GeoServices.findcounty(latlong)
     city_state_zip = " #{city.name},#{state.code},#{city.zip}"
     fail "county not found for #{city_state_zip}" unless county_name
     county = state.get_county(county_name)
-    fail "county #{county_name} not found in #{state.code}" unless county
-    county
+    return county if county
+    fail_county_not_found(county_name, state.code)
+  end
+
+  def fail_county_not_found(county_name, state_code)
+    fail "county #{county_name} not found in state #{state_code}"
   end
 end

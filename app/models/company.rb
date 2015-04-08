@@ -49,7 +49,7 @@ class Company
       return nil
     end
 
-    CompanyFinder.new.find(self)
+    CompanyFinder.new(self).find
   end
 
   def cacheit(data)

@@ -40,18 +40,29 @@ class MapService
 
     return unless obj
 
-    color =  'lightsalmon' if obj.is_a?(Employer)
-    color ||= obj.is_a?(Trainee) ? 'lightgreen' : 'lightgrey'
-    if obj.is_a?(Employer)
-      source  = "Source: #{obj.employer_source_name}<br>".html_safe
-      sectors =  '<ol>' +
-                 obj.sectors.map { |sector| "<li>#{sector.name}</li>" }.join +
-                 '</ol>'
-    else
-      sectors =  ''
-    end
+    color =  object_color(obj)
+    source, sectors = build_source_and_sectors(obj)
+
+    build_window_html(color, obj.name, address, source, sectors)
+  end
+
+  def object_color(obj)
+    return 'lightsalmon' if obj.is_a?(Employer)
+    obj.is_a?(Trainee) ? 'lightgreen' : 'lightgrey'
+  end
+
+  def build_source_and_sectors(obj)
+    return nil unless obj.is_a?(Employer)
+    source = "Source: #{obj.employer_source_name}<br>".html_safe
+    sectors =  '<ol>' +
+               obj.sectors.map { |sector| "<li>#{sector.name}</li>" }.join +
+               '</ol>'
+    [source, sectors]
+  end
+
+  def build_window_html(color, name, address, source, sectors)
     "<div style='background-color:#{color}'>
-      <p><b>#{obj.name}</b></p>
+      <p><b>#{name}</b></p>
       #{address.line1}<br>
       #{address.city}<br>
       #{address.state} #{address.zip}<br>

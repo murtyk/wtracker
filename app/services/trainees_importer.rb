@@ -58,9 +58,7 @@ class TraineesImporter < Importer
     trainee = grant.trainees.new
     copy_attributes(trainee, row)
 
-    # now get addresses
-    trainee.home_address    = map_home_address row
-    trainee.mailing_address = map_mailing_address row
+    assign_addresses(trainee, row)
 
     trainee.race_id = find_race_id(row)
 
@@ -75,19 +73,36 @@ class TraineesImporter < Importer
     trainee
   end
 
+  def assign_addresses(trainee, row)
+    trainee.home_address    = map_home_address(row)
+    trainee.mailing_address = map_mailing_address(row)
+  end
+
   def copy_attributes(trainee, row)
+    assign_name_attributes(trainee, row)
+    assign_contact_attributes(trainee, row)
+
+    trainee.funding_source_id = funding_source_id(clean_field(row['funding_source']))
+    assign_other_attributes(trainee, row)
+  end
+
+  def assign_name_attributes(trainee, row)
     trainee.first      = clean_field(row['first_name'])
     trainee.last       = clean_field(row['last_name'])
     trainee.middle     = clean_field(row['middle_name'])
-    trainee.dob        = clean_date(row['dob'])
-    trainee.gender     = map_gender(row['gender'])
-    trainee.veteran    = map_veteran(row['veteran'])
+  end
+
+  def assign_contact_attributes(trainee, row)
     trainee.land_no    = clean_phone_no(row['land_no'] || '')
     trainee.mobile_no  = clean_phone_no(row['mobile_no'] || '')
     trainee.email      = clean_field(row['email'])
-    trainee.trainee_id = clean_field(row['trainee_id'])
+  end
 
-    trainee.funding_source_id = funding_source_id(clean_field(row['funding_source']))
+  def assign_other_attributes(trainee, row)
+    trainee.dob        = clean_date(row['dob'])
+    trainee.gender     = map_gender(row['gender'])
+    trainee.veteran    = map_veteran(row['veteran'])
+    trainee.trainee_id = clean_field(row['trainee_id'])
   end
 
   def find_race_id(row)
@@ -99,8 +114,12 @@ class TraineesImporter < Importer
     t3.education_level = map_educaction(row['education'])
     t3.recent_employer = clean_field(row['recent_employer'])
     t3.job_title       = clean_field(row['job_title'])
-    t3.years           = clean_field(row['years']) && clean_field(row['years']).to_i
+    t3.years           = clean_years(row)
     t3.certifications  = clean_field(row['certifications'])
+  end
+
+  def clean_years(row)
+    clean_field(row['years']) && clean_field(row['years']).to_i
   end
 
   def map_gender(s)

@@ -24,6 +24,14 @@ class SimplyHired
   end
 
   def search_jobs(args)
+    init_search_parameters(args)
+
+    @url = ''
+    @jobs = nil
+    search @current_page
+  end
+
+  def init_search_parameters(args)
     @zip          = args[:zip]
     @city         = args[:city]
     @state        = args[:state]
@@ -34,10 +42,6 @@ class SimplyHired
 
     @keywords = build_keywords(args)
     @location = build_location
-
-    @url = ''
-    @jobs = nil
-    search @current_page
   end
 
   def build_keywords(args)
@@ -83,24 +87,19 @@ class SimplyHired
   end
 
   def self.get_details(url)
-    agent = Mechanize.new
-    page  = agent.get(url)
+    page  = webpage(url)
 
     details_url_type = 0
     details = ''
+    destination_url  = url
 
-    destination_url  = page.uri.to_s
-
-    if destination_url.include? SH_HOME
+    if page.uri.to_s.include? SH_HOME
       # find details and destination get_destination_url
       begin
-        doc   = page.parser
-        link  = doc.css('.apply_button')
-        destination_url = link ? "http://#{SH_HOME}" + link.attr('href').value : url
-        details = doc.at_css('.job_description').children[0].text
+        destination_url = build_destination_url(page, url)
+        details = page.parser.at_css('.job_description').children[0].text
         details_url_type = 1
       rescue # StandardError => e
-        details_url_type = 0
         destination_url  = url
         details = ''
       end
@@ -112,8 +111,7 @@ class SimplyHired
   private
 
   def search(p = 0)
-    @url = build_url(p)
-    @url = URI.encode @url
+    build_url(p)
     # debugger
     begin
       response = HTTParty.get(@url)
@@ -129,14 +127,42 @@ class SimplyHired
     @accessible_count
   end
 
+  def self.webpage(url)
+    agent = Mechanize.new
+    agent.get(url)
+  end
+
+  def self.build_destination_url(page, url)
+    doc = page.parser
+    link  = doc.css('.apply_button')
+    link ? "http://#{SH_HOME}" + link.attr('href').value : url
+  end
+
   def build_url(p)
-    p > 0 ? pn = "/pn-#{p}" : pn = ''
+    @url = SH_SITE + keywords + q_location + q_distance + q_days +
+           q_page_size + q_pn(p) + @credentials
+    @url = URI.encode @url
+  end
+
+  def q_location
+    '/l-' + location
+  end
+
+  def q_pn(p)
+    p > 0 ? "/pn-#{p}" : ''
+  end
+
+  def q_distance
     dist = distance == 0 ? 'exact' : distance
+    "/mi-#{dist}"
+  end
 
-    href = SH_SITE + keywords + '/l-' + location + "/mi-#{dist}"
-    href += "/fdb-#{days}" if days > 0
+  def q_days
+    days > 0 ? "/fdb-#{days}" : ''
+  end
 
-    @url = href + "/ws-#{page_size}" + pn + @credentials
+  def q_page_size
+    "/ws-#{page_size}"
   end
 
   def parse_header(json)

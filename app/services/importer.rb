@@ -173,7 +173,7 @@ class Importer
     zip = clean_zip(params["#{prefix}zip"])
     oneline_address = [params["#{prefix}line1"], params["#{prefix}city"],
                        params["#{prefix}state"], zip].join(',')
-    a = GeoServices.parse(oneline_address, zip)
+    a = GeoServices.parse(oneline_address)
     # debugger
     a.line1 ||= params["#{prefix}line1"] if a.county
     a

@@ -54,7 +54,6 @@ class Dashboard
   #   Navigator(admin access) --> Render Common
   #   Navigator        --> Redirect to Classes
   def nav_action(controller_action)
-
     if grant.trainee_applications?
       return trainee_applications_action if controller_action == 'index'
       return applicant_analysis_action

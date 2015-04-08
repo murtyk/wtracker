@@ -22,8 +22,12 @@ class ShJob
 
     @details_url_type = -1
 
-    loc               = job_json['loc']
+    loc = job_json['loc']
 
+    init_address_attributes(loc)
+  end
+
+  def init_address_attributes(loc)
     @city             = loc['cty']
     @state            = loc['st']
     @zip              = loc['postal']
