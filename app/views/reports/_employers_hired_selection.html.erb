@@ -1,0 +1,19 @@
+<div class = 'row-fluid filters-div' style='margin-bottom:10px'>
+  <%= simple_form_for report, as: :report, method: :post, url: '/reports', html: { class: 'form-search form-horizontal'} do |f| %>
+    <div class='span7'>
+      <%= f.hidden_field :report_name %>
+
+      <%= f.input :klass_ids, label: 'Class',
+                              collection: current_user.klasses_for_selection(true),
+                              input_html: { class: "search-query", style: 'width: 490px;', multiple: true } %>
+      <%= f.input :all_trainees, as: :boolean, label: false, inline_label: 'Include All Trainees' %>
+    </div>
+    <div class='span2'>
+      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
+              style='margin-left: 20px'
+              data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white"></i>Find
+      </button>
+    </div>
+  <% end %>
+</div>

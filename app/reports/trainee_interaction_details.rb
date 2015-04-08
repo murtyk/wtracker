@@ -13,4 +13,9 @@ class TraineeInteractionDetails < DelegateClass(TraineeInteraction)
   def college_name_location
     @klass.college_name_location if @klass
   end
+
+  def navigator
+    return nil unless trainee.applicant
+    trainee.applicant.navigator_name
+  end
 end
