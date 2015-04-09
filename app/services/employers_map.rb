@@ -153,6 +153,7 @@ class EmployersMap < MapService
   end
 
   def user_trainee_ids
+    return Trainee.pluck(:id) if user.admin_access?
     k_ids = user.klasses.pluck(:id)
     Trainee.joins(:klass_trainees).where(klass_trainees: { klass_id: k_ids }).pluck(:id)
   end
