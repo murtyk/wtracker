@@ -28,21 +28,6 @@ class DashboardsController < ApplicationController
 
   private
 
-  # def init_data
-  #   klass_ids = current_user.klasses.map(&:id)
-  #   trainee_ids = KlassTrainee.where(klass_id: klass_ids).pluck(:trainee_id)
-  #   status_interview = TraineeInteraction::STATUSES.key('Interview')
-  #   @interviews = TraineeInteraction.where(trainee_id: trainee_ids,
-  #                                          status: status_interview)
-  #                 .where('DATE(interview_date) > ?',
-  #                        7.days.ago.to_date)
-  #                 .order('interview_date desc')
-  #   @visits = KlassEvent.where(klass_id: klass_ids)
-  #             .where('name ilike ?', '%visit%')
-  #             .where('DATE(event_date) >= ?', Time.now.to_date)
-  #             .order('event_date desc')
-  # end
-
   def redirect_to_not_assigned_path
     sign_out :user
     flash[:error] = 'You are not assigned to any classes yet.
