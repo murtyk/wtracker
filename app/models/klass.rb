@@ -102,9 +102,12 @@ class Klass < ActiveRecord::Base
 
   def placement_rate
     # completed and placed together is our target for placement
-    dividend   = placed_count + continuing_education_count
     divisor = not_placed_count + placed_count + continuing_education_count
     divisor > 0 ? (dividend.to_f * 100 / divisor).round(0).to_s + '%' : ''
+  end
+
+  def dividend
+    placed_count + continuing_education_count
   end
 
   def klass_trainees_sorted
@@ -138,7 +141,7 @@ class Klass < ActiveRecord::Base
   end
 
   def to_label
-    "#{college.name} - #{name} - #{start_date.to_s} - #{end_date.to_s}"
+    "#{college.name} - #{name} - #{start_date} - #{end_date}"
   end
 
   def trainees_for_selection

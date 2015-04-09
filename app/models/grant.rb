@@ -129,20 +129,20 @@ class Grant < ActiveRecord::Base
   def collection_employment_statuses(applicant)
     statuses = (employment_statuses.pluck(:status)  +
                 [applicant.current_employment_status]).compact.uniq
-    if statuses.include? OTHER_PLEASE_SPECIFY
-      statuses -= [OTHER_PLEASE_SPECIFY]
-      statuses += [OTHER_PLEASE_SPECIFY]
-    end
-    statuses
+
+    shift_other_to_end(statuses)
   end
 
   def collection_applicant_sources(applicant)
     sources = (applicant_sources.pluck(:source) + [applicant.source]).compact.uniq
-    if sources.include?(OTHER_PLEASE_SPECIFY)
-      sources -= [OTHER_PLEASE_SPECIFY]
-      sources += [OTHER_PLEASE_SPECIFY]
-    end
-    sources
+
+    shift_other_to_end(sources)
+  end
+
+  def shift_other_to_end(collection)
+    return collection unless collection.include?(OTHER_PLEASE_SPECIFY)
+    collection -= [OTHER_PLEASE_SPECIFY]
+    collection + [OTHER_PLEASE_SPECIFY]
   end
 
   # navigators of any class in this grant +

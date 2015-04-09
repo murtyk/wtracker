@@ -74,11 +74,7 @@ class TraineePlacement < ActiveRecord::Base
       next unless field_type
       case field_type
       when :boolean
-        create_method(field) do
-          value = info[field]
-          return (value == 'true') if %w(true false).include? value
-          value
-        end
+        create_boolean_method(field)
       when :date
         create_method(field) do
           value = info[field]
@@ -86,6 +82,14 @@ class TraineePlacement < ActiveRecord::Base
           opero_str_to_date(value)
         end
       end
+    end
+  end
+
+  def create_boolean_method(field)
+    create_method(field) do
+      value = info[field]
+      return (value == 'true') if %w(true false).include? value
+      value
     end
   end
 

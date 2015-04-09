@@ -30,15 +30,15 @@ module ApplicantsHelper
 
   def asset_exists?(filename, extension)
     asset_pathname = "#{Rails.root}/app/assets/"
-    asset_file_path = "#{asset_pathname}/#{filename}".split(".")[0]
+    asset_file_path = "#{asset_pathname}/#{filename}".split('.')[0]
     !Dir.glob("#{asset_file_path}.#{extension}*").empty?
   end
 
   def js_asset_exists?(filename)
-    asset_exists?("javascripts/#{filename}", "js")
+    asset_exists?("javascripts/#{filename}", 'js')
   end
 
   def css_asset_exists?(filename)
-    asset_exists?("stylesheets/#{filename}", "css")
+    asset_exists?("stylesheets/#{filename}", 'css')
   end
 end

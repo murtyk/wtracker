@@ -17,15 +17,21 @@ class AutoSharedJob < ActiveRecord::Base
     asj = new
     asj.account_id  = trainee.account.id
     asj.trainee_id  = trainee.id
+    asj.key         = SecureRandom.urlsafe_base64(4)
+
+    assign_data_from_job(asj, job)
+
+    asj.save
+    asj
+  end
+
+  def self.assign_data_from_job(asj, job)
     asj.company     = job.company
     asj.location    = job.location
     asj.title       = job.title
     asj.excerpt     = job.excerpt
     asj.date_posted = job.date_posted
     asj.url         = job.destination_url
-    asj.key         = SecureRandom.urlsafe_base64(4)
-    asj.save
-    asj
   end
 
   def change_notes(new_notes)

@@ -115,13 +115,17 @@ class Employer < ActiveRecord::Base
   end
 
   def duplicate_with_address
+    potential_duplicates
+      .where('addresses.line1 ILIKE ? and addresses.city ILIKE ? and state ILIKE ?',
+             address.line1, address.city, address.state)
+      .first
+  end
+
+  def potential_duplicates
     Employer.joins(:address)
       .where('name ILIKE ?', name)
       .where(employer_source_id: employer_source_id)
       .where.not(id: id)
-      .where('addresses.line1 ILIKE ? and addresses.city ILIKE ? and state ILIKE ?',
-             address.line1, address.city, address.state)
-      .first
   end
 
   def self.find_by_name_and_zip(name, zip)
