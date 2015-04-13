@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Klass Calendar" do
+describe 'Klass Calendar' do
   describe 'can do events' do
-
     before :each do
       signin_admin
     end
@@ -25,12 +24,12 @@ describe "Klass Calendar" do
       click_on 'Save'
 
       expect(page).to_not have_text 'Please define start and end dates for the class'
-      expect(page).to have_selector("th", text: "01-Jan")
-      expect(page).to have_selector("th", text: "31-Dec")
-      expect(page).to have_selector("td", text: "Information Session")
+      expect(page).to have_selector('th', text: '01-Jan')
+      expect(page).to have_selector('th', text: '31-Dec')
+      expect(page).to have_selector('td', text: 'Information Session')
     end
 
-    it "will go to klass event page when clicked on event in calendar" do
+    it 'will go to klass event page when clicked on event in calendar' do
       pending 'need to figure out how to click a cell in table'
       fail
       # visit '/klasses'
@@ -46,8 +45,6 @@ describe "Klass Calendar" do
       # sleep 0.5
       # expect(page).to have_text 'Class Event'
       # expect(page).to have_text 'Select Employers and Add them for interaction'
-  end
-
-
+    end
   end
 end

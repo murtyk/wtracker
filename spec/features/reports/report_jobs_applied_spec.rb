@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Reports" do
+describe 'Reports' do
   describe 'Trainees' do
     before :each do
       signin_admin
@@ -9,8 +9,8 @@ describe "Reports" do
       Grant.current_id = 1
       emp = Employer.first
       tr  = KlassTrainee.first.trainee
-      ts  = tr.trainee_submits.create(employer_id: emp.id, title: 'Analyst',
-                                      applied_on: Date.current - 1.day)
+      tr.trainee_submits.create(employer_id: emp.id, title: 'Analyst',
+                                applied_on: Date.current - 1.day)
       @trainee_name = tr.name
       @company_name = emp.name
     end

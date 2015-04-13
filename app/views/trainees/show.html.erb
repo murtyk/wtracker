@@ -10,7 +10,6 @@
 </div>
 
 <div class = 'row-fluid'>
-
   <div class = 'span4 left-panel'>
     <%= render 'panel_basic_info', trainee: @trainee %>
   </div>
@@ -22,29 +21,7 @@
   <div class = 'span4'>
     <%= render 'panel_klass_and_employers_info', trainee: @trainee %>
   </div>
-
 </div>
 
-<div id="modal_ti_details" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <b>Employer-Trainee Interaction Details</b>
-    <button id="modal_close" class="btn btn-flat btn-mini btn-warning pull-right" data-dismiss="modal" aria-hidden="true"><i class='icon-remove white'></i> </button>
-  </div>
-  <div class="modal-body">
-  <!-- gets filled by js response -->
-  </div>
-</div>
-
-<div id="modal_new_employer" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <b>New Employer</b>
-    <button id="modal_close" class="btn btn-flat btn-mini btn-warning pull-right" data-dismiss="modal" aria-hidden="true"><i class='icon-remove white'></i> </button>
-  </div>
-  <div class="modal-new-employer-errors" style='color: red; text-align: center'>
-  <!-- gets filled by js response -->
-  </div>
-  <div class="modal-new-employer-body">
-  <!-- gets filled by js response -->
-  </div>
-</div>
-
+<%= render 'trainee_interactions/modal_placement_information' %>
+<%= render 'modal_new_employer' %>

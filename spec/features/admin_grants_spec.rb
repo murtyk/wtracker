@@ -1,14 +1,12 @@
 require 'rails_helper'
 
-describe "Administration" do
-
-  describe "grants" do
+describe 'Administration' do
+  describe 'grants' do
     before(:each) do
       signin_opero_admin
     end
 
-    it "update" do
-
+    it 'update' do
       expect(page).to have_text 'Accounts'
       click_on 'PAWF Org'
       expect(page).to have_text 'Big Grant'
@@ -21,8 +19,6 @@ describe "Administration" do
       fill_in 'Name', with: 'Very Big Grant', match: :prefer_exact
       click_on 'Update'
       expect(page).to have_text 'Grant was successfully updated.'
-
     end
-
   end
 end

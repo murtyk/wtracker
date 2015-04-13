@@ -4,7 +4,7 @@ class TraineesDetailsReport < Report
   attr_reader :count
   def post_initialize(params)
     @count = 0
-    return unless params
+    return unless params && params[:action] != 'new'
     init_klasses_and_trainees
   end
 

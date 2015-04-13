@@ -1,7 +1,6 @@
 require 'rails_helper'
-describe "trainees" do
-
-  describe "import", js: true do
+describe 'trainees' do
+  describe 'import', js: true do
     before(:each) do
       signin_admin
 
@@ -15,11 +14,11 @@ describe "trainees" do
       destroy_trainees
     end
 
-    it "can import trainees", js: true do
+    it 'can import trainees', js: true do
       VCR.use_cassette('trainees_import') do
         Delayed::Worker.delay_jobs = false
         visit '/import_statuses/new?resource=trainees'
-        attach_file "file", @filepath
+        attach_file 'file', @filepath
         select('Bucks county community college - CNC 101', from: 'klass_id')
         click_button 'Import'
         wait_for_ajax

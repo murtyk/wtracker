@@ -1,47 +1,43 @@
-1. Find case incensive sources from employers. Clean them standardize and update to avoid duplicate
-2. Create EmployerSources
-3. Assign employer_source_id to employers
-4. add UserEmployerSources
+1. delete TIs with status != 4
 
-Production
-Step 1: May be not required
+counts = []
 
-Account.all.each do |ac|
-  Account.current_id = ac.id
-  sources = Employer.pluck(:source).uniq
-  sources = sources.map{|s| s.split.map{|w|w.downcase.humanize}.join(' ')}.uniq
-  sources.each do |s|
-    employers = Employer.where('source ilike ?', s)
-    employers.update_all(source: s)
+Account.all.each do |a|
+  Account.current_id = a.id
+  Grant.all.each do |g|
+    Grant.current_id = g.id
+    tis = TraineeInteraction.where.not(status: 4)
+    counts << [a.id, g.id, tis.count]
   end
 end
 
-Step 2: Create Sources
+verify:
+---------
 
-Account.all.each do |ac|
-  Account.current_id = ac.id
-  sources = Employer.pluck(:source).uniq
-  sources.each{|s| EmployerSource.create(name: s)}
-end
+counts
 
-Step 3: Attach employer_source_id
 
-Account.all.each do |ac|
-  Account.current_id = ac.id
-  EmployerSource.all.each do |es|
-    employers = Employer.where(source: es.name)
-    employers.update_all(employer_source_id: es.id)
+Account.all.each do |a|
+  Account.current_id = a.id
+  Grant.all.each do |g|
+    Grant.current_id = g.id
+    tis = TraineeInteraction.where.not(status: 4)
+    tis.destroy_all
   end
 end
 
-4. add UserEmployerSources
-Account.all.each do |ac|
-  Account.current_id = ac.id
-  User.all.each do |user|
-    es = EmployerSource.where(name: user.name).first
-    es ||= EmployerSource.create(name: user.name)
-    UserEmployerSource.create(user_id: user.id, employer_source_id: es.id)
-    user.default_employer_source_id = es.id
-    user.save
+re-run counts query again
+
+and
+
+Account.all.each do |a|
+  Account.current_id = a.id
+  Grant.all.each do |g|
+    Grant.current_id = g.id
+    counts << [a.id, g.id, TraineeInteraction.count]
   end
 end
+
+
+2. Deploy
+3. db migrate

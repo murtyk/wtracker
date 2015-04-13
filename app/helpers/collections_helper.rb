@@ -73,6 +73,10 @@ module CollectionsHelper
     KlassTrainee::STATUSES.map { |k, v| [v, k] }
   end
 
+  def trainee_interaction_statuses
+    TraineeInteraction::STATUSES.map { |k, v| [v, k] }
+  end
+
   def options_for_ampm_select(default_value)
     options_for_select([%w(am am), %w(pm pm)], default_value)
   end

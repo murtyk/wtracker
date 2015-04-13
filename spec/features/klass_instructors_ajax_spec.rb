@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-describe "Klasses" do
-
+describe 'Klasses' do
   describe 'instructors' do
     before :each do
       signin_admin
@@ -13,7 +12,6 @@ describe "Klasses" do
     end
 
     it 'can add and remove instructors', js: true do
-
       click_link 'new_klass_instructor_link'
       # wait_for_ajax
       name = 'Eric Clapton'

@@ -8,6 +8,7 @@ def salt
 
   "salted#{grant.id}andpeppered"
 end
+
 def visit_new_applicant_page
   visit "/applicants/new?salt=#{salt}"
 end
@@ -24,18 +25,16 @@ def visit_reapply_form_for(email)
   visit "/applicants/#{id}/edit?salt=#{salt}&key=#{key}"
 end
 
-describe "applicant re-apply" do
-
+describe 'applicant re-apply' do
   before :each do
     switch_to_applicants_domain
     allow_any_instance_of(Applicant).to receive(:humanizer_questions)
-                                        .and_return([{"question"=>"Two plus two?",
-                                                      "answers"=>["4", "four"]}])
+      .and_return([{ 'question' => 'Two plus two?',
+                     'answers' => %w(4 four) }])
 
     @instructions = 'Not found. Please enter correct email address.'
     allow_any_instance_of(Grant).to receive(:reapply_instructions)
-                                     .and_return(@instructions)
-
+      .and_return(@instructions)
   end
 
   after :each do
@@ -45,7 +44,7 @@ describe "applicant re-apply" do
   it 'does not acceept invalid email' do
     msg = 'Not found. Please enter correct email address.'
     allow_any_instance_of(Grant).to receive(:reapply_email_not_found_message)
-                                     .and_return(msg)
+      .and_return(msg)
     visit_applicant_reapply_page
     expect(page).to have_text @instructions
     fill_in 'applicant_reapply_email', with: 'bad@noemail.ddd'
@@ -56,7 +55,7 @@ describe "applicant re-apply" do
   it 'does not allow re-apply for accepted applicant' do
     msg = 'You are already accepted and should have received an e-mail.'
     allow_any_instance_of(Grant).to receive(:reapply_already_accepted_message)
-                                     .and_return(msg)
+      .and_return(msg)
 
     os = OpenStruct.new(accepted?: true)
     allow(Applicant).to receive(:find_by).and_return(os)
@@ -70,16 +69,15 @@ describe "applicant re-apply" do
   it 'declines applicant and allows re-apply' do
     msg = 'We sent you instructions for reapplying. Please check your email.'
     allow_any_instance_of(Grant).to receive(:reapply_confirmation_message)
-                                     .and_return(msg)
+      .and_return(msg)
 
     allow_any_instance_of(Grant).to receive(:reapply_subject)
-                                    .and_return('Reapply instructions')
+      .and_return('Reapply instructions')
 
     allow_any_instance_of(Grant).to receive(:reapply_body)
-                                    .and_return("$FIRSTNAME$, $LASTNAME$, <br> $REAPPLY_LINK$")
+      .and_return('$FIRSTNAME$, $LASTNAME$, <br> $REAPPLY_LINK$')
 
     VCR.use_cassette('applicant') do
-
       # for apply and get declined
       visit_new_applicant_page
 
@@ -105,7 +103,6 @@ describe "applicant re-apply" do
 
       mail = ActionMailer::Base.deliveries.last
       expect(mail.subject).to eq('Reapply instructions')
-
 
       # applicant clicks link in email
 

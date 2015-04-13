@@ -15,49 +15,30 @@
   </tr>
 
   <% report.employers_klasses.each do |employer, klass| %>
-      <tr>
-        <td><%= employer_link_or_name(employer) %></td>
-        <td><%= "#{employer.city} - #{employer.county}" %></td>
-        <td>
-            <p><%= employer.phone_no%></p>
-            <% employer.contacts.each do |contact| %>
-              <p>
-                <b><%= contact.name %></b>
-                <%= contact.land_no %>
-                <%= contact.mobile_no %>
-                <%= contact.email %>
-              </p>
-            <% end %>
-        </td>
-        <td><%= policy(klass).show? ? link_to(klass.to_label, klass) : klass.to_label%></td>
-        <td>
-          <% klass_interactions = report.employer_interactions.map{|r| r if r.employer_id == employer.id}.compact %>
-
-          <% klass_interactions.each do |klass_interaction| %>
-            <% if klass_interaction.for_klass?(klass) %>
-            <% if klass_interaction.status == 4 %>
-              <p style='color: red'><%= klass_interaction.event_date.to_s + " " + klass_interaction.event_name%></p>
-            <% else %>
-              <p><%= klass_interaction.event_date.to_s + " " + klass_interaction.event_name%></p>
-            <% end %>
-            <% end %>
-          <% end %>
-        </td>
-        <td>
-          <% hires = report.trainees_hired.map{|t| t if t.employer_id == employer.id && report.klass_trainee_ids[klass.id].include?(t.trainee_id)}.compact %>
-          <% hires.each do |h| %>
-              <% trainee = h.trainee %>
-              <p><%= policy(trainee).show? ? link_to(trainee.name, trainee) : trainee.name %></p>
-          <% end %>
-        </td>
-        <td>
-          <% employer.employer_notes.each do |employer_note| %>
-            <p>
-                <%= employer_note.created_at.to_date.to_s%>
-                <%= employer_note.note.truncate(40)%>
-            </p>
-          <% end %>
-        </td>
-      </tr>
+    <tr>
+      <td><%= employer_link_or_name(employer) %></td>
+      <td><%= "#{employer.city} - #{employer.county}" %></td>
+      <td>
+        <p><%= employer.phone_no%></p>
+        <% employer.contacts.each do |contact| %>
+          <p>
+            <b><%= contact.name %></b>
+            <%= contact.land_no %>
+            <%= contact.mobile_no %>
+            <%= contact.email %>
+          </p>
+        <% end %>
+      </td>
+      <td><%= name_and_link(klass, klass.to_label) %></td>
+      <td><%= report.render_employer_klass_interactions(klass, employer.id) %></td>
+      <td>
+        <% report.trainees_hired_by_employer(employer.id, klass.id).each do |trainee| %>
+          <p><%= name_and_link(trainee) %></p>
+        <% end %>
+      </td>
+      <td>
+        <%= employer.render_notes %>
+      </td>
+    </tr>
   <% end %>
 </table>

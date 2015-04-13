@@ -113,17 +113,14 @@ class TraineeDecorator < Draper::Decorator
 
   def trainee_interactions_header
     return nil unless TraineeInteractionPolicy.new(h.current_user).index?
+
     html = '<h4>' \
            'Placement Information ' +
            h.button_new_association(TraineeInteraction, trainee_id: id,
-                                                        title: 'New Employer Interest') +
+                                                        page: 'trainee_page',
+                                                        title: 'New Placement') +
            '</h4>'
     html.html_safe
-  end
-
-  def trainee_interactions_by_status
-    return [] unless TraineeInteractionPolicy.new(h.current_user).index?
-    object.trainee_interactions_by_status
   end
 
   def klass_trainees

@@ -1,8 +1,9 @@
 <% if @object.errors.empty? %>
   $('#new_trainee_interaction').remove();
   $('#new_trainee_interaction_link').show();
-  $('#trainee_interactions').html('<%= j render("trainee_interactions", object: @object) %>');
+  $('#trainee_interactions').html('<%= j render("trainee_interactions", object: @object, page: "trainee_page") %>');
+  $('#klass_trainees').html('<%= j render("klass_trainees/klass_trainees", object: @object) %>');
 <% else %>
-  <% messages = '<br><b style="color:red">'  + @object.errors.full_messages.join(";") + '</b>' %>
-  $('#new_trainee_interaction').prepend('<%= messages.html_safe %>');
+  <% message = @object.errors.full_messages.first %>
+  alert('<%= message %>');
 <% end %>

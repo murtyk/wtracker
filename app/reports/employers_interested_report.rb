@@ -1,7 +1,7 @@
 # about employers interested in trainees that are not placed yet
 class EmployersInterestedReport < Report
   def post_initialize(params)
-    return unless params
+    return unless params && params[:action] != 'new'
     tis = trainee_interactions
     tis.to_a.sort! { |a, b| a.employer_name <=> b.employer_name }
     @interactions = tis.map { |ti| TraineeInteractionDetails.new(ti) }

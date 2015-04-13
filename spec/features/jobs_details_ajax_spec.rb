@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Job Search" do
+describe 'Job Search' do
   describe 'details' do
-
     before :each do
       signin_admin
     end
@@ -10,7 +9,7 @@ describe "Job Search" do
       signout
     end
 
-    it 'searches for jobs and shows details', js: true, retry: 1, retry_wait: 3, noheadless: true  do
+    it 'searches for jobs and shows details', js: true, retry: 1, retry_wait: 3 do
       visit('/job_searches/new')
       sleep 1
       maximize_window
@@ -21,9 +20,9 @@ describe "Job Search" do
         details  = 'Princeton'
       else
         cassette = 'sh_job_details'
-        count    = 13
-        title1   = 'Regarding Sr Java Developer position'
-        details  = 'Job Description'
+        count    = 15
+        title1   = 'Senior Java Developer - Software Engineer'
+        details  = 'Develop and maintain J2EE'
       end
 
       VCR.use_cassette(cassette) do
@@ -34,9 +33,9 @@ describe "Job Search" do
         expect(page).to have_text "Found: #{count}"
 
         click_on title1
-        prev_window=page.driver.browser.window_handles.first
+        prev_window = page.driver.browser.window_handles.first
 
-        new_window=page.driver.browser.window_handles.last
+        new_window = page.driver.browser.window_handles.last
         page.driver.browser.switch_to.window(new_window)
 
         expect(page).to have_text details

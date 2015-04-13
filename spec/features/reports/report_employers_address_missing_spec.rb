@@ -1,14 +1,12 @@
 require 'rails_helper'
 
-describe "Report" do
+describe 'Report' do
   describe 'Employers' do
-
     before :each do
       signin_admin
     end
 
     it 'missing address' do
-
       Account.current_id = 1
       employers = (1..3).map do |n|
         Employer.create(name: "Good Company #{n}", source: 'RSPEC')
@@ -21,12 +19,10 @@ describe "Report" do
 
       visit_report Report::EMPLOYERS_ADDRESS_MISSING
 
-      expect(page).to have_text "Good Company 2"
-      expect(page).to have_text "Good Company 3"
+      expect(page).to have_text 'Good Company 2'
+      expect(page).to have_text 'Good Company 3'
 
-      expect(page).to_not have_text "Good Company 1"
+      expect(page).to_not have_text 'Good Company 1'
     end
-
   end
-
 end

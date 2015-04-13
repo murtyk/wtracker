@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Administration" do
-
-  describe "cities" do
+describe 'Administration' do
+  describe 'cities' do
     before(:each) do
       signin_opero_admin
 
@@ -16,11 +15,11 @@ describe "Administration" do
       click_on 'Find'
       expect(page).to have_text('Edison')
     end
-    it "import", js: true do
+    it 'import', js: true do
       VCR.use_cassette('cities') do
         Delayed::Worker.delay_jobs = false
         visit '/admin/import_statuses/new?resource=cities'
-        attach_file "file", @filepath
+        attach_file 'file', @filepath
         click_button 'Import'
         wait_for_ajax
         visit '/admin/import_statuses/' + ImportStatus.unscoped.last.id.to_s
@@ -37,4 +36,4 @@ describe "Administration" do
       end
     end
   end
- end
+end

@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Importer" do
-
-  describe "imports" do
+describe 'Importer' do
+  describe 'imports' do
     before(:each) do
       signin_admin
 
@@ -12,10 +11,10 @@ describe "Importer" do
       allow(Amazon).to receive(:file_url).and_return(@filepath)
     end
 
-    it "classes", js: true do
+    it 'classes', js: true do
       Delayed::Worker.delay_jobs = false
       visit '/import_statuses/new?resource=klasses'
-      attach_file "file", @filepath
+      attach_file 'file', @filepath
       select('Big program 1', from: 'program_id')
       select('Bucks county community college', from: 'college_id')
       click_button 'Import'

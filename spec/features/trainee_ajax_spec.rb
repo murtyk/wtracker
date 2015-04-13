@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Trainee" do
+describe 'Trainee' do
   describe 'ajax in show' do
-
     before :each do
       signin_admin
       visit('/trainees/1')
@@ -66,14 +65,14 @@ describe "Trainee" do
 
       click_link 'new_trainee_submit_link'
       wait_for_ajax
-      select employer_name, from: "trainee_submit_employer_id"
-      fill_in 'Title', with: "CNC Operator"
+      select employer_name, from: 'trainee_submit_employer_id'
+      fill_in 'Title', with: 'CNC Operator'
       fill_in 'Applied on', with: '06/17/2013'
 
       click_on 'Add'
       wait_for_ajax
       expect(page).to have_text employer_name
-      expect(page).to have_text "CNC Operator"
+      expect(page).to have_text 'CNC Operator'
     end
   end
 end

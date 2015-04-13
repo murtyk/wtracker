@@ -1,11 +1,16 @@
 # hired trainee interactions tell us which employers hired
 class EmployersHiredReport < Report
-  attr_accessor :all_trainees
+  attr_accessor :all_trainees, :status
 
   def post_initialize(params)
-    return unless params
+    return unless params && params[:action] != 'new'
 
     @all_trainees = params[:all_trainees].to_i == 1
+    @status = params[:status].to_i
+    build_hired_transactions
+  end
+
+  def build_hired_transactions
     tis = trainee_interactions
     tis.sort! { |a, b| a.employer.name <=> b.employer.name }
     @hired_interactions = tis.map { |ti| TraineeInteractionDetails.new(ti) }
@@ -25,13 +30,19 @@ class EmployersHiredReport < Report
   end
 
   def trainee_interactions
+    status_ids = 5 if status == 5
+    status_ids ||= [4, 6]
     if all_trainees
       return TraineeInteraction.joins(:trainee)
         .includes(employer: :address)
-        .where(status: 4).to_a
+        .where(status: status_ids, termination_date: nil).to_a
     end
     TraineeInteraction.joins(trainee: :klasses)
       .includes(employer: :address)
-      .where(status: 4, klasses: { id: klass_ids }).to_a
+      .where(status: status_ids, termination_date: nil, klasses: { id: klass_ids }).to_a
+  end
+
+  def status_collection
+    [['Hired', 4], ['OJT Enrolled', 5]]
   end
 end

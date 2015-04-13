@@ -89,7 +89,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'selenium-webdriver', '2.43.0'
   gem 'headless', '1.0.2'
-  gem 'capybara', '~> 2.2.0'
+  gem 'capybara', '~> 2.4.1'
   gem 'capybara-screenshot'
   # gem "capybara-webkit"
   gem 'faker', '1.0.1'

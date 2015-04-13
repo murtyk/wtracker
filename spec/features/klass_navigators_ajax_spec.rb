@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Klasses" do
+describe 'Klasses' do
   before :each do
     signin_admin
     create_klasses(1)
@@ -11,9 +11,7 @@ describe "Klasses" do
   end
 
   describe 'ajax in show' do
-
     it 'can add and remove navigator', js: true do
-
       click_link 'new_klass_navigator_link'
       # wait_for_ajax
       select('Melinda Peters', from: 'klass_navigator_user_id')

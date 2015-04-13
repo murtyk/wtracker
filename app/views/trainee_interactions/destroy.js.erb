@@ -1,2 +1,3 @@
-<% object = @trainee_page ? @trainee_interaction.trainee : @trainee_interaction.employer%>
-$('#trainee_interactions').html('<%= j render("trainee_interactions", object: object) %>');
+$('#trainee_interaction_<%=@trainee_interaction.id%>').remove();
+$('#klass_trainees').html('<%= j render("klass_trainees/klass_trainees", object: @trainee) %>');
+

@@ -1,11 +1,16 @@
 <div class = 'row-fluid filters-div' style='margin-bottom:10px'>
 
-<%= simple_form_for report, as: :report, method: :post, url: '/reports', html: { class: 'form-search form-horizontal '} do |f| %>
+<%= simple_form_for report, as: :report,
+                            method: :post,
+                            url: '/reports',
+                            html: { class: 'form-search form-horizontal '} do |f| %>
     <div class='span8'>
       <%= f.hidden_field :report_name %>
-      <%= f.input :klass_id, label: 'Class', include_blank: false,
+      <%= f.input :klass_id, label: 'Class',
+                             include_blank: false,
                              collection: current_user.klasses_for_selection(false),
-                             input_html: { class: "search-query", style: 'width: 490px;' } %>
+                             input_html: { class: "search-query",
+                                           style: 'width: 490px;' } %>
     </div>
     <div class='span2'>
       <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"

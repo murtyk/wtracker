@@ -1,7 +1,6 @@
 require 'rails_helper'
-describe "Import Services" do
-
-  describe "import" do
+describe 'Import Services' do
+  describe 'import' do
     before(:each) do
       signin_admin
 
@@ -10,10 +9,10 @@ describe "Import Services" do
       allow(Amazon).to receive(:file_url).and_return(@filepath)
     end
 
-    it "bad header" do
+    it 'bad header' do
       VCR.use_cassette('import_badheader') do
         visit '/import_statuses/new?resource=klasses'
-        attach_file "file", @filepath
+        attach_file 'file', @filepath
         select('Big program 1', from: 'program_id')
         select('Bucks county community college', from: 'college_id')
         click_button 'Import'
@@ -21,5 +20,4 @@ describe "Import Services" do
       end
     end
   end
-
 end

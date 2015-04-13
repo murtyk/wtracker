@@ -19,26 +19,33 @@ class TraineesNearByEmployersReport < Report
 
   def process_next
     trainee = @data.trainees_data[next_index].trainee
+    build_trainee_data(trainee)
 
-    near_by_emp_ids = near_by_employer_ids(trainee)
-    employers_data  = build_employers_data(near_by_emp_ids)
-
-    @data.employer_ids |= near_by_emp_ids
-    @data.contact_ids |= Contact.where(contactable_id: near_by_emp_ids).pluck(:id)
-    @data.trainees_data[next_index].employers_data = employers_data
-    @data.trainees_data[next_index].trainee = trainee.decorate
     check_max_contacts
     increment_index
     determine_processing_status
     write_cache
-    @status
+    status
   end
 
-  def build_employers_data(near_by_emp_ids)
-    near_by_emp_ids.map do |e_id|
+  def build_trainee_data(trainee)
+    near_by_emp_ids, employers_data  = build_employers_data(trainee)
+
+    @data.employer_ids |= near_by_emp_ids # set union operation.
+    @data.contact_ids |= Contact.where(contactable_id: near_by_emp_ids).pluck(:id)
+    @data.trainees_data[next_index].employers_data = employers_data
+    @data.trainees_data[next_index].trainee = trainee.decorate
+  end
+
+  def build_employers_data(trainee)
+    emp_ids = near_by_employer_ids(trainee)
+
+    emp_data =
+    emp_ids.map do |e_id|
       contact_ids = Contact.where(contactable_id: e_id).pluck(:id)
       OpenStruct.new(employer_id: e_id, contact_ids: contact_ids)
     end
+    [emp_ids, emp_data]
   end
 
   def title
@@ -66,11 +73,15 @@ class TraineesNearByEmployersReport < Report
   end
 
   def url_for_process_next
-    "/reports/process_next?report_name=trainees_near_by_employers&report_id=#{report_id}".html_safe
+    "/reports/process_next?#{url_report_name_id_part}".html_safe
   end
 
   def url_for_show
-    "/reports/show?report_name=trainees_near_by_employers&report_id=#{report_id}".html_safe
+    "/reports/show?#{url_report_name_id_part}".html_safe
+  end
+
+  def url_report_name_id_part
+    "report_name=trainees_near_by_employers&report_id=#{report_id}"
   end
 
   def sector_id
@@ -116,19 +127,15 @@ class TraineesNearByEmployersReport < Report
 
   def init_klass_trainees
     @data.klass = klass
-    @data.trainees_data = klass.trainees.order(:first, :last).map do |trainee|
-      t_os = OpenStruct.new
-      t_os.trainee = trainee
-      t_os
-    end
+    @data.trainees_data =
+      klass.trainees.order(:first, :last).map { |t| OpenStruct.new(trainee: t) }
   end
 
   def near_by_employer_ids(trainee)
     return [] unless trainee.home_address
-    trainee_address = trainee.home_address
-    a = Address.new(latitude: trainee_address.latitude,
-                    longitude: trainee_address.longitude)
-    a.id = trainee_address.id
+    ta = trainee.home_address
+    a = Address.new(latitude: ta.latitude, longitude: ta.longitude)
+    a.id = ta.id
     near_by_emp_ids = a.nearbys(radius)
                       .where(addressable_type: 'Employer',
                              addressable_id: sector_employers_ids)
@@ -189,11 +196,15 @@ class TraineesNearByEmployersReport < Report
   end
 
   def fetch_employers_and_contacts
-    employers = Employer.includes(:address, :employer_source)
-                .where(id: @data.employer_ids).decorate
-    @employers_hash = Hash[*employers.map { |employer| [employer.id, employer] }.flatten]
+    fetch_employers
 
     contacts = Contact.where(id: @data.contact_ids).decorate
     @contacts_hash = Hash[*contacts.map { |contact| [contact.id, contact] }.flatten]
+  end
+
+  def fetch_employers
+    employers = Employer.includes(:address, :employer_source)
+                .where(id: @data.employer_ids).decorate
+    @employers_hash = Hash[*employers.map { |employer| [employer.id, employer] }.flatten]
   end
 end

@@ -1,20 +1,18 @@
 require 'rails_helper'
 
-describe "Reports" do
+describe 'Reports' do
   describe 'Trainee' do
-
     before :each do
       signin_admin
     end
 
     it 'shows details' do
-
       Account.current_id = 1
       Grant.current_id = Grant.first.id
       college = College.first
       klass = Program.first.klasses.create(name: 'A Class', college_id: college.id)
       trainees = (1..6).map do |n|
-        attr = { first: "First#{n}", last: "Last#{n}", email: "email#{n}@nomail.com"}
+        attr = { first: "First#{n}", last: "Last#{n}", email: "email#{n}@nomail.com" }
         t = Trainee.create(attr)
         klass.klass_trainees.create(trainee_id: t.id, status: n)
         t
@@ -28,12 +26,12 @@ describe "Reports" do
       trainee.update(home_address_attributes: address_attr)
 
       attrs = { trainee_id: 'AZ11110000', dob: '07 June 1992', gender: 1,
-                land_no: '7778882222', veteran: true}
+                land_no: '7778882222', veteran: true }
       trainee.update(attrs)
 
       ed = Education.where(name: 'GED').first
       tact3_attrs = { education_level: ed.id, recent_employer: 'Some Company',
-                      job_title: 'A title', certifications: 'PMP CBA'}
+                      job_title: 'A title', certifications: 'PMP CBA' }
 
       trainee.update(tact_three_attributes: tact3_attrs)
 
@@ -60,7 +58,6 @@ describe "Reports" do
       expect(page).to have_text 'Some Company'
       expect(page).to have_text 'A title'
       expect(page).to have_text 'PMP CBA'
-
     end
   end
 end

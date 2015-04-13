@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Job Search" do
+describe 'Job Search' do
   describe 'ajax in new search' do
-
     before :each do
       signin_admin
     end
@@ -53,15 +52,14 @@ describe "Job Search" do
         select('health', from: 'sector_ids')
         first(:link, 'Add').click
         wait_for_ajax
-        expect(page).to have_text "Saved"
+        expect(page).to have_text 'Saved'
 
         btn_id = first(:xpath, "//*[contains(@id, 'sharejobs')]")[:id]
-         # save_screenshot('c:/temp/jobsearch')
+        # save_screenshot('c:/temp/jobsearch')
         click_on btn_id
 
-
         # session.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
-        new_window=page.driver.browser.window_handles.last
+        new_window = page.driver.browser.window_handles.last
 
         Account.current_id = 1
         Grant.current_id = 1
@@ -78,7 +76,7 @@ describe "Job Search" do
           click_on 'Send'
           wait_for_ajax
           sleep 1
-          expect(page).to have_text "Shared Job Information"
+          expect(page).to have_text 'Shared Job Information'
         end
       end
     end

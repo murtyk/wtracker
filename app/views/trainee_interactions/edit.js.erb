@@ -1,8 +1,2 @@
-<% if @trainee_page %>
-	<% partial = "js_edit_trainee_form" %>
-<% else %>
-	<% partial = "js_edit_employer_form" %>
-<% end %>
-
+<% partial = "js_edit_form" %>
 $('#<%=div_id_for(@trainee_interaction)%>').hide().after('<%= j render(partial, trainee_interaction: @trainee_interaction) %>');
-$('.date').datepicker({"format": "mm/dd/yyyy", "weekStart": 1, "autoclose": true});

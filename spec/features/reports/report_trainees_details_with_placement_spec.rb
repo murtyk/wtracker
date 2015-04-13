@@ -1,19 +1,18 @@
 require 'rails_helper'
 
-describe "Reports" do
+describe 'Reports' do
   describe 'Trainee' do
     before :each do
       signin_admin
     end
 
     it 'shows details' do
-
       Account.current_id = 1
       Grant.current_id = Grant.first.id
       college = College.first
       klass = Program.first.klasses.create(name: 'A Class', college_id: college.id)
       trainees = (1..2).map do |n|
-        attr = { first: "First#{n}", last: "Last#{n}", email: "email#{n}@nomail.com"}
+        attr = { first: "First#{n}", last: "Last#{n}", email: "email#{n}@nomail.com" }
         t = Trainee.create(attr)
         klass.klass_trainees.create(trainee_id: t.id, status: n)
         t
@@ -27,15 +26,14 @@ describe "Reports" do
       trainee.update(home_address_attributes: address_attr)
 
       attrs = { trainee_id: 'AZ11110000', dob: '07 June 1992', gender: 1,
-                land_no: '7778882222', veteran: true}
+                land_no: '7778882222', veteran: true }
       trainee.update(attrs)
 
       ed = Education.where(name: 'GED').first
       tact3_attrs = { education_level: ed.id, recent_employer: 'Some Company',
-                      job_title: 'A title', certifications: 'PMP CBA'}
+                      job_title: 'A title', certifications: 'PMP CBA' }
 
       trainee.update(tact_three_attributes: tact3_attrs)
-
 
       trainee = trainees.last
       employer = Employer.first
@@ -49,7 +47,7 @@ describe "Reports" do
       select 'All', from: 'Class'
       click_on 'Find'
 
-      expect(page).to have_text "First1 Last1"
+      expect(page).to have_text 'First1 Last1'
 
       expect(page).to have_text 'AZ11110000'
       expect(page).to have_text '10 Rembrandt'
@@ -64,5 +62,4 @@ describe "Reports" do
       expect(page).to have_text employer.name
     end
   end
-
 end

@@ -1,6 +1,6 @@
 bind_datepicker();
 $('#klass_trainee_status').change(function() {
-  status_id = $('#klass_trainee_status :selected').val();
+  var status_id = $('#klass_trainee_status :selected').val();
   if (status_id == 4) {
     $('#hire_details').show();
   }
@@ -21,4 +21,16 @@ $("#button-getemployers").click(function(e){
   }, "json");
 
   e.preventDefault();
+});
+
+$("form.edit_klass_trainee").on('submit', function(e){
+  var status_id, employer_id;
+  status_id = $('#klass_trainee_status :selected').val();
+  if (status_id == 4) {
+    employer_id = $('#klass_trainee_employer_id :selected').val();
+    if (employer_id == 0) {
+      alert('Please select an employer.');
+      return false;
+    }
+  }
 });

@@ -67,7 +67,7 @@ class Trainee < ActiveRecord::Base
   has_many :assessments, through: :trainee_assessments
   has_many :trainee_notes, -> { order('created_at DESC') }, dependent: :destroy
 
-  has_many :trainee_interactions, dependent: :destroy
+  has_many :trainee_interactions, -> { order('created_at DESC') }, dependent: :destroy
   has_many :interested_employers,
            source: :employer, through: :trainee_interactions
 
@@ -118,7 +118,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def hired_employer_interaction
-    trainee_interactions.where(status: 4).first
+    trainee_interactions.where(status: [4, 6], termination_date: nil).first
   end
 
   delegate :start_date, :employer_name, :hire_title, :hire_salary,
@@ -126,6 +126,10 @@ class Trainee < ActiveRecord::Base
 
   def unhire
     trainee_interactions.where(status: 4).each(&:unhire)
+  end
+
+  def hired?
+    hired_employer_interaction
   end
 
   def klass_names

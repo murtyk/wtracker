@@ -5,7 +5,7 @@ class TraineesActivityReport < Report
   attr_reader :status, :trainee_activities
 
   def post_initialize(params)
-    unless params
+    unless params && params[:action] != 'new'
       @status = nil
       @trainee_activities = []
       return

@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "User" do
-
-  it "can set preferences" do
+describe 'User' do
+  it 'can set preferences' do
     signin_admin
 
     href_link('users/preferences').click
@@ -11,7 +10,5 @@ describe "User" do
     choose 'Do not copy'
     click_on 'Update'
     expect(page).to have_text 'You will NOT be copied on jobs forwarded to trainees'
-
   end
-
 end

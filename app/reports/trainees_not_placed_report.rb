@@ -1,14 +1,18 @@
 # data for trainees not placed report
 class TraineesNotPlacedReport < Report
   def post_initialize(params)
-    return unless params
+    return unless params && params[:action] != 'new'
 
+    build_not_placed_data
+  end
+
+  #find trainees with klass status Completed or Dropped
+  def build_not_placed_data
     kts = KlassTrainee.includes(:trainee, :klass)
           .where(klass_trainees: { status: [2, 3] })
           .where(klasses: { id: klass_ids })
           .references(:trainees)
     kts.to_a.sort! { |a, b| a.trainee.name <=> b.trainee.name }
-
     @trainees_not_placed = kts.map { |kt| TraineeNotPlaced.new(kt) }
   end
 

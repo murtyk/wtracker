@@ -14,14 +14,14 @@ describe 'side bars' do
 
     visit "/employers/#{employer.id}"
 
-    expect(page).to have_text 'Short Listed Trainees'
+    expect(page).to have_text 'Trainees Hired'
     expect(page).to have_text 'Trainees Applied For Jobs'
 
     grant.hide_a_side_bar(Sidebars::EMPLOYER_PAGE_TRAINEE_INFO)
 
     visit "/employers/#{employer.id}"
 
-    expect(page).to_not have_text 'Short Listed Trainees'
+    expect(page).to_not have_text 'Trainees Hired'
     expect(page).to_not have_text 'Trainees Applied For Jobs'
   end
 end

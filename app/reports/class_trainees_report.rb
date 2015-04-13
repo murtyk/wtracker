@@ -2,7 +2,7 @@
 class ClassTraineesReport < TraineesDetailsReport
   # Report class expects klass_ids where as for this report we get :klass_id
   def initialize(user, params = nil)
-    if params
+    if params && params[:action] != 'new'
       parameters = params.clone
       parameters[:klass_ids] = [params[:klass_id]]
       super(user, parameters)

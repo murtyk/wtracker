@@ -11,7 +11,8 @@ class KlassTrainee < ActiveRecord::Base
   belongs_to :trainee
   attr_accessible :status, :trainee_id, :klass_id, :notes, :account_id
   attr_accessor :employer_name, :employer_id,
-                :start_date, :hire_title, :hire_salary, :comment
+                :start_date, :hire_title, :hire_salary, :comment,
+                :ti_status
 
   after_initialize :default_values
 

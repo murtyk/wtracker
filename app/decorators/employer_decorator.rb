@@ -76,8 +76,7 @@ class EmployerDecorator < Draper::Decorator
   def trainee_interactions_header
     return nil unless TraineeInteractionPolicy.new(h.current_user).index?
     html = '<h4>' \
-           'Short Listed Trainees ' +
-           h.button_new_association(TraineeInteraction, employer_id: id) +
+           'Trainees Hired' \
            '</h4>'
     html.html_safe
   end
@@ -163,5 +162,11 @@ class EmployerDecorator < Draper::Decorator
                                                   skip_policy_check: true) +
            '</h4>'
     html.html_safe
+  end
+
+  def render_notes
+    employer_notes.map do |en|
+      "<p>#{en.created_at.to_date}#{en.note.truncate(40)}</p>"
+    end.join.html_safe
   end
 end

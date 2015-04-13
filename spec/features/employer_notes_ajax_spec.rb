@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "EmployerNote", js: true do
+describe 'EmployerNote', js: true do
   before :each do
     signin_admin
     destroy_employers
@@ -12,7 +12,7 @@ describe "EmployerNote", js: true do
   end
 
   it 'user adds, updates, deletes a note, and can see short or long notes' do
-    click_link "new_employer_note_link"
+    click_link 'new_employer_note_link'
     wait_for_ajax
     note = 'This is a note note note note note note note note note note note note note note note note note note note note . It should be long and display create date'
     fill_in 'employer_note_note', with: note
@@ -27,7 +27,7 @@ describe "EmployerNote", js: true do
 
     expect(page).to have_text 'This is an updated note'
 
-    click_link "new_employer_note_link"
+    click_link 'new_employer_note_link'
     wait_for_ajax
     note = 'Another note note note note note note note note note note note note note note note note note note note note . It should be long and display create date'
     fill_in 'employer_note_note', with: note
@@ -44,11 +44,11 @@ describe "EmployerNote", js: true do
     sleep 0.1
     expect(page).to have_text note.truncate(40)
 
-    click_button "employers_more_info_show"
+    click_button 'employers_more_info_show'
     sleep 0.1
     expect(page).to have_text note
 
-    click_button "employers_more_info_show"
+    click_button 'employers_more_info_show'
     sleep 0.1
     expect(page).to have_text note.truncate(40)
 

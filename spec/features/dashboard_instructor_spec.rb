@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-describe "Dashboard" do
-
-  describe "instructor should not have dashboard" do
-    it "does not have dashboard menu" do
+describe 'Dashboard' do
+  describe 'instructor should not have dashboard' do
+    it 'does not have dashboard menu' do
       Account.current_id = 1
       Grant.current_id = 1
       klass = Klass.first

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "TraineeNote", js: true do
+describe 'TraineeNote', js: true do
   describe 'Trainee Page' do
     before :each do
       signin_admin
@@ -32,7 +32,7 @@ describe "TraineeNote", js: true do
     end
   end
 
-  describe "Class Page" do
+  describe 'Class Page' do
     before :each do
       signin_admin
       destroy_trainees
@@ -44,15 +44,14 @@ describe "TraineeNote", js: true do
       destroy_klasses
     end
     it 'create new notes for each trainee' do
-
-      #we have 2 classes with one trainee in each
-      #lets add the other trainee to each class
+      # we have 2 classes with one trainee in each
+      # lets add the other trainee to each class
 
       get_klasses.each do |klass|
         visit "/klasses/#{klass.id}"
         click_link 'new_klass_trainee_link'
         wait_for_ajax
-        select('First', :from => 'klass_trainee_trainee_id')
+        select('First', from: 'klass_trainee_trainee_id')
         click_on 'Add'
         wait_for_ajax
       end
@@ -73,7 +72,7 @@ describe "TraineeNote", js: true do
         end
       end
 
-      #notes should be visible on trainee page
+      # notes should be visible on trainee page
 
       get_trainee_ids.each do |trainee_id|
         visit "/trainees/#{trainee_id}"
@@ -92,4 +91,3 @@ describe "TraineeNote", js: true do
     end
   end
 end
-

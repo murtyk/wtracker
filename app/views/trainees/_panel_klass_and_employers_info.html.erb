@@ -30,7 +30,7 @@
 
 <%= trainee.trainee_interactions_header %>
 <div id="<%= div_id_for_collection(TraineeInteraction)%>">
-  <%= render("trainee_interactions/trainee_interactions", object: trainee) %>
+  <%= render("trainee_interactions/trainee_interactions", object: trainee, page: 'trainee_page') %>
 </div>
 
 <% if current_grant.trainee_applications? && trainee.trainee_placements.any? %>

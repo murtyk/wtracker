@@ -1,12 +1,11 @@
 require 'rails_helper'
 
-describe "Programs" do
-
-  describe "all rest actions except destroy" do
+describe 'Programs' do
+  describe 'all rest actions except destroy' do
     before(:each) do
       signin_director
     end
-    it "lists" do
+    it 'lists' do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       href_link('programs').click
       account = Account.first
@@ -17,7 +16,7 @@ describe "Programs" do
         expect(page).to have_text(program.klasses.count)
       end
     end
-    it "shows" do
+    it 'shows' do
       href_link('programs').click
       account = Account.first
       Account.current_id = account.id
@@ -30,7 +29,7 @@ describe "Programs" do
         expect(page).to have_text(klass.trainees.count)
       end
     end
-    it "can create and update" do
+    it 'can create and update' do
       href_link('programs').click
       href_link('programs/new').click
       fill_in 'Name', with: 'Test Program'
@@ -51,6 +50,5 @@ describe "Programs" do
       href_link('programs').click
       expect(page).to have_text 'changed name'
     end
-
   end
 end

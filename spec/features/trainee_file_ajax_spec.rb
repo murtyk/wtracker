@@ -3,12 +3,12 @@ require 'rails_helper'
 def resume
   "#{Rails.root}/spec/fixtures/RESUME.docx"
 end
+
 def cover_letter
   "#{Rails.root}/spec/fixtures/COVER LETTER.pdf"
 end
-describe "TraineeFile", js: true do
+describe 'TraineeFile', js: true do
   describe 'can attach multiple files' do
-
     before :each do
       signin_admin
       create_trainees(1)
@@ -29,9 +29,9 @@ describe "TraineeFile", js: true do
       #   config.allow_http_connections_when_no_cassette = true
       # end
 
-      click_link "new_trainee_file_link"
+      click_link 'new_trainee_file_link'
       # puts filepath
-      page.attach_file "trainee_file_file", @filepath
+      page.attach_file 'trainee_file_file', @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Resume'
       click_on 'Add File'
@@ -39,10 +39,10 @@ describe "TraineeFile", js: true do
 
       expect(page).to have_text 'Resume'
 
-      click_link "new_trainee_file_link"
+      click_link 'new_trainee_file_link'
       @filepath = cover_letter
       # puts filepath
-      page.attach_file "trainee_file_file", @filepath
+      page.attach_file 'trainee_file_file', @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Cover Letter'
       click_on 'Add File'
@@ -52,7 +52,6 @@ describe "TraineeFile", js: true do
     end
   end
   describe 'can open and delete attachments' do
-
     before :each do
       signin_admin
       create_trainees(1)
@@ -67,10 +66,10 @@ describe "TraineeFile", js: true do
         config.allow_http_connections_when_no_cassette = true
       end
 
-      click_link "new_trainee_file_link"
+      click_link 'new_trainee_file_link'
       filepath = cover_letter
       # puts filepath
-      page.attach_file "trainee_file_file", filepath
+      page.attach_file 'trainee_file_file', filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Cover Letter'
       click_on 'Add File'
@@ -79,14 +78,11 @@ describe "TraineeFile", js: true do
       expect(page).to have_text 'Cover Letter'
       click_on 'Cover Letter'
 
-      prev_window=page.driver.browser.window_handles.first
-
-      new_window = page.driver.browser.window_handles.last
+      new_window = windows.last
       page.within_window new_window do
-        expect(page).to have_text "MY COVER LETTER REALLY COVERS ME"
+        expect(page).to have_text 'MY COVER LETTER REALLY COVERS ME'
       end
 
-      page.driver.browser.switch_to.window(prev_window)
       delete_btn_id = first(:xpath, "//*[contains(@id, 'destroy_trainee_file')]")[:id]
       click_on delete_btn_id
 

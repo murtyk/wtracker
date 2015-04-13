@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Employers" do
-
-  describe "import" do
+describe 'Employers' do
+  describe 'import' do
     before(:each) do
       signin_admin
 
@@ -15,11 +14,11 @@ describe "Employers" do
       destroy_employers
     end
 
-    it "excel file", js: true do
+    it 'excel file', js: true do
       VCR.use_cassette('employers_import') do
         Delayed::Worker.delay_jobs = false
         visit '/import_statuses/new?resource=employers'
-        attach_file "file", @filepath
+        attach_file 'file', @filepath
         select 'health', from: 'sector_ids_'
         select 'insurance', from: 'sector_ids_'
         click_button 'Import'
@@ -33,5 +32,4 @@ describe "Employers" do
       end
     end
   end
-
 end

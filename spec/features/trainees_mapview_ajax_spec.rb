@@ -1,15 +1,13 @@
 require 'rails_helper'
 
-describe "Trainees" do
+describe 'Trainees' do
   describe 'mapview' do
-
     before :each do
       signin_admin
     end
 
-    it "multiple no distance circles", js: true do
+    it 'multiple no distance circles', js: true do
       VCR.use_cassette('trainees_mapview') do
-
         # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
         visit '/trainees/mapview'
 
@@ -23,15 +21,14 @@ describe "Trainees" do
         Grant.current_id = 1
         klass = Klass.where(name: 'CNC 101').first
         address_count = 0
-        klass.trainees.each{|t| address_count += 1 if t.home_address}
-        result = page.evaluate_script('Gmaps.map.markers.length');
+        klass.trainees.each { |t| address_count += 1 if t.home_address }
+        result = page.evaluate_script('Gmaps.map.markers.length')
         expect(result).to eq address_count
       end
     end
 
-    it "one with distance circles", js: true do
+    it 'one with distance circles', js: true do
       VCR.use_cassette('employers_mapview') do
-
         # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
         visit '/trainees/mapview'
 
@@ -49,14 +46,9 @@ describe "Trainees" do
         click_button 'Find'
         wait_for_ajax
 
-
         expect(page).to have_text '10 miles'
         expect(page).to have_text '20 miles'
-
       end
     end
-
-
   end
-
 end

@@ -1,0 +1,58 @@
+<%= simple_form_for(trainee_interaction, remote: true) do |f| %>
+  <hr>
+  <div class="form-inputs">
+    <%= f.hidden_field :trainee_id %>
+    <p> Employer Name Search</p>
+    <div class = 'row-fluid'>
+      <div class = 'span3'>
+        <%= f.input :employer_name, label: false, input_html: {style: 'width: 50px'} %>
+      </div>
+
+      <div class ='span9'>
+        <button type = "button" id="button-getemployers"
+                class="btn btn-flat btn-primary"  style = 'margin-left: 0px'>
+          <i class="icon-search icon-white"></i>Find
+        </button>
+
+        <%= link_to new_employer_path, class: "btn btn-flat btn-primary",
+                                       id: 'new_employer', remote: true,
+                                       data: { toggle: 'modal',
+                                               target: "#modal_new_employer" },
+                                       rel:"tooltip", title:"New Employer" do %>
+            <i class="icon-plus white">New</i>
+        <% end %>
+      </div>
+    </div>
+    <%= f.input :employer_id, collection: [], label: false,
+                              input_html: {style: 'width: 260px'} %>
+
+    <%= f.input :status, label: 'OJT Status',
+                         collection: trainee_interaction_statuses,
+                         include_blank: false %>
+
+    <%= f.input :start_date, as: :string,
+                             input_html: {class: 'date', data: {behaviour: "datepicker"},
+                             value: trainee_interaction.start_date.to_s} %>
+
+    <%= f.input :hire_title %>
+
+    <%= f.input :hire_salary %>
+
+    <%= f.input :termination_date, as: :string,
+                             label: 'Employment Termination Date',
+                             input_html: {class: 'date', data: {behaviour: "datepicker"},
+                             value: trainee_interaction.termination_date.to_s} %>
+
+  	<%= f.input :comment, input_html: {style: 'height: 100px'} %>
+  </div>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+<% end %>
+<%= ajax_form_cancel_script(trainee_interaction) %>
+<%=
+  if js_asset_exists?("#{controller_name}/#{action_name}.js")
+    javascript_include_tag "#{controller_name}/#{action_name}"
+  end
+%>

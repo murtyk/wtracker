@@ -134,11 +134,7 @@ WTracker::Application.routes.draw do
     end
   end
 
-  resources :trainee_interactions, except: [:index] do
-    collection do
-      get :traineelist
-    end
-  end
+  resources :trainee_interactions, except: [:index]
 
   resources :import_statuses, only: [:new, :create, :show] do
     member do

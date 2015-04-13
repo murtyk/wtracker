@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150228171906) do
+ActiveRecord::Schema.define(version: 20150410173105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -884,23 +884,24 @@ ActiveRecord::Schema.define(version: 20150228171906) do
   add_index "trainee_files", ["account_id", "trainee_id"], name: "index_trainee_files_on_account_id_and_trainee_id", using: :btree
 
   create_table "trainee_interactions", force: :cascade do |t|
-    t.integer  "account_id",                 null: false
-    t.integer  "grant_id",                   null: false
-    t.integer  "employer_id",                null: false
-    t.integer  "trainee_id",                 null: false
+    t.integer  "account_id",                   null: false
+    t.integer  "grant_id",                     null: false
+    t.integer  "employer_id",                  null: false
+    t.integer  "trainee_id",                   null: false
     t.integer  "status"
     t.date     "interview_date"
-    t.string   "interviewer",    limit: 255
-    t.string   "hire_title",     limit: 255
-    t.string   "hire_salary",    limit: 255
+    t.string   "interviewer",      limit: 255
+    t.string   "hire_title",       limit: 255
+    t.string   "hire_salary",      limit: 255
     t.date     "offer_date"
     t.date     "start_date"
-    t.string   "offer_title",    limit: 255
-    t.string   "offer_salary",   limit: 255
+    t.string   "offer_title",      limit: 255
+    t.string   "offer_salary",     limit: 255
     t.text     "comment"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.string   "company",        limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "company",          limit: 255
+    t.date     "termination_date"
   end
 
   add_index "trainee_interactions", ["account_id", "grant_id", "employer_id"], name: "trainee_interactions_employer_id_index", using: :btree
