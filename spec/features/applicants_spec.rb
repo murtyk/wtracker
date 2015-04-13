@@ -46,7 +46,8 @@ describe 'applicants' do
       fill_applicant_form(os_applicant)
       click_on 'Submit'
 
-      expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
+      expect(page).to have_text 'We have received your application and a ' \
+                                'confirmation email will be sent to you.'
 
       applicant = Applicant.unscoped.first
       Account.current_id = applicant.account_id
@@ -99,7 +100,8 @@ describe 'applicants' do
       fill_applicant_form(os_applicant)
       click_on 'Submit'
 
-      expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
+      expect(page).to have_text 'We have received your application and a ' \
+                                'confirmation email will be sent to you.'
 
       applicant = Applicant.unscoped.first
       expect(applicant.name).to eq(os_applicant.name)

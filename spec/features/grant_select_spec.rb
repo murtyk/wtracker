@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'admin user selects a grant to work on' do
   before(:each) do
     Account.current_id = 1
-    grant = create(:grant, name: 'Mega Grant')
+    create(:grant, name: 'Mega Grant')
 
     signin_admin
   end

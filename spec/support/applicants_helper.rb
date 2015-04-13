@@ -1,7 +1,5 @@
 module ApplicantsHelper
-
   def build_applicant_data(acceptable = true)
-
     os = OpenStruct.new
     os.first_name    = 'Adaline'
     os.last_name     = 'Schuster'
@@ -44,7 +42,6 @@ module ApplicantsHelper
     os.computer_access    = 'No'
     os.source             = 'One Stop'
 
-
     os.resume =  'I am an excellent software developer with 10 years' \
                   ' of experience in java, ajax, xml, oracle'
     os.humanizer_answer = '4'
@@ -52,17 +49,16 @@ module ApplicantsHelper
   end
 
   def fill_applicant_form(a, re_apply = false)
-
     fill_in 'applicant_first_name',      with: a.first_name
     fill_in 'applicant_last_name',       with: a.last_name
     fill_in 'applicant_address_line1',   with: a.address_line1
     fill_in 'applicant_address_city',    with: a.address_city
     fill_in 'applicant_address_zip',     with: a.address_zip
-    select  a.county,                    from: 'applicant_county_id'
+    select a.county,                    from: 'applicant_county_id'
 
     unless re_apply
-        fill_in 'applicant_email',           with: a.email
-        fill_in 'applicant_email_confirmation', with: a.email
+      fill_in 'applicant_email',           with: a.email
+      fill_in 'applicant_email_confirmation', with: a.email
     end
 
     fill_in 'applicant_mobile_phone_no', with: a.mobile_phone_no
@@ -79,7 +75,7 @@ module ApplicantsHelper
     fill_in 'applicant_last_employer_name',  with: a.last_employer_name
     fill_in 'applicant_last_employer_line1', with: a.last_employer_line1
     fill_in 'applicant_last_employer_city',  with: a.last_employer_city
-    select  a.last_employer_state,   from: 'applicant_last_employer_state'
+    select a.last_employer_state,   from: 'applicant_last_employer_state'
     fill_in 'applicant_last_employer_zip',   with: a.last_employer_zip
 
     fill_in 'applicant_last_employer_manager_name', with: a.last_employer_manager_name
@@ -105,6 +101,5 @@ module ApplicantsHelper
     fill_in 'applicant_humanizer_answer', with: a.humanizer_answer
 
     check 'applicant_signature'
-
   end
 end

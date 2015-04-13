@@ -8,7 +8,6 @@ describe 'Trainees' do
 
     it 'multiple no distance circles', js: true do
       VCR.use_cassette('trainees_mapview') do
-        # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
         visit '/trainees/mapview'
 
         select 'CNC 101', from: 'filters_klass_id'
@@ -29,7 +28,6 @@ describe 'Trainees' do
 
     it 'one with distance circles', js: true do
       VCR.use_cassette('employers_mapview') do
-        # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
         visit '/trainees/mapview'
 
         select 'CNC 101', from: 'filters_klass_id'

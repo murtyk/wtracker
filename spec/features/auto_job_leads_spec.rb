@@ -14,7 +14,8 @@ describe 'auto job leads' do
   describe 'update status' do
     it 'updates profile' do
       VCR.use_cassette('auto_job_leads') do
-        # we have a trainee without a job search profile. it should send an email to update profile
+        # we have a trainee without a job search profile.
+        # it should send an email to update profile
         expect(JobSearchProfile.count).to eq(0)
 
         AutoJobLeads.new.delay.perform

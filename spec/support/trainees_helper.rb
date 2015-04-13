@@ -1,6 +1,5 @@
 module TraineesHelper
   def create_trainees(n = 1, klass = nil, seq = nil)
-
     klass ||= get_an_existing_klass
     klass_label = "#{klass.college.name} - #{klass.name}"
 
@@ -23,7 +22,6 @@ module TraineesHelper
   def get_trainee_ids
     get_trainees.order(:id).pluck(:id)
   end
-
 
   def get_trainees
     Account.current_id = 1
@@ -58,5 +56,4 @@ module TraineesHelper
       wait_for_ajax
     end
   end
-
 end

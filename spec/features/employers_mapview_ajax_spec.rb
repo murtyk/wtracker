@@ -11,7 +11,6 @@ describe 'Employers' do
 
     it 'multiple no distance circles', js: true do
       VCR.use_cassette('employers_mapview') do
-        # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
         visit '/employers/mapview'
 
         counties = find('#filters_county_ids').all('option').collect(&:text)
@@ -28,13 +27,16 @@ describe 'Employers' do
 
         Account.current_id = 1
         result = page.evaluate_script('Gmaps.map.markers.length')
-        expect(result).to eq (Address.where("addressable_type = 'Employer' and county is not null").count + College.all.count)
+        expected_count = Address
+                         .where("addressable_type = 'Employer' and county is not null")
+                         .count +
+                         College.all.count
+        expect(result).to eq(expected_count)
       end
     end
 
     it 'one with distance circles', js: true do
       VCR.use_cassette('employers_mapview') do
-        # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
         visit '/employers/mapview'
 
         fill_in 'filters_name', with: 'Trigyn'

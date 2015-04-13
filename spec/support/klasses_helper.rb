@@ -17,46 +17,45 @@ module KlassesHelper
     end
   end
 
-	def destroy_klasses
+  def destroy_klasses
+    visit '/klasses'
 
-		visit '/klasses'
+    sleep 0.2
 
-		sleep 0.2
-
-		get_klasses_ids.each do |klass_id|
-			click_link "destroy_klass_#{klass_id}_link"
-			# find(:xpath, "//a[@class='btn-danger' and contains('/klasses/#{klass_id}')]").click
-			# find('a.btn-danger', href: "/klasses/#{klass_id}").click
-			page.driver.browser.switch_to.alert.accept
-			wait_for_ajax
-		end
-	end
-
-	def get_klasses_ids
-		get_klasses.pluck(:id)
-	end
-
-	def get_klasses
-		Account.current_id = 1
-		Grant.current_id = 1
-		grant = Grant.find(1)
-		grant.klasses.where('klasses.name ilike ?', 'Engineering%')
-	end
-
-  def get_kasses_with_seq_number(start_seq = 1)
-    get_klasses.select{ |klass| klass.name >= "Engineering#{start_seq}" }
+    get_klasses_ids.each do |klass_id|
+      click_link "destroy_klass_#{klass_id}_link"
+      # find(:xpath, "//a[@class='btn-danger' and contains('/klasses/#{klass_id}')]").click
+      # find('a.btn-danger', href: "/klasses/#{klass_id}").click
+      page.driver.browser.switch_to.alert.accept
+      wait_for_ajax
+    end
   end
 
-	def get_an_existing_klass
-		Account.current_id = 1
-		Grant.current_id = 1
-		grant = Grant.find(1)
-		grant.klasses.first
-	end
+  def get_klasses_ids
+    get_klasses.pluck(:id)
+  end
 
-	def destroy_all_created
-		destroy_trainees
-		destroy_klasses
-		destroy_employers
-	end
+  def get_klasses
+    Account.current_id = 1
+    Grant.current_id = 1
+    grant = Grant.find(1)
+    grant.klasses.where('klasses.name ilike ?', 'Engineering%')
+  end
+
+  def get_kasses_with_seq_number(start_seq = 1)
+    get_klasses.select { |klass| klass.name >= "Engineering#{start_seq}" }
+  end
+
+  def get_an_existing_klass
+    Account.current_id = 1
+    Grant.current_id = 1
+    grant = Grant.find(1)
+    grant.klasses.first
+  end
+
+  def destroy_all_created
+    destroy_trainees
+    destroy_klasses
+    destroy_employers
+  end
 end

@@ -19,7 +19,6 @@ describe 'Job Search' do
         pages    = 4
         title    = 'Senior Java Developer - Team Lead'
         company  = 'Accenture'
-        title2   = 'Java Software Engineer'
       else
         cassette = 'sh_job_search_and_analyze'
         keywords = 'pediatric nurse'
@@ -27,7 +26,6 @@ describe 'Job Search' do
         pages    = 5
         title    = 'RN CLINICAL Special Care'
         company  = 'Bayada'
-        title2   = 'Triage RN - ECHA'
       end
       VCR.use_cassette(cassette) do
         select('5', from: 'job_search_distance')

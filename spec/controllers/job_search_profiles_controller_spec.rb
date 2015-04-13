@@ -12,18 +12,20 @@ RSpec.describe JobSearchProfilesController, type: :controller do
 
   let(:valid_session) { {} }
 
-  describe "remind" do
+  describe 'remind' do
     login_user('njit@mail.com')
     before :each do
       allow(Account).to receive(:find_by_subdomain!)
-                        .and_return(Account.find_by(subdomain: 'njit'))
+        .and_return(Account.find_by(subdomain: 'njit'))
       Account.current_id = Account.find_by(subdomain: 'njit').id
       Grant.current_id = Grant.first.id
       create_trainees_and_profies
     end
-    it "sends reminders" do
+    it 'sends reminders' do
       Delayed::Worker.delay_jobs = false
-      expect { get :remind, {}, valid_session }.to change { ActionMailer::Base.deliveries.count }.by(2)
+      expect { get :remind, {}, valid_session }.to change {
+        ActionMailer::Base.deliveries.count
+      }.by(2)
       get :remind, {}, valid_session
       expect(assigns(:trainees)).not_to be_nil
     end

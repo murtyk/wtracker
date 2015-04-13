@@ -26,7 +26,7 @@ describe 'Employers' do
       klass_name = "#{klass.college.name} - #{klass.name}"
       select(klass_name, from: 'klass_interaction_klass_id')
       klass_event = klass.klass_events.first
-      event_label = "#{klass_event.event_date} - #{klass_event.name}"
+      # event_label = "#{klass_event.event_date} - #{klass_event.name}"
       select(klass_event.selection_name, from: 'klass_interaction_klass_event_id')
       select('Confirmed', from: 'klass_interaction_status')
       click_button 'Save'

@@ -7,7 +7,7 @@ FactoryGirl.define do
     f.location { Faker::Address.city }
 
     f.status   { 1 }
-    f.role     { 3 }  #default to navigator
+    f.role     { 3 }  # default to navigator
     f.password { 'password' }
     f.password_confirmation { 'password' }
   end

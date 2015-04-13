@@ -1,5 +1,4 @@
 module  UserHelper
-
   def signin_opero_admin
     visit ('/admins/sign_in')
     fill_in 'Email', with: 'admin@opero.com'

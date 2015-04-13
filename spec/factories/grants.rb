@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :grant do
-    name "Grant Name"
+    name 'Grant Name'
     start_date Date.yesterday
     end_date Date.today + 2.years
     status 1

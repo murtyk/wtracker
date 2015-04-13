@@ -10,4 +10,3 @@ FactoryGirl.define do
     f.county_id    { 1 }
   end
 end
-

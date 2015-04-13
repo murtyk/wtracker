@@ -10,7 +10,7 @@ describe 'Trainees' do
       click_button 'Find'
 
       VCR.use_cassette('trainee_create') do
-        href_link('trainees/new').click # like clicking New for trainees where there are other New links
+        href_link('trainees/new').click
 
         fill_in 'First Name', with: 'Karen'
         fill_in 'Last Name', with: 'Singer'

@@ -7,7 +7,7 @@ describe TraineeFactory do
     Account.current_id = 1
     Grant.current_id = 1
   end
-  it "returns a valid trainee with address" do
+  it 'returns a valid trainee with address' do
     address_attrs = fake_address
     params = { first: Faker::Name.first_name,
                last:  Faker::Name.last_name,
@@ -17,7 +17,7 @@ describe TraineeFactory do
     expect(trainee.line1).to eq(address_attrs[:line1])
   end
 
-  it "returns a valid trainee with tact3" do
+  it 'returns a valid trainee with tact3' do
     tact_three_attrs = { education_level: 1, years: 5 }
     params = { first: Faker::Name.first_name,
                last:  Faker::Name.last_name,
@@ -26,5 +26,4 @@ describe TraineeFactory do
     trainee.save
     expect(trainee.years).to eq(tact_three_attrs[:years])
   end
-
 end

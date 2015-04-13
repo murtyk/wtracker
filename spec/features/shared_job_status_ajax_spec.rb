@@ -9,10 +9,8 @@ describe 'shared job' do
       signin_admin
     end
     it 'set trainee communication options' do
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       visit '/accounts/trainee_options'
       expect(page).to have_text('Set Trainee Options')
-      # expect(page).to have_text('Current Setting: Status (of shared jobs) is NOT tracked')
 
       page.choose('Track status by email')
 
@@ -47,8 +45,8 @@ describe 'shared job' do
         hlinks[0].click
         sleep 1
 
-        prev_window = page.driver.browser.window_handles.first
-        new_window = page.driver.browser.window_handles.last
+        new_window = windows.last
+
         Account.current_id = 1
         Grant.current_id = 1
         klass = Klass.find(1)
@@ -98,7 +96,8 @@ describe 'shared job' do
       port = Capybara.server_port
       url = "http://www.localhost.com:#{port}/sjs/#{id}?key=#{key}"
       visit url
-      expect(page).to have_text 'Please click on the job link below, review and provide your feedback on this job lead.'
+      expect(page).to have_text 'Please click on the job link below, review and '\
+                                'provide your feedback on this job lead.'
       sleep 2
 
       click_link 'Click here to reivew the job details'

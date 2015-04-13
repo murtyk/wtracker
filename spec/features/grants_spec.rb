@@ -6,7 +6,6 @@ describe 'Grants' do
       signin_director
     end
     it 'lists' do
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       href_link('grants').click
       account = Account.first
       Account.current_id = account.id

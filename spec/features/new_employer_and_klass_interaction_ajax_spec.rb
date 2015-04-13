@@ -21,7 +21,8 @@ describe 'Employer and Class Interaction' do
     click_on 'Expand'
     expect(page).to have_text 'Interested'
 
-    myid = page.find('#klass_interactions').first(:xpath, "//*[contains(@id, 'edit_klass_interaction')]")[:id]
+    myid = page.find('#klass_interactions')
+           .first(:xpath, "//*[contains(@id, 'edit_klass_interaction')]")[:id]
     click_link myid
 
     select 'Confirmed', from: 'Status'
@@ -30,7 +31,8 @@ describe 'Employer and Class Interaction' do
     expect(page).to have_text 'Confirmed'
     expect(page).to_not have_text 'Interested'
 
-    klass_href = page.find('#klass_interactions').first('a', "//*[contains(@href='/klasses')]")[:href]
+    klass_href = page.find('#klass_interactions')
+                 .first('a', "//*[contains(@href='/klasses')]")[:href]
     visit klass_href
     click_on 'Expand All'
 

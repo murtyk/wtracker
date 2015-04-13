@@ -21,7 +21,8 @@ describe 'Administration' do
 
       click_on 'Save'
 
-      expect(page).to have_text 'Please wait for a minute to generate data for this demo account'
+      expect(page).to have_text 'Please wait for a minute to generate ' \
+                                'data for this demo account'
       Delayed::Worker.new.work_off
       signout_opero_admin
 

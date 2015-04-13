@@ -13,14 +13,18 @@ describe 'Trainees' do
       Account.current_id = account.id
       Grant.current_id   = account.grants.first.id
       klass = Klass.first
-      trainee1 = klass.trainees.create(first: 'first1', last: 'last1', email: 'first1@mail.com')
-      trainee2 = klass.trainees.create(first: 'first2', last: 'last2', email: 'first2@mail.com')
+
+      trainee1 = Trainee.create(first: 'first1', last: 'last1', email: 'first1@mail.com')
+      klass.trainees << trainee1
+      trainee2 = Trainee.create(first: 'first2', last: 'last2', email: 'first2@mail.com')
+      klass.trainees << trainee2
       trainee1.create_job_search_profile(skills: 'java sdlc ajax',
-                                         location: 'city,st',
+                                         location: 'Edison,NJ',
                                          distance: 5,
                                          key: 'key1')
+
       trainee2.create_job_search_profile(skills: 'ruby jquery sdlc',
-                                         location: 'city,st',
+                                         location: 'Edison,NJ',
                                          distance: 5,
                                          key: 'key2')
       visit '/trainees/search_by_skills'

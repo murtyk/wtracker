@@ -34,21 +34,24 @@ def level3_menu_list
 end
 
 def check_common_xpath_menus
-  expect(page).to have_xpath("//a[@href='/klasses']")
-  expect(page).to have_xpath("//a[@href='/trainees']")
-  expect(page).to have_xpath("//a[@href='/employers']")
+  expect_menu('klasses')
 
-  expect(page).to have_xpath("//a[@href='/trainees/mapview']")
-  expect(page).to have_xpath("//a[@href='/employers/mapview']")
+  expect_menu('trainees')
+  expect_menu('trainees/mapview')
+  expect_menu('trainee_emails/new')
+  expect_menu('emails/new')
 
-  expect(page).to have_xpath("//a[@href='/trainee_emails/new']")
-  expect(page).to have_xpath("//a[@href='/emails/new']")
+  expect_menu('employers')
+  expect_menu('employers/new')
+  expect_menu('employers/analysis')
+  expect_menu('employers/mapview')
 
-  expect(page).to have_xpath("//a[@href='/employers/new']")
-  expect(page).to have_xpath("//a[@href='/employers/analysis']")
+  expect_menu('applicants')
+  expect_menu('applicants/analysis')
+end
 
-  expect(page).to have_xpath("//a[@href='/applicants']")
-  expect(page).to have_xpath("//a[@href='/applicants/analysis']")
+def expect_menu(href)
+  expect(page).to have_xpath("//a[@href='/#{href}']")
 end
 
 describe 'all menus' do

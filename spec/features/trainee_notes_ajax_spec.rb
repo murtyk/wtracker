@@ -13,14 +13,16 @@ describe 'TraineeNote', js: true do
     it 'user adds, updates and deleted a note' do
       click_link "trainee_#{get_trainee_ids[0]}_new_trainee_note_link"
       wait_for_ajax
-      fill_in 'trainee_note_notes', with: 'This is a note. It should be long and display create date'
+      fill_in 'trainee_note_notes', with: 'This is a note.' \
+                                          ' It should be long and display create date'
       click_on 'Add'
       wait_for_ajax
       expect(page).to have_text 'This is a note'
 
       click_link "edit_trainee_note_#{get_trainee_notes_ids[0]}_link"
       wait_for_ajax
-      fill_in 'trainee_note_notes', with: 'This is an updated note. It should be long and display create date'
+      fill_in 'trainee_note_notes', with: 'This is an updated note. ' \
+                                          'It should be long and display create date'
       click_on 'Update'
       wait_for_ajax
       expect(page).to have_text 'This is an updated note'

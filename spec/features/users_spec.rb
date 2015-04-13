@@ -6,7 +6,6 @@ describe 'Users' do
       signin_director
     end
     it 'lists' do
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       href_link('users').click
       users = User.all
       users.each do |user|

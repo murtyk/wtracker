@@ -22,7 +22,7 @@ def visit_reapply_form_for(email)
   applicant  = Applicant.where('email ilike ?', email).first
   id = applicant.id
   key = applicant.reapply_key
-  visit "/applicants/#{id}/edit?salt=#{salt}&key=#{key}"
+  visit "/applicants/#{id}/edit?salt=#{grant_salt}&key=#{key}"
 end
 
 describe 'applicant re-apply' do
@@ -85,7 +85,8 @@ describe 'applicant re-apply' do
       fill_applicant_form(os_applicant)
       click_on 'Submit'
 
-      expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
+      expect(page).to have_text 'We have received your application and a ' \
+                                'confirmation email will be sent to you.'
 
       applicant = Applicant.unscoped.first
       expect(applicant.name).to eq(os_applicant.name)
@@ -118,7 +119,8 @@ describe 'applicant re-apply' do
       fill_in 'applicant_first_name', with: first_name
       click_on 'Submit'
 
-      expect(page).to have_text 'We have received your application and a confirmation email will be sent to you.'
+      expect(page).to have_text 'We have received your application and a '\
+                                'confirmation email will be sent to you.'
 
       applicant = Applicant.unscoped.first
       expect(applicant.name).to eq(os_applicant.name)

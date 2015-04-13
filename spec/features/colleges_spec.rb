@@ -6,7 +6,6 @@ describe 'Colleges' do
       signin_director
     end
     it 'lists' do
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       VCR.use_cassette('colleges') do
         click_on 'Colleges'
         # href_link('colleges').click

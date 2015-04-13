@@ -4,13 +4,13 @@
 # refer to https://gist.github.com/turadg/5399790
 
 def switch_to_subdomain(subdomain)
-	# lvh.me always resolves to 127.0.0.1
-	hostname = subdomain ? "#{subdomain}.localhost.com" : "localhost.com"
-	Capybara.app_host = "http://#{hostname}"
+  # lvh.me always resolves to 127.0.0.1
+  hostname = subdomain ? "#{subdomain}.localhost.com" : 'localhost.com'
+  Capybara.app_host = "http://#{hostname}"
 end
 
 def switch_to_main_domain
-	switch_to_subdomain 'www'
+  switch_to_subdomain 'www'
 end
 
 def switch_to_demo_domain
@@ -25,10 +25,10 @@ def switch_to_auto_leads_domain
   switch_to_subdomain 'njit'
 end
 
-RSpec.configure do |config|
-	switch_to_main_domain
+RSpec.configure do |_config|
+  switch_to_main_domain
 end
 
 Capybara.configure do |config|
-	config.always_include_port = true
+  config.always_include_port = true
 end

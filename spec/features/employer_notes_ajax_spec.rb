@@ -14,7 +14,7 @@ describe 'EmployerNote', js: true do
   it 'user adds, updates, deletes a note, and can see short or long notes' do
     click_link 'new_employer_note_link'
     wait_for_ajax
-    note = 'This is a note note note note note note note note note note note note note note note note note note note note . It should be long and display create date'
+    note = 'This is a' + ' note' * 30 + '. It should be long and display create date'
     fill_in 'employer_note_note', with: note
     click_on 'Add'
 
@@ -29,7 +29,7 @@ describe 'EmployerNote', js: true do
 
     click_link 'new_employer_note_link'
     wait_for_ajax
-    note = 'Another note note note note note note note note note note note note note note note note note note note note . It should be long and display create date'
+    note = 'Another' + ' note' * 30 + ' . It should be long and display create date'
     fill_in 'employer_note_note', with: note
     click_on 'Add'
     wait_for_ajax

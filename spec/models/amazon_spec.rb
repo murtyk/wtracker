@@ -10,7 +10,6 @@ describe Amazon do
     @s3 = AWS::S3.new
     @filepath = "#{Rails.root}/spec/fixtures/small.txt"
     @file = fixture_file_upload(@filepath)
-
   end
 
   after :each do
@@ -20,9 +19,9 @@ describe Amazon do
     end
   end
 
-  it "creates and deletes a bucket" do
+  it 'creates and deletes a bucket' do
     test_bucket_name = 'wtracker-rspec-testing'
-    buckets = @s3.buckets.map{|b| b.name}
+    buckets = @s3.buckets.map(&:name)
     expect(buckets.include?('managee2e-dev')).to be true
     expect(buckets.include?(test_bucket_name)).to be false
 
@@ -30,7 +29,7 @@ describe Amazon do
     expect(b.exists?).to be true
     Amazon.delete_bucket(test_bucket_name)
     # b.delete
-    buckets = @s3.buckets.map{|b| b.name}
+    buckets = @s3.buckets.map(&:name)
     expect(buckets.include?(test_bucket_name)).to be false
   end
 

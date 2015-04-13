@@ -12,11 +12,11 @@ describe 'Klass page' do
     end
 
     it 'can add event', js: true do
-      klass_ids = get_klasses_ids
-      Account.current_id = 1
-      Grant.current_id = 1
-      klass = Klass.find(klass_ids[0])
-      first_event = klass.klass_events.first
+      # klass_ids = get_klasses_ids
+      # Account.current_id = 1
+      # Grant.current_id = 1
+      # klass = Klass.find(klass_ids[0])
+      # first_event = klass.klass_events.first
 
       click_link 'new_klass_event_link'
       wait_for_ajax

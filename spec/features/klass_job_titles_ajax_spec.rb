@@ -24,7 +24,6 @@ describe 'Klasses' do
       # get the title id to determine the click_link
       Account.current_id = 1
       Grant.current_id = 1
-      klass = Klass.find(1)
       title = KlassTitle.where(title: 'Title 1').first
       id = "destroy_klass_title_#{title.id}_link"
       click_link id
