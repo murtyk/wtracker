@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Klasses" do
+describe 'Klasses' do
   describe 'klass trainees - ajax' do
-
     before :each do
       signin_admin
       destroy_all_created
@@ -15,13 +14,12 @@ describe "Klasses" do
     end
 
     it 'can add trainee, edit status and remove trainee', js: true do
-
       name = 'First1 Last1'
       expect(page).to_not have_text name
 
       click_link 'new_klass_trainee_link'
       wait_for_ajax
-      select(name, :from => 'klass_trainee_trainee_id')
+      select(name, from: 'klass_trainee_trainee_id')
       click_on 'Add'
       wait_for_ajax
       expect(page).to have_text name
@@ -35,7 +33,7 @@ describe "Klasses" do
       sleep 1
       click_link id
       wait_for_ajax
-      select "Completed", from: "klass_trainee_status"
+      select 'Completed', from: 'klass_trainee_status'
       click_on 'Update'
       wait_for_ajax
       expect(page).to have_text 'Completed - 1'

@@ -1,6 +1,6 @@
 require 'rails_helper'
-describe "trainee email" do
-  describe "create, show, list", js: true do
+describe 'trainee email' do
+  describe 'create, show, list', js: true do
     before :each do
       signin_admin
       create_klasses(1, 2)
@@ -10,7 +10,7 @@ describe "trainee email" do
       destroy_all_created
     end
 
-    it "can create and show and list" do
+    it 'can create and show and list' do
       visit('/trainee_emails/new')
       select('Engineering1', from: 'Select a Class')
       wait_for_ajax
@@ -25,8 +25,6 @@ describe "trainee email" do
 
       visit('/trainee_emails')
       expect(page).to have_text 'Hello, how are you?'
-
     end
-
   end
 end

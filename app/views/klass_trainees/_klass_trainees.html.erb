@@ -16,7 +16,7 @@
     <p>
       <% if policy(kt.klass).show? %>
         <div id = "<%=div_id_for(kt)%>">
-          <%= button_edit_association(kt, from: 1, title: 'Edit Status') %>
+          <%#= button_edit_association(kt, from: 1, title: 'Edit Status') %>
           <%= button_destroy_association(kt, from: 1, title: 'Remove from class') %>
           <b><%= link_to kt.klass.to_label,kt.klass %></b>
         </div>

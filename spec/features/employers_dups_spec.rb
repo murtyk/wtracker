@@ -1,29 +1,27 @@
 require 'rails_helper'
 
-describe "Employers" do
-
-  describe "rejects duplicates" do
+describe 'Employers' do
+  describe 'rejects duplicates' do
     before :each do
       signin_admin
     end
-    it "does not create no address duplicate" do
-        href_link('employers/new').click
-        fill_in 'Name', with: 'Name 1'
-        select('banking', from: 'Sectors')
+    it 'does not create no address duplicate' do
+      href_link('employers/new').click
+      fill_in 'Name', with: 'Name 1'
+      select('banking', from: 'Sectors')
 
-        click_button 'Save'
-        expect(page).to have_text 'Employer was successfully created.'
+      click_button 'Save'
+      expect(page).to have_text 'Employer was successfully created.'
 
-        href_link('employers/new').click
-        fill_in 'Name', with: 'Name 1'
-        select('manufacturing', from: 'Sectors')
-        click_button 'Save'
+      href_link('employers/new').click
+      fill_in 'Name', with: 'Name 1'
+      select('manufacturing', from: 'Sectors')
+      click_button 'Save'
 
-        expect(page).to have_text "duplicate employer Name 1"
-
+      expect(page).to have_text 'duplicate employer Name 1'
     end
-    it "does not create with address duplicate" do
-        VCR.use_cassette('employer_create') do
+    it 'does not create with address duplicate' do
+      VCR.use_cassette('employer_create') do
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 2'
         select('banking', from: 'Sectors')
@@ -45,13 +43,12 @@ describe "Employers" do
         fill_in 'Zip', with: '08520'
         click_button 'Save'
 
-        expect(page).to have_text "duplicate employer Name 2"
-        end
+        expect(page).to have_text 'duplicate employer Name 2'
+      end
     end
 
-    it "prevents update with address duplicate" do
-        VCR.use_cassette('employer_create') do
-
+    it 'prevents update with address duplicate' do
+      VCR.use_cassette('employer_create') do
         href_link('employers/new').click
         fill_in 'Name', with: 'Name 3'
         select('banking', from: 'Sectors')
@@ -81,34 +78,33 @@ describe "Employers" do
         fill_in 'Name', with: 'Name 3'
         click_button 'Save'
 
-        expect(page).to have_text "duplicate employer Name 3"
-        end
+        expect(page).to have_text 'duplicate employer Name 3'
+      end
     end
 
-    it "prevents update without address duplicate" do
-        href_link('employers/new').click
-        fill_in 'Name', with: 'Name 5'
-        select('banking', from: 'Sectors')
+    it 'prevents update without address duplicate' do
+      href_link('employers/new').click
+      fill_in 'Name', with: 'Name 5'
+      select('banking', from: 'Sectors')
 
-        click_button 'Save'
-        expect(page).to have_text 'Employer was successfully created.'
+      click_button 'Save'
+      expect(page).to have_text 'Employer was successfully created.'
 
-        href_link('employers/new').click
-        fill_in 'Name', with: 'Name 6'
-        select('banking', from: 'Sectors')
+      href_link('employers/new').click
+      fill_in 'Name', with: 'Name 6'
+      select('banking', from: 'Sectors')
 
-        click_button 'Save'
-        expect(page).to have_text 'Employer was successfully created.'
+      click_button 'Save'
+      expect(page).to have_text 'Employer was successfully created.'
 
-        Account.current_id = 1
-        employer = Employer.where(name: 'Name 6').first
+      Account.current_id = 1
+      employer = Employer.where(name: 'Name 6').first
 
-        visit "/employers/#{employer.id}/edit"
-        fill_in 'Name', with: 'Name 5'
-        click_button 'Save'
+      visit "/employers/#{employer.id}/edit"
+      fill_in 'Name', with: 'Name 5'
+      click_button 'Save'
 
-        expect(page).to have_text "duplicate employer Name 5"
-
+      expect(page).to have_text 'duplicate employer Name 5'
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "admin user selects a grant to work on" do
+describe 'admin user selects a grant to work on' do
   before(:each) do
     Account.current_id = 1
     grant = create(:grant, name: 'Mega Grant')
@@ -8,7 +8,7 @@ describe "admin user selects a grant to work on" do
     signin_admin
   end
 
-  it "selects grant" do
+  it 'selects grant' do
     expect(page).to have_text 'Your working context is set to'
 
     select 'Mega Grant', from: ' Change Current Grant To'

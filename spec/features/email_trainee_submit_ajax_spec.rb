@@ -1,6 +1,6 @@
 require 'rails_helper'
-describe "email to employer" do
-  describe "attach trainee document", js: true, noheadless: true do
+describe 'email to employer' do
+  describe 'attach trainee document', js: true, noheadless: true do
     before :each do
       signin_admin
       visit '/accounts/trainee_options'
@@ -15,18 +15,16 @@ describe "email to employer" do
       allow(Amazon).to receive(:file_url).and_return(@filepath)
       allow(Amazon).to receive(:original_file_name).and_return('RESUME.docx')
       allow(Amazon).to receive(:delete_file).and_return(nil)
-
     end
     after :each do
       destroy_all_created
     end
 
-    it "considered as trainee submit - job applied" do
-
+    it 'considered as trainee submit - job applied' do
       visit trainee_path(get_trainees.first)
 
-      click_link "new_trainee_file_link"
-      page.attach_file "trainee_file_file", @filepath
+      click_link 'new_trainee_file_link'
+      page.attach_file 'trainee_file_file', @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Resume'
       click_on 'Add File'
@@ -53,8 +51,6 @@ describe "email to employer" do
       visit trainee_path(get_trainees.first)
       sleep 2
       expect(page).to have_text 'reference101'
-
     end
-
   end
 end

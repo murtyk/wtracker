@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-describe "Trainees" do
-  describe "search by skills" do
+describe 'Trainees' do
+  describe 'search by skills' do
     before(:each) do
       signin_autolead_director
     end
     after :each do
       signout
     end
-    it "lets you find trainees with matching skills" do
+    it 'lets you find trainees with matching skills' do
       account = Account.where(subdomain: 'njit').first
       Account.current_id = account.id
       Grant.current_id   = account.grants.first.id
@@ -34,7 +34,6 @@ describe "Trainees" do
       click_on 'Find'
       expect(page).to have_text('first1 last1')
       expect(page).to_not have_text('first2 last2')
-
     end
   end
 end

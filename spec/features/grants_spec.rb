@@ -1,12 +1,11 @@
 require 'rails_helper'
 
-describe "Grants" do
-
-  describe "view and update grants" do
+describe 'Grants' do
+  describe 'view and update grants' do
     before(:each) do
       signin_director
     end
-    it "lists" do
+    it 'lists' do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       href_link('grants').click
       account = Account.first
@@ -14,8 +13,7 @@ describe "Grants" do
       grant = account.grants.first
       expect(page).to have_text(grant.name)
     end
-    it "shows" do
-
+    it 'shows' do
       account = Account.first
       Account.current_id = account.id
       grant = account.grants.first.decorate
@@ -31,15 +29,13 @@ describe "Grants" do
       end
     end
 
-    it "can update" do
-
+    it 'can update' do
       href_link('grants').click
       account = Account.first
       Account.current_id = account.id
       grant = account.grants.first
 
-# save_and_open_page
-
+      # save_and_open_page
 
       edit_link = find(:xpath, "//a[contains(@href,'/grants/#{grant.id}/edit')]")
       # href_link("/grants/" + grant.id.to_s + "/edit").click
@@ -52,6 +48,5 @@ describe "Grants" do
       href_link('grants').click
       expect(page).to have_text 'Spots: 123'
     end
-
   end
 end

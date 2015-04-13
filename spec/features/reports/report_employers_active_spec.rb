@@ -1,14 +1,12 @@
 require 'rails_helper'
 
-describe "Report" do
+describe 'Report' do
   describe 'Employers' do
-
     before :each do
       signin_admin
     end
 
     it 'active - hired or class event participant' do
-
       Account.current_id = 1
       Grant.current_id = Grant.first.id
       college = College.first
@@ -16,9 +14,9 @@ describe "Report" do
       klass2 = Program.first.klasses.create(name: 'Another Class', college_id: college.id)
       klasses = [klass1, klass2]
       trainees = (1..2).map do |n|
-        attr = { first: "First#{n}", last: "Last#{n}", email: "email#{n}@nomail.com"}
+        attr = { first: "First#{n}", last: "Last#{n}", email: "email#{n}@nomail.com" }
         t = Trainee.create(attr)
-        klasses[n-1].klass_trainees.create(trainee_id: t.id, status: 1)
+        klasses[n - 1].klass_trainees.create(trainee_id: t.id, status: 1)
         t
       end
       company1 = Employer.create(name: 'Company 1', source: 'RSPEC')
@@ -31,7 +29,6 @@ describe "Report" do
                                           hire_salary: '11.50',
                                           hire_title: 'Title 1234',
                                           comment: 'This employer hired')
-
 
       visit_report Report::ACTIVE_EMPLOYERS
       select 'All', from: 'Class'
@@ -69,7 +66,6 @@ describe "Report" do
       expect(page).to have_text 'First1 Last1'
 
       expect(page).to_not have_text 'Company 2'
-
     end
   end
 end

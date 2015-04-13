@@ -1,12 +1,11 @@
 require 'rails_helper'
 
-describe "Users" do
-
-  describe "all rest actions except destroy" do
+describe 'Users' do
+  describe 'all rest actions except destroy' do
     before(:each) do
       signin_director
     end
-    it "lists" do
+    it 'lists' do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       href_link('users').click
       users = User.all
@@ -14,7 +13,7 @@ describe "Users" do
         expect(page).to have_text(user.name)
       end
     end
-    it "shows" do
+    it 'shows' do
       href_link('users').click
       href_link('users/1').click
 
@@ -24,7 +23,7 @@ describe "Users" do
       expect(page).to have_text(user.last)
       expect(page).to have_text(user.email)
     end
-    it "create" do
+    it 'create' do
       href_link('users').click
       href_link('users/new').click
       fill_in 'First', with: 'First1'
@@ -47,14 +46,12 @@ describe "Users" do
       expect(page).to have_text '(999) 111-2222'
     end
 
-    it "update" do
+    it 'update' do
       href_link('users').click
       href_link('users/2/edit').click
       fill_in 'Mobile Number', with: '9991113333'
       click_button 'Update User'
       expect(page).to have_text '(999) 111-3333'
     end
-
   end
-
 end

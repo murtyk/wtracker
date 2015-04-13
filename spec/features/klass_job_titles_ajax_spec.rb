@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Klasses" do
+describe 'Klasses' do
   before :each do
     signin_admin
     create_klasses(1)
@@ -11,12 +11,10 @@ describe "Klasses" do
   end
 
   describe 'ajax in show' do
-
     it 'can add and remove job titles', js: true do
-
       click_link 'new_klass_title_link'
       # wait_for_ajax
-      fill_in 'klass_title_title', with: "Title 1"
+      fill_in 'klass_title_title', with: 'Title 1'
       click_on 'Add'
       # wait_for_ajax
 

@@ -1,15 +1,14 @@
 require 'rails_helper'
 RSpec.configure do |config|
-  config.order = "defined"
+  config.order = 'defined'
 end
 
-describe "shared job" do
-
-  describe "update status", js: true, noheadless: true do
+describe 'shared job' do
+  describe 'update status', js: true, noheadless: true do
     before(:each) do
       signin_admin
     end
-    it "set trainee communication options" do
+    it 'set trainee communication options' do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       visit '/accounts/trainee_options'
       expect(page).to have_text('Set Trainee Options')
@@ -21,8 +20,7 @@ describe "shared job" do
       expect(page).to have_text 'Status (of shared jobs) is tracked'
     end
 
-    it "share jobs with status tracking" do
-
+    it 'share jobs with status tracking' do
       if ENV['JOB_BOARD'] == 'Indeed'
         cassette = 'indeed_shared_job_status'
         count    = 2
@@ -49,8 +47,8 @@ describe "shared job" do
         hlinks[0].click
         sleep 1
 
-        prev_window=page.driver.browser.window_handles.first
-        new_window=page.driver.browser.window_handles.last
+        prev_window = page.driver.browser.window_handles.first
+        new_window = page.driver.browser.window_handles.last
         Account.current_id = 1
         Grant.current_id = 1
         klass = Klass.find(1)
@@ -59,7 +57,7 @@ describe "shared job" do
 
         page.within_window new_window do
           # save_and_open_page
-          expect(page).to have_text "Share Job Information With Trainees"
+          expect(page).to have_text 'Share Job Information With Trainees'
           expect(page).to have_text title1
           select(klass_label, from: 'select_klass')
           wait_for_ajax
@@ -67,7 +65,7 @@ describe "shared job" do
           click_on 'Send'
           sleep 1
           wait_for_ajax
-          expect(page).to have_text "Shared Job Information"
+          expect(page).to have_text 'Shared Job Information'
           expect(page).to have_text title1
         end
 
@@ -75,7 +73,7 @@ describe "shared job" do
         Account.current_id = 1
         job_share = JobShare.last
         shared_job = job_share.shared_jobs.first
-        expect(shared_job.title).to  match(title1)
+        expect(shared_job.title).to match(title1)
         shared_job_statuses = shared_job.shared_job_statuses
         shared_job_statuses.each do |shared_job_status|
           expect(shared_job_status.need_status_feedback?).to eq(true)
@@ -83,7 +81,7 @@ describe "shared job" do
       end
     end
 
-    it "simulate trainee click on job lead link to change state to viewed" do
+    it 'simulate trainee click on job lead link to change state to viewed' do
       Account.current_id = 1
       job_share = JobShare.last
       shared_job = job_share.shared_jobs.first
@@ -100,7 +98,7 @@ describe "shared job" do
       port = Capybara.server_port
       url = "http://www.localhost.com:#{port}/sjs/#{id}?key=#{key}"
       visit url
-      expect(page).to have_text "Please click on the job link below, review and provide your feedback on this job lead."
+      expect(page).to have_text 'Please click on the job link below, review and provide your feedback on this job lead.'
       sleep 2
 
       click_link 'Click here to reivew the job details'
@@ -112,8 +110,7 @@ describe "shared job" do
       expect(shared_job_status.status).to eq(SharedJobStatus::STATUSES[:VIEWED])
     end
 
-    it "click job leadlink and update status and provide feedback" do
-
+    it 'click job leadlink and update status and provide feedback' do
       Account.current_id = 1
       job_share = JobShare.last
       shared_job = job_share.shared_jobs.first
@@ -136,7 +133,7 @@ describe "shared job" do
       expect(shared_job_status.feedback).to eq('Thank You')
     end
 
-    it "status on trainee page" do
+    it 'status on trainee page' do
       Account.current_id = 1
       Grant.current_id = 1
       job_share = JobShare.last
@@ -148,7 +145,7 @@ describe "shared job" do
       visit "/trainees/#{trainee_id}"
 
       maximize_window
-      expect(page).to have_selector("td", text: "Applied")
+      expect(page).to have_selector('td', text: 'Applied')
     end
 
     it 'status on job statuses page' do
@@ -156,7 +153,7 @@ describe "shared job" do
       Grant.current_id = 1
       klass = Klass.find(1)
       klass_label = klass.to_label
-      visit '/sjs' #we used alias - see routes
+      visit '/sjs' # we used alias - see routes
       select klass_label, from: 'select_klass'
       click_on 'Find'
 

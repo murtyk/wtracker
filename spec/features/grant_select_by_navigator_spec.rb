@@ -1,9 +1,7 @@
 require 'rails_helper'
 
-describe "grants" do
-
-  it "navigator can select one" do
-
+describe 'grants' do
+  it 'navigator can select one' do
     Account.current_id = 1
     melinda = User.where(email: 'melinda@mail.com').first
     grant = Grant.first
@@ -11,7 +9,7 @@ describe "grants" do
     klass = Klass.first
     klass.klass_navigators.create(user_id: melinda.id)
 
-    #create another grant
+    # create another grant
     grant = Grant.create(name: 'Mega Grant', status: 2, start_date: Date.today,
                          end_date: Date.today + 1.year)
 

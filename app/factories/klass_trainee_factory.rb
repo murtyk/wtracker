@@ -46,16 +46,16 @@ class KlassTraineeFactory
 
   def self.assign_ei_attributes(ei, params)
     title = params[:hire_title]
-    ei.start_date = opero_str_to_date(params[:start_date])
-    ei.hire_title = title.blank? ? 'missing' : title
+    ei.start_date  = opero_str_to_date(params[:start_date])
+    ei.hire_title  = title.blank? ? 'missing' : title
     ei.hire_salary = params[:hire_salary]
-    ei.comment    = params[:comment]
-    ei.status = 4
+    ei.comment     = params[:comment]
+    ei.status      = params[:ti_status]
   end
 
   def self.clear_ei_attrs_from_params(params)
     [:hire_title, :hire_salary, :start_date, :comment,
-     :employer_id, :employer_name].each { |k| params.delete(k) }
+     :employer_id, :employer_name, :ti_status].each { |k| params.delete(k) }
     params
   end
 

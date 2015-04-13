@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Trainees" do
-
-  describe "create for a college account" do
+describe 'Trainees' do
+  describe 'create for a college account' do
     before :each do
       signin_college_admin
     end
@@ -11,8 +10,7 @@ describe "Trainees" do
       click_button 'Find'
 
       VCR.use_cassette('trainee_create') do
-
-        href_link('trainees/new').click #like clicking New for trainees where there are other New links
+        href_link('trainees/new').click # like clicking New for trainees where there are other New links
 
         fill_in 'First Name', with: 'Karen'
         fill_in 'Last Name', with: 'Singer'
@@ -36,13 +34,11 @@ describe "Trainees" do
         Grant.current_id = Grant.first.id
         select(Klass.first.to_label, from: 'trainee_klass_ids')
 
-
         click_button 'Save'
         expect(page).to have_text 'Karen Singer'
         expect(page).to have_text 'HPOG'
         signout
       end
-
     end
   end
 end

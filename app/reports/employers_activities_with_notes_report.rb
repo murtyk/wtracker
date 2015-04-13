@@ -2,7 +2,8 @@ include UtilitiesHelper
 # employers with notes activity in the date range
 class EmployersActivitiesWithNotesReport < Report
   def post_initialize(params)
-    return unless params
+    return unless params && params[:action] != 'new'
+
     @employers = user.employers
                  .includes(:employer_notes)
                  .includes(:employer_source)

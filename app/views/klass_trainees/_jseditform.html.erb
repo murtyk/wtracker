@@ -1,13 +1,8 @@
 <%= simple_form_for(klass_trainee, remote: true) do |f| %>
   <hr>
 
-  <% if from_page == 1 %>
-    <% caption = "Update trainee status in class #{klass_trainee.klass_name}"%>
-    <%= f.hidden_field :trainee_id %>
-  <% else %>
-    <% caption = "Update status of  #{klass_trainee.name}"%>
-    <%= f.hidden_field :klass_id %>
-  <% end %>
+  <% caption = "Update status of  #{klass_trainee.name}"%>
+  <%= f.hidden_field :klass_id %>
 
   <%= f.input :status, label: caption, collection: klass_trainee_statuses, include_blank: false %>
 
@@ -18,10 +13,20 @@
       <i class="icon-search icon-white"></i>Find
     </button>
     <br>
-    <%= f.input :employer_id, collection: [klass_trainee.hired_employer], label: 'Employer', input_html: {style: 'width: 260px'} %>
-    <%= f.input :start_date, input_html: {class: 'date', data: {behaviour: "datepicker"}, value: klass_trainee.start_date.to_s}, as: :string %>
+    <%= f.input :employer_id, collection: [klass_trainee.hired_employer],
+                              label: 'Employer',
+                              input_html: {style: 'width: 260px'} %>
+
+    <%= f.input :ti_status, collection: trainee_interaction_statuses,
+                            include_blank: false,
+                            label: 'OJT Status' %>
+    <%= f.input :start_date, as: :string,
+                             input_html: { class: 'date',
+                                           data: { behaviour: "datepicker" },
+                                           value: klass_trainee.start_date.to_s } %>
     <%= f.input :hire_title %>
     <%= f.input :hire_salary %>
+
     <%= f.input :comment, input_html: { style: 'height: 80px' } %>
   </div>
 
@@ -30,6 +35,9 @@
   </div>
   <%= ajax_form_cancel_script(klass_trainee) %>
 
-  <%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>
+  <%=
+    if js_asset_exists?("#{controller_name}/#{action_name}.js")
+      javascript_include_tag "#{controller_name}/#{action_name}"
+    end
+  %>
 <% end %>
-

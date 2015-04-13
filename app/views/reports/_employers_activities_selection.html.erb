@@ -1,13 +1,21 @@
 <div class = 'row-fluid filters-div' style='margin-bottom: 10px'>
-  <%= simple_form_for report, as: :report, method: :post, url: '/reports', html: { class: 'form-search'} do |f| %>
+  <%= simple_form_for report, as: :report,
+                              method: :post,
+                              url: '/reports',
+                              html: { class: 'form-search'} do |f| %>
     <%= f.hidden_field :report_name %>
     <div class='span2'>
-      <%= f.input :start_date, label: 'From', required: false, as: :string,
-                               input_html: { data: { behaviour: "datepicker" }, style: 'width: 150px;'} %>
+      <%= f.input :start_date, label: 'From',
+                               required: false,
+                               as: :string,
+                               input_html: { data: { behaviour: "datepicker" },
+                                             style: 'width: 150px;'} %>
     </div>
     <div class='span2'>
-      <%= f.input :end_date, label: 'To', required: false, as: :string,
-                             input_html: { data: { behaviour: "datepicker" }, style: 'width: 150px;' } %>
+      <%= f.input :end_date, label: 'To',
+                             required: false, as: :string,
+                             input_html: { data: { behaviour: "datepicker" },
+                                           style: 'width: 150px;' } %>
     </div>
     <div class='span2'>
       <br>
@@ -15,7 +23,10 @@
     </div>
     <div class='span2'>
       <br>
-      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner" style='margin-left: 20px' data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+      <button type="submit" id='submit-button'
+              class="btn btn-flat btn-primary btn-spinner"
+              style='margin-left: 20px'
+              data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
           <i class="icon-search icon-white"></i>Find
       </button>
     </div>

@@ -1,68 +1,88 @@
 include UtilitiesHelper
-# for creating and updating trainee interactions
+# for doing CRUD on trainee interactions
 class TraineeInteractionFactory
+  # Builds new trainee interaction for ajax form.
+  # Called from Trainee Page
   def self.build(params)
-    trainee_page = !params[:trainee_id].blank?
-    if trainee_page
-      object = Trainee.find(params[:trainee_id])
-    else
-      object = Employer.find(params[:employer_id])
-    end
-    [trainee_page, object.trainee_interactions.new]
+    trainee = Trainee.find(params[:trainee_id])
+    ti = trainee.trainee_interactions.new
+    check_already_placed(ti)
   end
 
-  def self.create(params)
-    employer_id = params[:trainee_interaction][:employer_id]
-    comment = params[:trainee_interaction][:comment]
+  # creates a TI
+  # Updates status of klass_trainees
+  def self.create(all_params)
+    params = all_params[:trainee_interaction].clone
 
-    # KORADA we get trainee_ids from employer page
-    trainee_ids = params[:trainee_interaction][:trainee_ids]
+    trainee = Trainee.find(params.delete(:trainee_id))
 
-    # we get trainee_id from trainee page
-    trainee_id = params[:trainee_interaction][:trainee_id]
+    start_date = opero_str_to_date(params['start_date'])
+    params[:start_date] = start_date
 
-    if trainee_ids.nil? # trainee page
-      object = Trainee.find(trainee_id)
-      object.trainee_interactions.new(comment: comment,
-                                      employer_id: employer_id, status: 1)
-    else
-      trainee_ids.delete('')
-      object = Employer.find(employer_id)
-      trainee_ids.each do |t_id|
-        object.trainee_interactions.new(comment: comment, trainee_id: t_id, status: 1)
-      end
-    end
-    object.save
+    create_ti_and_update_statuses(trainee, params)
 
-    object
+    trainee
   end
 
-  def self.update(params_all)
-    params = params_all[:trainee_interaction].clone
-    trainee_interaction = TraineeInteraction.find(params_all[:id])
+  # updates start date, title, salary and comments
+  # not Employer ID
+  def self.update(all_params)
+    params = all_params[:trainee_interaction].clone
 
-    trainee_page = params.delete(:employer_id).nil?
+    trainee_interaction = TraineeInteraction.find(all_params[:id])
+
     params.delete(:trainee_id)
 
-    [:interview_date, :offer_date, :start_date].each do |attr|
-      trainee_interaction.send("#{attr}=", opero_str_to_date(params.delete(attr)))
-    end
+    trainee_interaction.start_date = opero_str_to_date(params.delete('start_date'))
+    trainee_interaction.termination_date =
+      opero_str_to_date(params.delete('termination_date'))
     trainee_interaction.update_attributes(params)
-    object = trainee_page ? trainee_interaction.trainee : trainee_interaction.employer
-    [object, trainee_interaction]
+
+    change_klass_statuses(trainee_interaction)
+    trainee_interaction
   end
 
-  def self.trainee_list_for_selection(params)
-    klass_id = params[:klass_id]
-    employer_id = params[:employer_id]
+  # Change KlassTrainee status to Completed when unhired
+  def self.destroy(params)
+    ti = TraineeInteraction.find(params[:id])
+    klass_trainees = ti.trainee.klass_trainees
+    ti.destroy
+    # we do not use update_all since it does not update timestamp
+    klass_trainees.each { |kt| kt.update(status: 2) }
+    ti
+  end
 
-    trainee_ids = Employer.find(employer_id).trainee_interactions.map(&:trainee_id)
-    trainee_ids.delete(nil)
+  def self.create_ti_and_update_statuses(trainee, params)
+    params.delete(:klass_id)
+    ti = trainee.trainee_interactions.new(params)
+    check_already_placed(ti)
+    return if ti.errors.any?
+    return unless trainee.save
+    change_klass_statuses(ti)
+  end
 
-    trainees = Klass.find(klass_id).trainees.where.not(id: trainee_ids)
+  # create and update actions call this
+  # ti status: terminated || hired || ojt enrolled
+  def self.change_klass_statuses(ti)
+    trainee = ti.trainee
+    if ti.terminated? || ti.hired?
+      status = ti.terminated? ? 2 : 4 # Completed or Placed
+      kts = trainee.klass_trainees
+    else # ti.ojt_enrolled?
+      status = 2 # Completd.
+      # change only the placed ones
+      kts = trainee.klass_trainees.where(status: 4)
+    end
+    kts.each { |kt| kt.update(status: status) }
+  end
 
-    # trainees = trainees.where.not(id: trainee_ids) if trainee_ids.any?
-
-    trainees.map { |trainee| { id: trainee.id, name: trainee.name } }
+  def self.check_already_placed(ti)
+    trainee = ti.trainee
+    if trainee && trainee.hired?
+      error = 'Already Placed.'
+      ti.errors.add(:base, error)
+      trainee.errors.add(:base, error)
+    end
+    ti
   end
 end

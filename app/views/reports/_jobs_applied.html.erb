@@ -16,19 +16,17 @@
     <tr>
       <td><%= link_to(trainee.name, trainee) %></td>
       <td>
-          <% trainee.klasses.each do |klass| %>
-            <p><%= policy(klass).show? ? link_to(klass.to_label, klass) : klass.to_label %></p>
-          <% end %>
+        <%= trainee.klasses.map{ |k| "<p>#{name_and_link(k, true)}</p>" }.join.html_safe %>
       </td>
-      <% applied_dates = employers = titles = ""%>
-      <% trainee.trainee_submits.each do |job_applied| %>
-        <% applied_dates += "<p>#{job_applied.applied_on ? job_applied.applied_on.to_s : ""}</p>" %>
-        <% employers += "<p>#{employer_link_or_name job_applied.employer}</p>" %>
-        <% titles += "<p>#{job_applied.title}</p>" %>
-      <% end %>
-      <td><%= applied_dates.html_safe %></td>
-      <td><%= employers.html_safe %></td>
-      <td><%= titles.html_safe %></td>
+      <td>
+        <%= report.render_applied_dates(trainee) %>
+      </td>
+      <td>
+        <%= report.applied_employers(trainee).map do |e|
+              "<p>#{employer_link_or_name(e)}</p>"
+            end.join.html_safe %>
+      </td>
+      <td><%= report.render_applied_titles(trainee) %></td>
     </tr>
   <% end %>
 </table>

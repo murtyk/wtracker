@@ -1,15 +1,25 @@
 <div class = 'row-fluid filters-div' style='margin-bottom:10px'>
-  <%= simple_form_for report, as: :report, method: :post, url: '/reports', html: { class: 'form-search form-horizontal'} do |f| %>
-    <div class='span7'>
+  <%= simple_form_for report, as: :report,
+                              method: :post,
+                              url: '/reports' do |f| %>
+    <div class='span5'>
       <%= f.hidden_field :report_name %>
 
       <%= f.input :klass_ids, label: 'Class',
                               collection: current_user.klasses_for_selection(true),
-                              input_html: { class: "search-query", style: 'width: 490px;', multiple: true } %>
-      <%= f.input :all_trainees, as: :boolean, label: false, inline_label: 'Include All Trainees' %>
+                              input_html: { class: "search-query",
+                                            style: 'width: 100%;',
+                                            multiple: true } %>
     </div>
-    <div class='span2'>
-      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
+    <div class='span3'>
+      <%= f.input :status, collection: report.status_collection, include_blank: false %>
+      <%= f.input :all_trainees, as: :boolean,
+                                 label: false,
+                                 inline_label: 'Include All Trainees' %>
+    </div>
+    <div class='span2' style='padding-top: 20px'>
+      <button type="submit" id='submit-button'
+              class="btn btn-flat btn-primary btn-spinner"
               style='margin-left: 20px'
               data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
           <i class="icon-search icon-white"></i>Find

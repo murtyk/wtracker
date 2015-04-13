@@ -1,13 +1,11 @@
 require 'rails_helper'
 
-describe "Administration" do
-
-  describe "manage accounts" do
+describe 'Administration' do
+  describe 'manage accounts' do
     before(:each) do
       signin_opero_admin
     end
-    it "can delete an account", js: true do
-
+    it 'can delete an account', js: true do
       click_on 'New Account'
 
       fill_in 'Name', with: 'Test Client', match: :prefer_exact

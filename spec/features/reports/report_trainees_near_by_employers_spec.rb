@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Reports" do
+describe 'Reports' do
   describe 'Trainees', js: true do
     before :each do
       signin_admin
@@ -18,8 +18,8 @@ describe "Reports" do
       click_on 'Find'
       sleep 3
       wait_for_ajax
-      expect(page).to have_text "Paul Harris"
-      expect(page).to have_text "Trigyn"
+      expect(page).to have_text 'Paul Harris'
+      expect(page).to have_text 'Trigyn'
     end
   end
 end

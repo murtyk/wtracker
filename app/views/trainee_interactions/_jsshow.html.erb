@@ -1,20 +1,9 @@
-<p>Employer: <b><%= link_to trainee_interaction.employer_name,trainee_interaction.employer%></b></p>
+<p>Employer: <b><%= link_to trainee_interaction.employer_name, trainee_interaction.employer%></b></p>
 <p>Trainee: <b><%= link_to trainee_interaction.trainee_name,trainee_interaction.trainee %></b></p>
 <p>Status: <b><%= trainee_interaction.status_name %></b></p>
-
+<p>OJT Status: <b><%= trainee_interaction.ojt_status %></b></p>
+<p>Start Date: <%= trainee_interaction.start_date.to_s %></p>
+<p>Hire Title: <%= trainee_interaction.hire_title %></p>
+<p>Hire Salary: <%=trainee_interaction.hire_salary%>
+<p>Employment Termination Date: <%= trainee_interaction.termination_date.to_s %></p>
 <p>Comments: <%= trainee_interaction.comment %></p>
-
-<% if trainee_interaction.interviewer %>
-	<p>Interview Date: <%= trainee_interaction.interview_date.to_s %></p>
-	<p>Interviewer: <%=trainee_interaction.interviewer%>
-<% end %>
-<% if trainee_interaction.offer_title %>
-	<p>Offer Date: <%= trainee_interaction.offer_date.to_s %></p>
-	<p>Offer Title: <%= trainee_interaction.offer_title %></p>
-	<p>Offer Salary: <%=trainee_interaction.offer_salary%>
-<% end %>
-<% if trainee_interaction.hire_title %>
-	<p>Start Date: <%= trainee_interaction.start_date.to_s %></p>
-	<p>hire Title: <%= trainee_interaction.hire_title %></p>
-	<p>hire Salary: <%=trainee_interaction.hire_salary%>
-<% end %>

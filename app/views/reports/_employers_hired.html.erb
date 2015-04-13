@@ -1,7 +1,7 @@
 <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
   <tr style="display:none;">
     <th><%= report.title%></th>
-    <%= ('<th></th>' * 8).html_safe %>
+    <%= ('<th></th>' * 11).html_safe %>
   </tr>
   <tr>
     <th>Employer</th>
@@ -10,6 +10,7 @@
     <th>Funding Source</th>
     <th>Class</th>
     <th>College</th>
+    <th>OJT Status</th>
     <th>Comments</th>
     <th>Title</th>
     <th>Start Date</th>
@@ -32,6 +33,7 @@
          %>
       </td>
       <td><%= ti.college_name_location%></td>
+      <td><%= ti.status_name %></td>
       <td><%= ti.comment %>
       <td><%= ti.hire_title%> </td>
       <td><%= ti.start_date.to_s%></td>

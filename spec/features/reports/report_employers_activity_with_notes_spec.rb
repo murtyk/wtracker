@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Reports" do
+describe 'Reports' do
   describe 'Employer' do
     before :each do
       signin_admin
@@ -9,13 +9,12 @@ describe "Reports" do
     it 'activities with notes report' do
       Account.current_id = 1
       notes = []
-      employers = (1..2).map do |n|
+      (1..2).each do |n|
         note = n.to_s + '. This is a' + ' note' * 25 +
                '. It should be long and display create date'
         employer = Employer.create(name: "Good Company #{n}", source: 'RSPEC')
         employer.employer_notes.create(note: note)
         notes << note
-        employer
       end
 
       visit_report Report::EMPLOYERS_ACTIVITIES_WITH_NOTES
@@ -25,7 +24,6 @@ describe "Reports" do
       notes.each do |note|
         expect(page).to have_content note
       end
-
     end
   end
 end

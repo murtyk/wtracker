@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "User De-activate" do
-
-  it "de-activate an user" do
+describe 'User De-activate' do
+  it 'de-activate an user' do
     signin_director
 
     href_link('users').click
@@ -17,7 +16,7 @@ describe "User De-activate" do
     signout
 
     fill_in 'email', with: user_email
-    fill_in 'password', with: "password"
+    fill_in 'password', with: 'password'
     click_button 'Sign in'
 
     expect(page).to have_text 'Your account was not activated yet.'
@@ -29,5 +28,4 @@ describe "User De-activate" do
     select('Active', from: 'Status')
     click_button 'Update User'
   end
-
 end

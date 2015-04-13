@@ -1,7 +1,7 @@
 # placement information about placed trainees
 class TraineesPlacedReport < Report
   def post_initialize(params)
-    return unless params
+    return unless params && params[:action] != 'new'
 
     @trainee_interactions = trainee_placed_interactions
 
@@ -31,7 +31,7 @@ class TraineesPlacedReport < Report
   def trainee_placed_interactions
     TraineeInteraction.joins(trainee: :klasses)
       .includes(employer: :address)
-      .where(status: 4, klasses: { id: klass_ids })
+      .where(status: [4, 6], termination_date: nil, klasses: { id: klass_ids })
   end
 
   def find_trainees_placed_no_employer(trainee_ids)

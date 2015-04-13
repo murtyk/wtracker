@@ -13,7 +13,9 @@ class KlassTraineesController < ApplicationController
   # GET /klass_trainees/1/edit
   def edit
     @klass_trainee = KlassTrainee.find(params[:id])
-    @from_page = params[:from].to_i
+    return unless @klass_trainee.hired?
+    @error_message = 'Can not change status of a placed trainee.' \
+                     ' Go to trainee page to change placement details'
   end
 
   def create

@@ -1,25 +1,22 @@
 require 'rails_helper'
 
-describe "Reports" do
+describe 'Reports' do
   describe 'Trainees' do
     before :each do
       signin_admin
     end
 
     it 'activities report' do
-
       Account.current_id = 1
       Grant.current_id = Grant.first.id
       college = College.first
       klass = Program.first.klasses.create(name: 'A Class', college_id: college.id)
       trainees = (1..3).map do |n|
-        attr = { first: "First#{n}", last: "Last#{n}", email: "email#{n}@nomail.com"}
+        attr = { first: "First#{n}", last: "Last#{n}", email: "email#{n}@nomail.com" }
         t = Trainee.create(attr)
         klass.klass_trainees.create(trainee_id: t.id, status: 1)
         t
       end
-
-      trainee_ids = trainees.map{ |t| t.id }
 
       visit_report Report::TRAINEES_ACTIVITY
       select 'A Class', from: 'Class'
@@ -36,10 +33,10 @@ describe "Reports" do
       company = Employer.create(name: 'Company1', source: 'RSPEC')
 
       trainee = trainees.first
-      trainee.trainee_notes.create(notes: "This is Notes.")
+      trainee.trainee_notes.create(notes: 'This is Notes.')
       trainee.trainee_interactions.create(employer_id: company.id,
-                                          status: 1,
-                                          comment: 'This employer is interested')
+                                          status: 4,
+                                          comment: 'This employer hired')
 
       visit_report Report::TRAINEES_ACTIVITY
       select 'A Class', from: 'Class'
@@ -48,13 +45,15 @@ describe "Reports" do
       click_on 'Find'
 
       expect(page).to have_content 'This is Notes'
-      expect(page).to have_content 'Company1 - Interested'
+      expect(page).to have_content 'Company1'
+      expect(page).to have_content 'No OJT'
 
-      #change the end_date to yesterday
+      # change the end_date to yesterday
       fill_in 'To', with: Date.yesterday
       click_on 'Find'
       expect(page).to_not have_content 'This is Notes'
-      expect(page).to_not have_content 'Company1 - Interested'
+      expect(page).to_not have_content 'Company1'
+      expect(page).to_not have_content 'No OJT'
 
       visit_report Report::TRAINEES_ACTIVITY
       select 'A Class', from: 'Class'
@@ -74,7 +73,6 @@ describe "Reports" do
       expect(page).to_not have_content 'First1 Last1'
       expect(page).to_not have_content 'First2 Last2'
       expect(page).to have_content 'First3 Last3'
-
     end
   end
 end

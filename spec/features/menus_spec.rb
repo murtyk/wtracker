@@ -2,23 +2,23 @@ require 'rails_helper'
 
 def full_menu_list
   [
-    ['Dashboard',            '/dashboards'               ],
-    ['Users',                '/users'                    ],
+    ['Dashboard',            '/dashboards'],
+    ['Users',                '/users'],
 
-    ['Settings',             '#'                         ],
-    ['Applicant Source',     '/applicant_sources'        ],
-    ['Assessment',           '/assessments'              ],
-    ['Employment Status',    '/employment_statuses'      ],
-    ['Funding Source',       '/funding_sources'          ],
-    ['Re-apply Messages',    '/grants/reapply_message'   ],
-    ['Specialized Services', '/special_services'         ],
+    ['Settings',             '#'],
+    ['Applicant Source',     '/applicant_sources'],
+    ['Assessment',           '/assessments'],
+    ['Employment Status',    '/employment_statuses'],
+    ['Funding Source',       '/funding_sources'],
+    ['Re-apply Messages',    '/grants/reapply_message'],
+    ['Specialized Services', '/special_services'],
 
-    ['Programs',             '/programs'                 ],
-    ['Colleges',             '/colleges'                 ],
+    ['Programs',             '/programs'],
+    ['Colleges',             '/colleges'],
 
-    ['Advanced Search',      '/trainees/advanced_search' ],
+    ['Advanced Search',      '/trainees/advanced_search']
   ] +
-  level3_menu_list
+    level3_menu_list
 end
 
 def level3_menu_list
@@ -29,7 +29,7 @@ def level3_menu_list
     ['Employers Hired',       '/reports/new?report_name=employers_hired'],
     ['Employers No Address',  '/reports/new?report_name=employers_no_address'],
     ['Search Jobs',           '/job_searches/new'],
-    ['Shared List',           '/job_shares'],
+    ['Shared List',           '/job_shares']
   ]
 end
 
@@ -83,14 +83,13 @@ describe 'level 3 nav menus' do
     signout
   end
   it 'has relevant menu list for applicants grant' do
-
     level3_menu_list.each do |name, href|
       expect(find_link(name)[:href]).to eq(href)
     end
 
     check_common_xpath_menus
 
-    ['Dashboard', 'Users', 'Programs'].each do |menu|
+    %w(Dashboard Users Programs).each do |menu|
       expect(page).to_not have_link(menu)
     end
 

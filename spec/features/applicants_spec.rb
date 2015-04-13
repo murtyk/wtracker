@@ -1,17 +1,16 @@
 require 'rails_helper'
 
 def visit_new_applicant_page
-    account = Account.where(subdomain: 'apple').first
-    Account.current_id = account.id
-    grant = Grant.first
-    Grant.current_id = grant.id
+  account = Account.where(subdomain: 'apple').first
+  Account.current_id = account.id
+  grant = Grant.first
+  Grant.current_id = grant.id
 
-    salt = "salted#{grant.id}andpeppered"
-    visit "/applicants/new?salt=#{salt}"
+  salt = "salted#{grant.id}andpeppered"
+  visit "/applicants/new?salt=#{salt}"
 end
 
-describe "applicants" do
-
+describe 'applicants' do
   before :each do
     switch_to_applicants_domain
 
@@ -20,8 +19,8 @@ describe "applicants" do
     allow(Amazon).to receive(:file_url).and_return(@filepath)
 
     allow_any_instance_of(Applicant).to receive(:humanizer_questions)
-                                        .and_return([{"question"=>"Two plus two?",
-                                                      "answers"=>["4", "four"]}])
+      .and_return([{ 'question' => 'Two plus two?',
+                     'answers' => %w(4 four) }])
   end
 
   after :each do
@@ -30,7 +29,7 @@ describe "applicants" do
 
   it 'reports errors when trainee can not be created' do
     allow(TraineeFactory).to receive(:create_trainee_from_applicant)
-                             .and_return(Trainee.create)
+      .and_return(Trainee.create)
     visit_new_applicant_page
 
     fill_applicant_form(build_applicant_data)
@@ -56,8 +55,7 @@ describe "applicants" do
       trainee_id = trainee.id
       ts = TraineeStatus.where(trainee_id: trainee_id).first
       ts_name = ts.name
-      ts_display = "#{ts.created_at.to_date.to_s} - #{ts.name}"
-
+      ts_display = "#{ts.created_at.to_date} - #{ts.name}"
 
       expect(applicant.name).to eq(os_applicant.name)
       expect(applicant.status).to eq('Accepted')
@@ -126,7 +124,7 @@ describe "applicants" do
 
       expect(page).to have_text('Date of Birth')
       fill_in 'trainee_trainee_id', with: '123456789'
-      fill_in 'trainee_dob', with: "12/28/1990"
+      fill_in 'trainee_dob', with: '12/28/1990'
       click_on 'Next'
       expect(page).to have_text('Please enter your preferences for job leads')
 
@@ -137,7 +135,7 @@ describe "applicants" do
       click_on 'Update'
       expect(page).to have_text 'resume'
 
-      attach_file "trainee_file_file", @filepath
+      attach_file 'trainee_file_file', @filepath
 
       click_on 'Submit'
       expect(page).to have_text 'Suggested Job Posts'

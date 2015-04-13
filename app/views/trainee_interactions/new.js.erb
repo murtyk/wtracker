@@ -1,6 +1,6 @@
-<% if @trainee_page %>
-	$('#new_trainee_interaction_link').hide().after('<%= j render("js_new_trainee_form", trainee_interaction: @trainee_interaction) %>');
+<% if @trainee_interaction.errors.any? %>
+  <% message = @trainee_interaction.errors.full_messages.first %>
+  alert('<%= message.html_safe %>')
 <% else %>
-	$('#new_trainee_interaction_link').hide().after('<%= j render("js_new_employer_form", trainee_interaction: @trainee_interaction) %>');
-	$('#trainee_interaction_klass_id').change();
+  $('#new_trainee_interaction_link').hide().after('<%= j render("js_form", trainee_interaction: @trainee_interaction) %>');
 <% end %>

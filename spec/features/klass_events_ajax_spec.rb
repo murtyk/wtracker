@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Klass page" do
+describe 'Klass page' do
   describe 'can do events' do
-
     before :each do
       signin_admin
       create_klasses(1)
@@ -21,11 +20,11 @@ describe "Klass page" do
 
       click_link 'new_klass_event_link'
       wait_for_ajax
-      page.first(".add-on").click
+      page.first('.add-on').click
       wait_for_ajax
       click_on 'Prescreening'
       wait_for_ajax
-      fill_in 'klass_event_event_date', with: "12/28/2013"
+      fill_in 'klass_event_event_date', with: '12/28/2013'
       fill_in 'klass_event_notes', with: 'notes from rspec'
       fill_in 'klass_event_start_time_hr', with: '9'
       fill_in 'klass_event_end_time_hr', with: '1'
@@ -43,11 +42,9 @@ describe "Klass page" do
 
       click_on 'Expand All'
       expect(page).to have_text 'Prescreening'
-
     end
 
     it 'can delete event', js: true do
-
       # test edit an existing event
       click_on 'Expand All'
       expect(page).to have_text 'Graduation'
@@ -69,11 +66,9 @@ describe "Klass page" do
       visit("/klasses/#{klass_ids[0]}")
       click_on 'Expand All'
       expect(page).to_not have_text klass_event_name
-
     end
 
     it 'can change event', js: true do
-
       click_on 'Expand All'
 
       Account.current_id = 1
@@ -86,8 +81,8 @@ describe "Klass page" do
       click_link "edit_klass_event_link#{event.id}"
       wait_for_ajax
 
-      page.first(".combobox-clear").click
-      page.first(".add-on").click
+      page.first('.combobox-clear').click
+      page.first('.add-on').click
       click_on 'Graduation'
 
       click_on 'Save'
@@ -95,6 +90,5 @@ describe "Klass page" do
       click_on 'Expand All'
       expect(page).to_not have_text event_name
     end
-
   end
 end

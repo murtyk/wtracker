@@ -1,12 +1,20 @@
 <div id = <%= div_id_for(trainee_interaction) %>>
-  <%= link_to trainee_interaction_path(trainee_interaction), class: 'btn btn-flat btn-mini btn-info', id: "show_trainee_interaction_link#{trainee_interaction.id}", remote: true, data: {toggle: 'modal', target: "#modal_ti_details"} do%>
+  <%= link_to(trainee_interaction_path(trainee_interaction),
+              class: 'btn btn-flat btn-mini btn-info',
+              id: "show_trainee_interaction_link#{trainee_interaction.id}",
+              remote: true,
+              data: { toggle: 'modal', target: "#modal_ti_details" }) do%>
       <i class="icon-eye-open white"></i>
   <% end %>
-  <%= button_edit_association(trainee_interaction, trainee_page: trainee_page, title: 'Edit') %>
-  <% confirm_message = trainee_interaction.delete_confirm_message %>
-  <%= button_destroy_association(trainee_interaction, trainee_page: trainee_page, confirm_message: confirm_message) %>
-  <%= employer_link_or_name(trainee_interaction.employer) if trainee_page %>
-  <%= link_to(trainee_interaction.trainee.name, trainee_interaction.trainee)  unless trainee_page %>
+
+  <% if page == 'trainee_page' %>
+    <%= button_edit_association(trainee_interaction, page: page) %>
+    <%= button_destroy_association(trainee_interaction, page: page) %>
+    <%= employer_link_or_name(trainee_interaction.employer) %>
+  <% else %>
+    <%= link_to(trainee_interaction.trainee.name, trainee_interaction.trainee) %>
+  <% end %>
   <br>
+  <%= trainee_interaction.status_name %><br>
   <%= trainee_interaction.short_comment %>
 </div>

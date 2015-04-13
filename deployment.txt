@@ -1,7 +1,43 @@
 1. delete TIs with status != 4
-  Account.current_id =
-  Grant.current_id =
-  tis = TraineeInteraction.where.not(status: 4)
-  tis.destroy_all
+
+counts = []
+
+Account.all.each do |a|
+  Account.current_id = a.id
+  Grant.all.each do |g|
+    Grant.current_id = g.id
+    tis = TraineeInteraction.where.not(status: 4)
+    counts << [a.id, g.id, tis.count]
+  end
+end
+
+verify:
+---------
+
+counts
+
+
+Account.all.each do |a|
+  Account.current_id = a.id
+  Grant.all.each do |g|
+    Grant.current_id = g.id
+    tis = TraineeInteraction.where.not(status: 4)
+    tis.destroy_all
+  end
+end
+
+re-run counts query again
+
+and
+
+Account.all.each do |a|
+  Account.current_id = a.id
+  Grant.all.each do |g|
+    Grant.current_id = g.id
+    counts << [a.id, g.id, TraineeInteraction.count]
+  end
+end
+
+
 2. Deploy
 3. db migrate

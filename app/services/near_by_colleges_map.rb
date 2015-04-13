@@ -125,10 +125,13 @@ class NearByCollegesMap < MapService
     @trainee_addresses ||= HomeAddress.where(addressable_id: trainee_ids)
   end
 
+  # all trainees not assigned to a class and not placed
   def trainee_ids
     @trainee_ids ||= Trainee.pluck(:id) -
                      KlassTrainee.pluck(:trainee_id) -
-                     TraineeInteraction.where(status: 4).pluck(:trainee_id)
+                     TraineeInteraction.where(status: [4, 6],
+                                              termination_date: nil)
+                                       .pluck(:trainee_id)
   end
 
   def trainees

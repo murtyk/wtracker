@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe "Dashboard" do
-  describe "navigator" do
-    it "shows interviews and visit events" do
+describe 'Dashboard' do
+  describe 'navigator' do
+    it 'visit events' do
       Account.current_id = 1
       melinda = User.where(email: 'melinda@mail.com').first
       grant = Grant.first

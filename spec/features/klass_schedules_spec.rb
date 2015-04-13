@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe "Klass Schedules" do
+describe 'Klass Schedules' do
   describe 'can do events' do
-
     before :each do
       signin_admin
     end
@@ -28,12 +27,12 @@ describe "Klass Schedules" do
 
       click_on 'Schedule'
 
-      expect(page).to have_selector("td", text: "Monday")
-      expect(page).to have_selector("td", text: "9:00 am")
-      expect(page).to have_selector("td", text: "-- 2:00 pm")
-      expect(page).to have_selector("td", text: "Friday")
-      expect(page).to have_selector("td", text: "10:00 am")
-      expect(page).to have_selector("td", text: "-- 3:00 pm")
+      expect(page).to have_selector('td', text: 'Monday')
+      expect(page).to have_selector('td', text: '9:00 am')
+      expect(page).to have_selector('td', text: '-- 2:00 pm')
+      expect(page).to have_selector('td', text: 'Friday')
+      expect(page).to have_selector('td', text: '10:00 am')
+      expect(page).to have_selector('td', text: '-- 3:00 pm')
     end
   end
 end

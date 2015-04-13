@@ -1,0 +1,36 @@
+<%= simple_form_for(trainee_interaction, remote: true) do |f| %>
+  <div class="form-inputs">
+    <hr>
+    <%= f.hidden_field :trainee_id %>
+		<p>
+      <b><%=trainee_interaction.employer_name %></b>
+    </p>
+    <%= f.input :status, collection: trainee_interaction_statuses,
+                         include_blank: false,
+                         label: 'OJT Status' %>
+    <%= f.input :start_date, input_html: { class: 'date',
+                                           data: { behaviour: "datepicker" },
+                                           value: trainee_interaction.start_date.to_s},
+                              as: :string %>
+    <%= f.input :hire_title %>
+    <%= f.input :hire_salary %>
+    <%= f.input :termination_date, as: :string,
+                             label: 'Employment Termination Date',
+                             input_html: { class: 'date',
+                                           data: { behaviour: "datepicker" },
+                                           value: trainee_interaction.termination_date.to_s } %>
+
+    <%= f.input :comment, input_html: { style: 'height: 100px' } %>
+  </div>
+
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+<% end %>
+
+<%= ajax_form_cancel_script(trainee_interaction) %>
+<%=
+  if js_asset_exists?("#{controller_name}/#{action_name}.js")
+    javascript_include_tag "#{controller_name}/#{action_name}"
+  end
+%>

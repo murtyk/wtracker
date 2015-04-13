@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-describe "Administration" do
-
-  describe "accounts" do
-    it "can provision a demo account" do
+describe 'Administration' do
+  describe 'accounts' do
+    it 'can provision a demo account' do
       signin_opero_admin
       click_on 'New Account'
 

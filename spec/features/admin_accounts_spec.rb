@@ -1,13 +1,11 @@
 require 'rails_helper'
 
-describe "Administration" do
-
-  describe "manage accounts" do
+describe 'Administration' do
+  describe 'manage accounts' do
     before(:each) do
       signin_opero_admin
-
     end
-    it "can provision a new account" do
+    it 'can provision a new account' do
       expect(page).to have_text 'Accounts'
 
       click_on 'New Account'

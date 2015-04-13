@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-describe "Employer and Class Interaction" do
-
+describe 'Employer and Class Interaction' do
   before :each do
     signin_admin
     destroy_employers
@@ -9,7 +8,7 @@ describe "Employer and Class Interaction" do
   after :each do
     destroy_employers
   end
-  it "can create and update", js: true, noheadless: true do
+  it 'can create and update', js: true, noheadless: true do
     visit '/klass_interactions/new'
     wait_for_ajax
     fill_in 'Name', with: 'Company Abc Inc.'
@@ -22,7 +21,7 @@ describe "Employer and Class Interaction" do
     click_on 'Expand'
     expect(page).to have_text 'Interested'
 
-    myid = page.find("#klass_interactions").first(:xpath, "//*[contains(@id, 'edit_klass_interaction')]")[:id]
+    myid = page.find('#klass_interactions').first(:xpath, "//*[contains(@id, 'edit_klass_interaction')]")[:id]
     click_link myid
 
     select 'Confirmed', from: 'Status'
@@ -31,11 +30,11 @@ describe "Employer and Class Interaction" do
     expect(page).to have_text 'Confirmed'
     expect(page).to_not have_text 'Interested'
 
-    klass_href = page.find("#klass_interactions").first('a', "//*[contains(@href='/klasses')]")[:href]
+    klass_href = page.find('#klass_interactions').first('a', "//*[contains(@href='/klasses')]")[:href]
     visit klass_href
     click_on 'Expand All'
 
-    events = page.find("#Information_Session_events")
+    events = page.find('#Information_Session_events')
     expect(events).to have_text 'Confirmed'
     myid = events.first(:xpath, "//*[contains(@id, 'destroy_klass_interaction')]")[:id]
     click_link myid

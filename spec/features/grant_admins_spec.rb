@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Grant Admin" do
+describe 'Grant Admin' do
   before :each do
     Account.current_id = Account.find_by(subdomain: 'apple')
     Grant.current_id = Grant.first.id
@@ -10,7 +10,7 @@ describe "Grant Admin" do
 
     @klasses = Klass.all
   end
-  it "Can access all classes in grant" do
+  it 'Can access all classes in grant' do
     @klasses.each do |klass|
       expect(page).to have_text klass.name
       expect(page).to have_xpath("//a[@href='/klasses/#{klass.id}']")

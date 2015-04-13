@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Employers" do
+describe 'Employers' do
   include AjaxHelper
 
   before :each do
@@ -12,7 +12,6 @@ describe "Employers" do
   end
 
   describe 'contacts' do
-
     it 'add', js: true do
       click_link new_link_id('contact')
       wait_for_ajax
@@ -25,7 +24,6 @@ describe "Employers" do
       wait_for_ajax
       expect(page).to have_text 'Luciano Pavarotti'
       expect(page).to have_text 'luciano@mail.com'
-
     end
 
     it 'update', js: true do
@@ -48,7 +46,6 @@ describe "Employers" do
       fill_in 'contact_mobile_no', with: '999-888-7777'
       click_on 'Update'
       expect(page).to have_text '(m)'
-
     end
 
     it 'can remove contacts', js: true do
@@ -62,16 +59,13 @@ describe "Employers" do
       wait_for_ajax
       expect(page).to_not have_text contact_name
     end
-
   end
 
   describe 'manage sectors- ajax' do
-
     it 'can add and remove sectors', js: true do
-
       click_link new_link_id('employer_sector')
       wait_for_ajax
-      select('banking', :from => 'employer_sector_sector_id')
+      select('banking', from: 'employer_sector_sector_id')
       click_on 'Add'
       wait_for_ajax
       expect(page).to have_text 'banking'
@@ -82,17 +76,15 @@ describe "Employers" do
       page.driver.browser.switch_to.alert.accept
       wait_for_ajax
       expect(page).to_not have_text sector_name
-
     end
-
   end
 
   describe 'can add job openings - ajax' do
     it 'can add job openings', js: true do
       click_link new_link_id('job_opening')
       wait_for_ajax
-      fill_in 'job_opening_jobs_no', with: "3"
-      fill_in 'job_opening_skills', with: "CNC set up"
+      fill_in 'job_opening_jobs_no', with: '3'
+      fill_in 'job_opening_skills', with: 'CNC set up'
       click_on 'Add'
       wait_for_ajax
       expect(page).to have_text 'CNC set up'
@@ -100,11 +92,10 @@ describe "Employers" do
   end
 
   describe 'notes - ajax' do
-
     it 'add', js: true do
       click_link new_link_id('employer_note')
       wait_for_ajax
-      fill_in 'employer_note_note', with: "test note"
+      fill_in 'employer_note_note', with: 'test note'
       click_on 'Add'
       wait_for_ajax
       expect(page).to have_text 'test note'
@@ -113,7 +104,7 @@ describe "Employers" do
     it 'delete', js: true do
       click_link new_link_id('employer_note')
       wait_for_ajax
-      fill_in 'employer_note_note', with: "test note"
+      fill_in 'employer_note_note', with: 'test note'
       click_on 'Add'
       wait_for_ajax
       expect(page).to have_text 'test note'
@@ -122,9 +113,6 @@ describe "Employers" do
       page.driver.browser.switch_to.alert.accept
       wait_for_ajax
       expect(page).to_not have_text 'test note'
-
     end
-
   end
-
 end

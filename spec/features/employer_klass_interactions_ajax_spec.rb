@@ -1,14 +1,11 @@
 require 'rails_helper'
 
-
-describe "Employers" do
-
+describe 'Employers' do
   RSpec.configure do |config|
-    config.order = "defined"
+    config.order = 'defined'
   end
 
   describe 'do class interactions -ajax', js: true, retry: 2, retry_wait: 3 do
-
     before :each do
       signin_admin
     end
@@ -22,14 +19,14 @@ describe "Employers" do
       destroy_employers
       create_klasses(1)
       create_employers(1)
-      click_on "new_klass_interaction_link"
+      click_on 'new_klass_interaction_link'
       wait_for_ajax
-      expect(page).to have_text "New Class Interaction"
+      expect(page).to have_text 'New Class Interaction'
       klass = get_klasses.first
       klass_name = "#{klass.college.name} - #{klass.name}"
       select(klass_name, from: 'klass_interaction_klass_id')
       klass_event = klass.klass_events.first
-      event_label = "#{klass_event.event_date.to_s} - #{klass_event.name}"
+      event_label = "#{klass_event.event_date} - #{klass_event.name}"
       select(klass_event.selection_name, from: 'klass_interaction_klass_event_id')
       select('Confirmed', from: 'klass_interaction_status')
       click_button 'Save'
@@ -38,11 +35,9 @@ describe "Employers" do
       click_button 'Expand'
       sleep 0.2
       expect(page).to have_text 'Confirmed'
-
     end
 
     it 'edit class interaction and event information', js: true do
-
       employer = get_employers.first
       visit "/employers/#{employer.id}"
 
@@ -54,14 +49,13 @@ describe "Employers" do
       wait_for_ajax
 
       select('Cancelled', from: 'klass_interaction_status')
-      fill_in "klass_interaction_klass_event_notes", with: 'KI Notes'
+      fill_in 'klass_interaction_klass_event_notes', with: 'KI Notes'
       click_button 'Update'
       wait_for_ajax
       expect(page).to have_text 'Cancelled'
-
     end
 
-    it "deletes employer class interaction", js: true do
+    it 'deletes employer class interaction', js: true do
       klass = get_klasses.first
       klass_id = klass.id
 
@@ -85,5 +79,4 @@ describe "Employers" do
       destroy_employers
     end
   end
-
 end
