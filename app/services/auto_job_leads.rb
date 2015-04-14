@@ -188,7 +188,7 @@ class AutoJobLeads
 
   def split_keywords(kw)
     half = kw.count / 2
-    [kw[0..half - 1], keywords[half..-1]]
+    [kw[0..half - 1], kw[half..-1]]
   end
 
   def find_jobs(jsp, keywords, days)
