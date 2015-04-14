@@ -44,7 +44,11 @@ WTracker::Application.routes.draw do
 
   resources :klass_events,        except: [:index, :show]
   resources :klass_interactions,  except: [:index, :show]
-  resources :klass_trainees,      except: [:index, :show]
+  resources :klass_trainees,      except: [:index, :show] do
+    member do
+      get :ojt_enrolled
+    end
+  end
 
   resources :assessments,         only: [:new, :create, :destroy, :index]
 

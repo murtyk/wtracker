@@ -1,8 +1,19 @@
 bind_datepicker();
-$('#klass_trainee_status').change(function() {
+$('#klass_trainee_status').change(function(e) {
+  var kt_id, ojt_enrolled;
   var status_id = $('#klass_trainee_status :selected').val();
   if (status_id == 4) {
-    $('#hire_details').show();
+    // edit_klass_trainee_133_link
+    kt_id = $(this).closest('form').attr('id').split('_')[3];
+
+    ojt_enrolled = has_open_placement(kt_id);
+    if (ojt_enrolled) {
+      alert('Placement data already exists for this trainee. Go to trainee page to view.');
+      e.preventDefault();
+    }
+    else {
+      $('#hire_details').show();
+    }
   }
   else {
     $('#hire_details').hide();
@@ -34,3 +45,14 @@ $("form.edit_klass_trainee").on('submit', function(e){
     }
   }
 });
+
+function has_open_placement(kt_id){
+  var enrolled;
+  jQuery.ajaxSetup({async:false});
+  $.get("/klass_trainees/" + kt_id + "/ojt_enrolled", function(data) {
+      enrolled = data;
+  }, "json");
+  jQuery.ajaxSetup({async:true});
+
+  return enrolled;
+}

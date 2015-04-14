@@ -4,6 +4,16 @@
 class KlassTraineesController < ApplicationController
   before_filter :authenticate_user!
 
+  def ojt_enrolled
+    kt = KlassTrainee.find(params[:id])
+    trainee = kt.trainee
+    oe = trainee.trainee_interactions
+         .where(status: 5, termination_date: nil)
+         .count > 0
+
+    render json: oe
+  end
+
   def new
     @klass_trainee,
     @trainees,

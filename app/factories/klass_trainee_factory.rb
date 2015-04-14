@@ -1,50 +1,51 @@
 include UtilitiesHelper
 # serves several factory methods
-# 1. update klass trainee
-#    additional scenarios - new emp interactions or update emp interaction
-# 2. Add trainee to a class from klass page
-# 3. Add class to a trainee from trainee page
-# 4. Add multiple trainees through near by colleges page
+# 1. Update klass trainee
+#    From Class Page only.
+#    If status changed to Placed, new trainee interaction should be created
+#    If TI status is No OJT or OJT Completed,
+#       then all KTs should be updated with status placed
+# 2. Adding a new KlassTrainee
+#    1. From klass page
+#    2. From trainee page
+#    3. Add multiple trainees through near by colleges page
 class KlassTraineeFactory
   def self.update_klass_trainee(all_params)
-    # debugger
-    klass_trainee, trainee, f_status, status = init_objects(all_params)
-    params = all_params[:klass_trainee].clone
+    klass_trainee = KlassTrainee.find(all_params[:id])
+    params = extract_kt_params(all_params)
 
-    e_i = init_employer_interaction(status, trainee, params)
-    params = clear_ei_attrs_from_params(params)
-    updated, updated_eis = update(klass_trainee, params, f_status, status, e_i)
+    trainee = klass_trainee.trainee
 
-    trainee_page = all_params[:klass_trainee].delete(:trainee_id)
+    t_i = init_trainee_interaction(trainee, params)
+    params = clear_ti_attrs_from_params(params)
+    update(klass_trainee, params, t_i)
 
-    build_decorator(klass_trainee, trainee_page, updated, updated_eis)
+    build_decorator(klass_trainee, t_i)
   end
 
-  def self.build_decorator(kt, tp, up, up_eis)
-    kt_d              = kt.decorate
-    kt_d.trainee_page = tp
-    kt_d.updated      = up
-    kt_d.updated_eis  = up_eis
+  def self.build_decorator(kt, ti)
+    kt_d = kt.decorate
+    kt_d.trainee_interaction = ti
     kt_d
   end
 
-  def self.init_objects(params)
-    klass_trainee = KlassTrainee.find(params[:id])
-    trainee       = klass_trainee.trainee
-    from_status   = klass_trainee.status
-    status        = params[:klass_trainee][:status].to_i
-    [klass_trainee, trainee, from_status, status]
+  def self.extract_kt_params(all_params)
+    params = all_params[:klass_trainee].clone
+    status = params[:status].to_i
+    # KT status will be changed to Placed by TI update
+    params.delete(:status) if status == 4
+    params
   end
 
-  def self.init_employer_interaction(status, trainee, params)
+  def self.init_trainee_interaction(trainee, params)
     id = params[:employer_id].to_i
-    return nil unless status == 4 && id > 0
-    ei = trainee.trainee_interactions.find_or_initialize_by(employer_id: id)
-    assign_ei_attributes(ei, params)
-    ei
+    return nil unless id > 0
+    ti = trainee.trainee_interactions.find_or_initialize_by(employer_id: id)
+    assign_ti_attributes(ti, params)
+    ti
   end
 
-  def self.assign_ei_attributes(ei, params)
+  def self.assign_ti_attributes(ei, params)
     title = params[:hire_title]
     ei.start_date  = opero_str_to_date(params[:start_date])
     ei.hire_title  = title.blank? ? 'missing' : title
@@ -53,27 +54,22 @@ class KlassTraineeFactory
     ei.status      = params[:ti_status]
   end
 
-  def self.clear_ei_attrs_from_params(params)
+  def self.clear_ti_attrs_from_params(params)
     [:hire_title, :hire_salary, :start_date, :comment,
      :employer_id, :employer_name, :ti_status].each { |k| params.delete(k) }
     params
   end
 
-  def self.update(klass_trainee, params, f_status, status, e_i)
-    updated_eis = !e_i.nil?
-    begin
-      klass_trainee.update_attributes(params)
-      e_i.save if e_i
-      was_hired = TraineeInteraction::STATUSES[f_status] == 'Hired'
-      if (f_status != status) && was_hired
-        klass_trainee.trainee.unhire
-        updated_eis = true
-      end
-    rescue StandardError => error
-      klass_trainee.errors.add(:base, error)
-      return [false, updated_eis]
+  def self.update(klass_trainee, params, t_i)
+    klass_trainee.update_attributes(params)
+    if t_i
+      saved = t_i.save
+      update_klass_trainees_to_placed(t_i.trainee) if saved && t_i.hired?
     end
-    [true, updated_eis]
+    true
+  rescue StandardError => error
+    klass_trainee.errors.add(:base, error)
+    false
   end
 
   def self.new(params)
@@ -134,5 +130,9 @@ class KlassTraineeFactory
     trainee_ids.each { |id| object.klass_trainees.new(trainee_id: id) }
     object.save
     object
+  end
+
+  def self.update_klass_trainees_to_placed(trainee)
+    trainee.klass_trainees.each { |kt| kt.update(status: 4) }
   end
 end

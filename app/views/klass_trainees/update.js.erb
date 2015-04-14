@@ -1,12 +1,4 @@
-<% if @klass_trainee.trainee_page %>
-	$('#<%=ajax_form_id(@klass_trainee)%>').remove();
-	$('#klass_trainees').html('<%= j render("klass_trainees", object: @klass_trainee.trainee) %>');
-	<% if @klass_trainee.updated_eis? %>
-		$('#trainee_interactions').html('<%= j render("trainee_interactions/trainee_interactions",
-                                     object: @klass_trainee.trainee,
-                                     page: "trainee_page") %>');
-	<% end %>
-	$('#<%=div_id_for(@klass_trainee)%>').show();
-<% else %>
-	$('#klass_trainees').html('<%= j render("klass_trainees", object: @klass_trainee.klass) %>');
+$('#klass_trainees').html('<%= j render("klass_trainees", object: @klass_trainee.klass) %>');
+<% if @klass_trainee.updated_with_ojt_enrolled? %>
+  alert('<%= @klass_trainee.ojt_enrolled_message%>');
 <% end %>

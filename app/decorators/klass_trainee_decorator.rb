@@ -2,15 +2,7 @@
 class KlassTraineeDecorator < Draper::Decorator
   delegate_all
 
-  attr_accessor :trainee_page, :updated, :updated_eis
-  # Define presentation-specific methods here. Helpers are accessed through
-  # `helpers` (aka `h`). You can override attributes, for example:
-  #
-  #   def created_at
-  #     helpers.content_tag :span, class: 'time' do
-  #       object.created_at.strftime("%a %m/%d/%y")
-  #     end
-  #   end
+  attr_accessor :trainee_page, :trainee_interaction
 
   def klass
     object.klass.decorate
@@ -20,7 +12,14 @@ class KlassTraineeDecorator < Draper::Decorator
     KlassTrainee::STATUSES[object.status]
   end
 
-  def updated_eis?
-    updated_eis
+  def updated_with_ojt_enrolled?
+    return false unless trainee_interaction
+    trainee_interaction.ojt_enrolled?
+  end
+
+  def ojt_enrolled_message
+    'You entered placement information with OJT Enrolled status. ' \
+    'Class trainee status will not reflect this change. '\
+    'Go to Trainee page to update placement data.'
   end
 end

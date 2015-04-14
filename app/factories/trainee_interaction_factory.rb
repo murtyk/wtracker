@@ -6,7 +6,7 @@ class TraineeInteractionFactory
   def self.build(params)
     trainee = Trainee.find(params[:trainee_id])
     ti = trainee.trainee_interactions.new
-    check_already_placed(ti)
+    check_open_placement(ti)
   end
 
   # creates a TI
@@ -48,7 +48,7 @@ class TraineeInteractionFactory
     klass_trainees = ti.trainee.klass_trainees
     ti.destroy
     # we do not use update_all since it does not update timestamp
-    klass_trainees.each { |kt| kt.update(status: 2) }
+    klass_trainees.each { |kt| kt.update(status: 2) } if ti.hired?
     ti
   end
 
@@ -82,6 +82,21 @@ class TraineeInteractionFactory
       error = 'Already Placed.'
       ti.errors.add(:base, error)
       trainee.errors.add(:base, error)
+    end
+    ti
+  end
+
+  def self.check_open_placement(ti)
+    check_already_placed(ti)
+    unless ti.errors.any?
+      trainee = ti.trainee
+      if trainee &&
+         trainee.trainee_interactions
+         .where(status: 5, termination_date: nil).count > 0
+        error = 'Already OJT Enrolled'
+        ti.errors.add(:base, error)
+        trainee.errors.add(:base, error)
+      end
     end
     ti
   end
