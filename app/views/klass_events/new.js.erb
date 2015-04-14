@@ -1,1 +1,14 @@
 $('#new_event').hide().after('<%= j render("jsform") %>');
+$('#new_klass_event').submit(function() {
+  if ($('#klass_event_name').val() == ""){
+    alert("Please enter event name");
+    return false;
+  }
+  if ($('#klass_event_event_date').val() == ""){
+    alert("Please enter event date");
+    return false;
+  }
+
+  $('#event_submit-button').button('loading');
+
+});
