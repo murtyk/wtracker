@@ -81,7 +81,7 @@
       </div>
       <div class='span9'>
         <% if @trainees.any? %>
-          <div align="center" class='span8'><%= will_paginate @trainees%></div>
+          <div align="center" class='span8'><%= will_paginate(@trainees, params: {q: params[:q]})%></div>
         <% end %>
       </div>
       <div class='span1'>
