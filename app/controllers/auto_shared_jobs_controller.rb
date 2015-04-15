@@ -16,6 +16,8 @@ class AutoSharedJobsController < ApplicationController
   # REFACTOR explore adding another action for updating notes
   #          status update can be moved to update action?
   def edit
+    ::NewRelic::Agent.add_custom_parameters({ host: request.host, user_id: user_id, trainee_id: trainee_id})
+
     if params[:status]
       validate_key!
       @auto_shared_job.change_status(params[:status].to_i)
@@ -54,5 +56,13 @@ class AutoSharedJobsController < ApplicationController
     return filters unless params[:status]
     status_codes = AutoSharedJob.status_codes(params[:status])
     filters.merge(status: status_codes)
+  end
+
+  def user_id
+    current_user && current_user.id
+  end
+
+  def trainee_id
+    current_trainee && current_trainee.id
   end
 end
