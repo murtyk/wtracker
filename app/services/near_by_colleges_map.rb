@@ -41,7 +41,7 @@ class NearByCollegesMap < MapService
   # key: college id
   # value: college name and trainess
   def build_colleges
-    os_colleges  = College.order(:name).map do |college|
+    os_colleges  = College.includes(:address).order(:name).map do |college|
       os         = build_college_open_struct(college)
       os.klasses = open_klasses(college)
       [college.id, os]
