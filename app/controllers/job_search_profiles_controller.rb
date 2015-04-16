@@ -68,6 +68,8 @@ class JobSearchProfilesController < ApplicationController
   def valid_trainee_or_key
     return if current_trainee
     jsp = find_profile
+    redirected = redirect_to_trainee_login?(jsp)
+    return if redirected
     return if jsp.key == params[:key] || jsp.key == params[:job_search_profile][:key]
     fail 'invalid key for job_search_profile'
   end
@@ -76,5 +78,13 @@ class JobSearchProfilesController < ApplicationController
     return unless params[:job_search_profile][:start_date]
     params[:job_search_profile][:start_date] =
       opero_str_to_date(params[:job_search_profile][:start_date])
+  end
+
+  def redirect_to_trainee_login?(jsp)
+    trainee = Trainee.unscoped.find jsp.trainee_id
+    grant = Grant.find trainee.grant_id
+    return false unless grant.trainee_applications?
+    redirect_to '/trainees/sign_in'
+    true
   end
 end

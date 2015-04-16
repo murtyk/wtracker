@@ -67,8 +67,7 @@ describe 'Job Search' do
         click_on btn_id
         sleep 2
 
-        # session.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
-        new_window = page.driver.browser.window_handles.last
+        new_window = windows.last
 
         Account.current_id = 1
         Grant.current_id = 1

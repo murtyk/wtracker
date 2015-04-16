@@ -1,6 +1,7 @@
 $('.joblink').click(function() {
-  arr = $(this).attr('id').split('-');
-  url = '/auto_shared_jobs/' + arr[0] + '/edit?key=' + arr[1] + '&status=1',
+  var id = $(this).attr('id');
+  var key = $(this).attr('key');
+  url = '/auto_shared_jobs/' + id + '/edit?key=' + key + '&status=1',
   $.ajax({
         url: url,
         beforeSend: function(xhr, settings) {
@@ -8,7 +9,11 @@ $('.joblink').click(function() {
           }
         });
 });
+
 $('.job-note-show-more-or-less').click(function() {
+
+  var button_id, job_id, div_short_notes_id, div_full_notes_id, f_show;
+
   button_id = $(this).attr('id');
   job_id = button_id.split('_')[4];
   div_short_notes_id = '#short_notes_' + job_id;

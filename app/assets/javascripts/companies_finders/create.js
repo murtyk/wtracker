@@ -3,7 +3,7 @@ $(window).load(function() {
   if (process_id == null){
     return;
   }
-  var processing = true
+  var processing = true;
   console.log("fetching companies finder status");
   $("#pleaseWaitDialog").modal();
   $("body").css("cursor", "progress");

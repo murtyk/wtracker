@@ -1,5 +1,6 @@
 <div class='row-fluid' style='margin-top: 10px'>
   <div id = 'left_panel' class = 'span3 hidden-phone' style='margin-left:10px;'>
+    <div id = 'sticky_side_bar' data-spy="affix">
     <div style='background: #ddd; padding: 10px;'>
       <%= render 'profile_info', job_search_profile: @job_search_profile %>
     </div>
@@ -11,6 +12,7 @@
       <%= render 'placement_information', trainee: @job_search_profile.trainee %>
     </div>
     <% end %>
+    </div>
   </div>
   <div id = 'collapser' class='span3 visible-phone'>
     <div class="accordion" id="profile-accordion">
@@ -74,7 +76,11 @@
             <% else %>
               <% title = 'Title Missing' %>
             <% end %>
-            <%= link_to title, job.url, class: 'joblink', id: "#{job.id}-#{job.key}", style: 'color: blue', target: '_blank'%>
+            <%= link_to title, job.url, class: 'joblink',
+                                        id: job.id,
+                                        key: job.key,
+                                        style: 'color: blue',
+                                        target: '_blank'%>
           </strong><br>
         </div>
         <div class = 'span3'>

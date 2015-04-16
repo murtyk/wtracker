@@ -103,6 +103,7 @@ $("#remove-selected-contacts").click(function(){
 });
 
 function check_check_boxes() {
+  var id;
   tf_ids.forEach(function(tf_id) {
     id = '#tf_' + tf_id;
     console.log(id);

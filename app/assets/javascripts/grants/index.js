@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  var leftHeight, rightHeight;
   var grant_ids = $('.page_data').data('grant-ids');
   $.each(grant_ids, function( index, value ){
     leftHeight = $('#left_' + value).height();
