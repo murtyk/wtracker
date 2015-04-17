@@ -1,6 +1,5 @@
 <div class='row-fluid' style='margin-top: 10px'>
   <div id = 'left_panel' class = 'span3 hidden-phone' style='margin-left:10px;'>
-    <div id = 'sticky_side_bar' data-spy="affix">
     <div style='background: #ddd; padding: 10px;'>
       <%= render 'profile_info', job_search_profile: @job_search_profile %>
     </div>
@@ -8,11 +7,10 @@
       <%= render 'job_leads_metrics', job_search_profile: @job_search_profile %>
     </div>
     <% if current_grant.trainee_applications? %>
-    <div style='background: #ddd; padding: 10px; margin-top:10px'>
-      <%= render 'placement_information', trainee: @job_search_profile.trainee %>
-    </div>
+      <div style='background: #ddd; padding: 10px; margin-top:10px'>
+        <%= render 'placement_information', trainee: @job_search_profile.trainee %>
+      </div>
     <% end %>
-    </div>
   </div>
   <div id = 'collapser' class='span3 visible-phone'>
     <div class="accordion" id="profile-accordion">
