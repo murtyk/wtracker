@@ -1,6 +1,7 @@
+# for user sign in and sign out
 module  UserHelper
   def signin_opero_admin
-    visit ('/admins/sign_in')
+    visit '/admins/sign_in'
     fill_in 'Email', with: 'admin@opero.com'
     fill_in 'Password', with: 'adminpassword'
     click_button 'Log in'

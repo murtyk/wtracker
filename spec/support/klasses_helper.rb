@@ -1,3 +1,4 @@
+# for generating klasses
 module KlassesHelper
   def create_klasses(n = 1, trainees_per_klass = 0)
     seq = get_klasses_ids.count
@@ -10,10 +11,10 @@ module KlassesHelper
       click_button 'Save'
     end
 
-    if trainees_per_klass > 0
-      get_kasses_with_seq_number(start_new_klass_seq).each do |klass|
-        create_trainees(trainees_per_klass, klass)
-      end
+    return unless trainees_per_klass > 0
+
+    get_kasses_with_seq_number(start_new_klass_seq).each do |klass|
+      create_trainees(trainees_per_klass, klass)
     end
   end
 
@@ -24,8 +25,6 @@ module KlassesHelper
 
     get_klasses_ids.each do |klass_id|
       click_link "destroy_klass_#{klass_id}_link"
-      # find(:xpath, "//a[@class='btn-danger' and contains('/klasses/#{klass_id}')]").click
-      # find('a.btn-danger', href: "/klasses/#{klass_id}").click
       page.driver.browser.switch_to.alert.accept
       wait_for_ajax
     end

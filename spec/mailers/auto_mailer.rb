@@ -26,7 +26,6 @@ describe AutoMailer do
     end
 
     it 'reply_to should be admins email' do
-
       mail = AutoMailer.notify_applicant_status(@applicant)
       expect(mail.reply_to).to eql([@account.admins.first.email])
       mail.deliver
@@ -37,6 +36,5 @@ describe AutoMailer do
       mail = AutoMailer.notify_applicant_status(@applicant)
       expect(mail.reply_to).to eql([@applicant.grant.reply_to_email])
     end
-
   end
 end

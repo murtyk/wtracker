@@ -1,29 +1,35 @@
 include AjaxHelper
-
+# for generation and destruction of employers
 module EmployersHelper
   def create_employers(n = 1, address = false)
-    sector_names = Sector.pluck(:name)
-    sectors_count = sector_names.count
     seq = 0
     street_number = 100
-    n.times do
-      sector_index = seq % sectors_count
-      seq += 1
-      visit '/employers/new'
-      fill_in 'Name', with: "Company#{seq}"
-      select sector_names[sector_index], from: 'Sectors'
-      if address
-        VCR.use_cassette('employers_helper') do
+    VCR.use_cassette('employers_helper') do
+      n.times do
+        seq += 1
+        visit '/employers/new'
+        fill_in 'Name', with: "Company#{seq}"
+        select random_sector_name, from: 'Sectors'
+        if address
           street_number += 1
-          fill_in 'Street', with: "#{street_number} College Rd E"
-          fill_in 'City', with: 'Princeton'
-          select 'NJ', from: 'State'
-          fill_in 'Zip', with: '08540'
+          fill_address(street_number)
         end
+        click_button 'Save'
       end
-      click_button 'Save'
     end
-    employer_ids = get_employer_ids
+
+    get_employer_ids
+  end
+
+  def random_sector_name
+    Sector.unscoped.order('RANDOM()').first.name
+  end
+
+  def fill_address(street_number)
+    fill_in 'Street', with: "#{street_number} College Rd E"
+    fill_in 'City', with: 'Princeton'
+    select 'NJ', from: 'State'
+    fill_in 'Zip', with: '08540'
   end
 
   def destroy_employers
@@ -35,11 +41,13 @@ module EmployersHelper
     click_on 'Find'
     sleep 0.2
 
-    employers_count.times do
-      find('a.btn-danger', match: :first).click
-      page.driver.browser.switch_to.alert.accept
-      wait_for_ajax
-    end
+    employers_count.times { destroy_one_employer }
+  end
+
+  def destroy_one_employer
+    find('a.btn-danger', match: :first).click
+    page.driver.browser.switch_to.alert.accept
+    wait_for_ajax
   end
 
   def get_employer_ids

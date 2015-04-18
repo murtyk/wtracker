@@ -49,47 +49,17 @@ module ApplicantsHelper
   end
 
   def fill_applicant_form(a, re_apply = false)
-    fill_in 'applicant_first_name',      with: a.first_name
-    fill_in 'applicant_last_name',       with: a.last_name
-    fill_in 'applicant_address_line1',   with: a.address_line1
-    fill_in 'applicant_address_city',    with: a.address_city
-    fill_in 'applicant_address_zip',     with: a.address_zip
-    select a.county,                    from: 'applicant_county_id'
+    fill_in_name(a)
 
-    unless re_apply
-      fill_in 'applicant_email',           with: a.email
-      fill_in 'applicant_email_confirmation', with: a.email
-    end
+    fill_in_contact_details(a, re_apply)
 
-    fill_in 'applicant_mobile_phone_no', with: a.mobile_phone_no
-    select a.sector,             from: 'applicant_sector_id'
+    make_selections_1(a)
 
-    select a.veteran,            from: 'applicant_veteran'
-    select a.legal_status,       from: 'applicant_legal_status'
-    select a.gender,             from: 'applicant_gender'
-    select a.race,               from: 'applicant_race_id'
+    fill_in_last_employer_info(a)
 
-    select a.employment_status,  from: 'applicant_current_employment_status'
-
-    fill_in 'applicant_last_employed_on',    with: a.last_employed_on
-    fill_in 'applicant_last_employer_name',  with: a.last_employer_name
-    fill_in 'applicant_last_employer_line1', with: a.last_employer_line1
-    fill_in 'applicant_last_employer_city',  with: a.last_employer_city
-    select a.last_employer_state,   from: 'applicant_last_employer_state'
-    fill_in 'applicant_last_employer_zip',   with: a.last_employer_zip
-
-    fill_in 'applicant_last_employer_manager_name', with: a.last_employer_manager_name
-    fill_in 'applicant_last_employer_manager_phone_no',  with: a.last_employer_manager_phone_no
-
-    fill_in 'applicant_last_wages',         with: a.last_wages
-    fill_in 'applicant_last_job_title',     with: a.last_job_title
     fill_in 'applicant_salary_expected',    with: a.salary_expected
-    select a.education_level,               from: 'applicant_education_level'
-    select a.unemployment_proof,            from: 'applicant_unemployment_proof'
-    select a.special_service,               from: 'applicant[special_service_ids][]'
-    select a.transportation,                from: 'applicant_transportation'
-    select a.computer_access,               from: 'applicant_computer_access'
-    select a.source,                        from: 'applicant_source'
+
+    make_selections_2(a)
 
     # use the below when ready to test js: true
     # select 'Other, please specify',             from: 'applicant_reference'
@@ -101,5 +71,65 @@ module ApplicantsHelper
     fill_in 'applicant_humanizer_answer', with: a.humanizer_answer
 
     check 'applicant_signature'
+  end
+
+  def fill_in_name(a)
+    fill_in 'applicant_first_name',      with: a.first_name
+    fill_in 'applicant_last_name',       with: a.last_name
+  end
+
+  def fill_in_address(a)
+    fill_in 'applicant_address_line1',   with: a.address_line1
+    fill_in 'applicant_address_city',    with: a.address_city
+    fill_in 'applicant_address_zip',     with: a.address_zip
+    select a.county,                    from: 'applicant_county_id'
+  end
+
+  def fill_in_contact_details(a, re_apply)
+    fill_in_address(a)
+    unless re_apply
+      fill_in 'applicant_email',           with: a.email
+      fill_in 'applicant_email_confirmation', with: a.email
+    end
+    fill_in 'applicant_mobile_phone_no', with: a.mobile_phone_no
+  end
+
+  def make_selections_1(a)
+    select a.sector,             from: 'applicant_sector_id'
+    select a.veteran,            from: 'applicant_veteran'
+    select a.legal_status,       from: 'applicant_legal_status'
+    select a.gender,             from: 'applicant_gender'
+    select a.race,               from: 'applicant_race_id'
+    select a.employment_status,  from: 'applicant_current_employment_status'
+  end
+
+  def fill_in_last_employer_info(a)
+    fill_in 'applicant_last_employed_on',    with: a.last_employed_on
+    fill_in 'applicant_last_employer_name',  with: a.last_employer_name
+
+    fill_in_last_employer_address(a)
+
+    fill_in 'applicant_last_employer_manager_name', with: a.last_employer_manager_name
+    fill_in 'applicant_last_employer_manager_phone_no',
+            with: a.last_employer_manager_phone_no
+
+    fill_in 'applicant_last_wages',         with: a.last_wages
+    fill_in 'applicant_last_job_title',     with: a.last_job_title
+  end
+
+  def fill_in_last_employer_address(a)
+    fill_in 'applicant_last_employer_line1', with: a.last_employer_line1
+    fill_in 'applicant_last_employer_city',  with: a.last_employer_city
+    select a.last_employer_state,   from: 'applicant_last_employer_state'
+    fill_in 'applicant_last_employer_zip',   with: a.last_employer_zip
+  end
+
+  def make_selections_2(a)
+    select a.education_level,               from: 'applicant_education_level'
+    select a.unemployment_proof,            from: 'applicant_unemployment_proof'
+    select a.special_service,               from: 'applicant[special_service_ids][]'
+    select a.transportation,                from: 'applicant_transportation'
+    select a.computer_access,               from: 'applicant_computer_access'
+    select a.source,                        from: 'applicant_source'
   end
 end

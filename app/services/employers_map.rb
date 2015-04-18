@@ -89,11 +89,7 @@ class EmployersMap < MapService
   private
 
   def county_ids
-    unless @county_ids
-      @county_ids = filters[:county_ids] || []
-      @county_ids.delete('')
-    end
-    @county_ids
+    @county_ids ||= (filters[:county_ids] || []) - ['']
   end
 
   def county_names
@@ -140,9 +136,14 @@ class EmployersMap < MapService
     a = search_address(employer_address)
     @trainee_addresses = a.nearbys(radius)
                          .where(addressable_type: 'Trainee')
-                         .where(addressable_id: user_trainee_ids)
+                         .where(addressable_id: not_hired_trainee_ids)
     a.id = nil
     a.delete
+  end
+
+  def not_hired_trainee_ids
+    user_trainee_ids - TraineeInteraction.where(status: [4, 6], termination_date: nil)
+      .pluck(:trainee_id)
   end
 
   def search_address(address)
@@ -181,7 +182,7 @@ class EmployersMap < MapService
 
     state.counties.includes(:polygons).each do |county|
       @state_county_polygons += county.polygons_json
-      @state_county_names.push county.name
+      @state_county_names << county.name
     end
   end
 end
