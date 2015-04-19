@@ -70,7 +70,8 @@ class JobSearchProfilesController < ApplicationController
     jsp = find_profile
     redirected = redirect_to_trainee_login?(jsp)
     return if redirected
-    return if jsp.key == params[:key] || jsp.key == params[:job_search_profile][:key]
+    return if jsp.key == params[:key]
+    return if params[:job_search_profile] && jsp.key == params[:job_search_profile][:key]
     fail 'invalid key for job_search_profile'
   end
 
