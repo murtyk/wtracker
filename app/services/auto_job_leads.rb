@@ -72,10 +72,13 @@ class AutoJobLeads
   end
 
   def send_leads_for_grant_trainees(grant)
+    grant_name = "#{grant.account_name} - #{grant.name}"
+    Rails.logger.info "AutoJobLeads: started leads for #{grant_name}"
     init_trainee_stats
     grant.trainees.each do |trainee|
       perform_action_for_trainee(trainee)
     end
+    Rails.logger.info "AutoJobLeads: completed leads for #{grant_name}"
     build_status(grant)
   end
 
@@ -98,6 +101,9 @@ class AutoJobLeads
     leads_sent_count = search_and_send_jobs(trainee)
     @trainee_job_leads << [trainee, leads_sent_count]
     sleep 1
+  rescue StandardError => error
+    msg = "AutoJobLeads: Trainee #{trainee.name} ID: #{trainee.id} EXCEPTION: #{error}"
+    Rails.logger.error msg
   end
 
   def action_for_trainee(trainee)
