@@ -80,7 +80,6 @@ module MenusHelper
              reapply_message_menu,
              special_services_menu,
              trainee_options_menu,
-             trainee_statuses_menu,
              unemployment_proofs_menu].join
     build_dropdown_menu('Settings', items)
   end
@@ -111,11 +110,6 @@ module MenusHelper
 
   def trainee_options_menu
     settings_menu? ? menu_link('Trainee Options', trainee_options_accounts_path) : ''
-  end
-
-  def trainee_statuses_menu
-    return '' unless ta_settings_menu?
-    menu_link('Trainee Status Options', grant_trainee_statuses_path)
   end
 
   def unemployment_proofs_menu

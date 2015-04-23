@@ -215,7 +215,6 @@ namespace :testprep do
     create_special_services
     create_funding_sources
     create_employment_statuses
-    create_grant_trainee_statuses(grant)
 
     c1 = create_college('Newark Campus', '765 Newman Springs Rd', 'Middletown', 'NJ',
                         '07738', 40.3279, -74.1334)
@@ -234,12 +233,6 @@ namespace :testprep do
     k1 = create_klass(p1, 'CNC 101', '', 'June 27, 2012',  'Aug 17, 2018',
                         3, 272, c1.id)
     KlassNavigator.create(klass_id: k1.id, user_id: nav3.id)
-  end
-
-  def create_grant_trainee_statuses(grant)
-    ['Active', 'Placed X',
-     'Lost', 'Placed Y'].each{|s| GrantTraineeStatus.create(name: s)}
-    grant.update(default_trainee_status_id: 1)
   end
 
   def create_applicant_sources

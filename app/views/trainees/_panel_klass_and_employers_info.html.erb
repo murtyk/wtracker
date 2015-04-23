@@ -16,18 +16,6 @@
 </div>
 <hr>
 
-<% if current_grant.grant_trainee_status? %>
-<h4>
-  Status
-  <%= button_new_association(TraineeStatus, from: 1, trainee_id: trainee.id, id_prefix: "trainee_#{trainee.id}_", title: 'New Status') %>
-</h4>
-<div id = 'trainee_<%=trainee.id%>_trainee_statuses'>
-  <%= render trainee.trainee_statuses %>
-</div>
-<hr>
-<% end %>
-
-
 <%= trainee.trainee_interactions_header %>
 <div id="<%= div_id_for_collection(TraineeInteraction)%>">
   <%= render("trainee_interactions/trainee_interactions", object: trainee, page: 'trainee_page') %>

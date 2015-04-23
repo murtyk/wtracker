@@ -105,8 +105,6 @@ class TraineeFactory
 
     trainee = grant.trainees.new(attrs)
     trainee.build_job_search_profile(account_id: trainee.account_id)
-    trainee.trainee_statuses
-      .new(grant_trainee_status_id: grant.default_trainee_status_id.to_i)
     trainee.save
     trainee
   end

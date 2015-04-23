@@ -21,6 +21,7 @@ class TraineeInteraction < ActiveRecord::Base
   attr_accessor :klass_id, :trainee_ids, :employer_name
 
   before_save :cb_before_save
+  after_save :cb_after_save
 
   def hired?
     termination_date.nil? && (status == 4 || status == 6)
@@ -52,9 +53,25 @@ class TraineeInteraction < ActiveRecord::Base
     employer && employer.name
   end
 
+  def update_trainee_status
+    # determine if this ti is the latest ti for the trainee
+    # do not use trainee.trainee_interactions since it changes the default order
+    latest_ti = TraineeInteraction.where(trainee_id: trainee.id).last
+    return unless latest_ti.id == id
+
+    code = status == 6 ? 4 : status
+    code = 0 if termination_date
+
+    trainee.update(status: code)
+  end
+
   private
 
   def cb_before_save
     self.status ||= 4
+  end
+
+  def cb_after_save
+    update_trainee_status
   end
 end

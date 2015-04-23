@@ -4,8 +4,8 @@
     <th>Last Name</th>
     <% if current_grant.trainee_applications? %>
       <th>Applied On</th>
-      <th>Status</th>
     <% end %>
+    <th>Status</th>
     <th>Email</th>
     <th>Mobile No</th>
     <th>County</th>
@@ -31,8 +31,8 @@
     <td><%= t.last %></td>
     <% if current_grant.trainee_applications? %>
       <td><%= t.applicant.applied_on %></td>
-      <td><%= t.grant_trainee_status.name %></td>
     <% end %>
+    <td><%= t.placement_status %></td>
     <td><%= t.email %></td>
     <td><%= t.mobile_no %></td>
     <td><%= t.home_address && t.home_address.county %></td>

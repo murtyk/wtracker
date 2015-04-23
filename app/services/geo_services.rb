@@ -82,6 +82,7 @@ class GeoServices
   end
 
   def self.search_for_city_state(location)
+    return [] if location.downcase == 'nationwide'
     results = perform_search(location)
     return [] if results.empty?
 

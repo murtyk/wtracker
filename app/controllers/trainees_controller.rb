@@ -151,7 +151,6 @@ class TraineesController < ApplicationController
     if current_grant.trainee_applications?
       return @q.result.includes(:klasses, :job_search_profile, :assessments,
                                 :funding_source, :home_address,
-                                :grant_trainee_status,
                                 tact_three: [:education],
                                 applicant: [:navigator, :sector])
     end

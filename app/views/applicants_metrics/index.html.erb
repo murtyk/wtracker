@@ -1,10 +1,14 @@
 <h1>DASHBOARD</h1>
 
-<h4>All Trainees</h4>
 <table class="table table-condensed table-bordered table-striped table-hover">
   <tr>
     <% @data.header.each do |h| %>
       <th><%= h %></th>
+    <% end %>
+  </tr>
+  <tr>
+    <% @data.totals.each do |d| %>
+      <td><%= d %></td>
     <% end %>
   </tr>
   <% @data.rows.each do |row| %>
@@ -16,18 +20,26 @@
   <% end %>
 </table>
 
-<h4>New Applicants (Funding Source has not been assigned)</h4>
-<table class="table table-condensed table-bordered table-striped table-hover">
-  <tr>
-    <% @data.new_applicants.header.each do |h| %>
-      <th><%= h %></th>
-    <% end %>
-  </tr>
-  <% @data.new_applicants.rows.each do |row| %>
+<% @data.fs_data.each do |fs_data| %>
+  <hr>
+  <table class="table table-condensed table-bordered table-striped table-hover">
     <tr>
-      <% row.each do |d| %>
+      <% fs_data.header.each do |h| %>
+        <th><%= h %></th>
+      <% end %>
+    </tr>
+    <tr>
+      <% fs_data.totals.each do |d| %>
         <td><%= d %></td>
       <% end %>
     </tr>
-  <% end %>
-</table>
+    <% fs_data.rows.each do |row| %>
+      <tr>
+        <% row.each do |d| %>
+          <td><%= d %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+
+<% end %>

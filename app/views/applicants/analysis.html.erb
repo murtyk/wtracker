@@ -10,16 +10,5 @@
       <%= row.map{ |c| "<td>#{c}</td>"}.join('').html_safe %>
     </tr>
   <% end %>
-  <tr>
-    <td colspan='<%= @metrics.headers.count %>'></td>
-  </tr>
-  <tr>
-    <td colspan='<%= @metrics.headers.count %>'><b>Trainees By Status</b></td>
-  </tr>
-  <% @trainee_status_metrics.rows.each do |row| %>
-    <tr>
-      <%= row.map{ |c| "<td>#{c}</td>"}.join('').html_safe %>
-    </tr>
-  <% end %>
 </table>
 

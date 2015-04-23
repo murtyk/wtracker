@@ -7,7 +7,6 @@ class ApplicantsController < ApplicationController
   def analysis
     am = ApplicantMetrics.new(current_user)
     @metrics = am.generate_analysis
-    @trainee_status_metrics = am.trainee_status_metrics
   end
 
   # GET /applicants

@@ -1,9 +1,11 @@
 # same person can be in more than 1 grants
 # one trainee record for each gran
 # trainee can be assigned to any number of classes
-# many employers can be interested in a trainee
+# status defines placement status and it is updated by TI
+
 class Trainee < ActiveRecord::Base
   LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }
+  STATUSES = { 0 => 'Not Placed', 4 => 'Placed', 5 => 'OJT Enrolled' }
   include Encryption
   include ValidationsMixins
   include InteractionsMixins
@@ -60,7 +62,7 @@ class Trainee < ActiveRecord::Base
   belongs_to :account
   belongs_to :grant
   belongs_to :funding_source
-  belongs_to :grant_trainee_status, foreign_key: :gts_id
+  # belongs_to :grant_trainee_status, foreign_key: :gts_id
   belongs_to :race
 
   has_many :trainee_assessments, dependent: :destroy
@@ -75,7 +77,6 @@ class Trainee < ActiveRecord::Base
   has_many :klasses, through: :klass_trainees
 
   has_many :trainee_submits, dependent: :destroy
-  has_many :trainee_statuses, dependent: :destroy
   has_many :trainee_files, dependent: :destroy
 
   has_many :job_shared_tos # job_share should do dependent: :destroy
@@ -130,6 +131,10 @@ class Trainee < ActiveRecord::Base
 
   def hired?
     hired_employer_interaction
+  end
+
+  def placement_status
+    STATUSES[status]
   end
 
   def klass_names
@@ -189,15 +194,20 @@ class Trainee < ActiveRecord::Base
     ks.map { |k| [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id] }
   end
 
+  def self.status_collection
+    [[4, 'Placed'], [5, 'OJT Enrolled'], [0, 'Not Placed']]
+  end
+
   private
 
   def cb_before_save
     self.land_no   = land_no.delete('^0-9') if land_no
     self.mobile_no = mobile_no.delete('^0-9') if mobile_no
+    self.status ||= 0
   end
 
   def self.ransackable_attributes(auth_object = nil)
     # whitelist only the title and body attributes for other users
-    super & %w(first last email funding_source_id mobile_no veteran gts_id)
+    super & %w(first last email funding_source_id mobile_no veteran status)
   end
 end

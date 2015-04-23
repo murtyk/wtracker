@@ -39,7 +39,7 @@ describe 'applicants' do
     expect(page).to have_text("can't be blank")
   end
 
-  it 'accepts applicant and creates trainee with default grant_trainee_status' do
+  it 'accepts applicant and creates trainee' do
     VCR.use_cassette('applicant') do
       visit_new_applicant_page
       os_applicant = build_applicant_data
@@ -54,18 +54,14 @@ describe 'applicants' do
       Grant.current_id = applicant.grant_id
       trainee = Trainee.find(applicant.trainee_id)
       trainee_id = trainee.id
-      ts = TraineeStatus.where(trainee_id: trainee_id).first
-      ts_name = ts.name
-      ts_display = "#{ts.created_at.to_date} - #{ts.name}"
 
       expect(applicant.name).to eq(os_applicant.name)
       expect(applicant.status).to eq('Accepted')
       expect(trainee.name).to eq(os_applicant.name)
-      expect(ts_name).to eql('Active')
 
       signin_applicants_admin
       visit "/trainees/#{trainee_id}"
-      expect(page).to have_text(ts_display)
+
       click_on 'Applicant Page'
 
       expect(page).to have_text(os_applicant.name)

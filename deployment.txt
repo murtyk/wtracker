@@ -1,43 +1,19 @@
-1. delete TIs with status != 4
-
-counts = []
-
-Account.all.each do |a|
-  Account.current_id = a.id
-  Grant.all.each do |g|
-    Grant.current_id = g.id
-    tis = TraineeInteraction.where.not(status: 4)
-    counts << [a.id, g.id, tis.count]
-  end
-end
-
-verify:
----------
-
-counts
-
+# derived placement status is stored in Trainee
+# update all with current status
 
 Account.all.each do |a|
   Account.current_id = a.id
   Grant.all.each do |g|
     Grant.current_id = g.id
-    tis = TraineeInteraction.where.not(status: 4)
-    tis.destroy_all
-  end
-end
-
-re-run counts query again
-
-and
-
-Account.all.each do |a|
-  Account.current_id = a.id
-  Grant.all.each do |g|
-    Grant.current_id = g.id
-    counts << [a.id, g.id, TraineeInteraction.count]
+    TraineeInteraction.where(termination_date: nil).each do |ti|
+      ti.update_trainee_status
+    end
+    Trainee.where(status: nil).update_all(status: 0)
   end
 end
 
 
-2. Deploy
-3. db migrate
+Pending:
+
+1. delete TI unused attributes
+2. delete Grant Trainee Status MVC and routes

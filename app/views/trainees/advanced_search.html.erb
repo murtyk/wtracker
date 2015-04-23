@@ -42,12 +42,9 @@
                               FundingSource.order(:name), :id, :name,
                               include_blank: true %>
 
-      <% if current_grant.grant_trainee_status? %>
-        <%= f.label :gts_id_eq, 'Status' %>
-        <%= f.collection_select :gts_id_eq,
-                                GrantTraineeStatus.all, :id, :name,
-                                include_blank: true %>
-      <% end %>
+      <%= f.label :status_eq, 'Placement Status' %>
+      <%= f.collection_select :status_eq, Trainee.status_collection, :first, :last,
+                          include_blank: true %>
 
       <%= f.label :klasses_id_eq, 'Class' %>
       <%= f.collection_select :klasses_id_eq,
@@ -122,7 +119,7 @@
       <td><%= link_to t.last, t %></td>
       <% if current_grant.trainee_applications? %>
         <td><%= t.applicant.applied_on %></td>
-        <td><%= t.grant_trainee_status.name %></td>
+        <td><%= t.placement_status %></td>
       <% end %>
       <td><%= t.email %></td>
       <td><%= t.mobile_no %></td>

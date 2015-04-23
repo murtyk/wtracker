@@ -21,7 +21,7 @@ class TraineesStatusReport < Report
   def klass_trainees_placed
     KlassTrainee.joins(:klass, trainee: :trainee_interactions)
       .where(klasses: { id: klass_ids })
-      .where(trainee_interactions: { status: 4 })
+      .where(trainee_interactions: { status: [4, 6], termination_date: nil })
   end
 
   def klass_trainees_not_placed
