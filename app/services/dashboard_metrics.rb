@@ -113,10 +113,10 @@ class DashboardMetrics
 
       # build links for placed and ojt enrolled
       count = matrix[nav_index, -2]
-      matrix[nav_index, -2] = link(count, status: 4, applicant_navigator_id_eq: nav_id)
+      matrix[nav_index, -2] = placed_nav_link(count, nav_id)
 
       count = matrix[nav_index, -1]
-      matrix[nav_index, -1] = link(count, status: 5, applicant_navigator_id_eq: nav_id)
+      matrix[nav_index, -1] = ojt_enrolled_nav_link(count, nav_id)
 
       nav_index += 1
     end
