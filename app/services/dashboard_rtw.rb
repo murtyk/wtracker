@@ -1,0 +1,221 @@
+# dashboard metrics for grants where applicants can apply.
+# example grant: RTW (NJWF)
+class DashboardRtw
+  # need this for link_to
+  include ActionView::Helpers::UrlHelper
+  attr_reader :metrics
+
+  def initialize
+    @metrics = OpenStruct.new
+    @metrics.header = ['ALL', '# Trainees'] + fs_names + ['Placed', 'OJT Enrolled']
+
+    init_metrics_for_funding_sources
+  end
+
+  # build rows for each funding source
+  # rows is array of arrays. first row is totals.
+  def init_metrics_for_funding_sources
+    @metrics.fs_data = funding_sources.map do |id, name|
+      os = OpenStruct.new
+      os.id = id
+      os.header = [name, '# Trainees',  'Placed',  'OJT Enrolled']
+
+      # [nav name, # trainees, fs1 count..., placed, ojt enrolled]
+      os.rows = []
+      os
+    end
+  end
+
+  # generates for dashboard data where grant accepts applicants
+  def generate
+    t_matrix = build_trainee_counts_matrix
+    p_matrix = build_placements_counts_matrix
+    oe_matrix = build_ojt_enrolled_counts_matrix
+
+    build_summary_matrix(t_matrix, p_matrix, oe_matrix)
+
+    build_fs_matrices(t_matrix, p_matrix, oe_matrix)
+
+    metrics
+  end
+
+  private
+
+  # builds all data values except totals row
+  def build_summary_matrix(t_matrix, p_matrix, oe_matrix)
+    # column 0 has placement totals by trainee
+    p_column = p_matrix.column(0)
+
+    # column 0 has ojt enrollment totals by trainee
+    oe_column = oe_matrix.column(0)
+
+    # now append p and oe columns and build a new matrix
+    t_matrix.append_column(p_column)
+    t_matrix.append_column(oe_column)
+
+    t_matrix.prepend_column(column_headers)
+
+    @metrics.rows = t_matrix.data
+  end
+
+  # each of the input array matrice will have sum row and sum columns
+  # the element data starts from 1,1
+  # t_matrix: this will also have column header. for this the element should start at 1,2
+  # for each fs, take the corresponding columns from each of the input matrix
+  def build_fs_matrices(t_matrix, p_matrix, oe_matrix)
+    (0..funding_sources.count - 1).each do |i|
+      trainees = t_matrix.column(i + 2)
+      placed = p_matrix.column(i + 1)
+      ojt_enrolled = oe_matrix.column(i + 1)
+      @metrics.fs_data[i].rows = build_fs_rows(trainees, placed, ojt_enrolled)
+    end
+  end
+
+  def build_fs_rows(trainees, placed, ojt_enrolled)
+    columns = [column_headers, trainees, placed, ojt_enrolled]
+    columns.transpose
+  end
+
+  def column_headers
+    ['Totals'] + navigator_names
+  end
+
+  # builds trainees counts matrix
+  #                   FS1           FS2
+  #
+  #                   fs1 total      fs2 total
+  #
+  #  Nav1   nav1_sum  v11            v12
+  #
+  #  Nav2   nav2_sum  v21            v22
+  #
+  def build_trainee_counts_matrix
+    trainee_counts = trainees_group_by_nav_and_fs # key format: [fs_id, nav_id]
+    build_nav_fs_matrix(trainee_counts, method(:nav_fs_link)) # array matrix
+  end
+
+  # builds trainee placements counts matrix
+  #                   FS1           FS2
+  #
+  #                   fs1 total      fs2 total
+  #
+  #  Nav1   nav1_sum  v11            v12
+  #
+  #  Nav2   nav2_sum  v21            v22
+  #
+  def build_placements_counts_matrix
+    placed_counts = placed_counts_group_by_nav_fs
+    build_nav_fs_matrix(placed_counts, method(:placed_link))
+  end
+
+  def build_ojt_enrolled_counts_matrix
+    enrolled_counts = ojt_enrolled_counts_group_by_nav_fs
+    build_nav_fs_matrix(enrolled_counts, method(:ojt_enrolled_link))
+  end
+
+  def navigator_ids
+    navigators.keys
+  end
+
+  # counts is a group by query result with [nav_id, fs_id] as key
+  def build_nav_fs_matrix(counts, link_method)
+    am = ArrayMatrix.new(counts, navigator_ids, fs_ids)
+
+    c_sum = am.columns_sum
+    am.prepend_column(c_sum, '')
+    r_sum = am.rows_sum
+    am.prepend_row(r_sum)
+    am.create_links!(link_method)
+    am
+  end
+
+  def placed_counts_group_by_nav_fs
+    trainees_group_by(status: 4)
+  end
+
+  def ojt_enrolled_counts_group_by_nav_fs
+    trainees_group_by(status: 5)
+  end
+
+  def trainees_group_by_nav_and_fs
+    trainees_group_by
+  end
+
+  def trainees_group_by(predicate = nil)
+    trainees = Trainee.joins(:applicant)
+    trainees = trainees.where(predicate) if predicate
+    trainees.group('applicants.navigator_id', 'trainees.funding_source_id')
+      .count
+  end
+
+  # navs in sorted by name.
+  def navigators
+    return @navigators if @navigators
+    navs        = grant.navigators
+    @navigators = Hash[navs.map { |n| [n.id, n.name] }]
+  end
+
+  def grant
+    @grant ||= Grant.find(Grant.current_id)
+  end
+
+  def fs_ids
+    funding_sources.keys
+  end
+
+  def fs_names
+    funding_sources.values
+  end
+
+  def navigator_names
+    navigators.values
+  end
+
+  # returns fundings sources as hash id => name
+  # since some trainees may not have fs assigned includes nil => 'N/A'
+  def funding_sources
+    return @funding_sources if @funding_sources
+    @funding_sources = Hash[*FundingSource.order(:name).pluck(:id, :name).flatten]
+    if Trainee.where(funding_source_id: nil).any?
+      @funding_sources[nil] = 'FS N/A'
+    end
+    @funding_sources
+  end
+
+  def nav_fs_link(count, nav_id = '', fs_id = '')
+    q = build_q_params(nav_id, fs_id)
+    link(count, q)
+  end
+
+  def placed_link(count, nav_id = '', fs_id = '')
+    q = build_q_params(nav_id, fs_id, 4)
+    link(count, q)
+  end
+
+  def ojt_enrolled_link(count, nav_id = '', fs_id = '')
+    q = build_q_params(nav_id, fs_id, 5)
+    link(count, q)
+  end
+
+  def build_q_params(nav_id, fs_id, status = nil)
+    q = { applicant_navigator_id_eq: nav_id }
+    q.merge!(funding_source_id_eq: fs_id) if fs_id
+    q.merge!(funding_source_id_null: true) unless fs_id
+
+    return q unless status
+    q.merge(status_eq: status)
+  end
+
+  def link(count, params)
+    link_to(count, href(params))
+  end
+
+  def href(params = {})
+    url_helpers.advanced_search_trainees_path(q: params)
+  end
+
+  # need this for href
+  def url_helpers
+    Rails.application.routes.url_helpers
+  end
+end

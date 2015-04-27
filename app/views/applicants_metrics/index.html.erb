@@ -6,11 +6,6 @@
       <th><%= h %></th>
     <% end %>
   </tr>
-  <tr>
-    <% @data.totals.each do |d| %>
-      <td><%= d %></td>
-    <% end %>
-  </tr>
   <% @data.rows.each do |row| %>
     <tr>
       <% row.each do |d| %>
@@ -26,11 +21,6 @@
     <tr>
       <% fs_data.header.each do |h| %>
         <th><%= h %></th>
-      <% end %>
-    </tr>
-    <tr>
-      <% fs_data.totals.each do |d| %>
-        <td><%= d %></td>
       <% end %>
     </tr>
     <% fs_data.rows.each do |row| %>

@@ -1,5 +1,5 @@
 class ApplicantsMetricsController < ApplicationController
   def index
-    @data = DashboardMetrics.new.generate
+    @data = DashboardRtw.new.generate
   end
 end

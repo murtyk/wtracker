@@ -27,7 +27,6 @@ class TraineesController < ApplicationController
 
   def advanced_search
     trainees = current_user.trainees_for_search(params)
-
     @q = trainees.ransack(params[:q])
     @trainees = search_by_grant_type
 
