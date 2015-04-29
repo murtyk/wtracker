@@ -8,7 +8,7 @@ class ProgramsController < ApplicationController
 
   # GET /programs/1
   def show
-    @program = Program.find(params[:id])
+    @program = Program.find(params[:id]).decorate
     authorize @program
   end
 

@@ -65,64 +65,9 @@ class Klass < ActiveRecord::Base
     klass_titles.map { |kt| kt.id unless kt.valid_job_search_count? }.compact
   end
 
-  # [1 => "Enrolled", 2 => "Completed",3 => "Dropped",
-  #  4 => "Placed", 5 => "Continuing Education"]
-  def trainees_status_counts
-    status_counts = {}
-    klass_trainees.select('count(*), status')
-      .group(:status)
-      .each { |kts| status_counts[kts.status] = kts.count.to_i }
-    status_counts
-  end
-
-  def enrolled_count
-    trainees.count # initially enrolled = total
-  end
-
-  def dropped_count
-    trainees_status_counts[3].to_i
-  end
-
-  def completed_count
-    # subtract dropped and still in enrolled status ones from total
-    enrolled_count - trainees_status_counts[1].to_i - dropped_count
-  end
-
-  def continuing_education_count
-    trainees_status_counts[5].to_i
-  end
-
-  def placed_count
-    trainees_status_counts[4].to_i
-  end
-
-  def not_placed_count
-    trainees_status_counts[2].to_i # still in completed status waiting for placement
-  end
-
-  def placement_rate
-    # completed and placed together is our target for placement
-    divisor = not_placed_count + placed_count + continuing_education_count
-    divisor > 0 ? (dividend.to_f * 100 / divisor).round(0).to_s + '%' : ''
-  end
-
-  def dividend
-    placed_count + continuing_education_count
-  end
-
-  def klass_trainees_sorted
-    klass_trainees.includes(:trainee)
-      .order('klass_trainees.status, trainees.first, trainees.last')
-      .references(:trainees)
-  end
-
-  def klass_trainees_by_status(status)
-    klass_trainees_sorted.where(status: status)
-  end
-
-  def trainee_count_by_status(status)
-    klass_trainees.where(status: status).count
-  end
+  # def trainee_count_by_status(status)
+  #   klass_trainees.where(status: status).count
+  # end
 
   def trainees_with_email
     trainees.where('length(email) > 3')

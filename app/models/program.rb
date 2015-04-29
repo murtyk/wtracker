@@ -22,76 +22,8 @@ class Program < ActiveRecord::Base
 
   delegate :name, to: :grant, prefix: true
 
-  def scheduled_classes
-    klasses.where('DATE(start_date) > ?', Time.now.to_date).order('start_date')
-  end
-
-  def ongoing_classes
-    klasses.joins(:college)
-      .where('DATE(start_date) <= ? and DATE(end_date) >= ?',
-             Time.now.to_date, Time.now.to_date)
-      .order('colleges.name')
-      .order('start_date desc')
-  end
-
-  def completed_classes
-    klasses.where('DATE(end_date) < ?', Time.now.to_date)
-      .order('start_date desc')
-  end
-
-  def classes_by_status
-    %w(scheduled_classes ongoing_classes completed_classes).map do |s|
-      s_klasses = send(s)
-      [s, s_klasses] if s_klasses.any?
-    end.compact
-  end
-
   def klass_count
     klasses.count
-  end
-
-  def enrolled_count(klass_status)
-    classes = send(klass_status)  # don't use klasses since it is a member
-    classes.map { |klass| klass.enrolled_count.to_i }.inject(:+)
-  end
-
-  def dropped_count(klass_status)
-    classes = send(klass_status)  # don't use klasses since it is a member
-    classes.map { |klass| klass.dropped_count.to_i }.inject(:+)
-  end
-
-  def completed_count(klass_status)
-    classes = send(klass_status)  # don't use klasses since it is a member
-    classes.map { |klass| klass.completed_count.to_i }.inject(:+)
-  end
-
-  def continuing_education_count(klass_status)
-    classes = send(klass_status)  # don't use klasses since it is a member
-    classes.map { |klass| klass.continuing_education_count.to_i }.inject(:+)
-  end
-
-  def placed_count(klass_status)
-    classes = send(klass_status)  # don't use klasses since it is a member
-    classes.map { |klass| klass.placed_count.to_i }.inject(:+)
-  end
-
-  def not_placed_count(klass_status)
-    classes = send(klass_status)  # don't use klasses since it is a member
-    classes.map { |klass| klass.not_placed_count.to_i }.inject(:+)
-  end
-
-  def placement_rate(klass_status)
-    # completed is our target for placement, exclude continuing education
-
-    dividend = placed_count(klass_status) + continuing_education_count(klass_status)
-    divider  = divisor(klass_status)
-    divider > 0 ? (dividend.to_f * 100 / divider).round(0).to_s + '%' : ''
-  end
-
-  def divisor(klass_status)
-    not_placed_count(klass_status) +
-      placed_count(klass_status) +
-      continuing_education_count(klass_status)
   end
 
   def self.selection_list

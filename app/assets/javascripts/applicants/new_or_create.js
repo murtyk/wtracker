@@ -25,3 +25,8 @@ $('#applicant_source').change(function() {
 $('#applicant_current_employment_status').change(function() {
   $("#applicant_current_employment_status").capture_other("Please enter current employment status");
 });
+
+$('.btn-spinner').button();
+$('.new_applicant').submit(function() {
+  $('#submit-button').button('loading');
+});

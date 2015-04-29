@@ -27,7 +27,7 @@
         <th>View    </th>
       </tr>
 
-      <% @program.klasses.each do |k|%>
+      <% @program.user_klasses(current_user).each do |k|%>
       <tr>
         <td><%= name_and_link k %>  </td>
         <td><%= k.college_name %>   </td>
