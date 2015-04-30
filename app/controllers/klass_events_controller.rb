@@ -61,6 +61,7 @@ class KlassEventsController < ApplicationController
     @klass = @klass_event.klass.decorate
 
     @klass_event.destroy
+    UserMailer.send_event_invite(@klass_event, current_user, true).deliver_now
 
     respond_to do |format|
       format.html { redirect_to klass_events_url }

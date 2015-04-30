@@ -2,6 +2,7 @@
 # many employers can participate
 class KlassEvent < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
+  belongs_to :account
   belongs_to :klass
   has_many :klass_interactions, dependent: :destroy
   has_many :employers,
@@ -29,12 +30,7 @@ class KlassEvent < ActiveRecord::Base
                             less_than_or_equal_to: 59 },
             allow_nil: true
 
-  after_initialize :init
-
-  def init
-    self.uid ||= Account.subdomain + event_date.to_s + id.to_s
-    self.sequence ||= -1
-  end
+  before_save :cb_before_save
 
   def for_klass?(k)
     klass == k
@@ -64,5 +60,24 @@ class KlassEvent < ActiveRecord::Base
     sequence += 1
     save
     sequence
+  end
+
+  def cb_before_save
+    self.uid ||= generate_uid
+    self.sequence ||= -1
+    self.sequence += 1
+  end
+
+  def generate_uid
+    last_ke = KlassEvent.unscoped.where('uid ilike ?', uid_prefix + '%').last
+    suffix = last_ke.uid.split('-')[-1].to_i + 1 if last_ke
+    suffix ||= 1
+
+    uid_prefix + suffix.to_s
+  end
+
+  def uid_prefix
+    return account.subdomain + '-' unless event_date
+    account.subdomain + event_date.strftime('%Y%m%d') + '-'
   end
 end

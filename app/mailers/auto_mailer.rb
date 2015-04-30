@@ -70,7 +70,7 @@ class AutoMailer < ActionMailer::Base
 
   def notify_grant_status(grant, status)
     return if status.error_message
-    to_email   = grant.account.director.email + ';' + grant.account.admins.map{ |admin| admin.email }.join(';')
+    to_email   = grant.account.director.email + ';' + grant.account.admins.map(&:email).join(';')
     from_email = 'JobLeads<jobleads@operoinc.com>'
     subject    =  'Job Leads - Status Summary'
 
@@ -156,10 +156,9 @@ class AutoMailer < ActionMailer::Base
     end
   end
 
-private
+  private
 
   def build_job_leads_body(auto_shared_jobs, job_search_profile, subdomain, trainee)
-
     sign_in_url   = trainees_sign_in_url(subdomain)
     sign_in_link  = "<a href= '#{sign_in_url}'>" \
                      'Click here to sign in and view jobs.</a>'
@@ -179,10 +178,10 @@ private
     opt_out_link =   "<a href='#{opt_out_url}'>Click here to opt out from job leads.</a>"
 
     job_leads_html = '<ol>' +
-                      auto_shared_jobs.map do |job|
-                        "<li>#{job.title} - #{job.company}</li>"
-                      end.join +
-                      '</ol>'
+                     auto_shared_jobs.map do |job|
+                       "<li>#{job.title} - #{job.company}</li>"
+                     end.join +
+                     '</ol>'
 
     grant = trainee.grant
     job_leads_text = grant.job_leads_content.content.gsub(/\r\n/, '<br>')
@@ -227,7 +226,7 @@ private
 
   def parse_applicant_msg(s, applicant)
     msg = s.gsub('$FIRSTNAME$', applicant.first_name)
-           .gsub('$LASTNAME$',  applicant.last_name)
+          .gsub('$LASTNAME$',  applicant.last_name)
 
     msg = msg.gsub('$LOGIN_ID$',  applicant.login_id) if applicant.accepted?
 
