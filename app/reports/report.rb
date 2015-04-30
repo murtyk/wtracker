@@ -16,7 +16,6 @@ class Report
   JOBS_APPLIED                    = 'jobs_applied'
   ACTIVE_EMPLOYERS                = 'active_employers'
   EMPLOYERS_HIRED                 = 'employers_hired'
-  EMPLOYERS_INTERESTED_TRAINEES   = 'employers_interested_in_trainees'
   EMPLOYERS_ACTIVITIES_WITH_NOTES = 'employers_activities_with_notes'
   EMPLOYERS_ADDRESS_MISSING       = 'employers_no_address'
   CLASS_TRAINEES                  = 'class_trainees'
@@ -33,7 +32,6 @@ class Report
     EMPLOYERS_HIRED                   => :EmployersHiredReport,
     ACTIVE_EMPLOYERS                  => :ActiveEmployersReport,
     EMPLOYERS_ACTIVITIES_WITH_NOTES   => :EmployersActivitiesWithNotesReport,
-    EMPLOYERS_INTERESTED_TRAINEES     => :EmployersInterestedReport,
     EMPLOYERS_ADDRESS_MISSING         => :EmployersNoAddressReport,
     CLASS_TRAINEES                    => :ClassTraineesReport
   }
@@ -77,7 +75,7 @@ class Report
             EMPLOYERS_ADDRESS_MISSING,
             EMPLOYERS_ACTIVITIES_WITH_NOTES] unless user.admin_access?
 
-    [EMPLOYERS_HIRED, EMPLOYERS_INTERESTED_TRAINEES, ACTIVE_EMPLOYERS,
+    [EMPLOYERS_HIRED, ACTIVE_EMPLOYERS,
      EMPLOYERS_ACTIVITIES_WITH_NOTES, EMPLOYERS_ADDRESS_MISSING]
   end
 

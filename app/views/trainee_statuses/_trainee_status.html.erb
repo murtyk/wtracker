@@ -1,8 +1,0 @@
-<div id = '<%=div_id_for(trainee_status)%>'>
-  <p>
-    <%= button_edit_association(trainee_status, title: 'Edit trainee note') %>
-    <%= button_destroy_association(trainee_status, title: 'Delete note') unless trainee_status.default? %>
-    <%= trainee_status.display_name %><br>
-    <%= trainee_status.notes%>
-  </p>
-</div>

@@ -141,8 +141,9 @@ class EmployersMap < MapService
     a.delete
   end
 
+  # exclude trainees with any placement status (no ojt, ojt enrolled, ojt completed)
   def not_hired_trainee_ids
-    user_trainee_ids - TraineeInteraction.where(status: [4, 6], termination_date: nil)
+    user_trainee_ids - TraineeInteraction.where(termination_date: nil)
       .pluck(:trainee_id)
   end
 

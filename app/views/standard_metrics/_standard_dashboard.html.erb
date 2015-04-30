@@ -4,18 +4,18 @@
 
 <% unless request.format.xls? %>
   <div class='row-fluid'>
-      <div class='span11'>
-        <span class='pull-right'>
-          <% filter_btn_class = 'klass_filter btn btn-flat btn-small btn-primary' %>
-          <button type = 'button' id = '1_scheduled_klasses_button' class = '<%=filter_btn_class%>'>Scheduled</button>
-          <button type = 'button' id = '2_ongoing_klasses_button'   class = '<%=filter_btn_class%>'>Ongoing</button>
-          <button type = 'button' id = '3_completed_klasses_button' class = '<%=filter_btn_class%>'>Completed</button>
-          <button type = 'button' id = '0_all_klasses_button'       class = '<%=filter_btn_class%>'>All</button>
-        </span>
-      </div>
-      <div class='span1'>
-          <%= download_button if Klass.any? %>
-      </div>
+    <div class='span11'>
+      <span class='pull-right'>
+        <% filter_btn_class = 'klass_filter btn btn-flat btn-small btn-primary' %>
+        <button type = 'button' id = '1_scheduled_klasses_button' class = '<%=filter_btn_class%>'>Scheduled</button>
+        <button type = 'button' id = '2_ongoing_klasses_button'   class = '<%=filter_btn_class%>'>Ongoing</button>
+        <button type = 'button' id = '3_completed_klasses_button' class = '<%=filter_btn_class%>'>Completed</button>
+        <button type = 'button' id = '0_all_klasses_button'       class = '<%=filter_btn_class%>'>All</button>
+      </span>
+    </div>
+    <div class='span1'>
+      <%= download_button if Klass.any? %>
+    </div>
   </div>
 <% end %>
 
@@ -30,8 +30,8 @@
     <% end %>
 
       <tr class='info'>
-        <th>Class</th>
         <th>College</th>
+        <th>Class</th>
         <th>Start date</th>
         <th>End date</th>
         <th>Enrolled</th>

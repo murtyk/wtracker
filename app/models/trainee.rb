@@ -21,8 +21,7 @@ class Trainee < ActiveRecord::Base
                   :gender, :land_no, :middle, :mobile_no, :trainee_id,
                   :status, :veteran, :race_id, :klass_ids,
                   :tact_three_attributes, :legal_status, :funding_source_id,
-                  :home_address_attributes, :mailing_address_attributes,
-                  :gts_id
+                  :home_address_attributes, :mailing_address_attributes
 
   attr_encrypted :trainee_id, key: :encryption_key
 
@@ -62,7 +61,6 @@ class Trainee < ActiveRecord::Base
   belongs_to :account
   belongs_to :grant
   belongs_to :funding_source
-  # belongs_to :grant_trainee_status, foreign_key: :gts_id
   belongs_to :race
 
   has_many :trainee_assessments, dependent: :destroy

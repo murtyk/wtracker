@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410173105) do
+ActiveRecord::Schema.define(version: 20150429151922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -460,17 +460,6 @@ ActiveRecord::Schema.define(version: 20150410173105) do
   add_index "grant_admins", ["grant_id"], name: "index_klass_admins_on_grant_id", using: :btree
   add_index "grant_admins", ["user_id"], name: "index_klass_admins_on_user_id", using: :btree
 
-  create_table "grant_trainee_statuses", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "grant_id"
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "grant_trainee_statuses", ["account_id"], name: "index_grant_trainee_statuses_on_account_id", using: :btree
-  add_index "grant_trainee_statuses", ["grant_id"], name: "index_grant_trainee_statuses_on_grant_id", using: :btree
-
   create_table "grants", force: :cascade do |t|
     t.string   "name",          limit: 255, null: false
     t.date     "start_date",                null: false
@@ -889,14 +878,9 @@ ActiveRecord::Schema.define(version: 20150410173105) do
     t.integer  "employer_id",                  null: false
     t.integer  "trainee_id",                   null: false
     t.integer  "status"
-    t.date     "interview_date"
-    t.string   "interviewer",      limit: 255
     t.string   "hire_title",       limit: 255
     t.string   "hire_salary",      limit: 255
-    t.date     "offer_date"
     t.date     "start_date"
-    t.string   "offer_title",      limit: 255
-    t.string   "offer_salary",     limit: 255
     t.text     "comment"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
@@ -937,21 +921,6 @@ ActiveRecord::Schema.define(version: 20150410173105) do
   end
 
   add_index "trainee_races", ["account_id"], name: "index_trainee_races_on_account_id", using: :btree
-
-  create_table "trainee_statuses", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "grant_id"
-    t.integer  "grant_trainee_status_id"
-    t.integer  "trainee_id"
-    t.string   "notes"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
-  add_index "trainee_statuses", ["account_id"], name: "index_trainee_statuses_on_account_id", using: :btree
-  add_index "trainee_statuses", ["grant_id"], name: "index_trainee_statuses_on_grant_id", using: :btree
-  add_index "trainee_statuses", ["grant_trainee_status_id"], name: "index_trainee_statuses_on_grant_trainee_status_id", using: :btree
-  add_index "trainee_statuses", ["trainee_id"], name: "index_trainee_statuses_on_trainee_id", using: :btree
 
   create_table "trainee_submits", force: :cascade do |t|
     t.integer  "account_id",              null: false
@@ -1001,7 +970,6 @@ ActiveRecord::Schema.define(version: 20150410173105) do
     t.string   "encrypted_trainee_id",   limit: 255
     t.string   "login_id",               limit: 255
     t.integer  "race_id"
-    t.integer  "gts_id"
   end
 
   add_index "trainees", ["account_id", "grant_id"], name: "index_trainees_on_account_id_and_grant_id", using: :btree

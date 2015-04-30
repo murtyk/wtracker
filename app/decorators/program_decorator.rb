@@ -22,24 +22,25 @@ class ProgramDecorator < Draper::Decorator
 
   # below are for dashboard
   def scheduled_classes
-    klasses.joins(:college)
-      .where('DATE(start_date) > ?', Time.now.to_date)
-      .order('start_date')
-      .decorate
+    predicate = format("DATE(start_date) > '%s'", Date.today.strftime('%Y-%m-%d'))
+    query_classes(predicate)
   end
 
   def ongoing_classes
-    klasses.joins(:college)
-      .where('DATE(start_date) <= ? and DATE(end_date) >= ?',
-             Time.now.to_date, Time.now.to_date)
-      .order('colleges.name, start_date desc')
-      .decorate
+    predicate = format("DATE(start_date) <= '%s' and DATE(end_date) >= '%s'",
+                       Date.today.strftime('%Y-%m-%d'), Date.today.strftime('%Y-%m-%d'))
+    query_classes(predicate)
   end
 
   def completed_classes
+    predicate = format("DATE(end_date) < '%s'", Date.today.strftime('%Y-%m-%d'))
+    query_classes(predicate)
+  end
+
+  def query_classes(predicate)
     klasses.joins(:college)
-      .where('DATE(end_date) < ?', Time.now.to_date)
-      .order('start_date desc')
+      .where(predicate)
+      .order('colleges.name, start_date desc, end_date desc')
       .decorate
   end
 

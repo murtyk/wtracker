@@ -1,5 +1,4 @@
-# an employer can be interested in a trainee
-# may interview, offer and hire
+# an employer hires a trainee or terminates employment
 class TraineeInteraction < ActiveRecord::Base
   STATUSES = { 4 => 'No OJT', 5 => 'OJT Enrolled', 6 => 'OJT Completed' }
   default_scope { where(account_id: Account.current_id) }
@@ -13,9 +12,8 @@ class TraineeInteraction < ActiveRecord::Base
   delegate :name,        to: :trainee,  prefix: true, allow_nil: true
   delegate :klass_names, to: :trainee, allow_nil: true
 
-  attr_accessible :trainee_id, :employer_id, :comment, :status, :company, :employer_name,
-                  :interview_date, :interviewer,
-                  :offer_date, :offer_salary, :offer_title,
+  attr_accessible :trainee_id, :employer_id, :comment, :status,
+                  :company, :employer_name,
                   :start_date, :hire_salary, :hire_title, :termination_date
 
   attr_accessor :klass_id, :trainee_ids, :employer_name

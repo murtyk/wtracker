@@ -14,6 +14,7 @@ class KlassTrainee < ActiveRecord::Base
                 :start_date, :hire_title, :hire_salary, :comment,
                 :ti_status
 
+  before_save :determine_status
   after_initialize :default_values
 
   delegate :name, to: :trainee
@@ -45,5 +46,9 @@ class KlassTrainee < ActiveRecord::Base
   def default_values
     self.status ||= 1
     copy_employer_interaction_details
+  end
+
+  def determine_status
+    self.status = 4 if trainee && trainee.hired?
   end
 end

@@ -26,16 +26,6 @@ describe 'Report' do
                                               hire_title: 'Title 1234',
                                               comment: 'This employer hired')
 
-      trainees[1].trainee_interactions.create(employer_id: company.id,
-                                              status: 3,
-                                              offer_date: Date.yesterday,
-                                              offer_salary: '11.50',
-                                              offer_title: 'Title 1234',
-                                              comment: 'got an offer')
-
-      trainees[2].trainee_interactions.create(employer_id: company.id,
-                                              status: 1)
-
       visit_report Report::EMPLOYERS_HIRED
       select 'All', from: 'Class'
       click_on 'Find'
@@ -46,8 +36,6 @@ describe 'Report' do
       expect(page).to have_text 'This employer hired'
 
       expect(page).to_not have_text 'First2 Last2'
-      expect(page).to_not have_text 'Offer'
-
       expect(page).to_not have_text 'First3 Last3'
     end
   end
