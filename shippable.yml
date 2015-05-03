@@ -26,7 +26,8 @@ before_script:
 
 # write the rspec tests to the output dir
 script:
-  - rspec -f JUnit -o shippable/testresults/results.xml
+  # - rspec -f JUnit -o shippable/testresults/results.xml
+  - rspec --format RspecJunitFormatter -o shippable/testresults/results.xml
 
 notifications:
     email:

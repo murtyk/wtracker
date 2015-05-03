@@ -103,6 +103,7 @@ group :test do
 
   gem 'simplecov' #, require: false
   gem 'simplecov-csv'
+  gem "rspec_junit_formatter"
 end
 gem "parallel_tests", group: :development
 gem 'jquery-rails', '4.0.3'
