@@ -101,7 +101,7 @@ group :test do
   gem 'webmock', '1.11.0'
   gem 'vcr', '2.9.2'
 
-  gem 'simplecov', require: false
+  gem 'simplecov' #, require: false
   gem 'simplecov-csv'
 end
 gem "parallel_tests", group: :development
