@@ -102,6 +102,7 @@ group :test do
   gem 'vcr', '2.9.2'
 
   gem 'simplecov', require: false
+  gem 'simplecov-csv'
 end
 gem "parallel_tests", group: :development
 gem 'jquery-rails', '4.0.3'
