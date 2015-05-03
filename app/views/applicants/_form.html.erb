@@ -205,6 +205,17 @@
     </div>
 
     <div class='row-fluid'>
+      <div class='span10'>
+        <%= f.input :skills, input_html: {style: 'width: 98%; height: 110px'},
+                             required: true,
+                             as: :text,
+                             label: 'Please enter your skills for job search',
+                             hint: 'The skills should be separated by commas. Example: J2EE, SWING, Tech Lead, AJAX' %>
+      </div>
+    </div>
+
+
+    <div class='row-fluid'>
       <div class='span5'>
         <%= f.input :source, label: 'How did you hear about this Program?',
                              required: true,

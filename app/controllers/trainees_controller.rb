@@ -133,6 +133,7 @@ class TraineesController < ApplicationController
       redirect_to job_search_profile_path(@trainee.job_search_profile)
       return
     end
+    render 'portal'
   end
 
   def user_or_trainee

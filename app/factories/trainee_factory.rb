@@ -104,12 +104,22 @@ class TraineeFactory
     attrs   = attrs.merge(credentials_attrs(applicant))
 
     trainee = grant.trainees.new(attrs)
-    trainee.build_job_search_profile(account_id: trainee.account_id)
+    build_job_search_profile(applicant, trainee)
     trainee.save
     trainee
   end
 
   private
+
+  def self.build_job_search_profile(applicant, trainee)
+    return unless applicant.valid_address?
+    location = applicant.address_city + ',' + applicant.address_state
+    trainee.build_job_search_profile(account_id: trainee.account_id,
+                                     skills: applicant.skills,
+                                     location: location,
+                                     zip: applicant.address_zip,
+                                     distance: 20)
+  end
 
   def self.build_trainee_attrs(applicant)
     tact_three_attributes = build_tact3_attrs(applicant)

@@ -5,8 +5,6 @@ en:
     questions:
       - question: Two plus two?
         answers: ["4", "four"]
-      - question: Jack and Jill went up the...
-        answer: hill
       - question: What is the number before twelve?
         answers: ["11", "eleven"]
       - question: Five times two is what?

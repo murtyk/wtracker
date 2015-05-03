@@ -44,6 +44,7 @@ module ApplicantsHelper
 
     os.resume =  'I am an excellent software developer with 10 years' \
                   ' of experience in java, ajax, xml, oracle'
+    os.skills = 'accounting finance'
     os.humanizer_answer = '4'
     os
   end
@@ -67,7 +68,8 @@ module ApplicantsHelper
     # prompt.send_keys('This is my reference')
     # prompt.accept
 
-    fill_in 'applicant_resume',  with: a.resume
+    fill_in 'applicant_resume', with: a.resume
+    fill_in 'applicant_skills', with: a.skills
     fill_in 'applicant_humanizer_answer', with: a.humanizer_answer
 
     check 'applicant_signature'

@@ -16,7 +16,9 @@ class Applicant < ActiveRecord::Base
                   :salt, :humanizer_answer, :humanizer_question_id,
                   :trainee_id, :navigator_id, :sector_id, :race_id, :last_wages,
                   :gender, :unemployment_proof, :special_service_ids, :reapply_key,
-                  :applied_on, :email_confirmation
+                  :applied_on, :email_confirmation, :skills
+
+  store_accessor :data, :skills
 
   attr_accessor :salt, :bypass_humanizer, :email_confirmation
   attr_accessor :latitude, :longitude
@@ -81,9 +83,13 @@ class Applicant < ActiveRecord::Base
     br = '<br>'
     addr = address_line1 + br +
            (address_line2.blank? ? '' : (address_line2 + br)) +
-           address_city + ', ' + address_state + ' ' + address_zip + br +
+           address_city_state_zip + br +
            "county: <strong>#{county_name}</strong>"
     addr.html_safe
+  end
+
+  def address_city_state_zip
+    address_city + ', ' + address_state + ' ' + address_zip
   end
 
   def gender_text
@@ -204,6 +210,7 @@ class Applicant < ActiveRecord::Base
     validate_self_services
     validate_email
     validate_phone_numbers
+    validate_skills
 
     errors.empty?
   end
@@ -229,18 +236,21 @@ class Applicant < ActiveRecord::Base
   end
 
   def validate_email
-    parts = email.to_s.split('@')
-    valid_email = parts.count == 2
-    if valid_email
-      parts = parts[1].split('.')
-      valid_email = parts.count > 1
-    end
+    valid_email = valid_email_parts?
     errors.add(:email, 'invalid email address') unless valid_email
     if new_record? && email.downcase != email_confirmation.downcase
       errors.add(:email_confirmation, 'does not match email')
       valid_email = false
     end
     valid_email
+  end
+
+  def valid_email_parts?
+    parts = email.to_s.split('@')
+    return false unless parts.count == 2
+
+    parts = parts[1].split('.')
+    parts.count > 1
   end
 
   def validate_phone_numbers
@@ -265,5 +275,13 @@ class Applicant < ActiveRecord::Base
   def validate_self_services
     return unless applicant_special_services.empty?
     errors.add('special_services', 'You have to select at least 1 option')
+  end
+
+  def validate_skills
+    size = skills.to_s.size
+    return true if size > 0 && size < 421
+    errors.add(:skills, "can't be blank") if skills.blank?
+    errors.add(:skills, "size(#{size}) exceeds 420 characters.") if size > 420
+    false
   end
 end

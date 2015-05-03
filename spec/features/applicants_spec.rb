@@ -124,13 +124,13 @@ describe 'applicants' do
       fill_in 'trainee_trainee_id', with: '123456789'
       fill_in 'trainee_dob', with: '12/28/1990'
       click_on 'Next'
-      expect(page).to have_text('Please enter your preferences for job leads')
+      # expect(page).to have_text('Please enter your preferences for job leads')
 
-      fill_in 'job_search_profile_skills',    with: 'java, ajax, xml'
-      fill_in 'job_search_profile_location',  with: 'Edison,NJ'
-      fill_in 'job_search_profile_distance',  with: '20'
+      # fill_in 'job_search_profile_skills',    with: 'java, ajax, xml'
+      # fill_in 'job_search_profile_location',  with: 'Edison,NJ'
+      # fill_in 'job_search_profile_distance',  with: '20'
 
-      click_on 'Update'
+      # click_on 'Update'
       expect(page).to have_text 'resume'
 
       attach_file 'trainee_file_file', @filepath
