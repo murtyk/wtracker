@@ -8,7 +8,7 @@ Capybara.server do |app, port|
   require 'rack/handler/thin'
   Rack::Handler::Thin.run(app, Port: port)
 end
-Capybara.save_and_open_page_path = 'public/tmp'
+Capybara.save_and_open_page_path = ENV['CAPYBARA_PAGE_PATH'] || 'public/tmp'
 
 def wait_for_ajax
   counter = 0
