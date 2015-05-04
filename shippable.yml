@@ -2,6 +2,8 @@
 # shippleable yml for CI
 language: ruby
 
+cache: true
+
 rvm:
   - 2.2.0
 
