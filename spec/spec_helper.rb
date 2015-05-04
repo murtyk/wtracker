@@ -1,6 +1,22 @@
+# This file is copied to spec/ when you run 'rails generate rspec:install'
+ENV["RAILS_ENV"] ||= 'test'
+
+require File.expand_path("../../config/environment", __FILE__)
+require 'rspec/rails'
+# require 'rspec/autorun'
+require 'capybara/rspec'
+require 'support/subdomains.rb'
+require 'capybara-screenshot'
+require 'capybara-screenshot/rspec'
 require 'simplecov'
+require 'simplecov-csv'
 require 'headless'
 require 'rspec/retry'
+# require 'webmock/rspec'
+# WebMock.allow_net_connect!
+
+SimpleCov.formatter = SimpleCov::Formatter::CSVFormatter
+SimpleCov.coverage_dir(ENV["COVERAGE_REPORTS"] || 'coverage')
 
 SimpleCov.start do
   add_group 'Models', '/app/models/'
@@ -13,22 +29,9 @@ SimpleCov.start do
   add_group 'Views', '/app/views/'
 end
 
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
-
-require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
-# require 'rspec/autorun'
-require 'capybara/rspec'
-require 'support/subdomains.rb'
-require 'capybara-screenshot'
-require 'capybara-screenshot/rspec'
-# require 'webmock/rspec'
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-
-# WebMock.allow_net_connect!
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -92,7 +95,6 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
-
 
   config.verbose_retry = true # show retry status in spec process
 
