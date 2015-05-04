@@ -23,6 +23,7 @@ services:
 before_script:
   - mkdir -p shippable/testresults
   - mkdir -p shippable/codecoverage
+  - mkdir -p shippable/capybara
   - cp config/shippable.database.yml config/database.yml
   - psql -c 'create database wtracker_test;' -U postgres
   - RAILS_ENV=test rake db:migrate
@@ -31,7 +32,7 @@ before_script:
 # write the rspec tests to the output dir
 script:
   # - rspec -f JUnit -o shippable/testresults/results.xml
-  - rspec --format RspecJunitFormatter -o shippable/testresults/results.xml
+  - rspec --format RspecJunitFormatter -o shippable/testresults/results.xml spec/features/emails_ajax_spec.rb
 
 notifications:
     email:
