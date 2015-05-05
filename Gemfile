@@ -85,8 +85,8 @@ end
 gem 'quiet_assets', group: :development
 
 group :test do
-  gem 'rspec-rails', '~> 3.0.1'
-  gem 'rspec-retry', '0.3.0'
+  gem 'rspec-rails', '~> 3.1'
+  gem 'rspec-retry'
   gem 'factory_girl_rails'
   gem 'selenium-webdriver', '2.43.0'
   gem 'headless', '1.0.2'
