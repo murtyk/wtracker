@@ -36,7 +36,7 @@ before_script:
 # write the rspec tests to the output dir
 script:
   # - rspec -f JUnit -o shippable/testresults/results.xml
-  - rspec --format RspecJunitFormatter -o shippable/testresults/results.xml spec/features/trainee_*
+  - rspec --format RspecJunitFormatter -o shippable/testresults/results.xml spec/features/js_and_no_js_spec.rb
 
 notifications:
     email:
