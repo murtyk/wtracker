@@ -5,7 +5,7 @@ group :production, :staging, :integration do
   ruby ENV['CUSTOM_RUBY_VERSION'] || '2.2.0'
 end
 
-gem 'rails', '4.2'
+gem 'rails', '4.2.0'
 gem 'protected_attributes', '1.0.7'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -59,16 +59,16 @@ gem 'clockwork'
 
 # Gems used only for assets and not required
 # in production environments by default.
-gem 'sass-rails',   '~> 4.0.1'
+gem 'sass-rails', '~> 5.0'
 gem 'bootstrap-sass', '~> 2.3.0.0'
 gem 'bootstrap-datepicker-rails', '1.1.1.6'
 gem 'font-awesome-sass-rails', '3.0.2.2'
-gem 'coffee-rails', '~> 4.0.1'
+gem 'coffee-rails', '~> 4.1.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', :platforms => :ruby
 
-gem 'uglifier', '1.2.3'
+gem 'uglifier', '>= 1.3.0'
   # gem 'jquery-ui-rails'
 
 group :development do
