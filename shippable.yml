@@ -9,10 +9,6 @@ archive: true
 rvm:
   - 2.2.0
 
-addons:
-  selenium: "2.43"
-  firefox: "27.0"
-
 hosts:
   - www.localhost.com
   - brookdale.localhost.com
