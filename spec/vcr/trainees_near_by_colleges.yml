@@ -1,0 +1,245 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=765%20Newman%20Springs%20Rd,%20Middletown,%20NJ,%2007738&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 05 May 2015 16:57:15 GMT
+      Expires:
+      - Wed, 06 May 2015 16:57:15 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=1
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "765",
+                       "short_name" : "765",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Newman Springs Road",
+                       "short_name" : "Newman Springs Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Lincroft",
+                       "short_name" : "Lincroft",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Middletown",
+                       "short_name" : "Middletown",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Monmouth County",
+                       "short_name" : "Monmouth County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "07738",
+                       "short_name" : "07738",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1543",
+                       "short_name" : "1543",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "765 Newman Springs Road, Lincroft, NJ 07738, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.3279277,
+                       "lng" : -74.13340529999999
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3292766802915,
+                          "lng" : -74.13205631970848
+                       },
+                       "southwest" : {
+                          "lat" : 40.3265787197085,
+                          "lng" : -74.1347542802915
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJeY-LXvotwokR2kW-wQ9pPOY",
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 05 May 2015 16:57:09 GMT
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=761%20Newman%20Springs%20Rd,%20Middletown,%20NJ,%2007738&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 05 May 2015 17:22:08 GMT
+      Expires:
+      - Wed, 06 May 2015 17:22:08 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=1
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "761",
+                       "short_name" : "761",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Newman Springs Road",
+                       "short_name" : "Newman Springs Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Lincroft",
+                       "short_name" : "Lincroft",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Middletown",
+                       "short_name" : "Middletown",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Monmouth County",
+                       "short_name" : "Monmouth County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New Jersey",
+                       "short_name" : "NJ",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "07738",
+                       "short_name" : "07738",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1524",
+                       "short_name" : "1524",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "761 Newman Springs Road, Lincroft, NJ 07738, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.3287509,
+                       "lng" : -74.128199
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.3300998802915,
+                          "lng" : -74.1268500197085
+                       },
+                       "southwest" : {
+                          "lat" : 40.3274019197085,
+                          "lng" : -74.12954798029151
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJez4JN-MtwokR-7l2Jssy5eU",
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 05 May 2015 17:22:02 GMT
+recorded_with: VCR 2.9.2

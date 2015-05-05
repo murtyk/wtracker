@@ -224,6 +224,7 @@ namespace :testprep do
     nav1 = create_user('Melinda', 'Peters', 'Camden', 1, 3, 'melinda1@mail.com')
 
     nav1.counties << nj_state.counties.where(name: 'Middlesex').first
+    nav1.counties << nj_state.counties.where(name: 'Monmouth').first
     nav1.grants << grant
 
     nav3 = create_user('Cameron', 'Diaze', 'Camden', 1, 3, 'cameron@nomail.net')
