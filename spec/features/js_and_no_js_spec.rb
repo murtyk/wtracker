@@ -4,6 +4,10 @@ describe 'signin page' do
     visit '/login'
     expect(page).to have_text 'Remember Me'
   end
+  it 'with js sign in admin', js: true do
+    signin_admin
+    expect(page).to have_text 'Remember Me'
+  end
   it 'with js', js: true do
     visit '/login'
     expect(page).to have_text 'Remember Me'
