@@ -59,7 +59,7 @@ module  UserHelper
 
   def sign_in_user(sub, email, pwd = 'password')
     switch_to_subdomain(sub)
-    visit root_path
+    visit '/login'
     fill_in 'user_email', with: email
     fill_in 'user_password', with: pwd
     click_button 'Sign in'
