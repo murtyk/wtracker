@@ -28,6 +28,7 @@ before_script:
   - mkdir -p shippable/codecoverage
   - mkdir -p shippable/capybara
   - cp config/shippable.database.yml config/database.yml
+  - psql -c 'DROP DATABASE IF EXISTS wtracker_test;' -U postgres
   - psql -c 'create database wtracker_test;' -U postgres
   - RAILS_ENV=test rake db:migrate
   - RAILS_ENV=test rake testprep:load_data

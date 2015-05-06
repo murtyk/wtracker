@@ -10,5 +10,5 @@ rm -rf ./tmp
 echo "deleting public/tmp folder"
 rm -rf ./public/tmp
 
-psql postgres -c "drop database wtracker_test;"
+psql postgres -c "DROP DATABASE IF EXISTS wtracker_test;"
 psql postgres -c "CREATE DATABASE wtracker_test WITH ENCODING 'UTF8' TEMPLATE wtracker_test3"
