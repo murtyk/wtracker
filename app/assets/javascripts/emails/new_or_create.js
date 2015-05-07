@@ -34,15 +34,11 @@ $('#new_attachment').click(function() {
 
 $(".simple_form").submit(function(e){
   var count = 0;
-  var file_ids = [];
   var checkbox_id = 'tf_';
 
-  // REFACTOR: convert each to map function
-  $("input[type='checkbox'][id*='" + checkbox_id + "']:checked").each(function() {
-    id = this.id.split('_')[1];
-    file_ids.push(id);
-  });
-  // alert(file_ids);
+  var checkboxes = $("input[type='checkbox'][id*='" + checkbox_id + "']:checked");
+  var file_ids = $.map(checkboxes, function(cb, i){ return cb.id.split('_')[1]; } );
+
   if (file_ids.length > 0){
     $('#email_trainee_file_ids').val(file_ids.join(':'));
   }
