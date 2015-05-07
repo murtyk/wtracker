@@ -118,8 +118,6 @@ WTracker::Application.routes.draw do
       get :contacts_search
       get :get_google_company
       get :add_google_company
-      get :search_google
-      get :send_email
     end
   end
 
@@ -148,6 +146,8 @@ WTracker::Application.routes.draw do
       get :retry
     end
   end
+
+  resources :google_companies, only: [:create, :index]
 
   resource :companies_finder, only: [:new, :create, :show] do
     collection do

@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-describe 'Company' do
-  describe 'google search' do
+describe 'Google Companies' do
+  describe 'search' do
     before :each do
       signin_admin
     end
 
-    it 'companies' do
-      visit('/employers/search_google')
+    it 'finds companies' do
+      visit('/google_companies')
       VCR.use_cassette('companies_google_search') do
         fill_in 'filters_name', with: 'Munich Re'
         fill_in 'filters_location', with: 'Princeton, NJ'

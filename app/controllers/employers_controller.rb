@@ -1,12 +1,10 @@
 # An employer belogs to an account and source
 # REFACTOR: too many custom routes
-# how about moving add_google_company, get_google_company, search_google
+# how about moving add_google_company and get_google_company
 #    to a new resource? Say Google or Company?
 # Also explore add another resource MapService
 class EmployersController < ApplicationController
-  # before_filter :authenticate_user!, except: [:list_for_trainee]
-  before_filter :user_and_no_trainee, except: [:list_for_trainee]
-  before_action :user_or_trainee, only: [:list_for_trainee]
+  before_action :authenticate_user!
 
   # ajax request job search analyze page
   def add_google_company
@@ -27,11 +25,6 @@ class EmployersController < ApplicationController
     render json: { found: company.found }
   end
 
-  # google search menu.
-  def search_google
-    @companies = CompanyFinder.google_search(params[:filters]) if params[:filters]
-  end
-
   # for trainee interactions
   def list_for_trainee
     employers = EmployerServices.new(current_user, params)
@@ -40,6 +33,7 @@ class EmployersController < ApplicationController
   end
 
   # ajax request from klass events for adding employers to an event
+  # REFACTOR: No need for this route. We can leverage index.
   def search
     employers = EmployerServices.new(current_user, params[:filters]).search
 
@@ -49,6 +43,7 @@ class EmployersController < ApplicationController
   end
 
   # for sending emails
+  # REFACTOR: should be handled by contacts controller. Why here?
   def contacts_search
     contacts = EmployerServices.new(current_user, params[:filters]).search_contacts
     respond_to do |format|

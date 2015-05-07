@@ -136,10 +136,6 @@ class TraineesController < ApplicationController
     render 'portal'
   end
 
-  def user_or_trainee
-    redirect_to root_path unless current_user || current_trainee
-  end
-
   def set_trainee_grant
     return unless current_trainee
     grant_id = current_trainee.grant_id

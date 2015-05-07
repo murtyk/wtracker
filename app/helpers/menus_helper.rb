@@ -1,4 +1,4 @@
-# helper for user menu bar
+# helper for menu bar
 module MenusHelper
   def profile_menu
     link = link_to(current_user) do
@@ -248,7 +248,7 @@ module MenusHelper
   end
 
   def employers_search_menu_items
-    [employers_search_menu, companies_search_menu, employers_search_google_menu]
+    [employers_search_menu, companies_search_menu, google_companies_menu]
   end
 
   def employers_create_menu_items
@@ -283,9 +283,9 @@ module MenusHelper
     menu_link('Analysis', analysis_employers_path)
   end
 
-  def employers_search_google_menu
+  def google_companies_menu
     return if Rails.env.production?
-    menu_link('Search Google', search_google_employers_path)
+    menu_link('Search Google', google_companies_path)
   end
 
   def employers_klass_interaction_menu
@@ -383,5 +383,78 @@ module MenusHelper
 
   def divider_menu
     '<li class="divider"></li>'.html_safe
+  end
+
+  # following is for building menus for opero admin
+  def admin_menu_items
+    [
+      menu_link('Users', admin_users_path),
+      menu_link('Accounts', admin_accounts_path),
+      menu_link('Import Status', admin_import_statuses_path),
+      menu_link('Counties', admin_counties_path),
+      admin_cities_menu_group,
+      admin_s3_menu_group,
+      admin_sign_off_menu
+    ].join.html_safe
+  end
+
+  def admin_cities_menu_group
+    '<li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        Cities
+        <b class="caret" style="border-top-color: white;"></b>
+      </a>
+      <ul class="dropdown-menu">' +
+      menu_link('Index', admin_cities_path) +
+      menu_link('Import', new_admin_import_status_path(resource: 'cities')) +
+      '</ul>
+    </li>'
+  end
+
+  def admin_s3_menu_group
+    '<li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        S3
+        <b class="caret" style="border-top-color: white;"></b>
+      </a>
+      <ul class="dropdown-menu">' +
+      menu_link('List', admin_aws_s3s_path) +
+      menu_link('Recycle Bin', recycle_bin_admin_aws_s3s_path) +
+      '</ul>
+    </li>'
+  end
+
+  def admin_sign_off_menu
+    '<li>' +
+      link_to('Sign Out', destroy_admin_session_path, method: :delete) +
+      '</li>'
+  end
+
+  # following is for building menus for trainee portal
+  def trainee_menu_items
+    sign_off_link =  '<li>' +
+                     link_to(destroy_trainee_session_path, method: :delete) do
+                       '<i class="icon-off"></i> Sign Off'.html_safe
+                     end +
+                     '</li>'
+
+    return sign_off_link.html_safe unless current_trainee.completed_trainee_data?
+
+    [trainee_placements_menu,
+     trainee_documents_menu,
+     trainee_jobs_menu,
+     sign_off_link].join('').html_safe
+  end
+
+  def trainee_placements_menu
+    menu_link('Placements', trainee_placements_path)
+  end
+
+  def trainee_documents_menu
+    menu_link('Documents', portal_trainees_path(trainee_files: true))
+  end
+
+  def trainee_jobs_menu
+    menu_link('Jobs', current_trainee.job_search_profile)
   end
 end

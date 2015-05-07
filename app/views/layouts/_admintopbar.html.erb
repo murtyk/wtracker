@@ -11,31 +11,7 @@
       </a>
       <div class="nav-collapse collapse">
       <ul class="nav pull-right">
-        <li><%= link_to 'Users', admin_users_path%></li>
-        <li><%= link_to 'Accounts', admin_accounts_path%></li>
-        <li><%= link_to 'Import Status', admin_import_statuses_path%></li>
-        <li><%= link_to 'Counties', admin_counties_path%></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-            Cities
-            <b class="caret" style='border-top-color: white;'></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to 'Index',admin_cities_path%></li>
-            <li><%= link_to 'Import', new_admin_import_status_path(resource: 'cities') %></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a class="dropdown-toggle"  data-toggle="dropdown"   href="#">
-            S3
-            <b class="caret" style='border-top-color: white;'></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to 'List', admin_aws_s3s_path%></li>
-            <li><%= link_to 'Recycle Bin', recycle_bin_admin_aws_s3s_path %></li>
-          </ul>
-        </li>
-        <li><%= link_to 'Sign Out', destroy_admin_session_path, method: :delete %></li>
+        <%= admin_menu_items %>
       </ul><!--/.nav-->
       </div>
     </div><!--/.container-fluid-->

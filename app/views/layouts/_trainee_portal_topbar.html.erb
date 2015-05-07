@@ -23,22 +23,7 @@
         </button>
         <div class="nav-collapse collapse">
           <ul class="nav pull-right">
-            <% if current_trainee.completed_trainee_data? %>
-            <li>
-              <%= link_to 'Placements', trainee_placements_path %>
-            </li>
-            <li>
-              <%= link_to 'Documents', portal_trainees_path(trainee_files: true) %>
-            </li>
-            <li>
-              <%= link_to 'Jobs', current_trainee.job_search_profile %>
-            </li>
-            <% end %>
-            <li>
-              <%= link_to destroy_trainee_session_path, method: :delete do %>
-                <i class="icon-off"></i> Sign Off
-              <% end %>
-            </li>
+            <%= trainee_menu_items %>
           </ul>
         </div>
       </div>
