@@ -169,6 +169,12 @@ class Grant < ActiveRecord::Base
     atoz.shuffle[0..3].join + '0000' + atoz.shuffle[0..3].join + id.to_s
   end
 
+  def capture_optout_reason?
+    !trainee_applications
+  end
+
+  # REFACTOR: we no longer need this and default_trainee_status_id attribute
+  # since manual status is removed.
   def grant_trainee_status?
     !default_trainee_status_id.nil?
   end

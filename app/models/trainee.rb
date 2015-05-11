@@ -123,12 +123,14 @@ class Trainee < ActiveRecord::Base
   delegate :start_date, :employer_name, :hire_title, :hire_salary,
            to: :hired_employer_interaction, allow_nil: true
 
-  def unhire
-    trainee_interactions.where(status: 4).each(&:unhire)
+  # placed with No OJT or OJT Completed
+  def hired?
+    status == 4
   end
 
-  def hired?
-    hired_employer_interaction
+  # not hired and not OJT Enrolled
+  def not_placed?
+    status == 0
   end
 
   def placement_status

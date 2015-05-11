@@ -16,6 +16,7 @@
     <th>Distance</th>
     <th>Leads Count</th>
   </tr>
+  <% trainee_job_counts = @data.trainee_job_counts %>
   <% @trainees.each do |trainee| %>
     <% jsp = trainee.job_search_profile %>
     <tr>
@@ -24,7 +25,7 @@
       <td><%= jsp && jsp.skills%></td>
       <td><%= jsp && jsp.location%></td>
       <td><%= jsp && jsp.distance%></td>
-      <td><%= link_to trainee.auto_shared_jobs.count, auto_shared_jobs_path(trainee_id: trainee.id) %></td>
+      <td><%= link_to trainee_job_counts[trainee.id].to_i, auto_shared_jobs_path(trainee_id: trainee.id) %></td>
     </tr>
   <% end %>
 </table>

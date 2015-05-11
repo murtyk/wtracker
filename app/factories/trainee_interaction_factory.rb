@@ -48,6 +48,7 @@ class TraineeInteractionFactory
     klass_trainees = ti.trainee.klass_trainees
     ti.destroy
     # we do not use update_all since it does not update timestamp
+    ti.trainee.update(status: 0) if ti.hired?
     klass_trainees.each { |kt| kt.update(status: 2) } if ti.hired?
     ti
   end

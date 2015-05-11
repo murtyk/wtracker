@@ -33,7 +33,7 @@ class AutoLeadsMetrics
     ids = send(template)
 
     return [] if ids.empty?
-    Trainee.where(id: ids).order(:first, :last)
+    Trainee.includes(:job_search_profile).where(id: ids).order(:first, :last)
   end
 
   def counts_by_status
@@ -50,6 +50,10 @@ class AutoLeadsMetrics
     valid_jsp_count = trainees_with_valid_job_search_profiles.count
     return unless valid_jsp_count > 0
     job_leads_sent_count / valid_jsp_count
+  end
+
+  def trainee_job_counts
+    AutoSharedJob.where(trainee_id: trainee_ids).group(:trainee_id).count
   end
 
   private

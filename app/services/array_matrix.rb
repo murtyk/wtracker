@@ -45,6 +45,10 @@ class ArrayMatrix
     data[i]
   end
 
+  def rows
+    data
+  end
+
   def rows_with_ids
     row_ids.each_with_index do |r_id, r|
       yield(data[r], r_id)

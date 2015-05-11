@@ -36,6 +36,7 @@ class JobSearchProfilesController < ApplicationController
     format_start_date if @edit_opt_out
 
     if @job_search_profile.update_attributes(params[:job_search_profile])
+      return if request.format.js?
       if current_trainee
         redirect_to portal_trainees_path
         return

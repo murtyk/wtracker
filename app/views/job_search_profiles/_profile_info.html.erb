@@ -1,3 +1,25 @@
+<div id='opt_out_div'>
+<% if job_search_profile.opted_out? %>
+  <b>Opted Out From Leads</b>
+<% else %>
+  <% if current_grant.capture_optout_reason? %>
+    <b>
+      <%= link_to('Click here to opt out from leads',
+                  edit_job_search_profile_path(opt_out: true),
+                  style: 'color: #d00') %>
+    </b>
+  <% else %>
+      <%= link_to('Click to opt out from leads',
+                  job_search_profile_path(job_search_profile: { opted_out: true }),
+                  method: :put,
+                  remote: true,
+                  data: { confirm: 'Are you sure?' },
+                  class: 'btn btn-flat btn-warning',
+                  style: 'color: #d00',
+                  id: 'optout_button') %>
+  <% end %>
+<% end %>
+</div>
 <h2>
   Job Search Profile
   <% unless job_search_profile.opted_out %>

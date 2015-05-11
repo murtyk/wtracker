@@ -85,6 +85,7 @@ class AutoJobLeads
   def perform_action_for_trainee(trainee)
     action = action_for_trainee(trainee)
     case action
+    when :SKIP
     when :OPTED_OUT
       @trainees_opted_out << trainee
     when :SEND_LEADS
@@ -107,7 +108,8 @@ class AutoJobLeads
   end
 
   def action_for_trainee(trainee)
-    return :OPTED_OUT if trainee.valid_profile? && trainee.opted_out_from_auto_leads?
+    return :SKIP unless trainee.not_placed?
+    return :OPTED_OUT if trainee.opted_out_from_auto_leads?
     return :SEND_LEADS if trainee.valid_profile?
     # trainee did not update with skills etc.
     return :INCOMPLETE if trainee.job_search_profile
