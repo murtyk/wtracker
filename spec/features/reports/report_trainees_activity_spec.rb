@@ -30,7 +30,7 @@ describe 'Reports' do
 
       Account.current_id = 1
       Grant.current_id = Grant.first.id
-      company = Employer.create(name: 'Company1', source: 'RSPEC')
+      company = Employer.create(name: 'Company1')
 
       trainee = trainees.first
       trainee.trainee_notes.create(notes: 'This is Notes.')

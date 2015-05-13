@@ -133,7 +133,7 @@
       <td><%= t.education %></td>
       <td><%= t.veteran ? 'Yes' : 'No' %></td>
       <% if current_grant.trainee_applications? %>
-        <td><%= t.job_search_profile.skills %></td>
+        <td><%= t.job_search_profile && t.job_search_profile.skills %></td>
         <td><%= t.applicant.navigator_name %></td>
       <% end %>
       <td><%= t.klasses.map{ |k| link_to(k.name, k) }.join('<br>').html_safe %></td>

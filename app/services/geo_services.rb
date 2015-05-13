@@ -160,5 +160,8 @@ class GeoServices
     # try one more time
     sleep 1
     Geocoder.search(location)
+  rescue StandardError => error
+    Rails.logger.error("GeoServices: location: #{location} error: #{error}")
+    []
   end
 end

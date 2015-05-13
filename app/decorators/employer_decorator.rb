@@ -29,16 +29,6 @@ class EmployerDecorator < Draper::Decorator
     @policy ||= EmployerPolicy.new(h.current_user, self)
   end
 
-  def source_with_label
-    return nil unless policy.show_source?
-    '<b>Source:</b>'.html_safe + object.source
-  end
-
-  def source
-    return nil unless policy.show_source?
-    object.source
-  end
-
   def created_date
     return nil unless policy.show_source?
     "<b>Create Date:</b>#{object.created_at.to_date}".html_safe

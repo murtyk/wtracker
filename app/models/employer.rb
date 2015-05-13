@@ -4,38 +4,28 @@
 # sector, county and/or source
 class Employer < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
-  # default_scope order('employers.name')
   include InteractionsMixins
 
   scope :order_by_name, -> { order(:name) }
-  # scope :name_search, lambda { |name| where("name ILIKE ? ", name+"%")}
+  scope :from_source, -> (source_id) { where(employer_source_id: source_id) }
 
-  scope :in_county, lambda { |county, state|
-                      joins(:address)
-                        .where(addresses: { county: county, state: state })
-                    }
-  scope :in_counties, lambda { |county_ids|
-                        joins(:address)
-                          .where(addresses: { county_id: county_ids })
-                      }
-  scope :in_sector, lambda { |sector_id|
-                      joins(:employer_sectors)
-                        .where(employer_sectors: { sector_id: sector_id })
-                    }
-  scope :from_source, ->(source) { where(source: source) }
+  scope :in_sector, lambda  { |sector_id|
+    joins(:employer_sectors).where(employer_sectors: { sector_id: sector_id })
+  }
+  scope :in_counties, lambda  { |county_ids|
+    joins(:address).where(addresses: { county_id: county_ids })
+  }
 
-  scope :sources, -> { select('DISTINCT source as source').reorder('source') }
-
-  attr_accessible :name, :source, :address_attributes,
+  attr_accessible :name, :address_attributes,
                   :phone_no, :website, :sector_ids, :trainee_ids, :employer_source_id
-  validates :name, presence: true, length: { minimum: 3, maximum: 100 }
-  # validates :source, presence: true, length: { minimum: 3, maximum: 100 }
 
-  delegate :name, to: :employer_source, prefix: true
+  validates :name, presence: true, length: { minimum: 3, maximum: 100 }
+
   before_save :cb_before_save
 
   belongs_to :account
   belongs_to :employer_source
+  delegate :name, to: :employer_source, prefix: true
 
   has_one :address, as: :addressable, dependent: :destroy
   accepts_nested_attributes_for :address
@@ -43,13 +33,8 @@ class Employer < ActiveRecord::Base
            :zip, :latitude, :longitude, to: :address, allow_nil: true
 
   has_many :employer_sectors, dependent: :destroy
-  accepts_nested_attributes_for :employer_sectors
-
   has_many :sectors, through: :employer_sectors
-  accepts_nested_attributes_for :sectors
-
   has_many :contacts, as: :contactable, dependent: :destroy
-
   has_many :klass_interactions, dependent: :destroy
   has_many :klass_events, through: :klass_interactions
   has_many :klasses, -> { uniq }, through: :klass_events

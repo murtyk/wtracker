@@ -16,7 +16,7 @@
     <tr id='tr_<%=c.id%>'>
       <td><%= name_and_link(c) %></td>
       <td><%= c.formatted_address%></td>
-      <td><%= c.klasses.count %></td>
+      <td><%= @colleges_map.klasses_count(c) %></td>
       <td>
         <%= show_button(c) %>
         <%= edit_button(c) %>

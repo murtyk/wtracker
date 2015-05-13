@@ -65,8 +65,11 @@ class DemoData
         website = emp[2]
         address = { line1: emp[3], city: emp[4], county: emp[5], county_id: emp[6],
                     state: emp[7], zip: emp[8], latitude: emp[9], longitude: emp[10] }
-        emp = Employer.create(name: name, phone_no: phone_no, website: website,
-                              source: 'demodata', address_attributes: address)
+        emp = Employer.create(name: name,
+                              phone_no: phone_no,
+                              website: website,
+                              employer_source_id: EmployerSource.first.id,
+                              address_attributes: address)
         emp.sectors << sector
       end
     end

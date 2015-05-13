@@ -9,7 +9,7 @@ describe 'Report' do
     it 'missing address' do
       Account.current_id = 1
       employers = (1..3).map do |n|
-        Employer.create(name: "Good Company #{n}", source: 'RSPEC')
+        Employer.create(name: "Good Company #{n}")
       end
 
       attrs = { line1: 'Street Address', city: 'Edison', state: 'NJ', zip: '08520',

@@ -17,7 +17,7 @@ describe 'Report' do
         klass.klass_trainees.create(trainee_id: t.id, status: 1)
         t
       end
-      company = Employer.create(name: 'Good Company 1', source: 'RSPEC')
+      company = Employer.create(name: 'Good Company 1')
 
       trainees[0].trainee_interactions.create(employer_id: company.id,
                                               status: 4,

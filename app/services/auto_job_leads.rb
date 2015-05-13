@@ -15,6 +15,9 @@ class AutoJobLeads
     return if skip_lead_generation?
     Rails.logger.info 'AutoJobLeads: performing'
 
+    Rails.logger.info 'AutoJobLeads: creating missing job search profiles'
+    JobSearchProfileJob.new.perform
+
     use_job_leads_email
 
     send_leads

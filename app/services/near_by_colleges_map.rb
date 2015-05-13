@@ -30,6 +30,7 @@ class NearByCollegesMap < MapService
   def build_navigators(user)
     navs = grant.navigators.order(:first, :last)
     navs = ([user] + navs).uniq if user.navigator?
+    @navigator_ids = navs.map(&:id)
     os_navs = navs.map do |nav|
       os = OpenStruct.new(name: nav.name, object: nav, colleges: [], trainees_count: 0)
       [nav.id, os]
@@ -136,7 +137,8 @@ class NearByCollegesMap < MapService
   end
 
   def college_navigator(college)
-    @nav_counties ||= Hash[UserCounty.pluck(:county_id, :user_id)]
+    @nav_counties ||= Hash[UserCounty.where(user_id: @navigator_ids)
+                           .pluck(:county_id, :user_id)]
     nav_id          = @nav_counties[college.county_id]
     @navigators[nav_id]
   end

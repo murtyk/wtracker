@@ -27,7 +27,8 @@ describe AutoJobLeads do
         name: 'Grant Name',
         'email_messages_defined?' => true,
         trainees: [t1,t2,t3, t4],
-        'auto_job_leads?' => true)
+        'auto_job_leads?' => true,
+        'trainee_applications?' => false)
 
     Grant.stub_chain(:unscoped, :where, :load).and_return([grant])
 

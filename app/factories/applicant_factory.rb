@@ -20,22 +20,26 @@ class ApplicantFactory
     return reapply(params) if params[:applicant][:reapply_key]
 
     applicant = Applicant.find params[:id]
-    a_params  = params[:applicant]
-    t_params  = a_params.delete(:trainee)
-    t_params.delete(:id) if t_params
+
+    a_params, t_params = parse_params(params)
 
     Applicant.transaction do
       applicant.update_attributes(a_params) if a_params.any?
       trainee = applicant.trainee
       trainee.update_attributes(t_params) if t_params
       if trainee.errors.any?
-        trainee.errors.each do |f, m|
-          applicant.errors.add(f, m) if applicant.respond_to?(f)
-        end
+        copy_error_messages(applicant, trainee)
         fail ActiveRecord::Rollback, 'Inform TAPO Support Staff'
       end
     end
     applicant
+  end
+
+  def self.parse_params(params)
+    a_params  = params[:applicant].clone
+    t_params  = a_params.delete(:trainee)
+    t_params.delete(:id) if t_params
+    [a_params, t_params]
   end
 
   def self.reapply(params)
@@ -99,7 +103,7 @@ class ApplicantFactory
   end
 
   def self.copy_error_messages(applicant, trainee)
-    message = trainee.errors.first[0].to_s + ' ' + trainee.errors.first[1]
+    message = trainee.errors.full_messages[0]
     applicant.errors.add(:trainee_id, message)
     trainee.errors.each do |f, m|
       applicant.errors.add(f, m) if applicant.respond_to?(f)
@@ -111,14 +115,21 @@ class ApplicantFactory
     ap = Applicant.find_by('email ilike ?', params[:email])
     ra = ApplicantReapply.new(email: params[:email])
 
-    ra.errors.add(:base, grant.reapply_email_not_found_message) unless ap
-    ra.errors.add(:base, grant.reapply_already_accepted_message) if ap && ap.accepted?
+    validate_reapply(grant, ap, ra)
+
+    # ra.errors.add(:base, grant.reapply_email_not_found_message) unless ap
+    # ra.errors.add(:base, grant.reapply_already_accepted_message) if ap && ap.accepted?
 
     return ra if ra.errors.any?
 
     ra = ap.applicant_reapplies.create(key: random_key)
     AutoMailer.applicant_reapply(ap).deliver_now
     ra
+  end
+
+  def self.validate_reapply(grant, ap, ra)
+    ra.errors.add(:base, grant.reapply_email_not_found_message) unless ap
+    ra.errors.add(:base, grant.reapply_already_accepted_message) if ap && ap.accepted?
   end
 
   def self.random_key

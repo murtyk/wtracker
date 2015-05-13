@@ -30,7 +30,7 @@ class EmployerServices
     employers = employers.in_counties(county_ids) unless county_ids.empty?
     employers = employers.in_sector(sector_id) if sector_id > 0
     unless employer_source_id.blank?
-      employers = employers.where(employer_source_id: employer_source_id)
+      employers = employers.from_source(employer_source_id)
     end
 
     employers
@@ -90,10 +90,6 @@ class EmployerServices
     c_ids = c_ids.compact
     c_ids.delete('')
     c_ids
-  end
-
-  def source
-    filters[:source]
   end
 
   def employer_source_id

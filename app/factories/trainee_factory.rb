@@ -112,13 +112,16 @@ class TraineeFactory
   private
 
   def self.build_job_search_profile(applicant, trainee)
-    return unless applicant.valid_address?
-    location = applicant.address_city + ',' + applicant.address_state
-    trainee.build_job_search_profile(account_id: trainee.account_id,
-                                     skills: applicant.skills,
-                                     location: location,
-                                     zip: applicant.address_zip,
-                                     distance: 20)
+    if applicant.valid_address?
+      location = applicant.address_city + ',' + applicant.address_state
+      trainee.build_job_search_profile(account_id: trainee.account_id,
+                                       skills: applicant.skills,
+                                       location: location,
+                                       zip: applicant.address_zip,
+                                       distance: 20)
+    else
+      trainee.build_job_search_profile(account_id: trainee.account_id)
+    end
   end
 
   def self.build_trainee_attrs(applicant)
@@ -184,7 +187,7 @@ class TraineeFactory
 
   def self.geocode_applicant(a)
     addr = "#{a.address_line1}, #{a.address_city}, #{a.address_state}, #{a.address_zip}"
-    result = Geocoder.search(addr).first
+    result = GeoServices.perform_search(addr).first
     if result
       a.longitude = result.longitude
       a.latitude = result.latitude

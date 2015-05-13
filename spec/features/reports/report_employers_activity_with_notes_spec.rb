@@ -12,7 +12,7 @@ describe 'Reports' do
       (1..2).each do |n|
         note = n.to_s + '. This is a' + ' note' * 25 +
                '. It should be long and display create date'
-        employer = Employer.create(name: "Good Company #{n}", source: 'RSPEC')
+        employer = Employer.create(name: "Good Company #{n}")
         employer.employer_notes.create(note: note)
         notes << note
       end

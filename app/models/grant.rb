@@ -21,7 +21,7 @@ class Grant < ActiveRecord::Base
   attr_accessible :reply_to_email, :reapply_subject, :reapply_body,
                   :reapply_instructions, :reapply_email_not_found_message,
                   :reapply_already_accepted_message,
-                  :reapply_confirmation_message, :default_trainee_status_id
+                  :reapply_confirmation_message
 
   store_accessor :specific_data,
                  :assessments_include_score, :assessments_include_pass,
@@ -171,12 +171,6 @@ class Grant < ActiveRecord::Base
 
   def capture_optout_reason?
     !trainee_applications
-  end
-
-  # REFACTOR: we no longer need this and default_trainee_status_id attribute
-  # since manual status is removed.
-  def grant_trainee_status?
-    !default_trainee_status_id.nil?
   end
 
   private

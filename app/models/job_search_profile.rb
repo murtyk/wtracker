@@ -133,7 +133,7 @@ class JobSearchProfile < ActiveRecord::Base
   end
 
   def validate_zip(zip)
-    city = GeoServices.findcity('', zip)
+    city = City.find_by(zip: zip) || GeoServices.findcity('', zip)
     errors.add(:zip, 'location not found for this zip code') unless city
     !city.blank?
   end
@@ -183,7 +183,7 @@ class JobSearchProfile < ActiveRecord::Base
     if zip.blank?
       city = GeoServices.findcity(location, '')
     else
-      city = GeoServices.findcity('', zip)
+      city = City.find_by(zip: zip) || GeoServices.findcity('', zip)
     end
     self.location = "#{city.name},#{city.state_code}"
   end
