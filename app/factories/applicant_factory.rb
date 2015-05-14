@@ -24,15 +24,25 @@ class ApplicantFactory
     a_params, t_params = parse_params(params)
 
     Applicant.transaction do
-      applicant.update_attributes(a_params) if a_params.any?
-      trainee = applicant.trainee
-      trainee.update_attributes(t_params) if t_params
-      if trainee.errors.any?
-        copy_error_messages(applicant, trainee)
-        fail ActiveRecord::Rollback, 'Inform TAPO Support Staff'
-      end
+      update_applicant(applicant, a_params)
+      update_trainee(applicant, t_params)
     end
     applicant
+  end
+
+  def self.update_applicant(applicant, a_params)
+    return unless a_params.any?
+    applicant.attributes = a_params
+    applicant.save(validate: false)
+  end
+
+  def self.update_trainee(applicant, t_params)
+    trainee = applicant.trainee
+    trainee.update_attributes(t_params) if t_params
+    if trainee.errors.any?
+      copy_error_messages(applicant, trainee)
+      fail ActiveRecord::Rollback, 'Inform TAPO Support Staff'
+    end
   end
 
   def self.parse_params(params)
