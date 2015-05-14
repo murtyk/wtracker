@@ -52,11 +52,11 @@ class GoogleAddress
 
     parse_formatted_address(formatted_address) unless address[:city]
 
-    return unless address[:line1].nil? && address[:city]
-    fill_missing_line1
+    return unless address[:line1].blank? && address[:city]
+    fill_missing_line1(formatted_address)
   end
 
-  def fill_missing_line1
+  def fill_missing_line1(formatted_address)
     address_parts = formatted_address.split(',')
 
     return unless address_parts[1] && address_parts[1].squish == address[:city]
