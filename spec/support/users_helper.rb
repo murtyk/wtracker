@@ -35,6 +35,10 @@ module  UserHelper
     sign_in_user('njit', 'njit@mail.com')
   end
 
+  def signin_applicants_director
+    sign_in_user('apple', 'hilpert@mail.com')
+  end
+
   def signout
     click_on 'Welcome'
     click_on 'Sign Off'
