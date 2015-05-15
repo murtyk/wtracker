@@ -225,8 +225,11 @@
 
     <div class='row-fluid'>
       <div class='span6'>
+        <% label = 'I certify that the above information is true and accurate. By clicking here I agree to provide and share all my information as determined by the grant staff with any funding and partner organizations.<br> I agree to notify the grant when I find a full-time employment (30+ hours per week minimum)' %>
+
+
         <%= f.input :signature, required: true,
-                                inline_label: 'I certify that the above information is true and accurate. By clicking here I agree to provide and share all my information as determined by the grant staff with any funding and partner organizations.' %>
+                                inline_label: label.html_safe %>
       </div>
       <div class='span4' style='padding: 10px; border: solid blue'>
         Prove you are human.
