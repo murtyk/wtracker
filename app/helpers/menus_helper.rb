@@ -194,7 +194,7 @@ module MenusHelper
   end
 
   def auto_job_leads_metrics_menu
-    menu_link('Job Leads Metrics', auto_leads_metrics_path)
+    menu_link('Job Leads Metrics', dashboards_path(auto_leads_metrics: true))
   end
 
   def trainees_search_by_skills_menu

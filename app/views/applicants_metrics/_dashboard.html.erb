@@ -1,0 +1,38 @@
+<h1>DASHBOARD</h1>
+
+<table class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <% @data.metrics.header.each do |h| %>
+      <th><%= h %></th>
+    <% end %>
+  </tr>
+  <% @data.metrics.rows.each do |row| %>
+    <tr>
+      <% row.each do |d| %>
+        <td><%= d %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  <tr style='border-left: none; border-right: none; border-bottom: none'>
+    <td colspan="7"></td>
+  </tr>
+  <% @data.metrics.fs_data.each do |fs_data| %>
+    <tr>
+      <% fs_data.header.each do |h| %>
+        <th><%= h %></th>
+      <% end %>
+      <th colspan="3"></th>
+    </tr>
+    <% fs_data.rows.each do |row| %>
+      <tr>
+        <% row.each do |d| %>
+          <td><%= d %></td>
+        <% end %>
+        <td colspan="3"></td>
+      </tr>
+    <% end %>
+    <tr style='border-left: none; border-right: none; border-bottom: none'>
+      <td colspan="7"></td>
+    </tr>
+  <% end %>
+</table>

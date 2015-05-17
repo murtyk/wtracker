@@ -5,25 +5,30 @@ class DashboardsController < ApplicationController
   before_filter :authenticate_user!
 
   def starting_page
-    db = Dashboard.new(current_user)
+    sp = StartingPage.new(current_user)
 
-    return redirect_to_not_assigned_path if db.not_assigned?
-    return redirect_for_single_grant(db.path) if db.redirect?
+    return redirect_to_not_assigned_path if sp.not_assigned?
+    return redirect_for_single_grant(sp.path) if sp.redirect?
 
-    if db.select_grant?
+    if sp.select_grant?
       @grants = current_user.active_grants
       render 'select_grant'
+    else
+      fail 'unknown action for starting page'
     end
   end
 
   def grant_selected
     Grant.current_id = session[:grant_id] = params[:grant][:id].to_i
-    index
+    sp = StartingPage.new(current_user, current_grant)
+    redirect_to sp.path
   end
 
   def index
-    db = Dashboard.new(current_user, Grant.find(Grant.current_id), action_name)
-    redirect_to db.path
+    @data = DashboardMetrics.generate(current_grant, params)
+
+    return unless @data.template
+    render @data.template
   end
 
   private

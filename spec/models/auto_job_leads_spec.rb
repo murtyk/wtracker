@@ -30,7 +30,7 @@ describe AutoJobLeads do
         'auto_job_leads?' => true,
         'trainee_applications?' => false)
 
-    Grant.stub_chain(:unscoped, :where, :load).and_return([grant])
+    allow(Grant).to receive_message_chain("unscoped.where.load") { [grant] }
 
     # stub methods
     allow_any_instance_of(AutoJobLeads).to receive(:search_and_send_jobs)

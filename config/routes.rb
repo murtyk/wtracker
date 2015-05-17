@@ -1,5 +1,4 @@
 WTracker::Application.routes.draw do
-
   resources :applicants, except: [:destroy] do
     collection do
       get :analysis
@@ -225,10 +224,6 @@ WTracker::Application.routes.draw do
       post :grant_selected
     end
   end
-
-  resources :auto_leads_metrics, only: [:index]
-  resources :applicants_metrics, only: [:index]
-  resources :standard_metrics,   only: [:index]
 
   root to: 'dashboards#starting_page'
 

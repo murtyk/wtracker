@@ -1,6 +1,6 @@
-# trainee metrics for a grant with auto job leads
-class AutoLeadsMetrics
-  attr_reader :template
+# trainee dashboard metrics for a grant with auto job leads
+class AutoLeadsMetrics < DashboardMetrics
+  attr_reader :trainees, :map, :skill_metrics
 
   METHOD_MAP =  { PENDING:     'trainees_pending_job_search_profiles',
                   NOT_PENDING: 'trainees_with_valid_job_search_profiles',
@@ -9,6 +9,26 @@ class AutoLeadsMetrics
                   APPLIED:     'trainees_applied_auto_leads',
                   NOT_APPLIED: 'trainees_not_applied_auto_leads',
                   OPTED_OUT:   'trainees_opted_out' }
+
+  def initialize(params)
+    @template = path_dir + 'index'
+    init_by_status(params) if params[:status]
+    init_skill_metrics if params[:skill_metrics]
+  end
+
+  def init_by_status(params)
+    by_status(params[:status])
+
+    return unless params[:map]
+    jsp_map = JobSearchProfilesMap.new(trainees)
+    @map = jsp_map.map
+    @template += '_map'
+  end
+
+  def init_skill_metrics
+    @skill_metrics = SkillMetrics.new.generate
+    @template = path_dir + 'skill_metrics'
+  end
 
   def metrics_by_trainee
     trainees_list.map do |id, name|
@@ -29,11 +49,10 @@ class AutoLeadsMetrics
   end
 
   def by_status(status)
-    @template = METHOD_MAP[status.to_sym]
-    ids = send(template)
-
-    return [] if ids.empty?
-    Trainee.includes(:job_search_profile).where(id: ids).order(:first, :last)
+    status_method = METHOD_MAP[status.to_sym]
+    @template = path_dir + status_method
+    ids = send(status_method)
+    @trainees = Trainee.includes(:job_search_profile).where(id: ids).order(:first, :last)
   end
 
   def counts_by_status
@@ -124,5 +143,9 @@ class AutoLeadsMetrics
 
   def trainee_ids
     @trainee_ids = Trainee.pluck(:id)
+  end
+
+  def path_dir
+    'auto_leads_metrics/'
   end
 end

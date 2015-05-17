@@ -10,6 +10,7 @@ class SkillMetrics
     end
     @metrics = metrics_hash.keys.sort.map { |k| [k, metrics_hash[k]] }
     generate_top_skills
+    self
   end
 
   def parse_skills(skills)

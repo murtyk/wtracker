@@ -9,7 +9,7 @@
     <th>Title</th>
     <th>Start Date</th>
   </tr>
-  <% @trainees.each do |trainee| %>
+  <% @data.trainees.each do |trainee| %>
   <tr>
     <td><%= name_and_link trainee %></td>
     <td><%= trainee.opted_out_date %></td>

@@ -9,7 +9,7 @@
         <th>No. of Trainees</th>
       </tr>
       <% n = 0 %>
-      <% @skill_metrics.metrics.each do |skills, count| %>
+      <% @data.skill_metrics.metrics.each do |skills, count| %>
         <% n += 1%>
         <tr>
           <td><%= n %></td>
@@ -21,7 +21,7 @@
   </div>
   <div class='span5 offset1'>
     <h2>Top Skills/Keywords</h2>
-    <% unless @skill_metrics.top_skills.empty? %>
+    <% unless @data.skill_metrics.top_skills.empty? %>
       <table id="table_top_skills" class="table table-condensed table-bordered table-striped table-hover">
         <tr>
           <th>#</th>
@@ -29,7 +29,7 @@
           <th>No. of Trainees</th>
         </tr>
         <% n = 0 %>
-        <% @skill_metrics.top_skills.each do |skill, count| %>
+        <% @data.skill_metrics.top_skills.each do |skill, count| %>
           <% n += 1%>
           <tr>
             <td><%= n %></td>

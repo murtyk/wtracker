@@ -20,7 +20,7 @@
 <% end %>
 
 <div id = 'all_programs'>
-  <% @programs.each do |program| %>
+  <% @data.programs.each do |program| %>
     <h2><%=program.name%></h2>
 
     <% if request.format.xls? %>

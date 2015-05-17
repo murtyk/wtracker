@@ -11,7 +11,7 @@
         <th>Profile request sent on</th>
         <th></th>
       </tr>
-      <% @trainees.each do |trainee| %>
+      <% @data.trainees.each do |trainee| %>
       <tr>
         <td><%= name_and_link trainee %></td>
         <td><%= trainee.job_search_profile && trainee.job_search_profile.created_at.to_date.to_s %></td>

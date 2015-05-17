@@ -1,11 +1,12 @@
 # dashboard metrics for grants where applicants can apply.
 # example grant: RTW (NJWF)
-class DashboardRtw
+class DashboardRtw < DashboardMetrics
   # need this for link_to
   include ActionView::Helpers::UrlHelper
   attr_reader :metrics
 
   def initialize
+    @template = 'applicants_metrics/index'
     @metrics = OpenStruct.new
     @metrics.header = ['ALL', '# Trainees'] + fs_names + ['Placed', 'OJT Enrolled']
 
@@ -36,7 +37,7 @@ class DashboardRtw
 
     build_fs_matrices(t_matrix, p_matrix, oe_matrix)
 
-    metrics
+    self
   end
 
   private

@@ -3,7 +3,9 @@
     <h2>Following trainees have updated job search profile </h2>
   </div>
   <div class='span2' style='margin-top:10px'>
-    <%= link_to 'Map View', auto_leads_metrics_path(status: :NOT_PENDING, map: true) %>
+    <%= link_to 'Map View', dashboards_path(auto_leads_metrics: true,
+                                            status: :NOT_PENDING,
+                                            map: true) %>
   </div>
 </div>
 
@@ -17,7 +19,7 @@
     <th>Leads Count</th>
   </tr>
   <% trainee_job_counts = @data.trainee_job_counts %>
-  <% @trainees.each do |trainee| %>
+  <% @data.trainees.each do |trainee| %>
     <% jsp = trainee.job_search_profile %>
     <tr>
       <td><%= name_and_link trainee %></td>
