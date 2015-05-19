@@ -24,7 +24,7 @@ class ImportFileReader
     elsif @next_row <= @spreadsheet.last_row
       row = Hash[[@header, @spreadsheet.row(@next_row)].transpose]
       @next_row += 1
-      return row
+      return row.with_indifferent_access
     end
     nil
   end

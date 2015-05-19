@@ -25,26 +25,31 @@ class CompanyListFinder
     @account_id        = user.account.id
     @count_success     = 0
     @count_fails       = 0
+    @companies         = []
     @original_filename = params[:file].original_filename
     @aws_file_name     = Amazon.store_file(params[:file], 'file_processor')
     generate_process_id(user) if valid_file_type && valid_header
   end
 
   def errors?
-    !@error.blank?
+    @error
   end
 
   def process
     open_reader
     Account.current_id = @account_id
-    @companies = []
     while (row = @reader.next_row)
-      company = process_row(row.with_indifferent_access)
+      company = process_row(row)
       @companies << company
-      company[:found] ? @count_success += 1 : @count_fails += 1
+      update_counts(company)
       update_status
     end
     update_complete_status
+  end
+
+  def update_counts(company)
+    @count_success += 1 if company[:found]
+    @count_fails += 1 unless company[:found]
   end
 
   def process_row(row)
@@ -55,9 +60,7 @@ class CompanyListFinder
     employer = Employer.find_by_name_and_zip(cc[:company], zip)
     return cc.merge(employer_or_oc_found_data(employer, 'EMP')) if employer
 
-    company = Company.new(row[:company], zip, user)
-    company.search
-    cc.merge(company_details(company))
+    cc.merge(search_company_details(row, zip))
 
   rescue StandardError => error
     cc[:error] = error
@@ -68,21 +71,31 @@ class CompanyListFinder
     data                = { found: true }
     data[:oc_id]        = company.id if type == 'OC'
     data[:employer_id]  = company.id unless type == 'OC'
-    data[:company_info] = "#{company.name}<br>#{company.formatted_address}<br>phone:" \
-                          "#{company.phone_no}<br>website:#{company.website}"
+
+    data[:company_info] = [company.name,
+                           company.formatted_address,
+                           'phone:' + company.phone_no,
+                           'website:' + company.website].join('<br>')
     data
   end
 
-  def company_details(company)
-    return {} unless company.found
+  def search_company_details(row, zip)
+    company = Company.new(row[:company], zip, user)
+    company.search
+    company.found ? company_details(company) : {}
+  end
 
+  def company_details(company)
     employer = Employer.find(company.employer_id) if company.employer_id
     return employer_or_oc_found_data(employer, 'EMP') if employer
+
     details      = { found: true, score: company.score }
     info_for_add = company.info_for_add
+
     oc_id        = info_for_add[:opero_company_id]
-    oc = OperoCompany.find(info_for_add[:opero_company_id]) if oc_id
+    oc = OperoCompany.find(oc_id) if oc_id
     return details.merge(employer_or_oc_found_data(oc, 'OC')) if oc
+
     # the final type should be google info
     details[:google_info]  = info_for_add
     details[:company_info] = build_company_info_from_google_info(info_for_add)
@@ -90,8 +103,8 @@ class CompanyListFinder
   end
 
   def build_company_info_from_google_info(gi)
-    "#{gi[:name]}<br>#{gi[:line1]}<br>#{gi[:city]}, #{gi[:state_code]} #{gi[:zip]}<br>" \
-    "phone: #{gi[:phone_no]}<br>website: #{gi[:website]}"
+    [gi[:name], gi[:line1], gi[:city], gi[:state_code], gi[:zip],
+     'phone:' + gi[:phone_no], 'website:' + gi[:website]].join('<br>')
   end
 
   def clean_zip(zip)
@@ -189,6 +202,10 @@ class CompanyListFinder
     Rails.cache.write(key, data, expires_in: expires_in)
   end
 
+  def self.write_cache(key, data, expires_in = 1.hour)
+    Rails.cache.write(key, data, expires_in: expires_in)
+  end
+
   def self.cached_companies(process_id)
     return nil unless status(process_id)
     companies_data(process_id)
@@ -214,7 +231,7 @@ class CompanyListFinder
   def self.add_employer(params, user)
     process_id = params[:process_id]
     companies  = cached_companies(process_id)
-    return nil unless companies
+    return unless companies
 
     index      = params[:index].to_i
     company    = companies[index]
@@ -224,9 +241,9 @@ class CompanyListFinder
     return [employer, error] if error
     company[:employer_id] = employer.id
     companies[index]      = company
-    Rails.cache.write(process_id + '-DATA', companies, expires_in: 2.hours)
+    write_cache(process_id + '-DATA', companies, 2.hours)
 
-    [employer, nil]
+    employer
   end
 
   def self.add_employer_from_data(company, user, params)
