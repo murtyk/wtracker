@@ -19,96 +19,41 @@ class ApplicantMetrics
 
   def query(params)
     return nil unless params[:method]
-    @show_applicant_placements =  params[:method] ==  'trainees_reported_placement'
-    @show_trainee_placements   =  params[:method] ==  'trainees_placed'
-    results = send(params[:method], params)
+    method = params[:method]
+
+    @show_applicant_placements =  method ==  'trainees_reported_placement'
+    @show_trainee_placements   =  method ==  'trainees_placed'
+
+    results = send(method, params)
     @applicants = results if results.first.is_a? Applicant
     @trainees   = results if results.first.is_a? Trainee
-    determine_page_title(params[:method], params[:navigator_id])
+    determine_page_title(method, params[:navigator_id])
   end
 
   private
 
   def navigator_names
-    @navigators.values
+    navigators.values
   end
 
   def generate_navigator_metrics
-    # New Applicants: Applicants where Funding Souce in not assigned.
-    # Navigator should be determined based on the county entered by applicant
-    new_applicants_counts        = ['# of New Applicants']
-
-    # Trainee Not Assigned to workshop means not assigned to any class
-    # Navigator should be determined based on the county entered by applicant
-    trainees_not_in_class_counts = ['# Trainees not Assigned to Workshops']
-
-    # Trainee Assigned to workshop means assigned to any class
-    # Navigator should be determined based on the county entered by applicant
-    trainees_in_class_counts     = ['# Trainees Assigned to Workshops']
-
-    # Active Trainees -> Not Placed Trainees
-    # Placement is based on TraineeInteractions entered by user
-    trainees_not_placed_counts   = ['# of Active Trainees']
-
-    # OJT Enrolled Trainees
-    # TraineeInteractions: status = ojt enrolled and termination_date is nil
-    trainees_ojt_enrolled_counts = ['# of Trainees OJT Enrolled']
-
-    # Placed Trainees
-    # TraineeInteractions: status = 4(No OJT) or 6( OJT Completed)
-    trainees_placed_counts        = ['# of Trainees Placed']
-
-    # All the trainees who submitted placement information
-    # Navigator is determined by navigator_id.
-    trainees_reported_placements_counts = ['# of Applicants Reported Placement']
-
-    navigators.each do |id, _name|
-      links = navigator_dashboard_counts_links(id)
-      new_applicants_counts               << links[0]
-      trainees_not_in_class_counts        << links[1]
-      trainees_in_class_counts            << links[2]
-      trainees_not_placed_counts          << links[3]
-      trainees_ojt_enrolled_counts        << links[4]
-      trainees_placed_counts              << links[5]
-      trainees_reported_placements_counts << links[6]
-    end
-
     @metrics = OpenStruct.new
     @metrics.headers = [''] + navigator_names
     @metrics.rows = [
-      new_applicants_counts, trainees_not_in_class_counts, trainees_in_class_counts,
-      trainees_not_placed_counts, trainees_ojt_enrolled_counts, trainees_placed_counts,
-      trainees_reported_placements_counts
+      new_applicants_links, trainees_not_in_class_links, trainees_in_class_links,
+      trainees_not_placed_links, trainees_ojt_enrolled_links, trainees_placed_links,
+      trainees_reported_placement_links
     ]
 
     @metrics
   end
 
-  def navigator_dashboard_counts_links(id)
-    count = navigator_new_applicants(id).count
-    links = [new_applicants_link(id, count)]
-
-    count = trainee_ids_not_in_klass(id).count
-    links << trainees_not_in_class_link(id, count)
-
-    count = trainee_ids_in_klass(id).count
-    links << trainees_in_class_link(id, count)
-
-    count = trainees_not_placed(id).count
-    links << trainees_not_placed_link(id, count)
-
-    count = trainees_ojt_enrolled(id).count
-    links << trainees_ojt_enrolled_link(id, count)
-
-    count = trainees_placed(id).count
-    links << trainees_placed_link(id, count)
-
-    count = trainees_reported_placement(id).count
-    links << trainees_reported_placement_link(id, count)
-  end
-
   def grant
     @grant ||= Grant.find(Grant.current_id)
+  end
+
+  def navigator_ids
+    navigators.keys
   end
 
   def navigators
@@ -124,27 +69,171 @@ class ApplicantMetrics
                         .order(:first_name, :last_name)
   end
 
+  # New Applicants: Applicants where Funding Souce in not assigned.
+  # Navigator should be determined based on the county entered by applicant
+  def new_applicants_links
+    ['# ' + TITLES['navigator_new_applicants']] +
+      navigator_ids.map do |id|
+        count = new_applicants_count(id)
+        new_applicants_link(id, count)
+      end
+  end
+
+  def new_applicants_count(nav_id)
+    @new_counts ||= Trainee.where(funding_source_id: nil)
+                    .joins(:applicant).group(:navigator_id).count
+    @new_counts[nav_id].to_i
+  end
+
+  # Trainee Not Assigned to workshop means not assigned to any class
+  # Navigator should be determined based on the county entered by applicant
+  def trainees_not_in_class_links
+    ['# ' + TITLES['trainees_not_in_class']] +
+      navigator_ids.map do |id|
+        count = trainees_not_in_class_count(id)
+        trainees_not_in_class_link(id, count)
+      end
+  end
+
+  # exclude placed ones
+  def trainees_not_in_class_count(nav_id)
+    unless @not_in_class_counts
+      trainee_ids = Trainee.pluck(:id) -
+                    KlassTrainee.pluck(:trainee_id) -
+                    placed_trainee_ids
+      @not_in_class_counts = Trainee.where(id: trainee_ids)
+                             .joins(:applicant).group(:navigator_id).count
+    end
+    @not_in_class_counts[nav_id].to_i
+  end
+
+  # Trainee Assigned to workshop means assigned to any class
+  # Navigator should be determined based on the county entered by applicant
+  def trainees_in_class_links
+    ['# Trainees Assigned to Workshops'] +
+      navigator_ids.map do |id|
+        count = trainees_in_class_count(id)
+        trainees_in_class_link(id, count)
+      end
+  end
+
+  def trainees_in_class_count(nav_id)
+    unless @in_class_counts
+      trainee_ids = KlassTrainee.pluck(:trainee_id)
+      @in_class_counts = Trainee.where(id: trainee_ids)
+                         .joins(:applicant).group(:navigator_id).count
+    end
+    @in_class_counts[nav_id].to_i
+  end
+
+  def placed_trainee_ids
+    Trainee.joins(:trainee_interactions)
+      .where(trainee_interactions: { status: [4, 5, 6],
+                                     termination_date: nil })
+      .joins(:applicant)
+      .pluck(:id)
+  end
+
+  # Active Trainees -> Not Placed Trainees
+  # Placement is based on TraineeInteractions entered by user
+  def trainees_not_placed_links
+    ['# of Active Trainees'] +
+      navigator_ids.map do |id|
+        count = not_placed_count(id)
+        trainees_not_placed_link(id, count)
+      end
+  end
+
+  def not_placed_count(nav_id)
+    unless @not_placed_counts
+      not_placed_ids = Trainee.pluck(:id) - placed_trainee_ids
+      @not_placed_counts = Trainee.where(id: not_placed_ids)
+                           .joins(:applicant).group(:navigator_id).count
+    end
+    @not_placed_counts[nav_id].to_i
+  end
+
+  # OJT Enrolled Trainees
+  # TraineeInteractions: status = ojt enrolled and termination_date is nil
+  def trainees_ojt_enrolled_links
+    ['# of Trainees OJT Enrolled'] +
+      navigator_ids.map do |id|
+        count = ojt_enrolled_count(id)
+        trainees_ojt_enrolled_link(id, count)
+      end
+  end
+
+  def ojt_enrolled_count(nav_id)
+    @ojt_enrolled_counts ||= Trainee.joins(:trainee_interactions, :applicant)
+                             .where(trainee_interactions: { status: 5,
+                                                            termination_date: nil })
+                             .group(:navigator_id).count
+
+    @ojt_enrolled_counts[nav_id].to_i
+  end
+
+  def trainees_ojt_enrolled(params)
+    navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
+    Trainee.joins(:trainee_interactions, :applicant)
+      .where(trainee_interactions: { status: 5,
+                                     termination_date: nil })
+      .where(applicants: { navigator_id: navigator_id })
+      .order(:first, :last)
+      .uniq
+  end
+
+  def trainees_ojt_enrolled_link(id, count)
+    applicants_link('trainees_ojt_enrolled', id, count)
+  end
+
+  # Placed Trainees
+  # TraineeInteractions: status = 4(No OJT) or 6( OJT Completed)
+  def trainees_placed_links
+    ['# of Trainees Placed'] +
+      navigator_ids.map do |id|
+        count = placed_count(id)
+        trainees_placed_link(id, count)
+      end
+  end
+
+  def placed_count(nav_id)
+    unless @placed_counts
+      placed_ids = Trainee.joins(:trainee_interactions)
+                   .where(trainee_interactions: { status: [4, 6],
+                                                  termination_date: nil })
+                   .joins(:applicant)
+                   .pluck(:id)
+
+      @placed_counts = Trainee.where(id: placed_ids)
+                       .joins(:applicant).group(:navigator_id).count
+    end
+    @placed_counts[nav_id].to_i
+  end
+
+  # All the trainees who submitted placement information
+  # Navigator is determined by navigator_id.
+  def trainees_reported_placement_links
+    ['# of Applicants Reported Placement'] +
+      navigator_ids.map do |id|
+        count = reported_placement_count(id)
+        trainees_reported_placement_link(id, count)
+      end
+  end
+
+  def reported_placement_count(nav_id)
+    @reported_counts ||= Trainee.joins(:trainee_placements, :applicant)
+                         .group(:navigator_id).count
+    @reported_counts[nav_id].to_i
+  end
+
   def navigator_new_applicants(params)
     navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
-    new_applicants.where(county_id: navigator_county_ids(navigator_id))
+    new_applicants.where(navigator_id: navigator_id)
   end
 
   def navigator_label(nav)
     return 'Not Assigned' unless nav
     User.find(nav).name
-  end
-
-  # return applicants where
-  # -trainees not assigned to a class
-  # -applicant county belongs to the navigator in context
-  def trainees_not_in_class(params)
-    navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
-    Trainee.where(id: trainee_ids_not_in_klass(navigator_id)).order(:first, :last)
-  end
-
-  def trainee_ids_not_in_klass(navigator_id)
-    trainee_ids = trainees_from_navigator_counites(navigator_id).pluck(:id)
-    trainee_ids - KlassTrainee.where(trainee_id: trainee_ids).pluck(:trainee_id)
   end
 
   def trainees_in_class(params)
@@ -153,13 +242,8 @@ class ApplicantMetrics
   end
 
   def trainee_ids_in_klass(navigator_id)
-    trainee_ids = trainees_from_navigator_counites(navigator_id).pluck(:id)
-    KlassTrainee.where(trainee_id: trainee_ids).pluck(:trainee_id).uniq
-  end
-
-  def trainees_from_navigator_counites(navigator_id)
-    Trainee.joins(:applicant)
-      .where(applicants: { county_id: navigator_county_ids(navigator_id) })
+    Trainee.joins(:klass_trainees, :applicant)
+      .where(applicants: { navigator_id: navigator_id }).pluck(:id)
   end
 
   def navigator_trainees(navigator_id)
@@ -167,36 +251,12 @@ class ApplicantMetrics
       .where(applicants: { navigator_id: navigator_id }).order(:first, :last)
   end
 
-  def navigator_trainee_ids(navigator_id)
-    navigator_trainees(navigator_id).pluck(:id)
-  end
-
-  def navigator_county_ids(navigator_id)
-    navigator_counties(navigator_id).pluck(:county_id)
-  end
-
-  def navigator_counties(navigator_id)
-    UserCounty.where(user_id: navigator_id)
-  end
-
-  def trainees_ojt_enrolled(params)
-    navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
-    trainee_ids = navigator_trainee_ids(navigator_id)
-    Trainee.joins(:trainee_interactions)
-      .where(trainee_interactions: { trainee_id: trainee_ids,
-                                     status: 5,
-                                     termination_date: nil })
-      .order(:first, :last)
-      .uniq
-  end
-
   def trainees_placed(params)
     navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
-    trainee_ids = navigator_trainee_ids(navigator_id)
-    Trainee.joins(:trainee_interactions)
-      .where(trainee_interactions: { trainee_id: trainee_ids,
-                                     status: [4, 6],
+    Trainee.joins(:trainee_interactions, :applicant)
+      .where(trainee_interactions: { status: [4, 6],
                                      termination_date: nil })
+      .where(applicants: { navigator_id: navigator_id })
       .order(:first, :last)
       .uniq
   end
@@ -208,11 +268,8 @@ class ApplicantMetrics
 
   def trainees_reported_placement(params)
     navigator_id = params.is_a?(Hash) ? params[:navigator_id] : params
-    trainee_ids = navigator_trainee_ids(navigator_id)
-    Trainee.joins(:trainee_placements)
-      .where(trainee_placements: { trainee_id: trainee_ids })
-      .order(:first, :last)
-      .uniq
+    Trainee.joins(:trainee_placements, :applicant)
+      .where(applicants: { navigator_id: navigator_id }).order(:first, :last).uniq
   end
 
   def new_applicants_link(id, count)
@@ -231,10 +288,6 @@ class ApplicantMetrics
 
   def trainees_not_placed_link(id, count)
     applicants_link('trainees_not_placed', id, count)
-  end
-
-  def trainees_ojt_enrolled_link(id, count)
-    applicants_link('trainees_ojt_enrolled', id, count)
   end
 
   def trainees_placed_link(id, count)
