@@ -40,7 +40,8 @@
     <th>Employment Status</th>
     <th>Funding Source</th>
     <% if @applicant_metrics.show_applicant_placements %>
-      <th>Placement Information</th>
+      <th>Applicant Reported Placement Information</th>
+      <th>Placement Status</th>
     <% end %>
     <% if @applicant_metrics.show_trainee_placements %>
       <th>Start Date</th>
@@ -64,6 +65,7 @@
       <td><%= trainee.funding_source_name         %></td>
       <% if @applicant_metrics.show_applicant_placements %>
         <td><%= applicant.placement_details       %></td>
+        <td><%= trainee.placement_status          %></td>
       <% end %>
     <% if @applicant_metrics.show_trainee_placements %>
       <td><%= trainee.start_date    %></td>

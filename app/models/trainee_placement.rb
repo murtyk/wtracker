@@ -5,7 +5,7 @@ class TraineePlacement < ActiveRecord::Base
 
   # ex: .where("info @> (? => ?)", :job_title, 'Analyst')
   FIELDS = %w(company_name address_line1 address_line2 city state zip phone_no
-              salary job_title start_date reported_date)
+              salary job_title start_date reported_date placement_type)
 
   FIELDS.each do |field|
     attr_accessible field
@@ -24,14 +24,21 @@ class TraineePlacement < ActiveRecord::Base
   end
 
   def collection_field?(field)
-    [:state_code].include? FIELD_TYPES[field.to_sym]
+    [:state_code, :placement_type_code].include? FIELD_TYPES[field.to_sym]
   end
 
   def field_collection(field)
     case FIELD_TYPES[field.to_sym]
     when :state_code
       State.pluck(:code)
+    when :placement_type_code
+      placement_types
     end
+  end
+
+  def default_value(field)
+    return unless FIELD_TYPES[field.to_sym] == :placement_type_code
+    0
   end
 
   def required?(field)
@@ -51,13 +58,21 @@ class TraineePlacement < ActiveRecord::Base
     "#{address_line1} #{address_line2} <br> #{city} #{state} #{zip}".html_safe
   end
 
+  def placement_type_description
+    placement_types[placement_type.to_i][0]
+  end
+
+  def placement_types
+    [['30 Hours or more (FT)', 0], ['29 hours or less (PT)', 1]]
+  end
+
   def phone_number
     phone_no
   end
 
   def details
     "<strong>#{created_at.to_date} - #{company_name}</strong>" \
-    "<br>#{salary}#{job_title}#{start_date}"
+    "<br>#{salary}#{job_title}#{start_date}<br>Type: #{placement_type_description}"
   end
 
   private
@@ -65,7 +80,8 @@ class TraineePlacement < ActiveRecord::Base
   FIELD_TYPES = { state:         :state_code,
                   phone_no:      :phone_number,
                   start_date:    :date,
-                  reported_date: :date }
+                  reported_date: :date,
+                  placement_type: :placement_type_code }
 
   def init_fields
     FIELDS.each do |field|

@@ -7,6 +7,7 @@
     <th>Start Date</th>
     <th>Title</th>
     <th>Salary</th>
+    <th>Type</th>
   </tr>
   <% @trainee_placements.each do |tp| %>
   <tr>
@@ -16,6 +17,7 @@
     <th><%= tp.start_date %></th>
     <th><%= tp.job_title %></th>
     <th><%= tp.salary %></th>
+    <th><%= tp.placement_type_description %></th>
   </tr>
   <% end %>
 </table>
