@@ -47,7 +47,7 @@ module TraineesHelper
   def destroy_trainees
     visit '/trainees'
 
-    fill_in 'filters_last_name', with: 'Last'
+    fill_in 'filters_name', with: 'Last'
     click_on 'Find'
     sleep 0.2
 

@@ -9,6 +9,10 @@ class Trainee < ActiveRecord::Base
   include Encryption
   include ValidationsMixins
   include InteractionsMixins
+  include PgSearch
+  pg_search_scope :search_by_name,
+                  against: [:first, :last],
+                  using: { tsearch: { prefix: true } }
 
   default_scope { where(account_id: Account.current_id, grant_id: Grant.current_id) }
 

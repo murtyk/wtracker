@@ -1,11 +1,21 @@
 <h1>Trainees</h1>
 <div class = 'row-fluid filters-div' >
-<%= simple_form_for :filters, method: :get, url: '/trainees', html: { class: 'form-search', style: 'margin-bottom: 0px' } do |f| %>
+  <%= simple_form_for :filters, method: :get,
+                                url: '/trainees',
+                                html: { class: 'form-search',
+                                        style: 'margin-bottom: 0px' } do |f| %>
 
   Select a Class
-  <%= f.input_field :klass_id, collection: current_user.klasses, selected: @filter_info[:klass_id], class: "search-query", style: 'width: 350px' %>
-  <strong style='margin-left: 10px; margin-right: 10px'>OR</strong> Last Name Starting With
-  <%= f.input_field :last_name, class: "search-query", value: @filter_info[:last_name], style: 'width: 75px' %>
+  <%= f.input_field :klass_id, collection: current_user.klasses,
+                               selected: @filter_info[:klass_id],
+                               class: "search-query",
+                               style: 'width: 450px' %>
+
+  <strong style='margin-left: 20px; margin-right: 20px'>OR</strong> Name
+
+  <%= f.input_field :name, class: "search-query",
+                           value: @filter_info[:name],
+                           style: 'width: 50px' %>
   <button type="submit" class="btn btn-flat btn-small btn-primary">
     <i class="icon-search icon-white"></i>Find
   </button>
@@ -43,7 +53,9 @@
       </td>
 
       <td>
-        <%= render('shared/show_edit_destroy_buttons', resource: trainee, confirm_message: "Are your sure you want to delete trainee #{trainee.name}?") %>
+        <%= render('shared/show_edit_destroy_buttons',
+                    resource: trainee,
+                    confirm_message: "Are your sure you want to delete trainee #{trainee.name}?") %>
       </td>
 
     </tr>

@@ -1,9 +1,15 @@
 # trainee enters job search parameters
 class JobSearchProfile < ActiveRecord::Base
+  include PgSearch
+  pg_search_scope :search_skills,
+                  against: :skills,
+                  using: { tsearch: { any_word: true } }
+
   attr_accessible :account_id, :trainee_id, :skills, :location, :distance, :zip, :key,
                   :opted_out, :opt_out_reason_code, :opt_out_reason,
                   :company_name, :start_date, :title, :salary
   belongs_to :account
+  belongs_to :trainee
 
   validate :validate_search_params, :validate_opt_out_params
   before_save :cb_before_save

@@ -56,6 +56,7 @@ gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
 
 gem 'delayed_job_active_record'
 gem 'clockwork'
+gem 'pg_search'
 
 # Gems used only for assets and not required
 # in production environments by default.

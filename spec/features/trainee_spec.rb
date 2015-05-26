@@ -51,37 +51,6 @@ describe 'Trainees' do
     expect(page).to have_text 'Mercer'
   end
 
-  it 'searches' do
-    Account.current_id = 1
-    Grant.current_id = 1
-
-    t1 = Trainee.create(first: 'First51', last: 'Last51', email: 'one@nomail.com')
-    t2 = Trainee.create(first: 'First52', last: 'Last52', email: 'two@nomail.com')
-
-    program = Program.first
-    college = College.first
-    k1 = program.klasses.create(name: 'TestClass1', college_id: college.id)
-    k2 = program.klasses.create(name: 'TestClass2', college_id: college.id)
-
-    k1.trainees << t1
-    k1.trainees << t2
-    k2.trainees << t1
-    k2.trainees << t2
-
-    href_link('trainees').click
-
-    klass = k1
-    select(klass.name, from: 'filters_klass_id')
-    click_button 'Find'
-
-    klass.trainees.each do |trainee|
-      expect(page).to have_text trainee.name
-    end
-
-    fill_in 'filters_last_name', with: 'last'
-    click_button 'Find'
-    (1..2).each { |n| expect(page).to have_text "First#{50 + n} Last#{50 + n}" }
-  end
 end
 describe 'Trainees' do
   before :each do
@@ -91,7 +60,7 @@ describe 'Trainees' do
   it 'delete', js: true do
     create_trainees(2, nil, 3000)
     visit '/trainees'
-    fill_in 'filters_last_name', with: 'last'
+    fill_in 'filters_name', with: 'last'
     click_button 'Find'
     (1..2).each { |n| expect(page).to have_text "First#{3000 + n} Last#{3000 + n}" }
     get_trainees.each do |trainee|
