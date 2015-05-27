@@ -24,11 +24,11 @@ describe 'Job Search' do
         company2 = 'CAMCare Health'
       else
         cassette = 'sh_job_search_in_state'
-        count    = 9
-        title1   = 'RN / LPN'
-        title2   = 'Pediatric Home Care Nurse'
-        company1 = 'Bayada Home Health Care'
-        company2 = 'Kennedy Health System'
+        count    = 100
+        title1   = 'RN or LPN'
+        title2   = 'Pediatric Physician'
+        company1 = 'Maxim Homecare Nursing'
+        company2 = 'CAMcare Health Corporation'
       end
 
       VCR.use_cassette(cassette) do
@@ -37,19 +37,15 @@ describe 'Job Search' do
         fill_in 'job_search_keywords', with: 'pediatric nurse'
         check('job_search_in_state')
         click_on 'Find'
-
         wait_for_ajax
 
         expect(page).to have_text "Found: #{count}"
         expect(page).to have_text title1
         expect(page).to have_text company1
 
-        sleep 1
-
         click_on 'Analyze'
 
-        wait_for_ajax
-        sleep 5
+        sleep 4
         wait_for_ajax
 
         expect(page).to have_text "Total Jobs Found: #{count}"
@@ -91,6 +87,7 @@ describe 'Job Search' do
         select(klass_label, from: 'select_klass')
         click_on 'Find'
         sleep 0.5
+
         expect(page).to have_text title2
       end
     end

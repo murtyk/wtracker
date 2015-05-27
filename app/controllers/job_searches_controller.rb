@@ -87,6 +87,7 @@ class JobSearchesController < ApplicationController
     @processes_count = ENV['PROCESSES_COUNT'] ? ENV['PROCESSES_COUNT'].to_i : 3
   end
 
+  # we might not need this anymore. KORADA.
   def details
     authorize JobSearch
 

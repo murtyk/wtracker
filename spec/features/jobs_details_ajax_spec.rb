@@ -20,9 +20,9 @@ describe 'Job Search' do
         details  = 'Princeton'
       else
         cassette = 'sh_job_details'
-        count    = 15
-        title1   = 'Senior Java Developer - Software Engineer'
-        details  = 'Develop and maintain J2EE'
+        count    = 33
+        title1   = 'Java Developer with postgres experience'
+        details  = 'IRIS Software, Inc'
       end
 
       VCR.use_cassette(cassette) do

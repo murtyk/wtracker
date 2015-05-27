@@ -1,9 +1,5 @@
 # mixin methods for Job for sharing
 module JobMixins
-  def jobinfo
-    "#{title};#{location};#{company};#{details_url}"
-  end
-
   def jobinfo_for_share
     { title:       title,
       location:    location,

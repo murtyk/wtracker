@@ -26,9 +26,9 @@ describe 'shared job' do
         title2   = 'Warehouse Maintenance Manager'
       else
         cassette = 'sh_shared_job_status'
-        count    = 9
+        count    = 11
         title1   = 'CNC Machine Operator'
-        title2   = 'CNC MOLDER'
+        title2   = 'CNC Machinist'
       end
 
       VCR.use_cassette(cassette) do

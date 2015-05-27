@@ -2,7 +2,11 @@
     <div class = 'row-fluid'>
       <div class = 'span5'>
         <strong>
-          <%= link_to job.title || 'Missing Title', details_job_search_path(job_info: job.jobinfo), style: 'color: blue', target: '_blank'%>
+          <%= link_to job.title || 'Missing Title',
+                      job.details_url,
+                      style: 'color: blue',
+                      target: '_blank',
+                      onMouseDown: "xml_sclk(this);"%>
         </strong><br>
       </div>
       <div class = 'span3'>

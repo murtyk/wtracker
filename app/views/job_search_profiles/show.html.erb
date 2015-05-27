@@ -78,7 +78,8 @@
                                         id: job.id,
                                         key: job.key,
                                         style: 'color: blue',
-                                        target: '_blank'%>
+                                        target: '_blank',
+                                        onMouseDown: "xml_sclk(this);"%>
           </strong><br>
         </div>
         <div class = 'span3'>
@@ -156,3 +157,4 @@
   <!-- gets filled by js response -->
   </div>
 </div>
+<%= render 'shared/sh_attribution' %>

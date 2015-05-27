@@ -15,7 +15,7 @@ require 'rspec/retry'
 # require 'webmock/rspec'
 # WebMock.allow_net_connect!
 
-SimpleCov.formatter = SimpleCov::Formatter::CSVFormatter
+# SimpleCov.formatter = SimpleCov::Formatter::CSVFormatter
 SimpleCov.coverage_dir(ENV["COVERAGE_REPORTS"] || 'coverage')
 
 SimpleCov.start do

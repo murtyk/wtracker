@@ -21,11 +21,11 @@ describe 'Job Search' do
         company  = 'Accenture'
       else
         cassette = 'sh_job_search_and_analyze'
-        keywords = 'pediatric nurse'
-        count    = 104
-        pages    = 5
-        title    = 'RN CLINICAL Special Care'
-        company  = 'Bayada'
+        keywords = 'pediatric nurse RN'
+        count    = 42
+        pages    = 2
+        title    = 'Registered Nurse'
+        company  = 'Kennedy Health System'
       end
       VCR.use_cassette(cassette) do
         select('5', from: 'job_search_distance')

@@ -19,6 +19,7 @@ class JobBoard
   end
 
   def self.klass
-    ENV['JOB_BOARD'] == 'Indeed' ? Indeed : SimplyHired
+    return SimplyHired unless ENV['JOB_BOARD']
+    ENV['JOB_BOARD'].downcase == 'indeed' ? Indeed : SimplyHired
   end
 end

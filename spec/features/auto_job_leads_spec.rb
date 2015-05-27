@@ -42,7 +42,8 @@ describe 'auto job leads' do
                                   'that match your skills and geographic preference.'
         AutoJobLeads.new.perform
         visit "/profiles/#{id}?key=#{key}"
-        expect(page).to have_text 'Software Development Consultant (104634)'
+
+        expect(page).to have_text 'Server Architect /Project Lead'
         expect(page).to have_text 'Status:Not Viewed'
       end
     end

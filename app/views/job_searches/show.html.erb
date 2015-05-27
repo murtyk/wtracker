@@ -41,7 +41,6 @@
 <hr>
 
 <%= render('jobs', jobs: @job_search.jobs) if @job_search.jobs %>
-<%= render 'shared/sh_attribution' %>
 
 <%= content_tag "div", id: "page_data", data: { slices: @job_search.slices,
                                                 job_search_id: @job_search.id,
@@ -49,3 +48,4 @@
                                                 in_state: @job_search.process_in_state_jobs?,
                                                 processes_count: @processes_count } do %>
 <% end %>
+<%= render 'shared/sh_attribution' %>

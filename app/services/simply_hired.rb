@@ -17,7 +17,7 @@ class SimplyHired
     ip  ||= '174.129.230.199'
     ssty  = '2'
     cflg  = 'r'
-    pshid = ENV['PSHID']
+    pshid =  ENV['PSHID']
     auth  = ENV['SH_AUTH']
 
     @credentials = "?pshid=#{pshid}&ssty=#{ssty}&cflg=#{cflg}&auth=#{auth}&clip=#{ip}"
@@ -87,12 +87,13 @@ class SimplyHired
   end
 
   def self.get_details(url)
-    page  = webpage(url)
+    # page  = webpage(url)
 
     details_url_type = 0
     details = ''
     destination_url  = url
 
+=begin
     if page.uri.to_s.include? SH_HOME
       # find details and destination get_destination_url
       begin
@@ -104,6 +105,7 @@ class SimplyHired
         details = ''
       end
     end
+=end
 
     Struct::Jd.new(details_url_type, destination_url, details)
   end
