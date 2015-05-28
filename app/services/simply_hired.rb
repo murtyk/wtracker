@@ -15,6 +15,15 @@ class SimplyHired
 
   def initialize(ip = nil)
     ip  ||= '174.129.230.199'
+    build_credentials(ip)
+  end
+
+  def user_ip(ip)
+    return unless ip
+    build_credentials(ip)
+  end
+
+  def build_credentials(ip)
     ssty  = '2'
     cflg  = 'r'
     pshid =  ENV['PSHID']

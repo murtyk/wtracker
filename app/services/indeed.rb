@@ -23,6 +23,10 @@ class Indeed
     @browser   = browser
   end
 
+  def user_ip(ip)
+    @ip = ip
+  end
+
   def search_jobs(args)
     validate(args)
 

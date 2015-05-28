@@ -17,6 +17,8 @@ class JobSearchProfilesController < ApplicationController
   end
 
   def show
+    capture_trainee_agent
+
     @job_search_profile = find_profile
     @auto_shared_jobs = @job_search_profile.auto_shared_jobs(params[:show_all],
                                                              params[:status])
@@ -88,5 +90,13 @@ class JobSearchProfilesController < ApplicationController
     return false unless grant.trainee_applications?
     redirect_to '/trainees/sign_in'
     true
+  end
+
+  def capture_trainee_agent
+    return unless request.location
+    trainee = current_trainee || find_profile.trainee
+    return if trainee.agent && trainee.agent.info['ip']
+    trainee.agent.destroy if trainee.agent
+    trainee.create_agent(info: request.location.data)
   end
 end

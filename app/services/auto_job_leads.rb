@@ -104,7 +104,7 @@ class AutoJobLeads
   def send_leads_to_trainee(trainee)
     leads_sent_count = search_and_send_jobs(trainee)
     @trainee_job_leads << [trainee, leads_sent_count]
-    sleep 1
+    sleep (1 + rand * 10).round
   rescue StandardError => error
     msg = "AutoJobLeads: Trainee #{trainee.name} ID: #{trainee.id} EXCEPTION: #{error}"
     Rails.logger.error msg
@@ -151,6 +151,8 @@ class AutoJobLeads
 
   def search_and_send_jobs(trainee)
     days = determine_days_to_search trainee
+    ip = trainee.agent && trainee.agent.info['ip']
+    job_board.user_ip(ip) if ip
     jobs = find_matching_jobs(trainee.job_search_profile, days)
     send_jobs(trainee, jobs)
   end

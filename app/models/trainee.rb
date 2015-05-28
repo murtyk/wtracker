@@ -93,6 +93,8 @@ class Trainee < ActiveRecord::Base
   delegate :last_wages, :last_job_title, :sector_name, to: :applicant, allow_nil: true
   has_many :trainee_placements, dependent: :destroy
 
+  has_one :agent, as: :identifiable, dependent: :destroy
+
   after_initialize :init
 
   def self.reset_password_keys
