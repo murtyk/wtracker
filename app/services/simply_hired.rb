@@ -123,6 +123,8 @@ class SimplyHired
 
   def search(p = 0)
     build_url(p)
+    Rails.logger.info(@url) if ENV['LOG_SH_SEARCH_URL']
+
     # debugger
     begin
       response = HTTParty.get(@url)
