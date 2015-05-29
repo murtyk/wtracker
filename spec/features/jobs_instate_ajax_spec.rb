@@ -38,6 +38,8 @@ describe 'Job Search' do
         check('job_search_in_state')
         click_on 'Find'
         wait_for_ajax
+        sleep 3
+        wait_for_ajax
 
         expect(page).to have_text "Found: #{count}"
         expect(page).to have_text title1
