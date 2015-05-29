@@ -110,6 +110,7 @@ gem "parallel_tests", group: :development
 gem 'jquery-rails', '4.0.3'
 gem "jquery.fileupload-rails", '1.11.0'
 
+gem 'platform-api'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
