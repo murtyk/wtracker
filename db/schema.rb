@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150511153044) do
+ActiveRecord::Schema.define(version: 20150528180413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -712,6 +712,16 @@ ActiveRecord::Schema.define(version: 20150511153044) do
 
   add_index "klasses", ["account_id", "grant_id", "program_id"], name: "klasses_index", using: :btree
 
+  create_table "leads_queues", force: :cascade do |t|
+    t.integer  "trainee_id"
+    t.integer  "status",     default: 0
+    t.hstore   "data"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "leads_queues", ["trainee_id"], name: "index_leads_queues_on_trainee_id", using: :btree
+
   create_table "opero_companies", force: :cascade do |t|
     t.string   "name",              limit: 255
     t.string   "phone",             limit: 255
@@ -1040,4 +1050,5 @@ ActiveRecord::Schema.define(version: 20150511153044) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "leads_queues", "trainees"
 end
