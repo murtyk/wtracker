@@ -58,8 +58,8 @@ class TapoWorker
     case Rails.env
     when 'development' then 'tapoworker.localhost.com:3000'
     when 'test'        then 'tapoworker.localhost.com:3000'
-    when 'staging'     then "tapoworker-#{id}.managee2e.com"
-    when 'production'  then "tapoworker-#{id}.managee2e.com"
+    when 'staging'     then "tapoworker-#{id}.herokuapp.com"
+    when 'production'  then "tapoworker-#{id}.herokuapp.com"
     end
   end
 
