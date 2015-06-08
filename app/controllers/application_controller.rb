@@ -4,7 +4,9 @@ class ApplicationController < ActionController::Base
 
   include Pundit
 
-  protect_from_forgery
+  protect_from_forgery with: :exception
+  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+
   include SessionsHelper
   include UtilitiesHelper
   include CacheHelper
@@ -54,6 +56,10 @@ class ApplicationController < ActionController::Base
     else
       authenticate_user!
     end
+  end
+
+  def default_serializer_options
+    {root: false}
   end
 
   private

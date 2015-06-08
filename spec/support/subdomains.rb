@@ -25,6 +25,10 @@ def switch_to_auto_leads_domain
   switch_to_subdomain 'njit'
 end
 
+def switch_to_api_domain
+  switch_to_subdomain 'operoapi'
+end
+
 RSpec.configure do |_config|
   switch_to_main_domain
 end

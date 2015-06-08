@@ -77,6 +77,8 @@ RSpec.configure do |config|
   config.include(AutoLeadsHelper)
   config.include(ApplicantsHelper)
   config.include(ReportsHelper)
+  config.include Request::JsonHelpers,    type: :controller
+  config.include Request::HeadersHelpers, type: :controller
 
   config.include FactoryGirl::Syntax::Methods
   config.include Devise::TestHelpers, type: :controller

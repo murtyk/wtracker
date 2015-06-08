@@ -2,6 +2,7 @@
 class AutoSharedJob < ActiveRecord::Base
   belongs_to :account
 
+  attr_accessible :company, :location, :title, :excerpt, :date_posted, :url
   attr_accessible :status, :notes, :status_updated_at, :notes_updated_at
 
   def trainee

@@ -184,6 +184,7 @@ class SimplyHired
   end
 
   def parse_response(json)
-    @jobs = json.map { |j| ShJob.new(j) }
+    #works for both Hash (one job) and Array inputs
+    @jobs = [json].flatten.map { |j| ShJob.new(j) }
   end
 end

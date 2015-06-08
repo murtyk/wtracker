@@ -9,28 +9,15 @@ class AutoMailer < ActionMailer::Base
   delegate :use_job_leads_email, :use_standard_email, to: EmailSettings
 
   def solicit_job_search_profile(trainee)
-    from = trainee.account.director
-    to_email = trainee.email
-    reply_to_email = trainee.grant.reply_to_email || from.email
-    job_search_profile = trainee.job_search_profile
+    grant          = trainee.grant
 
-    profile_url = edit_polymorphic_url(job_search_profile,
-                                       host: host,
-                                       subdomain: trainee.account.subdomain,
-                                       key: job_search_profile.key)
+    from           = trainee.account.director
+    reply_to_email = grant.reply_to_email || from.email
+    to_email       = trainee.email
 
-    profile_link =  "<a href= '#{profile_url}'>my profile</a>"
-    director_email_link =  "<a href='mailto:#{from.email}' target='_top'>#{from.name}</a>"
-
-    grant = trainee.grant
-
-    profile_text = grant.profile_request_content.content.gsub(/\r\n/, '<br>')
-    profile_text = profile_text.gsub('$PROFILELINK$', profile_link)
-    profile_text = profile_text.gsub('$DIRECTOR$', director_email_link)
-
+    profile_text = TraineeEmailTextBuilder.new.profile_request_body(trainee)
     mail(to:      to_email,
          subject: grant.profile_request_subject.content,
-         # from:    from_email,
          from:    'JobLeads<jobleads@operoinc.com>',
          reply_to: reply_to_email) do |format|
            format.html { render inline: profile_text }
@@ -48,14 +35,8 @@ class AutoMailer < ActionMailer::Base
 
     reply_to_email = trainee.grant.reply_to_email || from.email
 
-    job_search_profile = trainee.job_search_profile
-
-    subdomain = account.subdomain
-
-    job_leads_text = build_job_leads_body(auto_shared_jobs,
-                                          job_search_profile,
-                                          subdomain,
-                                          trainee)
+    job_leads_text = TraineeEmailTextBuilder.new
+                     .job_leads_body(trainee, auto_shared_jobs)
 
     grant = trainee.grant
     mail(to:       to_email,
@@ -157,42 +138,6 @@ class AutoMailer < ActionMailer::Base
   end
 
   private
-
-  def build_job_leads_body(auto_shared_jobs, job_search_profile, subdomain, trainee)
-    sign_in_url   = trainees_sign_in_url(subdomain)
-    sign_in_link  = "<a href= '#{sign_in_url}'>" \
-                     'Click here to sign in and view jobs.</a>'
-
-    view_jobs_url = polymorphic_url(job_search_profile,
-                                    host: host, subdomain: subdomain,
-                                    key: job_search_profile.key)
-
-    view_jobs_link = "<a href= '#{view_jobs_url}'>" \
-                     'Click here to view and apply for jobs.</a>'
-
-    opt_out_url = edit_polymorphic_url(job_search_profile,
-                                       host: host, subdomain: subdomain,
-                                       key: job_search_profile.key,
-                                       opt_out: true)
-
-    opt_out_link =   "<a href='#{opt_out_url}'>Click here to opt out from job leads.</a>"
-
-    job_leads_html = '<ol>' +
-                     auto_shared_jobs.map do |job|
-                       "<li>#{job.title} - #{job.company}</li>"
-                     end.join +
-                     '</ol>'
-
-    grant = trainee.grant
-    job_leads_text = grant.job_leads_content.content.gsub(/\r\n/, '<br>')
-
-    job_leads_text = job_leads_text.gsub('$TRAINEEFIRSTNAME$', trainee.first)
-    job_leads_text = job_leads_text.gsub('$JOBLEADS$', job_leads_html)
-    job_leads_text = job_leads_text.gsub('$VIEWJOBSLINK$', view_jobs_link)
-    job_leads_text = job_leads_text.gsub('$TRAINEE_SIGNIN_LINK$', sign_in_link)
-
-    job_leads_text.gsub('$OPTOUTLINK$', opt_out_link)
-  end
 
   def auto_leads_status_body(status)
     body = ''

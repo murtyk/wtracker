@@ -39,6 +39,7 @@ namespace :testprep do
     set_up_brookdale_account
     set_up_njit_account
     set_up_apple_account
+    set_up_operoapi_account
   end
 
   def set_up
@@ -57,7 +58,11 @@ namespace :testprep do
 
   def create_opero_admin
     pwd = 'adminpassword'
-    Admin.create(email: 'admin@opero.com', password: pwd, password_confirmation: pwd)
+    Admin.create(email: 'admin@opero.com', password: pwd, password_confirmation: pwd, auth_token: nil)
+  end
+
+  def set_up_operoapi_account
+    create_account('Opero API', 'for opero api', 1, 1, 'operoapi')
   end
 
   def set_up_www_account
