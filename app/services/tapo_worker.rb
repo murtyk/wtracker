@@ -65,10 +65,10 @@ class TapoWorker
 
   def jobs_host
     case Rails.env
-    when 'development' then 'www.localhost.com:3000'
-    when 'test'        then 'www.localhost.com:3000'
-    when 'staging'     then 'operostaging.herokuapp.com'
-    when 'production'  then 'opero.managee2e.com'
+    when 'development' then 'operoapi.localhost.com:3000'
+    when 'test'        then 'operoapi.localhost.com:3000'
+    when 'staging'     then 'operoapi.herokuapp.com'
+    when 'production'  then 'operoapi.managee2e.com'
     end
   end
 end
