@@ -38,6 +38,6 @@ class Api::V1::LeadsQueuesController < Api::V1::ApiBaseController
 
   def shutdown_tapo_workers
     return if Rails.env.development? || Rails.env.test?
-    HerokuControl.deleay.auto_leads_workers_down
+    HerokuControl.delay.auto_leads_workers_down
   end
 end
