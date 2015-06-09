@@ -19,7 +19,7 @@ class Indeed
 
   def initialize(ip = nil, browser = 'Mozilla/%2F4.0%28Firefox%29')
     @publisher = ENV['PUBLISHER']
-    @ip        = ip || '174.129.230.199'
+    @ip        = ip || RandomIp.fetch
     @browser   = browser
   end
 

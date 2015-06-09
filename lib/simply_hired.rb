@@ -14,7 +14,7 @@ class SimplyHired
   SH_SITE = 'http://api.simplyhired.com/a/jobs-api/xml-v2/q-'
 
   def initialize(ip = nil)
-    ip  ||= '174.129.230.199'
+    ip  ||= RandomIp.fetch
     build_credentials(ip)
   end
 
@@ -81,7 +81,7 @@ class SimplyHired
 
   def self.job_count(keywords, city, state, distance = 10, days = 30)
     kws = keywords.split
-    simplyhired = SimplyHired.new('68.36.169.188')
+    simplyhired = SimplyHired.new
 
     args = { keywords: kws,
              zip: '',

@@ -5,7 +5,7 @@ class JobBoard
   extend Forwardable
   extend SingleForwardable
 
-  instance_delegate [:search_jobs, :accessible_count, :jobs] => :jb
+  instance_delegate [:search_jobs, :accessible_count, :jobs, :user_ip] => :jb
   single_delegate [:job_count, :get_details, :new_store] => :klass
 
   ANY_KEYWORDS_SEARCH = 1
