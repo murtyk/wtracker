@@ -1,3 +1,3 @@
 class LeadsQueueSerializer < ActiveModel::Serializer
-  attributes :id, :status, :data
+  attributes :id, :trainee_id, :status, :data
 end
