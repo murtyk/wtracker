@@ -19,6 +19,7 @@ class HerokuControl
 
   # Spin down workers for auto lead apps
   def self.auto_leads_workers_down
+    sleep 30
     set_auto_leads_workers(0)
   end
 
