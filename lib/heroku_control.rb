@@ -12,14 +12,14 @@ class HerokuControl
     @heroku ||= PlatformAPI.connect_oauth(API_TOKEN)
   end
 
-  # Spin up one worker for each auto lead app
+  # Spin up one worker for each tapo worker (auto job leads)
   def self.auto_leads_workers_up
     set_auto_leads_workers(1)
   end
 
-  # Spin down workers for auto lead apps
+  # Spin down workers for tapo worker app
   def self.auto_leads_workers_down
-    sleep 30
+    sleep 90
     set_auto_leads_workers(0)
   end
 
