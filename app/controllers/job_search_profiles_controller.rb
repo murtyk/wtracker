@@ -93,10 +93,20 @@ class JobSearchProfilesController < ApplicationController
   end
 
   def capture_trainee_agent
-    return unless request.location
     trainee = current_trainee || find_profile.trainee
     return if trainee.agent && trainee.agent.info['ip']
+
+    location_data = request_location_data(trainee.id)
+    return unless location_data
+
     trainee.agent.destroy if trainee.agent
-    trainee.create_agent(info: request.location.data)
+    trainee.create_agent(info: location_data)
+  end
+
+  def request_location_data(trainee_id)
+    request.location.data
+  rescue StandardError => error
+    Rails.logger.info "request location error #{error} for trainee id #{trainee_id}"
+    nil
   end
 end
