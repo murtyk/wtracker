@@ -4,9 +4,9 @@ require 'platform-api'
 # you to start and stop worker dynos.
 class HerokuControl
 
-  API_TOKEN     = ENV['HEROKU_OAUTH_TOKEN'] || 'b951c3f4-f9fd-42f1-bb50-511515e4691d'
-  WORKERS_COUNT = ENV['TAPO_WORKERS_COUNT'] || 1
-  WORKERS_NAME_PREFIX = ENV['TAPO_WORKERS_PREFIX'] || 'tapoworker'
+  API_TOKEN     = ENV['HEROKU_OAUTH_TOKEN']
+  WORKERS_COUNT = ENV['TAPO_WORKERS_COUNT']
+  WORKERS_NAME_PREFIX = ENV['TAPO_WORKERS_PREFIX']
 
   def self.heroku
     @heroku ||= PlatformAPI.connect_oauth(API_TOKEN)

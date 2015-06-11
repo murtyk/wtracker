@@ -6,7 +6,7 @@
 class AutoLeadsJob
   include ActiveSupport
 
-  WORKERS_COUNT = ENV['TAPO_WORKERS_COUNT'] || 1
+  WORKERS_COUNT = ENV['TAPO_WORKERS_COUNT']
 
   attr_accessor :error_messages
 
