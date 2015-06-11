@@ -119,7 +119,10 @@ class GoogleApi
     address &&= address.downcase.split(',')
     name = result['name'].downcase
     return [name, nil, nil] unless address
-    [name, address[1].squish, address[2].squish.downcase]
+
+    city = address[1] && address[1].squish
+    state_code = address[2] && address[2].squish.downcase
+    [name, city, state_code]
   end
 
   def self.details(options)
