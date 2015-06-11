@@ -13,6 +13,8 @@ describe 'auto job leads' do
 
   describe 'update status' do
     it 'updates profile' do
+      allow(RandomIp).to receive(:fetch).and_return("74.102.50.66")
+
       VCR.use_cassette('auto_job_leads') do
         # we have a trainee without a job search profile.
         # it should send an email to update profile
@@ -43,7 +45,7 @@ describe 'auto job leads' do
         AutoJobLeads.new.perform
         visit "/profiles/#{id}?key=#{key}"
 
-        expect(page).to have_text 'Server Architect /Project Lead'
+        expect(page).to have_text 'Senior SAP ABAP - PI Programmer'
         expect(page).to have_text 'Status:Not Viewed'
       end
     end
