@@ -9,12 +9,13 @@ class Admin < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  # attr_accessible :title, :body
+  attr_accessible :email, :password, :password_confirmation, :remember_me,
+                  :auth_token
 
   def generate_authentication_token!
-    begin
+    loop do
       self.auth_token = Devise.friendly_token
-    end while self.class.exists?(auth_token: auth_token)
+      break unless self.class.exists?(auth_token: auth_token)
+    end
   end
 end

@@ -40,6 +40,10 @@ module CollectionsHelper
     Sector.all
   end
 
+  def hot_job_users
+    User.joins(:hot_jobs).select(:id, :first, :last).order(:first, :last).uniq
+  end
+
   def user_roles
     User::ROLES.map { |k, v| [v, k] }
   end
@@ -54,6 +58,10 @@ module CollectionsHelper
 
   def employers_collection
     Employer.order(:name)
+  end
+
+  def hot_job_employers
+    Employer.joins(:hot_jobs).select(:id, :name).order(:name)
   end
 
   def employer_sources_collection

@@ -108,6 +108,7 @@ WTracker::Application.routes.draw do
   resources :employers do
     member do
       get :near_by_trainees
+      get :address_location
     end
     collection do
       get :mapview
@@ -124,6 +125,7 @@ WTracker::Application.routes.draw do
   resources :employer_files,    only: [:new, :show, :create, :destroy]
   resources :employer_notes,    except: [:index, :show]
   resources :job_openings,      only: [:new, :create]
+  resources :hot_jobs
   resources :employer_sectors,  only: [:new, :create, :destroy]
   resources :employer_sources,  only: [:new, :create, :destroy]
 

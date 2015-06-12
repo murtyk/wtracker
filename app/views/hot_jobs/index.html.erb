@@ -1,0 +1,74 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Hot Jobs</h1>
+</div>
+
+<div class = 'row-fluid'>
+  <div class='span3' style="padding: 10px;background-color: #ddd">
+    <%= search_form_for(@q, url: hot_jobs_path) do |f| %>
+
+      <span>
+        <%= link_to 'Clear', hot_jobs_path,
+                class: 'btn btn-flat btn-small btn-primary pull-left'%>
+        <%= f.submit class: 'btn btn-flat btn-primary pull-right' %>
+      </span>
+      <br><br>
+      <%= f.label :title_start, 'Title' %>
+      <%= f.search_field :title_start %>
+
+      <%= f.label :location_start, 'Location' %>
+      <%= f.search_field :location_start %>
+
+
+      <%= f.label :employer_id_eq, 'Employer' %>
+      <%= f.collection_select :employer_id_eq,
+                              hot_job_employers, :id, :name,
+                              include_blank: true %>
+
+      <%= f.label :user_id_eq, 'Posted By' %>
+      <%= f.collection_select :user_id_eq,
+                              hot_job_users, :id, :name,
+                              include_blank: true %>
+
+      <br>
+      <span>
+        <%= link_to 'Clear', hot_jobs_path,
+                class: 'btn btn-flat btn-small btn-primary pull-left'%>
+        <%= f.submit class: 'btn btn-flat btn-primary pull-right' %>
+      </span>
+    <% end %>
+  </div>
+  <div class='span9'>
+    <div class="row-fluid">
+      <%= new_button(HotJob)%>
+    </div>
+    <table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
+      <tr>
+        <th><%= sort_link(@q, :date_posted, "Date Posted") %></th>
+        <th><%= sort_link(@q, 'users.first, users.last', "Posted By") %></th>
+        <th><%= sort_link(@q, 'employers.name', "Employer") %></th>
+        <th><%= sort_link(@q, :location, "Location") %></th>
+        <th><%= sort_link(@q, :closing_date, "Closing Date") %></th>
+        <th><%= sort_link(@q, :title, "Title") %></th>
+        <th>Description</th>
+        <th>Salary</th>
+        <th></th>
+      </tr>
+      <% @hot_jobs.each do |hot_job| %>
+        <tr id='tr_<%=hot_job.id%>'>
+          <td><%= hot_job.date_posted %></td>
+          <td><%= hot_job.posted_by %></td>
+          <td><%= name_and_link hot_job.employer %></td>
+          <td><%= hot_job.location %></td>
+          <td><%= hot_job.closing_date %></td>
+          <td><%= name_and_link(hot_job, true) %></td>
+          <td><%= hot_job.description.truncate(30) %></td>
+          <td><%= hot_job.salary %></td>
+          <td>
+            <%= edit_button(hot_job) %>
+            <%= button_destroy_association(hot_job) %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

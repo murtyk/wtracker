@@ -78,6 +78,8 @@ class User < ActiveRecord::Base
   has_many :user_employer_sources, dependent: :destroy
   has_many :employer_sources, through: :user_employer_sources
 
+  has_many :hot_jobs
+
   def copy_job_shares?
     return true unless options[:copy_job_shares]
     options[:copy_job_shares] > 0 # 0 means do not forward

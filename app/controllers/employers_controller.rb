@@ -74,6 +74,12 @@ class EmployersController < ApplicationController
     @analysis = employer_analysis
   end
 
+  def address_location
+    employer = current_user.employers.find(params[:id])
+    # debugger
+    render json: employer.location.to_json
+  end
+
   def show
     @employer = current_user.employers.find(params[:id]).decorate
     authorize @employer

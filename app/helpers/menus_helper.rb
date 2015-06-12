@@ -328,7 +328,8 @@ module MenusHelper
 
   def jobs_menu
     return unless policy(JobSearch).new?
-    items = search_jobs_menu + shared_jobs_list_menu + job_leads_status_menu
+    items = search_jobs_menu + shared_jobs_list_menu + job_leads_status_menu +
+            divider_menu + hot_jobs_menu
     build_dropdown_menu('Jobs', items)
   end
 
@@ -343,6 +344,10 @@ module MenusHelper
   def job_leads_status_menu
     return unless current_account.track_trainee_status?
     menu_link('Job Leads Status', shared_job_statuses_path)
+  end
+
+  def hot_jobs_menu
+    policy(HotJob).index? ? menu_link('Hot Jobs', hot_jobs_path) : nil
   end
 
   def menu_link(s, path)

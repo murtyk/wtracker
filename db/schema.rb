@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150601034524) do
+ActiveRecord::Schema.define(version: 20150611204912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -476,6 +476,24 @@ ActiveRecord::Schema.define(version: 20150601034524) do
   end
 
   add_index "grants", ["account_id"], name: "index_grants_on_account_id", using: :btree
+
+  create_table "hot_jobs", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "user_id"
+    t.integer  "employer_id"
+    t.date     "date_posted"
+    t.date     "closing_date"
+    t.string   "title"
+    t.string   "description"
+    t.string   "salary"
+    t.string   "location"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "hot_jobs", ["account_id"], name: "index_hot_jobs_on_account_id", using: :btree
+  add_index "hot_jobs", ["employer_id"], name: "index_hot_jobs_on_employer_id", using: :btree
+  add_index "hot_jobs", ["user_id"], name: "index_hot_jobs_on_user_id", using: :btree
 
   create_table "import_fails", force: :cascade do |t|
     t.integer  "account_id"
@@ -1052,5 +1070,8 @@ ActiveRecord::Schema.define(version: 20150601034524) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "hot_jobs", "accounts"
+  add_foreign_key "hot_jobs", "employers"
+  add_foreign_key "hot_jobs", "users"
   add_foreign_key "leads_queues", "trainees"
 end
