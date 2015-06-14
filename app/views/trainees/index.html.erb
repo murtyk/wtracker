@@ -6,7 +6,7 @@
                                         style: 'margin-bottom: 0px' } do |f| %>
 
   Select a Class
-  <%= f.input_field :klass_id, collection: current_user.klasses,
+  <%= f.input_field :klass_id, collection: current_user.klasses_for_selection,
                                selected: @filter_info[:klass_id],
                                class: "search-query",
                                style: 'width: 450px' %>

@@ -3,7 +3,7 @@
 
   <div class="form-inputs">
     <%= f.input :klass_id, label: 'Select a Class',
-                           collection: current_user.klasses,
+                           collection: current_user.klasses_for_selection,
                            input_html: {id: 'select_klass', style: 'width: 50%;'}%>
     <%= f.input :trainee_ids, label: "Select Trainees",
                               collection: [],

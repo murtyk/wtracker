@@ -48,7 +48,7 @@
 
       <%= f.label :klasses_id_eq, 'Class' %>
       <%= f.collection_select :klasses_id_eq,
-                              current_user.klasses.order(:name), :id, :name,
+                              current_user.klasses_for_selection, :last, :first,
                               include_blank: true %>
 
       <%= f.label :veteran_eq, 'Veteran' %>

@@ -143,7 +143,9 @@ class User < ActiveRecord::Base
   end
 
   def klasses_for_selection(all_option = false)
-    ks = klasses.map { |k| [k.to_label, k.id] }
+    order = 'colleges.name, klasses.start_date, klasses.end_date'
+
+    ks = klasses.includes(:college).order(order).map { |k| [k.to_label, k.id] }
     return [['All', 0]] + ks if ks.any? && all_option
     ks
   end

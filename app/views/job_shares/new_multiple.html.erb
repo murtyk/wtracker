@@ -10,15 +10,20 @@
     <% end %>
     <hr>
     <%= simple_form_for(@job_share,
-                        url: { controller: :job_shares, action: :create, job_ids: @job_share.job_ids },
+                        url: { controller: :job_shares,
+                               action: :create,
+                               job_ids: @job_share.job_ids },
                         html: { class: "form-horizontal" } ) do |f| %>
       <%= f.error_notification %>
 
       <div class="form-inputs">
         <%= f.hidden_field :from_id %>
-        <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses,
-                               input_html: { id: 'select_klass',style: 'width: 90%;' } %>
-        <%= f.input :to_ids, label: "Select Trainees", collection: [],
+        <%= f.input :klass_id, label: 'Select a Class',
+                               collection: current_user.klasses_for_selection,
+                               input_html: { id: 'select_klass',
+                                             style: 'width: 90%;' } %>
+        <%= f.input :to_ids, label: "Select Trainees",
+                             collection: [],
                              input_html: { multiple: true, id: 'select_trainees' },
                              include_blank: false %>
         <%= f.input :comment %>

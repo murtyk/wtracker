@@ -11,8 +11,10 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :klass_id, label: 'Select a Class', collection: current_user.klasses,
-                           input_html: {id: 'select_klass', style: 'width: 500px;'}%>
+    <%= f.input :klass_id, label: 'Select a Class',
+                           collection: current_user.klasses_for_selection,
+                           input_html: { id: 'select_klass',
+                                         style: 'width: 500px;'} %>
     <%= f.input :to_ids, label: "Select Trainees", collection: [],
                          input_html: { multiple: true, id: 'select_trainees' },
                          include_blank: false%>
@@ -25,5 +27,6 @@
 <% end %>
 
 <%= render 'status_modal' %>
-<%= content_tag :div, class: "page_data", data: { job_info: @job_share.to_json } do %>
+<%= content_tag :div, class: "page_data",
+                      data: { job_info: @job_share.to_json } do %>
 <% end %>

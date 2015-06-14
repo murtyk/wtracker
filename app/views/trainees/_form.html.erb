@@ -19,17 +19,22 @@
             Note: Address is ignored if street not entered
 
             <%= f.fields_for :home_address do |address_fields| %>
-              <%= render 'shared/address_fields', address_fields: address_fields, required: false %>
+              <%= render 'shared/address_fields', address_fields: address_fields,
+                                                  required: false %>
             <% end %>
             <h4>Mailing Address if different from above</h4>
             <%= f.fields_for :mailing_address do |address_fields| %>
-              <%= render 'shared/address_fields', address_fields: address_fields, required: false %>
+              <%= render 'shared/address_fields', address_fields: address_fields,
+                                                  required: false %>
             <% end %>
-            <%= f.input :gender, collection: ([["Male", 1],['Female', 2]]), include_blank: false %>
-            <%= f.input :land_no%>
-            <%= f.input :mobile_no%>
-            <%= f.input :email, as: :email%>
-            <%= f.input :dob, input_html: {data: {behaviour: "datepicker"},value: trainee.dob.to_s}, as: :string%>
+            <%= f.input :gender, collection: ([["Male", 1],['Female', 2]]),
+                                 include_blank: false %>
+            <%= f.input :land_no %>
+            <%= f.input :mobile_no %>
+            <%= f.input :email, as: :email %>
+            <%= f.input :dob, input_html: { data: { behaviour: "datepicker" },
+                                            value: trainee.dob.to_s },
+                              as: :string %>
 
             <%= f.input :race_id, label: 'Ethnicity', collection: Race.all %>
             <%= f.input :veteran%>
@@ -41,12 +46,12 @@
               <%= tact_fields.input :job_title %>
               <%= tact_fields.input :years, label: 'Number of years' %>
               <%= tact_fields.input :certifications, input_html: {rows: 5} %>
-
             <% end %>
 
             <% if trainee.new_record? %>
-
-              <%= f.association :klasses, label: 'Assign to Classes', collection: current_user.klasses, input_html: { style: 'width: 500px'}%>
+              <%= f.association :klasses, label: 'Assign to Classes',
+                                          collection: current_user.klasses_for_selection,
+                                          input_html: { style: 'width: 500px'} %>
             <% end %>
 
           </div>

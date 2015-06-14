@@ -4,9 +4,11 @@
   <%= simple_form_for :filters, method: :get,
                                 url: url_for(action: :index, controller: :job_shares),
                                 html: { class: 'form-search' } do |f| %>
-    Class<%= f.input_field :klass_id, collection: Klass.all, id: 'select_klass',
+    Class<%= f.input_field :klass_id, collection: current_user.klasses_for_selection,
+                                       id: 'select_klass',
                                       selected: params[:filters] && params[:filters][:klass_id],
-                                      class: "search-query", style: 'width: 500px;' %>
+                                      class: "search-query",
+                                      style: 'width: 500px;' %>
     Trainee<%= f.input_field :trainee_id, collection: [],
                                           id: 'select_trainees', class: "search-query" %>
     <%= submit_button(f,'Find') %>

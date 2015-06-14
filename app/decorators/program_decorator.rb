@@ -10,14 +10,19 @@ class ProgramDecorator < Draper::Decorator
   #       object.created_at.strftime("%a %m/%d/%y")
   #     end
   #   end
+  def klasses_order
+    'colleges.name, klasses.start_date, klasses.end_date'
+  end
 
   def user_klasses(user)
-    return klasses.decorate if user.admin_access? || user.grants.include?(grant)
+    return klasses.includes(:college)
+      .order(klasses_order)
+      .decorate if user.admin_access? || user.grants.include?(grant)
     assigned_klasses(user).decorate
   end
 
   def assigned_klasses(user)
-    user.klasses.where(program_id: id)
+    user.klasses.includes(:college).where(program_id: id).order(klasses_order)
   end
 
   # below are for dashboard
