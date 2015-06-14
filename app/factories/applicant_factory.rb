@@ -10,7 +10,8 @@ class ApplicantFactory
     Applicant.transaction do
       applicant.save
       return applicant if applicant.errors.any?
-      capture_applicant_location(request, applicant)
+      # skip location capture. it is causing time out errors.
+      # capture_applicant_location(request, applicant)
       process_applicant(applicant)
     end
     applicant
