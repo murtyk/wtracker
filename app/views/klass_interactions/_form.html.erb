@@ -1,123 +1,130 @@
-<% if klass_interaction.employer_id %>
-  <h1>New Class Interaction</h1>
-<% else %>
-  <h1>New Employer and Class Interaction</h1>
-<% end %>
-<%= simple_form_for(klass_interaction) do |f| %>
-  <div class = 'row-fluid' >
-    <%= f.error_notification %>
-    <% if klass_interaction.employer_id %>
-      <h4>Employer : <%= link_to klass_interaction.employer_name, klass_interaction.employer%> </h4><br>
-    <% else %>
-      <div class='span7'>
-        <div class="form-inputs">
-          <%= simple_fields_for employer do |employer_fields| %>
-          <div class = 'row-fluid'>
-            <div class ='span6'>
-                <%= employer_fields.input :name %>
-                <%= employer_fields.input :phone_no %>
-                <%= employer_fields.association :sectors, label: 'Sectors',
-                                                          collection: Sector.all,
-                                                          required: true,
-                                                          input_html: {multiple: true} %>
-            </div>
-            <div class ='span6'>
-                <%= employer_fields.fields_for :address do |address_fields| %>
-                  <%= address_fields.input :line1, label: 'Street',
-                                                   placeholder: "number and street name"%>
-                  <%= address_fields.input :city, required: false, placeholder: "city"%>
-                  <%= address_fields.input :state, required: false,
-                                                   collection:  State.select(:code).map{|s| s.code}%>
-                  <%= address_fields.input :zip, placeholder: "zip", class: 'span12'%>
-                <% end %>
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+
+      <% if klass_interaction.employer_id %>
+        <h1>New Class Interaction</h1>
+      <% else %>
+        <h1>New Employer and Class Interaction</h1>
+      <% end %>
+    </div>
+    <%= simple_form_for(klass_interaction) do |f| %>
+      <div class = 'row-fluid' >
+        <%= f.error_notification %>
+        <% if klass_interaction.employer_id %>
+          <h4>Employer : <%= link_to klass_interaction.employer_name, klass_interaction.employer%> </h4><br>
+        <% else %>
+          <div class='span7'>
+            <div class="form-inputs">
+              <%= simple_fields_for employer do |employer_fields| %>
+              <div class = 'row-fluid'>
+                <div class ='span6'>
+                    <%= employer_fields.input :name %>
+                    <%= employer_fields.input :phone_no %>
+                    <%= employer_fields.association :sectors, label: 'Sectors',
+                                                              collection: Sector.all,
+                                                              required: true,
+                                                              input_html: { multiple: true } %>
+                </div>
+                <div class ='span6'>
+                    <%= employer_fields.fields_for :address do |address_fields| %>
+                      <%= address_fields.input :line1, label: 'Street',
+                                                       placeholder: "number and street name"%>
+                      <%= address_fields.input :city, required: false, placeholder: "city"%>
+                      <%= address_fields.input :state, required: false,
+                                                       collection:  State.select(:code).map{|s| s.code}%>
+                      <%= address_fields.input :zip, placeholder: "zip", class: 'span12'%>
+                    <% end %>
+                </div>
+              </div>
+              <% end %>
             </div>
           </div>
-          <% end %>
+        <% end %>
+        <div class="span5">
+          <div class="form-inputs">
+            <%= f.hidden_field :employer_id %>
+              <%= f.input :klass_id, label: 'Class',
+                                     collection: current_user.klasses_for_selection,
+                                     input_html: { style: 'width: 90%' },
+                                     include_blank: false%>
+              <div id = 'klass_event_id_fields'>
+                <%= f.input :klass_event_id, label: 'Event', wrapper: :append, class: "inline" do%>
+                  <%= f.input_field :klass_event_id, collection: []%>
+                  <% if klass_event.new_record?  && !klass_event.name.blank?%>
+                    <button type='button' id= 'add_event' class='btn btn-flat btn-small btn-primary' style='display:none;margin-left: 20px'>
+                      <i class="icon-plus white"></i>
+                    </button>
+                  <% else %>
+                    <button type='button' id= 'add_event' class='btn btn-flat btn-small btn-primary' style='margin-left: 20px'>
+                      <i class="icon-plus white"></i>
+                    </button>
+                  <% end %>
+                <% end %>
+              </div>
+              <% new_event_style = 'background-color: #ddd;' %>
+              <% unless klass_event.new_record? && !klass_event.name.blank?%>
+                <% new_event_style += 'display: none;'%>
+              <% end %>
+              <div id = 'new_klass_event' style='<%=new_event_style %>'>
+                <center><h4>New Event</h4></center>
+                  <%= simple_fields_for(klass_event) do |fe| %>
+                      <%= fe.error_notification %>
+                      <div class="form-inputs">
+                        <div class = 'row-fluid'>
+                          <div id = 'new_klass_event' style='background-color: #ddd; padding: 10px'>
+                            <% event_name_collection = klass_default_events %>
+                            <% event_name_collection.push([klass_event.name,klass_event.name]) unless Klass::DEFAULT_EVENTS.include?(klass_event.name)%>
+                            <%= fe.input :name, required: true,
+                                                collection: event_name_collection,
+                                                input_html: {class: 'combobox'} %>
+
+                            <%= fe.input :event_date, required: true,
+                                                      input_html: { data: {behaviour: "datepicker"}},
+                                                      as: :string %>
+                            <%= fe.input :notes %>
+                            From<br>
+                                <%=fe.text_field :start_time_hr, style: 'width: 40px'%>
+                                <%=fe.text_field :start_time_min, style: 'width: 40px'%>
+                                <%=fe.select :start_ampm, options_for_ampm_select(klass_event.start_ampm), {}, {style: 'width: 80px'}%>
+                                <!-- display error messages here -->
+                                <% unless klass_event.errors.messages[:start_time_hr].blank? %>
+                                  <%= "<p style='color:red'>Start Time Hour: #{klass_event.errors.messages[:start_time_hr][0]}</p>".html_safe  %>
+                                <% end %>
+                                <% unless klass_event.errors.messages[:start_time_min].blank? %>
+                                  <%= "<p style='color:red'>Start Time Minutes: #{klass_event.errors.messages[:start_time_min][0]}</p>".html_safe %>
+                                <% end %>
+                                <br>
+                            To<br>
+                                <%=fe.text_field :end_time_hr, style: 'width: 40px'%>
+                                <%=fe.text_field :end_time_min, style: 'width: 40px'%>
+                                <%=fe.select :end_ampm, options_for_ampm_select(klass_event.end_ampm),{}, {style: 'width: 80px'}%>
+                                <% unless klass_event.errors.messages[:end_time_hr].blank? %>
+                                  <%= "<p style='color:red'>End Time Hour: #{klass_event.errors.messages[:end_time_hr][0]
+                                  }</p>".html_safe  %>
+                                <% end %>
+                                <% unless klass_event.errors.messages[:end_time_min].blank? %>
+                                  <%= "<p style='color:red'>End Time Minutes: #{klass_event.errors.messages[:end_time_min][0]}</p>".html_safe %>
+                                <% end %>
+                          </div>
+                        </div>
+                      </div>
+                  <% end %>
+                <button type='button' id='cancel_event' class='btn btn-flat btn-small btn-danger' style='margin-left: 20px; margin-bottom: 10px'>Cancel</button>
+              </div>
+              <br>
+              <%= f.input :status, label: 'Status', collection: klass_interaction_statuses,
+                                                    include_blank: false %>
+          </div>
+          <div class = 'row-fluid'>
+            <div class="form-actions" style=''>
+              <%= render 'shared/cancel_link' %>
+              <%= submit_button(f, 'Save') %>
+            </div>
+          </div>
+
         </div>
       </div>
     <% end %>
-    <div class="span5">
-      <div class="form-inputs">
-        <%= f.hidden_field :employer_id %>
-          <%= f.input :klass_id, label: 'Class',
-                                 collection: current_user.klasses_for_selection,
-                                 input_html: { style: 'width: 90%' },
-                                 include_blank: false%>
-          <div id = 'klass_event_id_fields'>
-            <%= f.input :klass_event_id, label: 'Event', wrapper: :append, class: "inline" do%>
-              <%= f.input_field :klass_event_id, collection: []%>
-              <% if klass_event.new_record?  && !klass_event.name.blank?%>
-                <button type='button' id= 'add_event' class='btn btn-flat btn-small btn-primary' style='display:none;margin-left: 20px'>
-                  <i class="icon-plus white"></i>
-                </button>
-              <% else %>
-                <button type='button' id= 'add_event' class='btn btn-flat btn-small btn-primary' style='margin-left: 20px'>
-                  <i class="icon-plus white"></i>
-                </button>
-              <% end %>
-            <% end %>
-          </div>
-          <% new_event_style = 'background-color: #ddd;' %>
-          <% unless klass_event.new_record? && !klass_event.name.blank?%>
-            <% new_event_style += 'display: none;'%>
-          <% end %>
-          <div id = 'new_klass_event' style='<%=new_event_style %>'>
-            <center><h4>New Event</h4></center>
-              <%= simple_fields_for(klass_event) do |fe| %>
-                  <%= fe.error_notification %>
-                  <div class="form-inputs">
-                    <div class = 'row-fluid'>
-                      <div id = 'new_klass_event' style='background-color: #ddd; padding: 10px'>
-                        <% event_name_collection = klass_default_events %>
-                        <% event_name_collection.push([klass_event.name,klass_event.name]) unless Klass::DEFAULT_EVENTS.include?(klass_event.name)%>
-                        <%= fe.input :name, required: true,
-                                            collection: event_name_collection,
-                                            input_html: {class: 'combobox'} %>
-
-                        <%= fe.input :event_date, required: true,
-                                                  input_html: { data: {behaviour: "datepicker"}},
-                                                  as: :string %>
-                        <%= fe.input :notes %>
-                        From<br>
-                            <%=fe.text_field :start_time_hr, style: 'width: 40px'%>
-                            <%=fe.text_field :start_time_min, style: 'width: 40px'%>
-                            <%=fe.select :start_ampm, options_for_ampm_select(klass_event.start_ampm), {}, {style: 'width: 80px'}%>
-                            <!-- display error messages here -->
-                            <% unless klass_event.errors.messages[:start_time_hr].blank? %>
-                              <%= "<p style='color:red'>Start Time Hour: #{klass_event.errors.messages[:start_time_hr][0]}</p>".html_safe  %>
-                            <% end %>
-                            <% unless klass_event.errors.messages[:start_time_min].blank? %>
-                              <%= "<p style='color:red'>Start Time Minutes: #{klass_event.errors.messages[:start_time_min][0]}</p>".html_safe %>
-                            <% end %>
-                            <br>
-                        To<br>
-                            <%=fe.text_field :end_time_hr, style: 'width: 40px'%>
-                            <%=fe.text_field :end_time_min, style: 'width: 40px'%>
-                            <%=fe.select :end_ampm, options_for_ampm_select(klass_event.end_ampm),{}, {style: 'width: 80px'}%>
-                            <% unless klass_event.errors.messages[:end_time_hr].blank? %>
-                              <%= "<p style='color:red'>End Time Hour: #{klass_event.errors.messages[:end_time_hr][0]
-                              }</p>".html_safe  %>
-                            <% end %>
-                            <% unless klass_event.errors.messages[:end_time_min].blank? %>
-                              <%= "<p style='color:red'>End Time Minutes: #{klass_event.errors.messages[:end_time_min][0]}</p>".html_safe %>
-                            <% end %>
-                      </div>
-                    </div>
-                  </div>
-              <% end %>
-            <button type='button' id='cancel_event' class='btn btn-flat btn-small btn-danger' style='margin-left: 20px; margin-bottom: 10px'>Cancel</button>
-          </div>
-          <br>
-          <%= f.input :status, label: 'Status', collection: klass_interaction_statuses,
-                                                include_blank: false %>
-      </div>
-      <div class = 'row-fluid'>
-        <div class="form-actions" style=''>
-          <%= render 'shared/cancel_link' %>
-          <%= submit_button(f, 'Save') %>
-        </div>
-      </div>
-
-    </div>
   </div>
-<% end %>
+</div>
