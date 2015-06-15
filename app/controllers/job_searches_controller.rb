@@ -88,14 +88,14 @@ class JobSearchesController < ApplicationController
   end
 
   # we might not need this anymore. KORADA.
-  def details
-    authorize JobSearch
+  # def details
+  #   authorize JobSearch
 
-    @job_details = JobDetails.new params[:job_info]
-    # if @job_details.details_url_type == 0
-    redirect_to @job_details.destination_url
-    # end
-  end
+  #   @job_details = JobDetails.new params[:job_info]
+  #   # if @job_details.details_url_type == 0
+  #   redirect_to @job_details.destination_url
+  #   # end
+  # end
 
   def new
     @job_search = current_user.job_searches.build

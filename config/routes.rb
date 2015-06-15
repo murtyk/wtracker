@@ -76,7 +76,7 @@ WTracker::Application.routes.draw do
 
   resources :job_searches, only: [:new, :show, :create] do
     member do
-      get :details
+      # get :details
       get :analyze
     end
     collection do

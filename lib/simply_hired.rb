@@ -1,7 +1,6 @@
 require 'httparty'
 require 'mechanize'
 
-Struct.new('Jd', :details_url_type, :destination_url, :details)
 # wrapper for simplyhired api
 class SimplyHired
   ANY_KEYWORDS_SEARCH = 1
@@ -95,29 +94,29 @@ class SimplyHired
     simplyhired.accessible_count
   end
 
-  def self.get_details(url)
-    # page  = webpage(url)
+  # def self.get_details(url)
+  #   # page  = webpage(url)
 
-    details_url_type = 0
-    details = ''
-    destination_url  = url
+  #   details_url_type = 0
+  #   details = ''
+  #   destination_url  = url
 
-=begin
-    if page.uri.to_s.include? SH_HOME
-      # find details and destination get_destination_url
-      begin
-        destination_url = build_destination_url(page, url)
-        details = page.parser.at_css('.job_description').children[0].text
-        details_url_type = 1
-      rescue # StandardError => e
-        destination_url  = url
-        details = ''
-      end
-    end
-=end
 
-    Struct::Jd.new(details_url_type, destination_url, details)
-  end
+  #   if page.uri.to_s.include? SH_HOME
+  #     # find details and destination get_destination_url
+  #     begin
+  #       destination_url = build_destination_url(page, url)
+  #       details = page.parser.at_css('.job_description').children[0].text
+  #       details_url_type = 1
+  #     rescue # StandardError => e
+  #       destination_url  = url
+  #       details = ''
+  #     end
+  #   end
+
+
+  #   Struct::Jd.new(details_url_type, destination_url, details)
+  # end
 
   private
 

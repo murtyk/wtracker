@@ -80,24 +80,24 @@ class Indeed
     indeed.count
   end
 
-  def self.get_details(url)
-    agent = Mechanize.new
-    page  = agent.get(url)
+  # def self.get_details(url)
+  #   agent = Mechanize.new
+  #   page  = agent.get(url)
 
-    details_url_type = 0
-    details = ''
+  #   details_url_type = 0
+  #   details = ''
 
-    destination_url  = page.uri.to_s
+  #   destination_url  = page.uri.to_s
 
-    if destination_url.include? INDEED_HOME
-      details = parse_details(page)
-      destination_url  = url if details.blank?
-    end
+  #   if destination_url.include? INDEED_HOME
+  #     details = parse_details(page)
+  #     destination_url  = url if details.blank?
+  #   end
 
-    OpenStruct.new(details_url_type: details_url_type,
-                   destination_url: destination_url,
-                   details: details)
-  end
+  #   OpenStruct.new(details_url_type: details_url_type,
+  #                  destination_url: destination_url,
+  #                  details: details)
+  # end
 
   private
 
