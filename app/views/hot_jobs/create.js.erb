@@ -1,0 +1,7 @@
+$('#new_hot_job').remove();
+<% if @hot_job.errors.empty? %>
+  $('#hot_jobs').html('<%= j render @hot_job.employer.hot_jobs %>');
+  $('#new_hot_job_link').show();
+<% else %>
+  $('#new_hot_job_link').after('<%= j render("jsform", hot_job: @hot_job) %>');
+<% end %>

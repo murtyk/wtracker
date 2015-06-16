@@ -38,9 +38,6 @@
     <% end %>
   </div>
   <div class='span9'>
-    <div class="row-fluid">
-      <%= new_button(HotJob)%>
-    </div>
     <table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
       <tr>
         <th><%= sort_link(@q, :date_posted, "Date Posted") %></th>
@@ -60,11 +57,10 @@
           <td><%= name_and_link hot_job.employer %></td>
           <td><%= hot_job.location %></td>
           <td><%= hot_job.closing_date %></td>
-          <td><%= name_and_link(hot_job, true) %></td>
+          <td><%= hot_job.title %></td>
           <td><%= hot_job.description.truncate(30) %></td>
           <td><%= hot_job.salary %></td>
           <td>
-            <%= edit_button(hot_job) %>
             <%= button_destroy_association(hot_job) %>
           </td>
         </tr>

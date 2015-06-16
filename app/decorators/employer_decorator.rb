@@ -81,6 +81,14 @@ class EmployerDecorator < Draper::Decorator
     object.trainee_submits
   end
 
+  def hot_jobs_header
+    return unless policy.show_hot_jobs?
+    "<h4>
+    Hot Jobs
+    #{h.button_new_association(HotJob, employer_id: employer.id)}
+    </h4>".html_safe
+  end
+
   def job_openings_header
     return unless policy.show_job_openings?
     "<h4>

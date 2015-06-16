@@ -70,3 +70,21 @@ $('#employer_notes').on('click', '.employer-note-show-more-or-less', function() 
     $('#' + button_id + " i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
   }
 });
+
+$('#hot_jobs').on('click', '.hot-job-show-description', function() {
+  var f_show, hot_job_id, button_id, hot_job_description_id;
+  button_id = $(this).attr('id');
+  hot_job_id = button_id.split('_')[4];
+  div_hot_job_description_id = '#hot_job_description_' + hot_job_id;
+  f_show = $(div_hot_job_description_id).is(':hidden');
+
+  if (f_show){
+    $(div_hot_job_description_id).show();
+    $('#' + button_id + " i").removeClass("icon-arrow-down").addClass("icon-arrow-up");
+  }
+  else{
+    $(div_hot_job_description_id).hide();
+    $('#' + button_id + " i").removeClass("icon-arrow-up").addClass("icon-arrow-down");
+  }
+});
+

@@ -53,6 +53,10 @@ class EmployerPolicy < Struct.new(:user, :employer)
     edit?
   end
 
+  def show_hot_jobs?
+    edit?
+  end
+
   def show_job_openings?
     edit?
   end

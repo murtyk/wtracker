@@ -1,0 +1,7 @@
+$('#edit_hot_job_<%=@hot_job.id%>').remove();
+<% if @hot_job.errors.empty? %>
+  $('#<%=div_id_for(@hot_job)%>').html('<%= j render(@hot_job) %>');
+  $('#<%=div_id_for(@hot_job)%>').show();
+<% else %>
+  $('#<%=div_id_for(@hot_job)%>').after('<%= j render("jsform", hot_job: @hot_job) %>');
+<% end %>

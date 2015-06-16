@@ -1,0 +1,18 @@
+<div class='hot_job' id = 'hot_job_<%=hot_job.id%>' >
+  <p>
+    <button type = 'button' id = 'hot_job_show_description_<%= hot_job.id%>' class = 'btn btn-flat btn-mini btn-primary hot-job-show-description'>
+      <i class="icon-arrow-down white"></i>
+    </button>
+    <%= button_edit_association(hot_job, title: 'Edit Hot Job') %>
+    <%= button_destroy_association(hot_job, title: 'Delete Hot Job') %>
+    <%= hot_job.date_posted %>
+    <%= hot_job.title %>
+    <div class = 'hot_job_description' id = 'hot_job_description_<%=hot_job.id%>' style='display: none;'>
+      <%= hot_job.location %><br>
+      <%= hot_job.description %><br>
+      <%= hot_job.salary %><br>
+      <%= hot_job.closing_date %><br>
+      <%= hot_job.posted_by %>
+    </div>
+  </p>
+</div>

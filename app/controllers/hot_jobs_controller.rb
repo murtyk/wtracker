@@ -14,7 +14,8 @@ class HotJobsController < ApplicationController
   end
 
   def new
-    @hot_job = HotJob.new
+    @hot_job = HotJob.new(employer_id: params[:employer_id])
+    @hot_job.location = Employer.find(params[:employer_id]).location if params[:employer_id]
     authorize @hot_job
   end
 
@@ -27,22 +28,14 @@ class HotJobsController < ApplicationController
     @hot_job = current_user.hot_jobs.new(hot_job_params)
     authorize @hot_job
 
-    if @hot_job.save
-      redirect_to @hot_job, notice: 'HotJob was successfully created.'
-    else
-      render :new
-    end
+    @hot_job.save
   end
 
   def update
     @hot_job = HotJob.find(params[:id])
     authorize @hot_job
 
-    if @hot_job.update_attributes(params[:hot_job])
-      redirect_to @hot_job, notice: 'HotJob was successfully updated.'
-    else
-      render :edit
-    end
+    @hot_job.update_attributes(params[:hot_job])
   end
 
   def destroy
