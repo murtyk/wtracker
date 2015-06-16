@@ -2,8 +2,8 @@ include UtilitiesHelper
 # to build and update applicant
 class ApplicantFactory
   def self.create(grant, request, params)
-    params[:last_employed_on] = opero_str_to_date(params[:last_employed_on])
     applicant = grant.applicants.new(params)
+    applicant.last_employed_on = opero_str_to_date(params[:last_employed_on])
 
     applicant.navigator_id = navigator_id(applicant)
 

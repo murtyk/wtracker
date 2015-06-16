@@ -83,8 +83,8 @@
         <%= f.input :race_id, label: 'Ethnicity', collection: Race.all,
                               required: true, include_blank: 'Please Select'%>
       </div>
-      <div class='span3'>
-        <%= f.input :last_employed_on, label: 'Last Date of Full-Time Employment',
+      <div class='span4'>
+        <%= f.input :last_employed_on, label: 'Last Date of Full-Time Employment MM/DD/YYYY',
                                        required: true,
                                        input_html: { data: { behaviour: "datepicker" },
                                        value: applicant.last_employed_on },

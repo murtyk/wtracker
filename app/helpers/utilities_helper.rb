@@ -12,6 +12,7 @@ module UtilitiesHelper
   def opero_str_to_date(s_date, format = nil)
     return nil if s_date.blank?
     m, d, y = s_date.split('/') # making an assumption %m/%d/%Y.delete("^0-9")
+    return nil unless m && d && y
     return nil unless Date.valid_date?(y.to_i, m.to_i, d.to_i)
 
     s_dt = s_date
