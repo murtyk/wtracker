@@ -58,6 +58,10 @@ module  UserHelper
   end
 
   def signin_applicants_nav
+    sign_in_user('apple', 'melinda1@mail.com')
+  end
+
+  def signin_applicants_nav3
     sign_in_user('apple', 'cameron@nomail.net')
   end
 

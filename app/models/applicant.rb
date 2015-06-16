@@ -116,11 +116,6 @@ class Applicant < ActiveRecord::Base
     [%w(Accept Accepted), %w(Decline Declined), %w(None None)]
   end
 
-  def next
-    app = Applicant.where(status: 'Accepted')
-    app.where('id > ?', id).order(:id).first || app.order(:id).first
-  end
-
   belongs_to :navigator, class_name: 'User', foreign_key: 'navigator_id'
 
   def navigator_name
@@ -137,7 +132,7 @@ class Applicant < ActiveRecord::Base
   def last_employer_contact
     (last_employer_manager_name + '<br>' +
      format_phone_no(last_employer_manager_phone_no) + '<br>' +
-     (last_employer_manager_email && (last_employer_manager_email.to_s + '<br>')) +
+     (last_employer_manager_email && (last_employer_manager_email.to_s + '<br>')).to_s +
      last_employer_address).html_safe
   end
 

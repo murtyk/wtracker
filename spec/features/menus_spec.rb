@@ -80,7 +80,7 @@ end
 describe 'level 3 nav menus' do
   subject { page }
   before :each do
-    signin_applicants_nav
+    signin_applicants_nav3
   end
   after :each do
     signout

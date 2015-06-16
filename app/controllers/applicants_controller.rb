@@ -73,9 +73,9 @@ class ApplicantsController < ApplicationController
 
   def action_after_update
     notice = 'Applicant updated successfully'
-    next_applicant = @applicant.next
-    redirect_to(next_applicant, notice: notice) if next_applicant
-    redirect_to('/applicants/analysis', notice: notice) unless next_applicant
+    applicant = next_applicant
+    redirect_to(applicant, notice: notice) if applicant
+    redirect_to('/applicants/analysis', notice: notice) unless applicant
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -148,5 +148,12 @@ class ApplicantsController < ApplicationController
     predicate.merge!(navigator_id: navigator_id) unless navigator_id.blank?
     predicate.merge!(status: status) unless status.blank?
     Applicant.where(predicate).order(created_at: :desc)
+  end
+
+  def next_applicant
+    return @applicant unless current_user && current_user.navigator?
+    id = @applicant.id
+    nav_applicants = Applicant.where(status: 'Accepted', navigator_id: current_user.id)
+    nav_applicants.where('id > ?', id).order(:id).first || nav_applicants.order(:id).first
   end
 end
