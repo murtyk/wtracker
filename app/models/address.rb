@@ -47,6 +47,7 @@ class Address < ActiveRecord::Base
   def cb_before_save
     set_county_before_save
     set_latlong_before_save
+    clean_zip
   end
 
   def set_county_before_save
@@ -69,5 +70,9 @@ class Address < ActiveRecord::Base
     else
       fail "address error: Geocoding failed - #{gmaps4rails_address}"
     end
+  end
+
+  def clean_zip
+    self.zip = zip[0, 5] if zip.size > 10
   end
 end
