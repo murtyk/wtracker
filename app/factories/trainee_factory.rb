@@ -76,7 +76,8 @@ class TraineeFactory
   end
 
   def self.valid_file?(params)
-    filename = params[:file].original_filename
+    filename = params[:file].try(:original_filename)
+    return unless filename
     %w(doc docx pdf).include?(filename.split('.')[-1])
   end
 

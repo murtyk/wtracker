@@ -1,10 +1,9 @@
-# Used in the case of 2 types of grants - 1. Auto Job Leads and 2. Applicants
-# In case of Applicants grant, trainee can sign in
-# in either case trainee can update the profile
 # User can send remiders to trainees for updating their profile
+# trainee can update profile including opt out
 class JobSearchProfilesController < ApplicationController
-  before_filter :authenticate_user!, only: [:index, :remind]
-  before_filter :valid_trainee_or_key, only: [:show, :edit, :update]
+  before_action :authenticate_user!, only: [:index, :remind]
+  before_action :init_profile, only: [:show, :edit, :update]
+  before_action :valid_key!, only: [:show, :edit, :update]
 
   def remind
     ajl = AutoJobLeads.new
@@ -19,30 +18,19 @@ class JobSearchProfilesController < ApplicationController
   def show
     capture_trainee_agent
 
-    @job_search_profile = find_profile
-    @auto_shared_jobs = @job_search_profile.auto_shared_jobs(params[:show_all],
-                                                             params[:status])
+    @auto_shared_jobs = @job_search_profile
+                        .auto_shared_jobs(params[:show_all], params[:status])
                         .paginate(page: params[:page], per_page: 15)
   end
 
   def edit
-    @job_search_profile = find_profile
     @job_search_profile.opted_out ||= params[:opt_out]
     @edit_opt_out = params[:opt_out]
   end
 
   def update
-    @job_search_profile = find_profile
-    @edit_opt_out = params[:job_search_profile][:opted_out]
-
-    format_start_date if @edit_opt_out
-
-    if @job_search_profile.update_attributes(params[:job_search_profile])
+    if @job_search_profile.update_attributes(profile_params)
       return if request.format.js?
-      if current_trainee
-        redirect_to portal_trainees_path
-        return
-      end
       render 'update'
     else
       render 'edit'
@@ -51,49 +39,30 @@ class JobSearchProfilesController < ApplicationController
 
   private
 
-  def find_profile
-    return applicant_profile if current_trainee
-    jsp = JobSearchProfile.find(params[:id])
-    grant_id = jsp.trainee.grant_id
+  def profile_params
+    p_params = params[:job_search_profile].clone
+    start_date = p_params[:start_date]
+    p_params[:start_date] = opero_str_to_date(start_date) if start_date
+    p_params
+  end
+
+  def init_profile
+    @job_search_profile = JobSearchProfile.find(params[:id])
+    grant_id = @job_search_profile.trainee.grant_id
     Grant.current_id = grant_id
     session[:grant_id] = grant_id
-    jsp
   end
 
-  def applicant_profile
-    applicant      = current_trainee.applicant
-    jsp            = current_trainee.job_search_profile
-    jsp.location ||= "#{applicant.address_city}, #{applicant.address_state}"
-    jsp.zip      ||= applicant.address_zip
-    jsp
-  end
-
-  def valid_trainee_or_key
-    return if current_trainee
-    jsp = find_profile
-    redirected = redirect_to_trainee_login?(jsp)
-    return if redirected
-    return if jsp.key == params[:key]
-    return if params[:job_search_profile] && jsp.key == params[:job_search_profile][:key]
+  def valid_key!
+    return if @job_search_profile.key == params[:key]
+    return if params[:job_search_profile] &&
+              @job_search_profile.key == params[:job_search_profile][:key]
     fail 'invalid key for job_search_profile'
   end
 
-  def format_start_date
-    return unless params[:job_search_profile][:start_date]
-    params[:job_search_profile][:start_date] =
-      opero_str_to_date(params[:job_search_profile][:start_date])
-  end
-
-  def redirect_to_trainee_login?(jsp)
-    trainee = Trainee.unscoped.find jsp.trainee_id
-    grant = Grant.find trainee.grant_id
-    return false unless grant.trainee_applications?
-    redirect_to '/trainees/sign_in'
-    true
-  end
-
   def capture_trainee_agent
-    trainee = current_trainee || find_profile.trainee
+    # trainee = current_trainee || find_profile.trainee
+    trainee = @job_search_profile.trainee
     return if trainee.agent && trainee.agent.info['ip']
 
     location_data = request_location_data(trainee.id)

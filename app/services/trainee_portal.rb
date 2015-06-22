@@ -1,0 +1,35 @@
+class TraineePortal
+  attr_accessor :trainee
+
+  def initialize(t)
+    @trainee = t
+  end
+
+  def action
+    return :pending_data if pending_data?
+    return :pending_profile if pending_profile?
+    return :pending_resume if pending_resume?
+    return :pending_unemployment_proof if pending_unemployment_proof?
+    :jobs
+  end
+
+  def show_menu_bar?
+    action == :jobs
+  end
+
+  def pending_data?
+    trainee.pending_data?
+  end
+
+  def pending_profile?
+    !trainee.job_search_profile.valid_profile?
+  end
+
+  def pending_resume?
+    trainee.trainee_files.empty?
+  end
+
+  def pending_unemployment_proof?
+    trainee.trainee_files.count == 1
+  end
+end

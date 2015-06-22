@@ -180,6 +180,15 @@ class Trainee < ActiveRecord::Base
     auto_shared_jobs.where(status: [3, 4]).count
   end
 
+  def job_lead_counts_by_status
+    {
+      'Not Viewed'     => not_viewed_job_leads_count,
+      'Viewed'         => viewed_job_leads_count,
+      'Applied'        => applied_job_leads_count,
+      'Not Interested' => not_interested_job_leads_count
+    }
+  end
+
   def job_leads_count
     auto_shared_jobs.count
   end

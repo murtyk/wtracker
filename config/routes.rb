@@ -178,7 +178,6 @@ WTracker::Application.routes.draw do
       get :near_by_colleges
       get :docs_for_selection
       get :search_by_skills
-      get :portal
       match 'advanced_search' => 'trainees#advanced_search', via: [:get, :post], as: :advanced_search
     end
   end
@@ -216,6 +215,18 @@ WTracker::Application.routes.draw do
         get :empty_recycle_bin
       end
     end
+  end
+
+  namespace :trainee do
+    resources :trainees, only: [:edit, :update, :show] do
+      member do
+        get :portal
+      end
+    end
+    resources :job_search_profiles, only: [:show, :edit, :update]
+    resources :trainee_files, only: [:new, :create, :index]
+    resources :trainee_placements, only: [:new, :create, :index]
+    resources :auto_shared_jobs, only: [:edit, :update]
   end
 
   get 'static_pages/home'

@@ -1,0 +1,6 @@
+$('#status_<%=@auto_shared_job.id%>').html('<%= @auto_shared_job.status_text %>');
+$('#status_<%=@auto_shared_job.id%>').css('color', '<%= joblead_status_color(@auto_shared_job) %>');
+$('#not_viewed_count').html('<%=  @auto_shared_job.not_viewed_job_leads_count %>');
+$('#viewed_count').html('<%=  @auto_shared_job.viewed_job_leads_count %>');
+$('#applied_count').html('<%=  @auto_shared_job.applied_job_leads_count %>');
+$('#not_interested_count').html('<%=  @auto_shared_job.not_interested_job_leads_count %>');

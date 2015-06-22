@@ -14,9 +14,12 @@ describe 'applicants' do
   before :each do
     switch_to_applicants_domain
 
-    @filepath = "#{Rails.root}/spec/fixtures/RESUME.docx"
+    @resume = "#{Rails.root}/spec/fixtures/RESUME.docx"
+    @unemp_proof = "#{Rails.root}/spec/fixtures/unemp_proof.pdf"
+
+    @filepaths = [@resume, @unemp_proof]
     allow(Amazon).to receive(:store_file).and_return('thisisawsfilename')
-    allow(Amazon).to receive(:file_url).and_return(@filepath)
+    allow(Amazon).to receive(:file_url).and_return(@filepaths.shift)
 
     allow_any_instance_of(Applicant).to receive(:humanizer_questions)
       .and_return([{ 'question' => 'Two plus two?',
@@ -124,6 +127,7 @@ describe 'applicants' do
       fill_in 'trainee_trainee_id', with: '123456789'
       fill_in 'trainee_dob', with: '12/28/1990'
       click_on 'Next'
+
       # expect(page).to have_text('Please enter your preferences for job leads')
 
       # fill_in 'job_search_profile_skills',    with: 'java, ajax, xml'
@@ -133,9 +137,16 @@ describe 'applicants' do
       # click_on 'Update'
       expect(page).to have_text 'resume'
 
-      attach_file 'trainee_file_file', @filepath
+      attach_file 'trainee_file_file', @resume
 
       click_on 'Submit'
+
+      expect(page).to have_text 'unemployment'
+
+      attach_file 'trainee_file_file', @unemp_proof
+
+      click_on 'Submit'
+
       expect(page).to have_text 'Suggested Job Posts'
 
       # AutoJobLeads.new.perform

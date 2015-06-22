@@ -1,0 +1,11 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1><%= @caption || 'Upload a Document in MS Word or PDF format' %></h1>
+    </div>
+      <% if @error_message %>
+        <strong style='color: red'><%= @error_message %></strong><br>
+      <% end %>
+      <%= render 'form', trainee_file: @trainee_file %>
+  </div>
+</div>

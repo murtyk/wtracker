@@ -1,0 +1,28 @@
+<div class='row-fluid'>
+  <div class ='span8 offset2'>
+    <h2>Please enter your preferences for job leads</h2>
+    <%= simple_form_for([:trainee, @job_search_profile], html: { class: "form-horizontal",
+                                                         id: 'form_profile' }) do |f| %>
+      <%= f.hidden_field :key %>
+      <% hint = 'The skills should be separated by commas. Example: J2EE, SWING, Tech Lead, AJAX' %>
+      <%= f.input :skills, input_html: { style: 'width: 80%; height: 110px' },
+                           placeholder: 'Java, Project Lead, XML',
+                           hint: hint %>
+      <%= f.input :location, class: "inline" do %>
+        <%= f.input_field :location, placeholder: 'Edison, NJ' %> OR
+        <%= f.input_field :zip, placeholder: '08817', style: 'width: 100px;' %>
+        <%= @job_search_profile.location_error_messages %>
+      <% end %>
+
+      <%= f.input :distance, input_html: { style: 'width: 50px;' },
+                             wrapper: :append, class: "inline" do %>
+        <%= f.input_field :distance, placeholder: '20', style: 'width: 50px;' %>
+        <%= content_tag :span, "Miles", class: "add-on abbn" %>
+      <% end %>
+
+      <div class="form-actions">
+        <%= submit_button(f) %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -24,6 +24,7 @@ class JobSearchProfile < ActiveRecord::Base
            :not_viewed_job_leads_count,
            :viewed_job_leads_count,
            :applied_job_leads_count,
+           :job_lead_counts_by_status,
            :not_interested_job_leads_count, to: :trainee
 
   delegate :name, to: :trainee

@@ -452,14 +452,14 @@ module MenusHelper
   end
 
   def trainee_placements_menu
-    menu_link('Placements', trainee_placements_path)
+    menu_link('Placements', trainee_trainee_placements_path)
   end
 
   def trainee_documents_menu
-    menu_link('Documents', portal_trainees_path(trainee_files: true))
+    menu_link('Documents', trainee_trainee_files_path)
   end
 
   def trainee_jobs_menu
-    menu_link('Jobs', current_trainee.job_search_profile)
+    menu_link('Jobs', [:trainee, current_trainee.job_search_profile])
   end
 end

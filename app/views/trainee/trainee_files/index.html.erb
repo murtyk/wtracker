@@ -1,0 +1,23 @@
+<div class='row-fluid'>
+  <div class='span5'>
+    <h2>Documents Uploaded:</h2>
+
+    <table class="table table-condensed table-bordered table-striped table-hover">
+    <% @trainee_files.each do |trainee_file| %>
+      <tr>
+        <td><%= trainee_file.created_at.to_date.to_s%></td>
+        <td>
+        <%= link_to trainee_file, class: 'btn-link', target: "_blank" do %>
+            <%= trainee_file.name %>
+        <% end %>
+        </td>
+        <td><%= trainee_file.notes%></td>
+      </tr>
+    <% end %>
+    </table>
+  </div>
+  <div class='span5'>
+    <h2>Upload a document in MS Word or PDF format:</h2>
+      <%= render 'form', trainee_file: @trainee_file %>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+$("ul.errors").html("");
+<% if @auto_shared_job.errors.any? %>
+  <% @auto_shared_job.errors.full_messages.each do |message| %>
+    $("ul.errors").append($("<li />").html("<%= message.html_safe %>"));
+  <% end %>
+<% else %>
+  var notes_label = '<%= j @auto_shared_job.notes_label %>';
+  var full_notes  = '<%= j @auto_shared_job.notes %>';
+  var short_notes = '<%= j @auto_shared_job.notes.truncate(30) %>';
+  after_note_updated('<%=@auto_shared_job.id%>', short_notes, full_notes, notes_label);
+<% end %>

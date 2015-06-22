@@ -1,8 +1,9 @@
-# for trainee (aka applicant, candidate, student) to
-#    view and update status on a job lead
+# user can browse the job leads for a trainee
+# Trainee can view and update status on a job lead
 class AutoSharedJobsController < ApplicationController
-  before_filter :authenticate_user!, only: [:index]
-  before_filter :init_auto_shared_job, only: [:edit, :update]
+  before_action :authenticate_user!, only: [:index]
+  before_action :init_auto_shared_job, only: [:update]
+  before_action :validate_key!, only: [:update]
 
   def index
     @trainee = Trainee.find params[:trainee_id]
@@ -10,33 +11,13 @@ class AutoSharedJobsController < ApplicationController
     @auto_shared_jobs = AutoSharedJob.where(build_filters)
                         .order(created_at: :desc)
     @count = @auto_shared_jobs.count
-    @auto_shared_jobs = @auto_shared_jobs.to_a.paginate(page: params[:page], per_page: 25)
+    @auto_shared_jobs = @auto_shared_jobs
+                        .to_a
+                        .paginate(page: params[:page], per_page: 25)
   end
 
-  # REFACTOR explore adding another action for updating notes
-  #          status update can be moved to update action?
-  def edit
-    ::NewRelic::Agent.add_custom_parameters({ host: request.host, user_id: user_id, trainee_id: trainee_id})
-
-    if params[:status]
-      validate_key!
-      @auto_shared_job.change_status(params[:status].to_i)
-      render 'update'
-      return
-    end
-    if current_trainee && params[:for_notes]
-      render 'edit_notes'
-      return
-    end
-    fail 'unauthorized access'
-  end
-
-  # REFACTOR right now confined to updating notes only
-  #          should move status updates to here
   def update
-    fail 'unauthorized access' unless current_trainee
-    @auto_shared_job.change_notes(params[:auto_shared_job][:notes])
-    render 'update_notes'
+    @auto_shared_job.change_status(params[:status].to_i)
   end
 
   private
@@ -56,13 +37,5 @@ class AutoSharedJobsController < ApplicationController
     return filters unless params[:status]
     status_codes = AutoSharedJob.status_codes(params[:status])
     filters.merge(status: status_codes)
-  end
-
-  def user_id
-    current_user && current_user.id
-  end
-
-  def trainee_id
-    current_trainee && current_trainee.id
   end
 end

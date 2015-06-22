@@ -1,0 +1,33 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1>New Job Information</h1>
+    </div>
+      <%= simple_form_for([:trainee, @trainee_placement],
+                          html: { class: "form-horizontal"}) do |f| %>
+        <div class="form-inputs">
+        <%= f.hidden_field :trainee_id %>
+        <% @trainee_placement.fields.each do |atr| %>
+          <% required = @trainee_placement.required?(atr) %>
+          <% if @trainee_placement.collection_field?(atr) %>
+            <% default_value = @trainee_placement.default_value(atr) %>
+            <% options = { required: required,
+                           collection:  @trainee_placement.field_collection(atr) } %>
+            <% options[:selected] = default_value if default_value %>
+            <%= f.input atr, options %>
+          <% elsif @trainee_placement.date_field?(atr) %>
+            <%= f.input atr, required: required,
+                             input_html: { data: { behaviour: "datepicker" },
+                             value: @trainee_placement.send(atr) },
+                             as: :string %>
+          <% else %>
+            <%= f.input atr, label: atr.titleize, required: required %>
+          <% end %>
+        <% end %>
+        </div>
+        <div class="form-actions">
+          <%= submit_button(f) %>
+        </div>
+      <% end %>
+  </div>
+</div>

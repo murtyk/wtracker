@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   protect_from_forgery with: :exception
-  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+  skip_before_filter :verify_authenticity_token,
+                     if: proc { |c| c.request.format == 'application/json' }
 
   include SessionsHelper
   include UtilitiesHelper
@@ -16,7 +17,7 @@ class ApplicationController < ActionController::Base
     if resource.is_a? Admin
       admin_accounts_path
     elsif resource.is_a? Trainee
-      portal_trainees_path
+      portal_trainee_trainee_path(resource)
     else
       starting_page_dashboards_path
     end
@@ -59,7 +60,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_serializer_options
-    {root: false}
+    { root: false }
   end
 
   private

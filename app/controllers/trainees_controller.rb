@@ -1,11 +1,7 @@
 # Trainee is also known as student, candidate, applicant
 # there is a seperate model for Applicant
-# for some grants, trainee can sign in
 class TraineesController < ApplicationController
-  before_action :authenticate_user!, except: [:portal, :edit, :update]
-  before_filter :authenticate_trainee!, only: [:portal]
-  before_action :user_or_trainee, only: [:edit, :update]
-  before_action :set_trainee_grant
+  before_action :authenticate_user!
 
   def search_by_skills
     @results      = []
@@ -42,7 +38,6 @@ class TraineesController < ApplicationController
   end
 
   def mapview
-    # debugger
     @trainees_map = TraineesMap.new(current_user, params[:filters])
   end
 
@@ -76,23 +71,12 @@ class TraineesController < ApplicationController
   end
 
   def update
-    return update_by_trainee if current_trainee
-
     authorize Trainee.find(params[:id])
     @trainee = TraineeFactory.update_trainee(params)
     if @trainee.errors.empty?
       redirect_to(@trainee, notice: 'Trainee was successfully updated.')
     else
       render :edit
-    end
-  end
-
-  def update_by_trainee
-    @trainee = TraineeFactory.update_trainee_by_trainee(params)
-    if @trainee.errors.empty?
-      portal
-    else
-      render 'trainee_data_form'
     end
   end
 
@@ -111,36 +95,6 @@ class TraineesController < ApplicationController
   def show
     @trainee = Trainee.find(params[:id]).decorate
     authorize @trainee
-  end
-
-  def portal
-    @trainee = Trainee.find(current_trainee.id) # avoids caching issues
-    if @trainee.pending_data?
-      render 'trainee_data_form'
-      return
-    end
-    unless @trainee.job_search_profile.valid_profile?
-      redirect_to edit_job_search_profile_path(@trainee.job_search_profile)
-      return
-    end
-    if @trainee.trainee_files.empty?
-      @error_message = params[:error_message]
-      @trainee_file = @trainee.trainee_files.new
-    elsif params[:trainee_files]
-      @trainee_files = current_trainee.trainee_files.order(created_at: :desc)
-      @trainee_file = @trainee.trainee_files.new
-    else
-      redirect_to job_search_profile_path(@trainee.job_search_profile)
-      return
-    end
-    render 'portal'
-  end
-
-  def set_trainee_grant
-    return unless current_trainee
-    grant_id = current_trainee.grant_id
-    session[:grant_id] = grant_id
-    Grant.current_id = grant_id
   end
 
   def search_by_grant_type

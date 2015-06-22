@@ -1,9 +1,25 @@
 $('.joblink').click(function() {
   var id = $(this).attr('id');
   var key = $(this).attr('key');
-  url = '/auto_shared_jobs/' + id + '/edit?key=' + key + '&status=1',
+  var url = null;
+  var page_data = $('.page_data');
+  var namespace = null;
+
+  if (page_data){
+    namespace = page_data.data('namespace');
+  }
+
+  if (namespace === undefined || namespace === null){
+    url = '/auto_shared_jobs/' + id + '?key=' + key;
+  }
+  else{
+    url = '/' + namespace + '/auto_shared_jobs/' + id;
+  }
+
   $.ajax({
         url: url,
+        method: 'PUT',
+        data: { status: 1 },
         beforeSend: function(xhr, settings) {
           xhr.setRequestHeader('accept', "text/javascript");
           }

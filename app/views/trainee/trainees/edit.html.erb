@@ -3,12 +3,17 @@
     <div class="opero-widget-header">
       <h2>This information is required to proceed. SS# will be encrypted to protect identity.</h2>
     </div>
-    <%= simple_form_for(@trainee, html: { id: 'trainee_form', class: 'form-horizontal' }) do |f| %>
+    <%= simple_form_for([:trainee, @trainee],
+                        html: { id: 'trainee_form', class: 'form-horizontal' }) do |f| %>
       <div class = 'row-fluid'>
         <%= f.error_notification %>
         <div class="form-inputs offset1">
-          <%= f.input :trainee_id, label: 'Social Security Number', required: true %>
-          <%= f.input :dob, label: 'Date of Birth', value: @trainee.dob.to_s, as: :string, required: true %>
+          <%= f.input :trainee_id, label: 'Social Security Number',
+                                   required: true %>
+          <%= f.input :dob, label: 'Date of Birth',
+                            value: @trainee.dob.to_s,
+                            as: :string,
+                            required: true %>
         </div>
         <div class="form-actions">
           <div class='offset1'>

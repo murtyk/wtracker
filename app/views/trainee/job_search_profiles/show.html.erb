@@ -47,20 +47,20 @@
         <h4>
           <% if params[:show_all] %>
             All Suggestions
-            <%= link_to('Show Recent Only',
-                        job_search_profile_path(@job_search_profile,
-                                                key: @job_search_profile.key)) %>
+            <%= link_to 'Show Recent Only', trainee_job_search_profile_path %>
           <% else %>
             Recent Suggestions
-            <%= link_to('Show All', job_search_profile_path(@job_search_profile,
-                                                            key: @job_search_profile.key,
-                                                            show_all: true )) %>
+            <%= link_to('Show All', trainee_job_search_profile_path(show_all: true )) %>
           <% end %>
         </h4>
-        <h4>    Status: <%= params[:status] %></h4>
+        <h4>Status: <%= params[:status] %></h4>
       </div>
       <div class='span7'>
-        <span align="center"><%= will_paginate @auto_shared_jobs %></span>
+        <span align="center">
+          <%= will_paginate @auto_shared_jobs,
+                            params: { controller: "trainee/job_search_profiles",
+                                      action: :show } %>
+        </span>
       </div>
     </div>
     <hr>
@@ -106,13 +106,14 @@
             <span style='margin-right: 5px'>
             Feedback & Status:<b><span id = 'status_<%=job.id%>' style='color: <%=bgcolor%>;'><%= job.status_text %></span></b>
             </span>
-            <%= link_to('Applied', auto_shared_job_path(job, key: job.key, status: 2),
+
+            <%= link_to('Applied', trainee_auto_shared_job_path(job, status: 2),
                     method: :put,
                     class: 'btn btn-flat btn-mini btn-primary applied-status',
                     rel:    'tooltip',
                     title: 'I Applied for this job',
                     remote: true) %>
-            <%= link_to('Not Interested', auto_shared_job_path(job, key: job.key, status: 4),
+            <%= link_to('Not Interested', trainee_auto_shared_job_path(job, status: 4),
                     method: :put,
                     class: 'btn btn-flat btn-mini btn-primary not-interested-status',
                     rel: 'tooltip',
@@ -132,7 +133,7 @@
                   <button type = 'button' id = 'job_note_show_more_<%= job.id%>' class = 'btn btn-flat btn-mini btn-primary job-note-show-more-or-less'>
                     <i class="icon-arrow-down white"></i>
                   </button>
-                  <%= link_to 'Edit', edit_auto_shared_job_path(job, for_notes: true),
+                  <%= link_to 'Edit', edit_trainee_auto_shared_job_path(job),
                               class: "btn btn-mini btn-flat btn-primary",
                                  id: "edit_notes_#{job.id}",
                                  remote: true,
@@ -159,4 +160,7 @@
   <!-- gets filled by js response -->
   </div>
 </div>
+<%= content_tag :div, class: "page_data", data: { namespace: :trainee } do %>
+<% end %>
+
 <%= render 'shared/sh_attribution' %>
