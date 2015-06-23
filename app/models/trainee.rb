@@ -67,6 +67,8 @@ class Trainee < ActiveRecord::Base
   belongs_to :funding_source
   belongs_to :race
 
+  delegate :name,  to: :funding_source, prefix: true, allow_nil: true
+
   has_many :trainee_assessments, dependent: :destroy
   has_many :assessments, through: :trainee_assessments
   has_many :trainee_notes, -> { order('created_at DESC') }, dependent: :destroy
@@ -90,7 +92,8 @@ class Trainee < ActiveRecord::Base
   delegate :skills, to: :job_search_profile, allow_nil: :true
 
   has_one :applicant, dependent: :destroy
-  delegate :last_wages, :last_job_title, :sector_name, to: :applicant, allow_nil: true
+  delegate :applied_on, :last_wages, :last_job_title, :sector_name, :navigator_name,
+           to: :applicant, allow_nil: true
   has_many :trainee_placements, dependent: :destroy
 
   has_one :agent, as: :identifiable, dependent: :destroy

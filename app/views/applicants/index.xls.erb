@@ -13,7 +13,7 @@
   <% @applicants.each do |applicant| %>
     <tr>
       <td><%= applicant.name %></td>
-      <td><%= applicant.created_at.to_date.to_s %></td>
+      <td><%= applicant.created_at.to_date %></td>
       <td><%= applicant.email %></td>
       <td><%= applicant.mobile_phone_number %></td>
       <td><%= applicant.county_name %></td>

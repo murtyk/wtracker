@@ -45,8 +45,8 @@
   </tr>
   <% @applicants.each do |applicant| %>
     <tr>
-      <td><%= link_to applicant.name, applicant %></td>
-      <td><%= applicant.created_at.to_date.to_s %></td>
+      <td><%= name_and_link applicant %></td>
+      <td><%= applicant.created_at.to_date %></td>
       <td><%= applicant.email %></td>
       <td><%= applicant.mobile_phone_number %></td>
       <td><%= applicant.county_name %></td>

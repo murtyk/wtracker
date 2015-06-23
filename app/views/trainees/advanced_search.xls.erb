@@ -30,23 +30,23 @@
     <td><%= t.first %></td>
     <td><%= t.last %></td>
     <% if current_grant.trainee_applications? %>
-      <td><%= t.applicant.applied_on %></td>
+      <td><%= t.applied_on %></td>
     <% end %>
     <td><%= t.placement_status %></td>
     <td><%= t.email %></td>
     <td><%= t.mobile_no %></td>
-    <td><%= t.home_address && t.home_address.county %></td>
+    <td><%= t.county_name %></td>
     <% if current_grant.trainee_applications? %>
-      <td><%= t.applicant.last_job_title %></td>
-      <td><%= t.applicant.last_wages %></td>
-      <td><%= t.applicant.sector_name %></td>
+      <td><%= t.last_job_title %></td>
+      <td><%= t.last_wages %></td>
+      <td><%= t.sector_name %></td>
     <% end %>
-    <td><%= t.funding_source && t.funding_source.name %></td>
+    <td><%= t.funding_source_name %></td>
     <td><%= t.education %></td>
     <td><%= t.veteran ? 'Yes' : 'No' %></td>
     <% if current_grant.trainee_applications? %>
-      <td><%= t.job_search_profile.skills %></td>
-      <td><%= t.applicant.navigator_name %></td>
+      <td><%= t.skills %></td>
+      <td><%= t.navigator_name %></td>
     <% end %>
     <td><%= t.klasses.map{ |k| k.name }.join('<br>').html_safe %></td>
     <td><%= t.assessments.map{ |a| a.name }.join('<br>').html_safe %></td>
