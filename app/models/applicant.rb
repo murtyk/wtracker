@@ -52,6 +52,8 @@ class Applicant < ActiveRecord::Base
 
   validates :address_line1, presence: true, length: { minimum: 5, maximum: 50 }
   validates :address_city,  presence: true, length: { minimum: 3, maximum: 30 }
+  validates_format_of :address_zip, with: /\d{5}/, message: 'is invalid, should be 5 digits'
+  validates :address_zip, presence: true, length: { is: 5, wrong_length: 'is the wrong length (should be 5 digits)' }
 
   validates :grant,  presence: true
   validates_uniqueness_of :email, scope: :grant_id

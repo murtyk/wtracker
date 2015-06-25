@@ -22,6 +22,11 @@ class TraineePortal
   end
 
   def pending_profile?
+    #should always have a profile
+    unless trainee.job_search_profile
+      trainee.create_job_search_profile(account_id: trainee.account_id)
+    end
+
     !trainee.job_search_profile.valid_profile?
   end
 

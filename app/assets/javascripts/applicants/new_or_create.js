@@ -26,6 +26,10 @@ $('#applicant_current_employment_status').change(function() {
   $("#applicant_current_employment_status").capture_other("Please enter current employment status");
 });
 
+jQuery(function($){
+  $("#applicant_address_zip").mask("99999");
+});
+
 $('.btn-spinner').button();
 $('.new_applicant').submit(function() {
   $('#submit-button').button('loading');
