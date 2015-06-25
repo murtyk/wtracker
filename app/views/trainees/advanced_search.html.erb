@@ -74,7 +74,7 @@
   <div class='span9'>
     <div class='row-fluid'>
       <div class='span2'>
-        <h4>Count: <%= @trainees_count %></h4>
+        <h4>Count: <%= @trainees.total_entries %></h4>
       </div>
       <div class='span9'>
         <% if @trainees.any? %>
@@ -82,7 +82,12 @@
         <% end %>
       </div>
       <div class='span1'>
-        <%= download_button %>
+        <% max_rows = (ENV['MAX_ROWS_FOR_DOWNLOAD'] || 6).to_i %>
+        <% if @trainees.total_entries > max_rows %>
+          <%= email_download_button(q: params[:q]) %>
+        <% else %>
+          <%= download_button %>
+        <% end %>
       </div>
     </div>
 

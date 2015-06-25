@@ -97,4 +97,13 @@ class UserMailer < ActionMailer::Base
     end
     message
   end
+
+  def send_data(user, subject, body, docs = nil)
+    docs.each { |k, v| attachments[k] = v } if docs
+    mail(to: user.email,
+         subject: subject,
+         from: 'OPERO<support@operoinc.com>') do |format|
+           format.html { render inline: body }
+         end
+  end
 end

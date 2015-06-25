@@ -22,14 +22,13 @@ class TraineesController < ApplicationController
   end
 
   def advanced_search
-    trainees = current_user.trainees_for_search(params)
-    @q = trainees.ransack(params[:q])
-    @trainees = search_by_grant_type
+    @tas = TraineeAdvancedSearch.new(current_user)
 
-    return if request.format.xls?
-
-    assign_trainees_count
-    paginate
+    respond_to do |format|
+      format.html { perform_advanced_search }
+      format.js { @tas.delay.send_results(params[:q]) }
+      format.xls { send_advanced_search_results_file }
+    end
   end
 
   def index
@@ -108,11 +107,16 @@ class TraineesController < ApplicationController
                        :assessments, tact_three: [:education])
   end
 
-  def assign_trainees_count
-    @trainees_count = @trainees.count
+  def send_advanced_search_results_file
+    @tas.build_document(params[:q])
+    send_file @tas.file_path, type: 'application/vnd.ms-excel',
+                              filename: @tas.file_name,
+                              stream: false
   end
 
-  def paginate
+  def perform_advanced_search
+    @trainees = @tas.search(params[:q])
+    @q = @tas.q
     @trainees = @trainees.to_a.paginate(page: params[:page], per_page: 20)
   end
 end

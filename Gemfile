@@ -112,6 +112,7 @@ gem "jquery.fileupload-rails", '1.11.0'
 
 gem 'platform-api'
 gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers.git', branch: '0-8-stable'
+gem 'axlsx'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

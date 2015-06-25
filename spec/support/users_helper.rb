@@ -72,4 +72,8 @@ module  UserHelper
     fill_in 'user_password', with: pwd
     click_button 'Sign in'
   end
+
+  def admin_user
+    User.find_by(email: 'ballu@mail.com')
+  end
 end
