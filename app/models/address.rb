@@ -42,6 +42,13 @@ class Address < ActiveRecord::Base
     end
   end
 
+  def to_s_for_view
+    ['' + line1,
+     city,
+     "#{state} #{zip}",
+     'county: <b>' + county_name + '</b>'].join('<br>')
+  end
+
   private
 
   def cb_before_save

@@ -18,7 +18,7 @@ class TraineesNearByEmployersReport < Report
   end
 
   def process_next
-    trainee = @data.trainees_data[next_index].trainee
+    trainee = data.trainees_data[next_index].trainee
     build_trainee_data(trainee)
 
     check_max_contacts
@@ -34,12 +34,12 @@ class TraineesNearByEmployersReport < Report
     @data.employer_ids |= near_by_emp_ids # set union operation.
     @data.contact_ids |= Contact.where(contactable_id: near_by_emp_ids).pluck(:id)
     @data.trainees_data[next_index].employers_data = employers_data
-    @data.trainees_data[next_index].trainee = trainee.decorate
+    @data.trainees_data[next_index].trainee = trainee
   end
 
   def build_employers_data(trainee)
     emp_ids = near_by_employer_ids(trainee)
-
+    data.rows_count += emp_ids.count
     emp_data =
     emp_ids.map do |e_id|
       contact_ids = Contact.where(contactable_id: e_id).pluck(:id)
@@ -57,11 +57,11 @@ class TraineesNearByEmployersReport < Report
   end
 
   def count
-    @data.trainees_data.count
+    data.trainees_data.count
   end
 
   def klass_id
-    @data && @data.klass_id
+    data && data.klass_id
   end
 
   def klass
@@ -69,7 +69,7 @@ class TraineesNearByEmployersReport < Report
   end
 
   def max_contacts
-    @data.max_contacts
+    data.max_contacts
   end
 
   def url_for_process_next
@@ -85,22 +85,43 @@ class TraineesNearByEmployersReport < Report
   end
 
   def sector_id
-    @data && @data.sector_id
+    data && data.sector_id
   end
 
   def selected_klass_id
-    @data && @data.klass.id
+    data && data.klass.id
   end
 
   def trainee_employers_and_contacts(c)
-    trainee = @data.trainees_data[c].trainee
+    trainee = data.trainees_data[c].trainee
     [trainee, employers_and_contacts(c)]
   end
 
   def employers_and_contacts(n)
-    trainee_data = @data.trainees_data[n]
+    trainee_data = data.trainees_data[n]
     trainee_data.employers_data.map do |ed|
       [@employers_hash[ed.employer_id], @contacts_hash.values_at(*ed.contact_ids)]
+    end
+  end
+
+  def build_excel
+    builder = TraineesNearByEmployersViewBuilder.new(data, 3)
+    excel_file = ExcelFile.new(user, 'trainees_and_near_by_employers')
+    excel_file.add_row builder.header
+    each_row do |trainee, employer, contacts|
+      row = builder.build_row(trainee, employer, contacts)
+      excel_file.add_row row, 60
+    end
+    excel_file.save
+    excel_file
+  end
+
+  def each_row
+    data.trainees_data.each_with_index do |td, c|
+      trainee = td.trainee
+      employers_and_contacts(c).each do |employer, contacts|
+        yield trainee, employer, contacts
+      end
     end
   end
 
@@ -118,6 +139,7 @@ class TraineesNearByEmployersReport < Report
     @data.next_index   = 0
     @data.employer_ids = []
     @data.contact_ids  = []
+    @data.rows_count   = 0
 
     find_sector_employers
     init_klass_trainees
@@ -197,14 +219,13 @@ class TraineesNearByEmployersReport < Report
 
   def fetch_employers_and_contacts
     fetch_employers
-
     contacts = Contact.where(id: @data.contact_ids).decorate
     @contacts_hash = Hash[*contacts.map { |contact| [contact.id, contact] }.flatten]
   end
 
   def fetch_employers
     employers = Employer.includes(:address, :employer_source)
-                .where(id: @data.employer_ids).decorate
+                .where(id: @data.employer_ids)
     @employers_hash = Hash[*employers.map { |employer| [employer.id, employer] }.flatten]
   end
 end

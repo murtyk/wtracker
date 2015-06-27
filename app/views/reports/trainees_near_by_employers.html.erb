@@ -28,7 +28,19 @@
 </div>
 
 <% unless @report.data.blank? %>
-  <%= @report.download_button %>
+  <b>Count: <%= @report.data.rows_count %></b>
+  <% show_max_rows = (ENV['SHOW_MAX_ROWS'] || 10).to_i %>
+  <% if @report.data.rows_count > show_max_rows %>
+    <b style='margin-left: 20px'>
+      Too many records to display. Only first <%=show_max_rows%> are shown. Please download for full list.
+    </b>
+  <% end %>
+  <% max_rows = (ENV['MAX_ROWS_FOR_DOWNLOAD'] || 5).to_i %>
+  <% if @report.data.rows_count > max_rows %>
+    <%= email_download_button(report_id: @report.report_id) %>
+  <% else %>
+    <%= download_button(report_id: @report.report_id) %>
+  <% end %>
   <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
 
     <tr style="display:none;">
@@ -50,23 +62,22 @@
       <% end %>
     </tr>
     <% klass = @report.data.klass %>
+    <% n = 1 %>
     <% (0..@report.count-1).each do |c| %>
       <% trainee, employers_contacts = @report.trainee_employers_and_contacts(c) %>
-      <% employers_contacts.each do |employer_data| %>
-        <% employer = employer_data[0] %>
-        <% contacts = employer_data[1] %>
+      <% employers_contacts.each do |employer, contacts| %>
         <tr>
           <td><%= klass.name %></td>
-          <td><%= trainee.name %></td>
+          <td><%= name_and_link trainee %></td>
           <td><%= trainee.email %></td>
           <td><%= trainee.land_no %></td>
-          <td><%= trainee.home_address %></td>
+          <td><%= trainee.home_address.to_s_for_view.html_safe %></td>
           <td>
-              <%= employer.name %>
+              <%= name_and_link employer %>
               <br> Source:
               <%= employer.employer_source_name %>
           </td>
-          <td><%= employer.address_details(true) %></td>
+          <td><%= employer.address.to_s_for_view.html_safe %></td>
           <% contacts.each do |contact| %>
             <td><%= contact.details %></td>
           <% end %>
@@ -75,7 +86,10 @@
             <td></td>
           <% end %>
         </tr>
+        <% break if n == show_max_rows %>
+        <% n += 1 %>
       <% end %>
+      <% break if n == show_max_rows %>
     <% end %>
   </table>
 <% end %>

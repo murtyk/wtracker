@@ -71,7 +71,7 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def klasses(t)
-    t.klasses.map(&:name).join("\x0A").html_safe
+    t.klasses.map(&:name).join("\n")
   end
 
   def assessments(t)

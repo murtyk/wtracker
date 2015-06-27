@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe 'Administration' do
   describe 'accounts' do
+    before :each do
+      Delayed::Worker.delay_jobs = false
+    end
     it 'can provision a demo account' do
       signin_opero_admin
       click_on 'New Account'
@@ -23,7 +26,7 @@ describe 'Administration' do
 
       expect(page).to have_text 'Please wait for a minute to generate ' \
                                 'data for this demo account'
-      Delayed::Worker.new.work_off
+      # Delayed::Worker.new.work_off
       signout_opero_admin
 
       sign_in_demo_user

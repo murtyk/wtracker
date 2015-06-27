@@ -12,6 +12,9 @@ describe 'auto job leads' do
   end
 
   describe 'update status' do
+    before :each do
+      Delayed::Worker.delay_jobs = false
+    end
     it 'updates profile' do
       allow(RandomIp).to receive(:fetch).and_return("74.102.50.66")
 
@@ -21,7 +24,7 @@ describe 'auto job leads' do
         expect(JobSearchProfile.count).to eq(0)
 
         AutoJobLeads.new.delay.perform
-        Delayed::Worker.new.work_off
+        # Delayed::Worker.new.work_off
 
         expect(JobSearchProfile.count).to eq(1)
 

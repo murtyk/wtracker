@@ -31,7 +31,7 @@ class TraineeDecorator < Draper::Decorator
     ['' + h.h(line1),
      h.h(city),
      "#{state} #{zip}",
-     'county: <b>' + county_name + '</b>'].join('<br>') + '</br>'
+     'county: <b>' + county_name + '</b>'].join('<br>') + '<br>'
   end
 
   def email

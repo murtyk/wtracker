@@ -1,4 +1,3 @@
-require 'axlsx'
 # performs advanced search and build excel file
 # can also email it to the user
 class TraineeAdvancedSearch
@@ -31,17 +30,14 @@ class TraineeAdvancedSearch
 
   def send_results(q_params)
     build_document(q_params)
-    doc = { file_name => File.read(file_path) }
-    subject = 'Trainees - Advanced Search - Data'
-    UserMailer.send_data(user, subject, '', doc).deliver_now
+    excel_file.send_to_user('Trainees - Advanced Search - Data')
   end
 
   def build_document(q_params)
-    delete_existing_file
     trainees = search(q_params)
-    sheet.add_row header
-    trainees.each { |t| sheet.add_row view_builder.row(t) }
-    package.serialize file_path
+    excel_file.add_row header
+    trainees.each { |t| excel_file.add_row view_builder.row(t) }
+    excel_file.save
   end
 
   def header
@@ -52,28 +48,20 @@ class TraineeAdvancedSearch
     @builder ||= TraineeAdvancedSearchViewBuilder.new(grant)
   end
 
-  def delete_existing_file
-    File.delete(file_path) if File.exist?(file_path)
-  end
-
   def file_name
-    "trainee_data_#{user.id}.xlsx"
+    excel_file.file_name
   end
 
   def file_path
-    Rails.root.join('tmp/').to_s + file_name
+    excel_file.file_path
   end
 
   def grant
     @grant ||= Grant.find grant_id
   end
 
-  def sheet
-    @sheet ||= package.workbook.add_worksheet(name: 'Trainees')
-  end
-
-  def package
-    @package ||= Axlsx::Package.new
+  def excel_file
+    @ef ||= ExcelFile.new(user, 'trainee_data')
   end
 
   def user

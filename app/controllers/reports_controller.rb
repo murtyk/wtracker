@@ -16,13 +16,28 @@ class ReportsController < ApplicationController
   end
 
   def show
-    @report = Report.new_report(current_user, params)
-    render @report.template
+    if request.format.html?
+      @report = Report.new_report(current_user, params)
+    else
+      rd = ReportData.new(current_user.id, params)
+    end
+
+    respond_to do |format|
+      format.html { render @report.template }
+      format.js   { rd.delay.send_to_user }
+      format.xls  { send_excel_file rd.excel_file }
+    end
   end
 
   def process_next
     report = Report.new_report(current_user, params)
     status = report.process_next
     render json: status
+  end
+
+  def send_excel_file(ef)
+    send_file ef.file_path, type: 'application/vnd.ms-excel',
+                            filename: ef.file_name,
+                            stream: false
   end
 end

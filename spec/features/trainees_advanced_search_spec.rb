@@ -3,6 +3,8 @@ require 'rails_helper'
 describe 'Trainees' do
   before :each do
     signin_admin
+    Delayed::Worker.delay_jobs = false
+
     Account.current_id = 1
     Grant.current_id = 1
 
@@ -93,7 +95,7 @@ describe 'Trainees' do
       expect(page).to_not have_css('.btn-download')
       expect(page).to have_css('.btn-email-download')
 
-      Delayed::Worker.new.work_off
+      # Delayed::Worker.new.work_off
       # Delayed::Worker.new(quiet: false).work_off
       first('.btn-email-download').click
 
