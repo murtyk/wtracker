@@ -41,7 +41,7 @@ class TraineesController < ApplicationController
   end
 
   def near_by_colleges
-    @trainees_map = NearByCollegesMap.new(current_user)
+    @trainees_map = NearByCollegesMap.new(current_user, params[:filters])
   end
 
   def new

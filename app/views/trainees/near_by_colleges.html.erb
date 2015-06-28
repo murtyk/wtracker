@@ -2,7 +2,28 @@
   <h1><%= "Colleges - Near By Trainees" %></h1>
 </div>
 
-<div class = 'pull-right' style = 'padding-top: 5px; margin-bottom: 10px'><%= download_button %></div>
+<div class = 'row-fluid filters-div'>
+
+  <%= simple_form_for :filters, method: :get,
+                                url: [:near_by_colleges, :trainees],
+                                html: { class: 'form-search',
+                                        style: 'margin-bottom: 0px' } do |f| %>
+    Funding Source
+    <%= f.input_field :funding_source_id, collection: FundingSource.all,
+                                          selected: params[:filters].try(:[], :funding_source_id),
+                                          include_blank: 'All' %>
+    <button type='submit'
+            id='submit-button'
+            class="btn btn-flat btn-primary btn-small btn-spinner"
+            data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Processing...">
+      <i class='icon-search icon-white'></i> Find
+    </button>
+  <% end %>
+</div>
+
+<div class = 'pull-right' style = 'padding-top: 5px; margin-bottom: 10px'>
+  <%= download_button %>
+</div>
 
 <table class="table table-condensed table-bordered table-striped table-hover">
 <% @trainees_map.navigators.each do |id, navigator| %>

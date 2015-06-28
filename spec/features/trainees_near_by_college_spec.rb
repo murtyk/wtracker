@@ -33,6 +33,12 @@ def create_klass_and_trainees
 
 end
 
+def all_trainees_near_by_colleges
+  visit '/trainees/near_by_colleges'
+  select 'All', from: 'filters_funding_source_id'
+  click_on 'Find'
+end
+
 describe 'near by colleges' do
   before :each do
     signin_applicants_admin
@@ -44,25 +50,24 @@ describe 'near by colleges' do
     VCR.use_cassette('trainees_near_by_colleges') do
       @trainee_ids = []
       create_klass_and_trainees
-      visit '/trainees/near_by_colleges'
-      expect(page).to have_text('John Doe')
 
-      # click_on 'Show All'
-      # all('.chk-add-trainee').each{|ch| check(ch[:id])}
-      # find(".add_trainees_to_class", match: :first).click
+      all_trainees_near_by_colleges
+
+      expect(page).to have_text('John Doe')
 
       visit '/klass_trainees/new?trainee_ids=' + @trainee_ids.join(',')
       click_button 'Add'
       expect(page).to have_text('Enrolled - 2')
 
-      visit '/trainees/near_by_colleges'
+      all_trainees_near_by_colleges
       expect(page).to_not have_text('John Doe')
 
       Account.current_id = @account_id
       Grant.current_id = @grant_id
       KlassTrainee.last.delete
       KlassTrainee.last.delete
-      visit '/trainees/near_by_colleges'
+
+      all_trainees_near_by_colleges
       expect(page).to have_text('John Doe')
 
       Account.current_id = @account_id
@@ -70,7 +75,7 @@ describe 'near by colleges' do
       trainee = Trainee.find @trainee_ids.first
       trainee.update(status: 5)
 
-      visit '/trainees/near_by_colleges'
+      all_trainees_near_by_colleges
       expect(page).to_not have_text('John Doe')
     end
   end

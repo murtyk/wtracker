@@ -5,10 +5,12 @@
 # a navigator has bunch of counties assigned to them through UserCounty
 # a college gets assigned to a navigator based the college county
 class NearByCollegesMap < MapService
-  NO_COLLEGE_MSG = 'No college within 15 miles'
-  attr_reader :navigators, :colleges_no_navigator, :trainees_no_college, :error
+  NO_COLLEGE_MSG = 'No college within 20 miles'
+  attr_reader :navigators, :colleges_no_navigator, :trainees_no_college,
+              :fs_id, :error
 
-  def initialize(user)
+  def initialize(user, filters)
+    return unless init(filters)
     build_navigators(user)
     build_colleges
     build_trainees_no_college
@@ -19,6 +21,13 @@ class NearByCollegesMap < MapService
   end
 
   private
+
+  def init(filters)
+    @navigators = []
+    @trainees_no_college = []
+    return false unless filters
+    @fs_id = filters[:funding_source_id].to_i
+  end
 
   def grant
     @grant ||= Grant.find(Grant.current_id)
@@ -100,7 +109,7 @@ class NearByCollegesMap < MapService
     a.id        = addr.id
     a.latitude  = addr.latitude
     a.longitude = addr.longitude
-    c_address   = a.nearbys(15).where(addressable_type: 'College').first
+    c_address   = a.nearbys(20).where(addressable_type: 'College').first
     c_address && c_address.addressable_id
   end
 
@@ -128,7 +137,10 @@ class NearByCollegesMap < MapService
 
   # all trainees not assigned to a class and not placed
   def trainee_ids
-    @trainee_ids ||= Trainee.where(status: 0).pluck(:id) -
+    return @trainee_ids if @trainee_ids
+    predicate = { status: 0 }
+    predicate.merge!(funding_source_id: fs_id) if fs_id > 0
+    @trainee_ids = Trainee.where(predicate).pluck(:id) -
                      KlassTrainee.pluck(:trainee_id)
   end
 
