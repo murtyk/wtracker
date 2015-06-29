@@ -38,6 +38,25 @@
     <% end %>
   </div>
   <div class='span9'>
+    <div class='row-fluid'>
+      <div class='span2'>
+        <h4>Count: <%= @hot_jobs.total_entries %></h4>
+      </div>
+      <div class='span9'>
+        <% if @hot_jobs.any? %>
+          <div align="center" class='span8'><%= will_paginate(@hot_jobs, params: {q: params[:q]})%></div>
+        <% end %>
+      </div>
+      <div class='span1'>
+        <% max_rows = (ENV['MAX_ROWS_FOR_DOWNLOAD'] || 6).to_i %>
+        <% if @hot_jobs.total_entries > max_rows %>
+          <%= email_download_button(q: params[:q]) %>
+        <% else %>
+          <%= download_button %>
+        <% end %>
+      </div>
+    </div>
+
     <table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
       <tr>
         <th><%= sort_link(@q, :date_posted, "Date Posted") %></th>

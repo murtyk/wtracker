@@ -2,10 +2,13 @@ class HotJobsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @q = HotJob.ransack(params[:q])
-    jobs = @q.result.includes(:employer, :user)
-    jobs = jobs.order(params[:q][:s]) if params[:q] && params[:q][:s]
-    @hot_jobs = jobs.to_a.paginate(page: params[:page], per_page: 20)
+    @hjs = HotJobsAdvancedSearch.new(current_user)
+
+    respond_to do |format|
+      format.html { perform_advanced_search }
+      format.js { @hjs.delay.send_results(params[:q]) }
+      format.xls { send_advanced_search_results_file }
+    end
   end
 
   def show
@@ -45,6 +48,18 @@ class HotJobsController < ApplicationController
   end
 
   private
+  def send_advanced_search_results_file
+    @hjs.build_document(params[:q])
+    send_file @hjs.file_path, type: 'application/vnd.ms-excel',
+                              filename: @hjs.file_name,
+                              stream: false
+  end
+
+  def perform_advanced_search
+    @hot_jobs = @hjs.search(params[:q])
+    @q = @hjs.q
+    @hot_jobs = @hot_jobs.to_a.paginate(page: params[:page], per_page: 20)
+  end
 
   def hot_job_params
     hj_params = params[:hot_job].clone
