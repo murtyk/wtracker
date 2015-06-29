@@ -92,7 +92,8 @@ class Trainee < ActiveRecord::Base
   delegate :skills, to: :job_search_profile, allow_nil: :true
 
   has_one :applicant, dependent: :destroy
-  delegate :applied_on, :last_wages, :last_job_title, :sector_name, :navigator_name,
+  delegate :applied_on, :last_wages, :last_job_title,
+           :sector_name, :navigator_name, :source,
            to: :applicant, allow_nil: true
   has_many :trainee_placements, dependent: :destroy
 

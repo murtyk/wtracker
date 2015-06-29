@@ -28,6 +28,10 @@ module CollectionsHelper
     %w(Accepted Declined)
   end
 
+  def applicant_sources
+    Applicant.pluck(:source).uniq.sort
+  end
+
   def funding_sources
     FundingSource.all
   end

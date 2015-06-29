@@ -17,6 +17,11 @@
       <%= f.search_field :last_start %>
 
       <% if current_grant.trainee_applications? %>
+        <%= f.label :applicant_source_eq, 'Trainee Source' %>
+        <%= f.select :applicant_source_eq,
+                                applicant_sources,
+                                include_blank: true %>
+
         <%= f.label :applicant_navigator_id_eq, 'Navigator' %>
         <%= f.collection_select :applicant_navigator_id_eq,
                                 current_grant.navigators, :id, :name,
@@ -113,6 +118,7 @@
       <th>Veteran</th>
       <% if current_grant.trainee_applications? %>
         <th>Skills</th>
+        <th>Trainee Source</th>
         <th>Navigator</th>
       <% end %>
       <th>Classes</th>
@@ -139,6 +145,7 @@
       <td><%= t.veteran ? 'Yes' : 'No' %></td>
       <% if current_grant.trainee_applications? %>
         <td><%= t.skills %></td>
+        <td><%= t.source %></td>
         <td><%= t.navigator_name %></td>
       <% end %>
       <td><%= t.klasses.map{ |k| link_to(k.name, k) }.join('<br>').html_safe %></td>
