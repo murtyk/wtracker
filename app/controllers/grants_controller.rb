@@ -34,6 +34,10 @@ class GrantsController < ApplicationController
     @grant = current_grant
   end
 
+  def hot_jobs_notify_message
+    @grant = current_grant
+  end
+
   def update_notice
     return 'Re-apply email message updated.' if params[:grant][:reapply_subject]
     'Grant was successfully updated.'

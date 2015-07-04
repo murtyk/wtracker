@@ -77,6 +77,7 @@ module MenusHelper
              assessments_menu,
              employment_statuses_menu,
              funding_sources_menu,
+             notify_hot_jobs_message_menu,
              reapply_message_menu,
              special_services_menu,
              trainee_options_menu,
@@ -102,6 +103,11 @@ module MenusHelper
 
   def reapply_message_menu
     ta_settings_menu? ? menu_link('Re-apply Messages', reapply_message_grants_path) : ''
+  end
+
+  def notify_hot_jobs_message_menu
+    return '' unless ta_settings_menu?
+    menu_link('Hot Jobs Notification Messages', hot_jobs_notify_message_grants_path)
   end
 
   def special_services_menu

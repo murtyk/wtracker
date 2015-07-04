@@ -7,7 +7,7 @@ class TapoWorker
   end
 
   def queue_job(job_name)
-    return if Rails.env.development? || Rails.env.test?
+    # return if Rails.env.development? || Rails.env.test?
     sign_in
     send_job(job_name)
     sign_out
@@ -16,7 +16,7 @@ class TapoWorker
   def send_job(job_name)
     url = "http://#{worker_host}/jobs.json"
 
-    body = { job: { data: {}, jobs_host: JobsHost.address, name: job_name } }
+    body = { job: { data: {}, jobs_host: Host.jobs_host, name: job_name } }
     TapoWorker.post(url,
                     headers: api_authorization_header,
                     body: body.to_json)

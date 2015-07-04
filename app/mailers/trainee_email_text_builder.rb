@@ -13,7 +13,7 @@ class TraineeEmailTextBuilder
 
     body.gsub('$TRAINEEFIRSTNAME$', trainee.first)
       .gsub('$VIEWJOBSLINK$', view_jobs_link)
-      .gsub('$TRAINEE_SIGNIN_LINK$', sign_in_link)
+      .gsub('$TRAINEE_SIGNIN_LINK$', sign_in_link(trainee))
       .gsub('$OPTOUTLINK$', opt_out_link)
   end
 
@@ -60,9 +60,8 @@ class TraineeEmailTextBuilder
     grant.job_leads_content.content.gsub(/\r\n/, '<br>')
   end
 
-  def sign_in_link
-    url = "http://#{subdomain}.#{host}/trainees/sign_in"
-    "<a href= '#{url}'>Click here to sign in and view jobs.</a>"
+  def sign_in_link(trainee)
+    Host.sign_in_link(trainee, 'Click here to sign in and view jobs.')
   end
 
   def view_jobs_link
@@ -103,11 +102,6 @@ class TraineeEmailTextBuilder
   end
 
   def host
-    case Rails.env
-    when 'development' then 'localhost.com:3000'
-    when 'test'        then 'www.localhost.com:3000'
-    when 'staging'     then 'herokuapp.com'
-    when 'production'  then 'managee2e.com'
-    end
+    Host.host
   end
 end

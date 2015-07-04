@@ -51,7 +51,9 @@ class AutoMailer < ActionMailer::Base
 
   def notify_grant_status(grant, status)
     return if status.error_message
-    to_email   = grant.account.director.email + ';' + grant.account.admins.map(&:email).join(';')
+    to_email   = grant.account.director.email +
+                 ';' +
+                 grant.account.admins.map(&:email).join(';')
     from_email = 'JobLeads<jobleads@operoinc.com>'
     subject    =  'Job Leads - Status Summary'
 
@@ -128,13 +130,20 @@ class AutoMailer < ActionMailer::Base
     Rails.logger.info "Applicant reapply email sent to #{applicant.name}"
   end
 
+  def notify_hot_jobs(a_emails, subject, body)
+    use_job_leads_email
+    emails = a_emails.join(';')
+    mail(from: 'JobLeads<jobleads@operoinc.com>',
+         to: 'JobLeads<jobleads@operoinc.com>',
+         bcc: emails,
+         subject: subject) do |format|
+           format.html { render inline: body }
+         end
+    use_standard_email
+  end
+
   def host
-    case Rails.env
-    when 'development' then 'localhost.com:3000'
-    when 'test'        then 'www.localhost.com:3000'
-    when 'staging'     then 'herokuapp.com'
-    when 'production'  then 'managee2e.com'
-    end
+    Host.host
   end
 
   private
@@ -163,10 +172,6 @@ class AutoMailer < ActionMailer::Base
       body += '</ol><hr>'
     end
     body
-  end
-
-  def trainees_sign_in_url(subdomain)
-    "http://#{subdomain}.#{host}/trainees/sign_in"
   end
 
   def parse_applicant_msg(s, applicant)

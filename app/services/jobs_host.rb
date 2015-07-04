@@ -1,3 +1,4 @@
+# we do not need this any more. Logic moved to host.rb
 class JobsHost
   def self.address
     case Rails.env

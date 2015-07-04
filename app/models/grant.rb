@@ -21,14 +21,16 @@ class Grant < ActiveRecord::Base
   attr_accessible :reply_to_email, :reapply_subject, :reapply_body,
                   :reapply_instructions, :reapply_email_not_found_message,
                   :reapply_already_accepted_message,
-                  :reapply_confirmation_message
+                  :reapply_confirmation_message,
+                  :hot_jobs_notification_subject, :hot_jobs_notification_body
 
   store_accessor :specific_data,
                  :assessments_include_score, :assessments_include_pass,
                  :reply_to_email, :reapply_subject, :reapply_body,
                  :reapply_instructions, :reapply_email_not_found_message,
                  :reapply_already_accepted_message, :reapply_confirmation_message,
-                 :default_trainee_status_id
+                 :default_trainee_status_id,
+                 :hot_jobs_notification_subject, :hot_jobs_notification_body
 
   validates :name, presence: true, length: { minimum: 4, maximum: 40 }
   validates :start_date, presence: true

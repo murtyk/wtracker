@@ -3,14 +3,16 @@ For testing in dev:
 1. Queue a job on wtracker:
    Make sure both wtracker and tapo_worker are NOT running.
    $ rails c (on wtracker)
+   > LeadsQueue.destroy_all (empty the queue)
    > AutoLeadsJob.new.delay.perform (run this 2 times)
 2. Queue job on tapo_worker
    tapo_worker: rails s
-   wtracker worker: bundle exec rake jobs:work
+   wtracker: bundle exec rake jobs:work
+   wtracker console: LeadsQueue.count shoud be > 0
 3. Run the jobs
    Shut down tapo_worker
    start wtracker rails s
    open 2 terminals on tapo_worker
-   start workers bundle exec rake jobs:work
+   start workers: bundle exec rake jobs:work
 4. check for new leads
 

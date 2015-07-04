@@ -26,6 +26,7 @@ WTracker::Application.routes.draw do
   resources :grants, only: [:show, :index, :edit, :update] do
     collection do
       get :reapply_message
+      get :hot_jobs_notify_message
     end
   end
 

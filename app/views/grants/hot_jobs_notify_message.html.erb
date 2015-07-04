@@ -1,0 +1,23 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header ">
+      <h1>Hot Jobs Notification Messages</h1>
+    </div>
+     <%= simple_form_for(current_grant) do |f| %>
+      <div class="form-inputs">
+        <div class='row-fluid'>
+          <%= f.input :hot_jobs_notification_subject, lablel: 'Email Subject' %>
+          <%= f.input :hot_jobs_notification_body,
+                      lablel: 'Email Body',
+                      as: :text,
+                      input_html: { style: 'width: 400px; height: 100px' },
+                      hint: "meta key words: $TRAINEE_SIGNIN_LINK$" %>
+        </div>
+      </div>
+      <div class="form-actions">
+        <%= render 'shared/cancel_link' %>
+        <%= submit_button(f) %>
+      </div>
+      <% end %>
+  </div>
+</div>

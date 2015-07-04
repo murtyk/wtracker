@@ -9,7 +9,9 @@ describe AutoLeadsJob do
     @jsp_attr = FactoryGirl.attributes_for :job_search_profile
     trainee.create_job_search_profile @jsp_attr
 
-    AutoLeadsJob.new.perform
+    alj = AutoLeadsJob.new
+    allow(alj).to receive(:queue_leads_job_on_workers).and_return(nil)
+    alj.perform
   end
 
   it 'fills queue with jobs' do
