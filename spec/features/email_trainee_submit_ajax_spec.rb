@@ -2,6 +2,11 @@ require 'rails_helper'
 describe 'email to employer' do
   describe 'attach trainee document', js: true, noheadless: true do
     before :each do
+      allow_any_instance_of(AccountPolicy).to receive(:edit?)
+       .and_return(true)
+      allow_any_instance_of(AccountPolicy).to receive(:update?)
+       .and_return(true)
+
       signin_admin
       visit '/accounts/trainee_options'
       check 'Consider emailing trainee document to an employer as job applied'

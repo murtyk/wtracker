@@ -1,6 +1,6 @@
 class ApplicantSourcePolicy < Struct.new(:user, :applicant_source)
   def new?
-    user.admin_access?
+    user.director?
   end
 
   def create?
@@ -16,11 +16,11 @@ class ApplicantSourcePolicy < Struct.new(:user, :applicant_source)
   end
 
   def index?
-    new?
+    user.admin_access?
   end
 
   def show?
-    new?
+    user.admin_access?
   end
 
   def destroy?

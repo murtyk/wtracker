@@ -9,6 +9,7 @@
 <p><%= "emailing any trainee document to an employer is #{'NOT' unless current_account.mark_jobs_applied?} consided as job applied"%></p>
 
 <hr>
+
 <h4>Change Preference To</h4>
 
 <%= simple_form_for(current_account, url: update_trainee_options_accounts_path, method: :post) do |f| %>

@@ -1,9 +1,13 @@
 class AssessmentPolicy < Struct.new(:user, :assessment)
   def new?
-    user.admin_or_director? || user.grant_admin?
+    user.director?
   end
 
   def create?
+    new?
+  end
+
+  def edit?
     new?
   end
 

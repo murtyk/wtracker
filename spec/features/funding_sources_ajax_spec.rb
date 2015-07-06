@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Funding Sources' do
   describe 'can list, add and delete' do
     before :each do
-      signin_college_admin
+      signin_college_director
       visit('/funding_sources')
     end
 

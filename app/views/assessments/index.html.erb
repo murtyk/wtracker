@@ -1,5 +1,8 @@
 <div class = 'row-fluid page-caption-div' >
   <h1>Assessments</h1>
+</div>
+<div class = 'row-fluid' >
+  <% if policy(Assessment).edit? %>
   <div class='span4'  style='border-right: thin solid blue'>
     <% if current_user.admin_access? %>
       <%= simple_form_for(current_grant) do |f| %>
@@ -11,12 +14,20 @@
       <% end %>
     <% end %>
   </div>
+  <% end %>
   <div class='span5 offset1'>
     <div id='assessments'>
       <%= render @assessments %>
     </div>
-    <%= link_to 'New Assessment', new_assessment_path, class: "btn btn-flat btn-primary",
-                                  id: 'new_assessment_link', remote: true,
-                                  rel:"tooltip", title:"Add Assessment" %>
+    <%=
+      if policy(Assessment).new?
+        link_to('New Assessment', new_assessment_path,
+                                  class: "btn btn-flat btn-primary",
+                                  id: 'new_assessment_link',
+                                  remote: true,
+                                  rel:"tooltip",
+                                  title:"Add Assessment")
+      end
+    %>
   </div>
 </div>

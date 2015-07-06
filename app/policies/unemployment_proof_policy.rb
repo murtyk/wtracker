@@ -1,6 +1,6 @@
 class UnemploymentProofPolicy < Struct.new(:user, :unemployment_proof)
   def new?
-    user.admin_access?
+    user.director?
   end
 
   def create?
@@ -16,11 +16,11 @@ class UnemploymentProofPolicy < Struct.new(:user, :unemployment_proof)
   end
 
   def index?
-    new?
+    user.admin_access?
   end
 
   def show?
-    new?
+    user.admin_access?
   end
 
   def destroy?

@@ -8,7 +8,7 @@ def fill_in_fields
 end
 describe 'employment status' do
   before :each do
-    signin_applicants_admin
+    signin_applicants_director
   end
   after :each do
     signout

@@ -19,6 +19,9 @@ module KlassesHelper
   end
 
   def destroy_klasses
+    allow_any_instance_of(KlassPolicy).to receive('destroy?')
+      .and_return(true)
+
     visit '/klasses'
 
     sleep 0.2

@@ -33,6 +33,9 @@ module EmployersHelper
   end
 
   def destroy_employers
+    allow_any_instance_of(EmployerPolicy).to receive('destroy?')
+      .and_return(true)
+
     employers_count = get_employer_ids.count
 
     visit '/employers'

@@ -30,7 +30,7 @@ class TraineePolicy < Struct.new(:user, :trainee)
   end
 
   def destroy?
-    edit?
+    user.director?
   end
 
   def mapview?

@@ -31,6 +31,10 @@ module  UserHelper
     sign_in_user('brookdale', 'michele@mail.com')
   end
 
+  def signin_college_director
+    sign_in_user('brookdale', 'marie@mail.com')
+  end
+
   def signin_autolead_director
     sign_in_user('njit', 'njit@mail.com')
   end

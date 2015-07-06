@@ -32,6 +32,6 @@ class KlassPolicy < Struct.new(:user, :klass)
   end
 
   def destroy?
-    new?
+    user.director?
   end
 end

@@ -45,6 +45,9 @@ module TraineesHelper
   end
 
   def destroy_trainees
+    allow_any_instance_of(TraineePolicy).to receive('destroy?')
+      .and_return(true)
+
     visit '/trainees'
 
     fill_in 'filters_name', with: 'Last'

@@ -30,7 +30,7 @@ class EmployerPolicy < Struct.new(:user, :employer)
   end
 
   def destroy?
-    edit?
+    user.director?
   end
 
   def show_address?

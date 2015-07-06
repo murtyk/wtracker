@@ -55,6 +55,8 @@ end
 describe 'Trainees' do
   before :each do
     signin_admin
+    allow_any_instance_of(TraineePolicy).to receive('destroy?')
+      .and_return(true)
   end
 
   it 'delete', js: true do

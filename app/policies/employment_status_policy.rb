@@ -1,6 +1,6 @@
 class EmploymentStatusPolicy < Struct.new(:user, :employment_status)
   def new?
-    user.admin_access?
+    user.director?
   end
 
   def create?
@@ -16,11 +16,11 @@ class EmploymentStatusPolicy < Struct.new(:user, :employment_status)
   end
 
   def index?
-    new?
+    user.admin_access?
   end
 
   def show?
-    new?
+    user.admin_access?
   end
 
   def destroy?

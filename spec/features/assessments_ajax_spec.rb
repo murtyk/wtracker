@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Assessments' do
   describe 'can list, add and delete' do
     before :each do
-      signin_admin
+      signin_director
       visit('/assessments')
     end
 

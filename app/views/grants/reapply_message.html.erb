@@ -25,7 +25,9 @@
       </div>
       <div class="form-actions">
         <%= render 'shared/cancel_link' %>
+        <% if policy(Grant).edit? %>
         <%= submit_button(f) %>
+        <% end %>
       </div>
       <% end %>
   </div>
