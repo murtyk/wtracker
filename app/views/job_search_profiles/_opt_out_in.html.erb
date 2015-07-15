@@ -1,0 +1,35 @@
+<% if job_search_profile.opted_out %>
+  <b>Opted Out From Leads</b>
+  <br>
+  <%= link_to('Click to opt in',
+              job_search_profile_path(job_search_profile,
+                                      job_search_profile: { opted_out: false },
+                                      key: job_search_profile.key),
+              method: :put,
+              remote: true,
+              data: { confirm: 'Are you sure?' },
+              style: 'color: green',
+              id: 'optin_button') %>
+
+<% else %>
+  <% if current_grant.capture_optout_reason? %>
+    <b>
+      <%= link_to('Click here to opt out from leads',
+                  edit_job_search_profile_path(job_search_profile,
+                                               opt_out: true,
+                                               key: job_search_profile.key),
+                  style: 'color: #d00') %>
+    </b>
+  <% else %>
+      <%= link_to('Click to opt out from leads',
+                  job_search_profile_path(job_search_profile,
+                                          job_search_profile: { opted_out: true },
+                                          key: job_search_profile.key),
+                  method: :put,
+                  remote: true,
+                  data: { confirm: 'Are you sure?' },
+                  class: 'btn btn-flat btn-warning',
+                  style: 'color: #d00',
+                  id: 'optout_button') %>
+  <% end %>
+<% end %>

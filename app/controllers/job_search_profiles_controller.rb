@@ -31,7 +31,8 @@ class JobSearchProfilesController < ApplicationController
   def update
     if @job_search_profile.update_attributes(profile_params)
       return if request.format.js?
-      render 'update'
+      redirect_to @job_search_profile.trainee if current_user
+      render 'update' unless current_user
     else
       render 'edit'
     end

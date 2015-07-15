@@ -1,1 +1,6 @@
-$('#opt_out_div').html("<b>Opted Out From Leads</b>");
+$('#opt_out_div').html("<%= escape_javascript(render('opt_out_in', job_search_profile: @job_search_profile)) %>");
+<% if @job_search_profile.opted_out %>
+  $('#edit_link').html("");
+<% else %>
+  $('#edit_link').html("<%= escape_javascript(render('edit_link', job_search_profile: @job_search_profile)) %>");
+<% end %>

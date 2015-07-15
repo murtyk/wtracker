@@ -11,7 +11,7 @@ class Host
       subdomain = object.account.subdomain
       host_address = web_address(subdomain)
       return host_address + '/login' if object.is_a? User
-      "#{host_address}/trainees/sign_in" if object.is_a? Trainee
+      return "#{host_address}/trainees/sign_in" if object.is_a? Trainee
       nil
     end
 
