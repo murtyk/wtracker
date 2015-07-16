@@ -25,8 +25,8 @@ class TraineesController < ApplicationController
     @tas = TraineeAdvancedSearch.new(current_user)
 
     respond_to do |format|
-      format.html { perform_advanced_search }
-      format.js { @tas.delay.send_results(params[:q]) }
+      format.html{ perform_advanced_search }
+      format.js  { send_advanced_search_results_file_by_email }
       format.xls { send_advanced_search_results_file }
     end
   end
@@ -112,6 +112,11 @@ class TraineesController < ApplicationController
     send_file @tas.file_path, type: 'application/vnd.ms-excel',
                               filename: @tas.file_name,
                               stream: false
+  end
+
+  def send_advanced_search_results_file_by_email
+    @tas.delay.send_results(params[:q])
+    Rails.logger.info "#{current_user.name} has requested TAS file by email"
   end
 
   def perform_advanced_search

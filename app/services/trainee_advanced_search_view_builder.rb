@@ -29,7 +29,7 @@ class TraineeAdvancedSearchViewBuilder
 
   def header_part_2
     return [] unless applicant?
-    %w(Skills Navigator)
+    ['Skills', 'Trainee Source', 'Navigator']
   end
 
   def row(t)
@@ -63,11 +63,11 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def details_4(t)
-    applicant? ? [t.skills, t.navigator_name] : []
+    applicant? ? [t.skills, t.source, t.navigator_name] : []
   end
 
   def applicant?
-    @applicant |= grant.trainee_applications?
+    @applicant_grant ||= grant.trainee_applications?
   end
 
   def klasses(t)

@@ -31,6 +31,7 @@ class TraineeAdvancedSearch
   def send_results(q_params)
     build_document(q_params)
     excel_file.send_to_user('Trainees - Advanced Search - Data')
+    Rails.logger.info "TAS file sent by email to #{user.name}"
   end
 
   def build_document(q_params)
