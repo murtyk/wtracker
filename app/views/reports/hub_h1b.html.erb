@@ -31,7 +31,7 @@
   <% show_max_rows = (ENV['SHOW_MAX_ROWS'] || 10).to_i %>
   <% if @report.count > show_max_rows %>
     <b style='margin-left: 20px'>
-      Too many records to display. Only first <%=show_max_rows%> are shown. Please download for full list.
+      Too many records to display. Only first 20 are shown. Please download for full list.
     </b>
   <% end %>
   <% para = params[:report].merge(action: :by_email) %>
