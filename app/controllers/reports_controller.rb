@@ -29,6 +29,13 @@ class ReportsController < ApplicationController
     end
   end
 
+  def by_email
+    rd = ReportData.new(current_user.id, params)
+    rd.delay.send_to_user
+    report_name = params[:report][:report_name]
+    Rails.logger.info "#{current_user.name} requested #{report_name} by email"
+  end
+
   def process_next
     report = Report.new_report(current_user, params)
     status = report.process_next

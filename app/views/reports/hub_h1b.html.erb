@@ -1,0 +1,43 @@
+<h1><%= @report.title%></h1>
+
+<div class = 'row-fluid filters-div' style='margin-bottom:10px'>
+  <%= simple_form_for @report, as: :report,
+                               method: :post,
+                               url: '/reports',
+                               html: { class: 'form-search form-horizontal'} do |f| %>
+
+    <%= f.hidden_field :report_name %>
+    <div class='span4'>
+      <%= f.input :end_date, label: 'Before',
+                             required: false,
+                             as: :string,
+                             input_html: { data: { behaviour: "datepicker" },
+                                           style: 'width: 150px;' } %>
+
+    </div>
+    <div class='span2'>
+    <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
+            style='margin-left: 20px'
+            data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+        <i class="icon-search icon-white"></i>Find
+    </button>
+    </div>
+
+  <% end %>
+</div>
+
+<% if @report.count > 0 %>
+  <b>Count: <%= @report.count %></b>
+  <% show_max_rows = (ENV['SHOW_MAX_ROWS'] || 10).to_i %>
+  <% if @report.count > show_max_rows %>
+    <b style='margin-left: 20px'>
+      Too many records to display. Only first <%=show_max_rows%> are shown. Please download for full list.
+    </b>
+  <% end %>
+  <% para = params[:report].merge(action: :by_email) %>
+  <%= email_download_button(para) %>
+  <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+    <%= @report.th %>
+    <%= @report.trs %>
+  </table>
+<% end %>

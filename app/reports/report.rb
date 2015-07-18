@@ -4,7 +4,7 @@ class Report
   extend ActiveModel::Naming
 
   attr_accessor :report_name, :start_date, :end_date, :include_all_dates,
-                :klass_id, :klass_ids, :include_all_dates, :user_id, :user
+                :klass_id, :klass_ids, :user_id, :user
 
   TRAINEES_DETAILS                = 'trainees_details'
   TRAINEES_DETAILS_WITH_PLACEMENT = 'trainees_details_with_placement'
@@ -14,6 +14,7 @@ class Report
   TRAINEES_ACTIVITY               = 'trainees_activity'
   TRAINEES_NEAR_BY_EMPLOYERS      = 'trainees_near_by_employers'
   JOBS_APPLIED                    = 'jobs_applied'
+  HUB_H1B                         = 'hub_h1b'
   ACTIVE_EMPLOYERS                = 'active_employers'
   EMPLOYERS_HIRED                 = 'employers_hired'
   EMPLOYERS_ACTIVITIES_WITH_NOTES = 'employers_activities_with_notes'
@@ -29,6 +30,7 @@ class Report
     TRAINEES_NOT_PLACED               => :TraineesNotPlacedReport,
     TRAINEES_NEAR_BY_EMPLOYERS        => :TraineesNearByEmployersReport,
     JOBS_APPLIED                      => :JobsAppliedReport,
+    HUB_H1B                           => :HubH1bReport,
     EMPLOYERS_HIRED                   => :EmployersHiredReport,
     ACTIVE_EMPLOYERS                  => :ActiveEmployersReport,
     EMPLOYERS_ACTIVITIES_WITH_NOTES   => :EmployersActivitiesWithNotesReport,
@@ -37,11 +39,12 @@ class Report
   }
 
   def initialize(user, params = nil)
-    @report_name = params && params[:report_name]
-    init_klass_ids(user, params) if params
-    init_dates(params) if params && params[:start_date]
     @user_id = user.id
     @user = user
+
+    @report_name = params && params[:report_name]
+    init_klass_ids(user, params) if params
+    init_dates(params) if params
     post_initialize(params)
   end
 
@@ -67,7 +70,7 @@ class Report
 
     return list unless user.admin_access?
 
-    list + [TRAINEES_NEAR_BY_EMPLOYERS]
+    list + [TRAINEES_NEAR_BY_EMPLOYERS, HUB_H1B]
   end
 
   def self.employer_reports(user)
@@ -144,10 +147,10 @@ class Report
   end
 
   def init_dates(params)
-    @start_date = opero_str_to_date(params[:start_date])
-    @end_date = opero_str_to_date(params[:end_date])
+    @start_date = opero_str_to_date(params[:start_date]) if params[:start_date]
+    @end_date = opero_str_to_date(params[:end_date]) if params[:end_date]
     @include_all_dates = params[:include_all_dates].to_i == 1 ||
-                         @start_date.blank? || @end_date.blank?
+                         (@start_date.blank? && @end_date.blank?)
   end
 
   def init_klass_ids(user, params)

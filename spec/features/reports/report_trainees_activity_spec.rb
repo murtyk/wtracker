@@ -19,6 +19,7 @@ describe 'Reports' do
       end
 
       visit_report Report::TRAINEES_ACTIVITY
+      uncheck 'Include all dates'
       select 'A Class', from: 'Class'
       click_on 'Find'
 
@@ -39,6 +40,7 @@ describe 'Reports' do
                                           comment: 'This employer hired')
 
       visit_report Report::TRAINEES_ACTIVITY
+      uncheck 'Include all dates'
       select 'A Class', from: 'Class'
       fill_in 'To', with: Date.tomorrow
 
@@ -50,6 +52,7 @@ describe 'Reports' do
 
       # change the end_date to yesterday
       fill_in 'To', with: Date.yesterday
+      uncheck 'Include all dates'
       click_on 'Find'
       expect(page).to_not have_content 'This is Notes'
       expect(page).to_not have_content 'Company1'

@@ -161,6 +161,7 @@ WTracker::Application.routes.draw do
   resources :reports, only: [:new, :create, :show] do
     collection do
       get :process_next
+      get :by_email
     end
   end
 
