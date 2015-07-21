@@ -61,7 +61,7 @@ class HubH1bReport < Report
   end
 
   def placed_ids
-    TraineeInteraction.where(status: [4, 6], termination_date: nil)
+    TraineeInteraction.where(status: [4, 5, 6], termination_date: nil)
       .where('created_at >= ?', start_date)
       .where('created_at <= ?', end_date)
       .pluck(:trainee_id)

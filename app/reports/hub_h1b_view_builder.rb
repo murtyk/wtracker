@@ -11,7 +11,7 @@ class HubH1bViewBuilder
     'Below High School', 10,
     'GED', 88,
     'High School Diploma', 87,
-    'Some college', 90,
+    'Some college', 13,
     'Post Secondary Credential or Certificate', 92,
     'Associate Degree', 91,
     'Bachelor Degree', 16,
@@ -36,15 +36,15 @@ class HubH1bViewBuilder
   end
 
   def header
-    [header_100s, header_200s, header_300s].flatten
+    [header_100s, header_200s, header_300s, header_400s].flatten
   end
 
   def header_numbers
-    [header_100s_numbers, header_200s_numbers, header_300s_numbers].flatten
+    [header_100s_numbers, header_200s_numbers, header_300s_numbers, header_400s_numbers].flatten
   end
 
   def build_row(t)
-    [data_100s(t), data_200s(t), data_300s(t)].flatten
+    [data_100s(t), data_200s(t), data_300s(t), data_400s(t)].flatten
   end
 
   # part 100
@@ -101,7 +101,7 @@ class HubH1bViewBuilder
   end
 
   def veteran(t)
-    t.veteran ? 1 : 0
+    t.veteran ? 2 : 0
   end
 
   def education(t)
@@ -146,18 +146,19 @@ class HubH1bViewBuilder
       'Date of Exit',
       'Other Reasons for Exit',
       'Date of Program Completion',
-      'Date Recent Case Management Service',
+      'Most Recent Date Received Case Management Service',
       'Previous Quarter Received Case Management Service',
       'Previous Quarter Received Assessment Services',
       'Most Recent Date Received Supportive Services',
       'Previous Quarter Received Supportive Services',
+      'Most Recent Date Received Specialized Participant Services',
       'Previous Quarter Received Specialized Services',
-      'Date Participated in Work Experience',
+      'Most Recent Date Participated in Work Experience',
       'Previous Quarter Participated in Work Experience']
   end
 
   def header_300s_numbers
-    [301, 302, 303, 304, 310, 311, 321, 330, 331, 340, 341, 351]
+    [301, 302, 303, 304, 310, 311, 321, 330, 331, 340, 341, 350, 351]
   end
 
   def data_300s(t)
@@ -165,11 +166,12 @@ class HubH1bViewBuilder
      exit_date(t),
      '',
      program_completion_date(t),
-     klasses_end_date(t),
+     '',
      0,
      0,
      '',
      0,
+     klasses_end_date(t),
      0,
      recent_ojt_enrolled_date(t),
      0]
@@ -191,6 +193,9 @@ class HubH1bViewBuilder
   end
 
   def recent_ojt_enrolled_date(t)
+    hi = t.hired_employer_interaction
+    return '' unless hi
+    hi.status == 5 ? f_date(end_date) : ''
   end
 
   # part 4
@@ -225,8 +230,54 @@ class HubH1bViewBuilder
   end
 
   def data_400s(t)
-    [klass_or_ojt_start_date(t), '', klass_or_ojt?(t), klass_or_ojt?(t), klass_or_ojt?(t),
-     klass_or_ojt_end_date(t), klass_or_ojt_end_date(t)]
+    [ojt_start_date(t),
+      '00000000',
+     ojt?(t),
+     '',
+     '',
+     ojt_completed_date(t),
+     ojt_completed?(t),
+     '',
+     '00000000', # 411
+     '',
+     '',
+     '',
+     '',
+     '',
+     '',
+     '00000000', # 421
+     '',
+     '',
+     '',
+     '',
+     '']
+  end
+
+  def ojt_interaction(t)
+    t.trainee_interactions.where(status: [5, 6]).last
+  end
+  def ojt_start_date(t)
+    hi = ojt_interaction(t)
+    return '' unless hi
+    (hi.status == 5 || hi.status == 6) ? f_date(hi.start_date) : ''
+  end
+
+  def ojt?(t)
+    hi = ojt_interaction(t)
+    return '' unless hi
+    (hi.status == 5 || hi.status == 6) ? 1 : ''
+  end
+
+  def ojt_completed_date(t)
+    hi = ojt_interaction(t)
+    return '' unless hi
+    hi.status == 6 ? f_date(hi.updated_at) : ''
+  end
+
+  def ojt_completed?(t)
+    hi = ojt_interaction(t)
+    return '' unless hi
+    hi.status == 6 ? 1 : ''
   end
 
   # common to all parts

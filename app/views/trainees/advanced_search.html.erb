@@ -148,7 +148,7 @@
         <td><%= t.source %></td>
         <td><%= t.navigator_name %></td>
       <% end %>
-      <td><%= t.klasses.map{ |k| link_to(k.name, k) }.join('<br>').html_safe %></td>
+      <td><%= t.klasses.map{ |k| link_to(k.to_label, k) }.join('<br>').html_safe %></td>
       <td><%= t.assessments.map{ |a| a.name }.join('<br>').html_safe %></td>
     </tr>
     <% end %>
