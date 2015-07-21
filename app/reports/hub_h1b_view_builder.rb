@@ -23,9 +23,11 @@ class HubH1bViewBuilder
     'Underemployed (Full-time employed in unrelated field for 6 months or more)', 1,
     'Unemployed - 6 Months or Less', 0
    ]
+
   def th
     cols = header.map { |h| "<th>#{h}</th>" }.join('')
-    "<tr>#{cols}</tr>".html_safe
+    cols_numbers = header_numbers.map { |h| "<th>#{h}</th>" }.join('')
+    "<tr>#{cols}</tr><tr>#{cols_numbers}</tr>".html_safe
   end
 
   def tr(t)
@@ -34,11 +36,15 @@ class HubH1bViewBuilder
   end
 
   def header
-    [header_100s, header_200s].flatten
+    [header_100s, header_200s, header_300s].flatten
+  end
+
+  def header_numbers
+    [header_100s_numbers, header_200s_numbers, header_300s_numbers].flatten
   end
 
   def build_row(t)
-    [data_100s(t), data_200s(t)].flatten
+    [data_100s(t), data_200s(t), data_300s(t)].flatten
   end
 
   # part 100
@@ -59,13 +65,17 @@ class HubH1bViewBuilder
      'Education']
   end
 
+  def header_100s_numbers
+    [nil, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113, 114]
+  end
+
   def data_100s(t)
     [t.name,
      t.trainee_id,
-     '',            # Selective Service Status
+     9,
      f_date(t.dob),
      gender(t),
-     '',            # Disability
+     9,            # Disability
      race(1, t),
      race(2, t),
      race(3, t),
@@ -106,9 +116,16 @@ class HubH1bViewBuilder
      'Long-term Unemployed']
   end
 
+  def header_200s_numbers
+    [200, 201, 202, 204]
+  end
+
   def data_200s(t)
     ap = t.applicant
-    [employment_status(ap), '', under_employed(ap), longterm_unemployed(ap)]
+    [employment_status(ap),
+     '',
+     under_employed(ap),
+     longterm_unemployed(ap)]
   end
 
   def employment_status(ap)
@@ -121,6 +138,95 @@ class HubH1bViewBuilder
 
   def longterm_unemployed(ap)
     ap.current_employment_status == 'Unemployed - 6 Months or more' ? 1 : 0
+  end
+
+  # part 3
+  def header_300s
+    [ 'Date of Program Participation',
+      'Date of Exit',
+      'Other Reasons for Exit',
+      'Date of Program Completion',
+      'Date Recent Case Management Service',
+      'Previous Quarter Received Case Management Service',
+      'Previous Quarter Received Assessment Services',
+      'Most Recent Date Received Supportive Services',
+      'Previous Quarter Received Supportive Services',
+      'Previous Quarter Received Specialized Services',
+      'Date Participated in Work Experience',
+      'Previous Quarter Participated in Work Experience']
+  end
+
+  def header_300s_numbers
+    [301, 302, 303, 304, 310, 311, 321, 330, 331, 340, 341, 351]
+  end
+
+  def data_300s(t)
+    [f_date(t.applicant.created_at),
+     exit_date(t),
+     '',
+     program_completion_date(t),
+     klasses_end_date(t),
+     0,
+     0,
+     '',
+     0,
+     0,
+     recent_ojt_enrolled_date(t),
+     0]
+  end
+
+  def exit_date(t)
+    f_date(t.start_date)
+  end
+
+  def program_completion_date(t)
+    hi = t.hired_employer_interaction
+    return '' unless hi
+    hi.status == 6 ? f_date(hi.updated_at) : ''
+  end
+
+  def klasses_end_date(t)
+    return '' unless t.klasses.any?
+    f_date t.klasses.map(&:end_date).compact.max
+  end
+
+  def recent_ojt_enrolled_date(t)
+  end
+
+  # part 4
+  def header_400s
+    [
+      "Date Entered/Began Receiving Education/Job Training Activities #1",
+      "Occupational Skills Training Code  #1",
+      "Type of Training Service #1 - Primary",
+      "Type of Training Service #1 - Secondary",
+      "Type of Training Service #1 - Tertiary",
+      "Date Completed, or Withdrew from, Training #1",
+      "Training Completed #1",
+      "Date Entered/Began Receiving Education/Job Training Activities #2",
+      "Occupational Skills Training Code  #2",
+      "Type of Training Service #2 - Primary",
+      "Type of Training Service #2 - Secondary",
+      "Type of Training Service #2 - Tertiary",
+      "Date Completed, or Withdrew from, Training #2",
+      "Training Completed #2",
+      "Date Entered/Began Receiving Education/Job Training Activities #3",
+      "Occupational Skills Training Code  #3",
+      "Type of Training Service #3 - Primary",
+      "Type of Training Service #3 - Secondary",
+      "Type of Training Service #3 - Tertiary",
+      "Date Completed, or Withdrew from, Training #3",
+      "Training Completed #3"
+    ]
+  end
+
+  def header_400s_numbers
+    [400, 401, 402, 403, 404, 405, 406, 410, 411, 412, 413, 414, 415, 416, 420, 421, 422, 423, 424, 425, 426]
+  end
+
+  def data_400s(t)
+    [klass_or_ojt_start_date(t), '', klass_or_ojt?(t), klass_or_ojt?(t), klass_or_ojt?(t),
+     klass_or_ojt_end_date(t), klass_or_ojt_end_date(t)]
   end
 
   # common to all parts

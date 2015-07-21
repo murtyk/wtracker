@@ -60,51 +60,6 @@ class HubH1bReport < Report
       .pluck(:trainee_id)
   end
 
-  # Date of Program Participation - Applicant Registered date
-  # Date of Exit
-  # Other Reasons for Exit (at time of exit or during 3-quarter measurement period following the quarter of exit)
-  # Date of Program Completion
-  # Most Recent Date Received Case Management Service
-  # Previous Quarter Received Case Management Service
-  # Most Recent Date Received Assessment Services
-  # Previous Quarter Received Assessment Services
-  # Most Recent Date Received Supportive Services
-  # Previous Quarter Received Supportive Services
-  # Most Recent Date Received Specialized Participant Services
-  # Previous Quarter Received Specialized Services
-  # Most Recent Date Participated in Work Experience
-  # Previous Quarter Participated in Work Experience
-  def data_300s(t)
-    [f_date(t.applicant.created_at), exit_date(t), '', program_completion_date(t),
-     klass_end_date(t), '', '', '', '', 0, '', 0,
-     recent_ojt_enrolled_date(t), prev_ojt_enrolled_date(t)]
-  end
-
-  # Date Entered/Began Receiving Education/Job Training Activities #1
-  # Occupational Skills Training Code  #1
-  # Type of Training Service #1 - Primary
-  # Type of Training Service #1 - Secondary
-  # Type of Training Service #1 - Tertiary
-  # Date Completed, or Withdrew from, Training #1
-  # Training Completed #1
-  # Date Entered/Began Receiving Education/Job Training Activities #2
-  # Occupational Skills Training Code  #2
-  # Type of Training Service #2 - Primary
-  # Type of Training Service #2 - Secondary
-  # Type of Training Service #2 - Tertiary
-  # Date Completed, or Withdrew from, Training #2
-  # Training Completed #2
-  # Date Entered/Began Receiving Education/Job Training Activities #3
-  # Occupational Skills Training Code  #3
-  # Type of Training Service #3 - Primary
-  # Type of Training Service #3 - Secondary
-  # Type of Training Service #3 - Tertiary
-  # Date Completed, or Withdrew from, Training #3
-  # Training Completed #3
-  def data_400s(t)
-    [klass_or_ojt_start_date(t), '', klass_or_ojt?(t), klass_or_ojt?(t), klass_or_ojt?(t),
-     klass_or_ojt_end_date(t), klass_or_ojt_end_date(t)]
-  end
 
   # Employed in 1st Quarter After Program Completion
   # Occupational Code
@@ -129,12 +84,6 @@ class HubH1bReport < Report
 
   def before_date
     end_date
-  end
-
-  def exit_date(_t)
-  end
-
-  def program_completion_date(_t)
   end
 
   def title

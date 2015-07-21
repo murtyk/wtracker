@@ -46,6 +46,7 @@ describe 'Reports' do
 
     describe 'max rows for download is more than results count' do
       it 'allows download' do
+        ENV['MAX_ROWS_FOR_DOWNLOAD'] = '5'
         visit_report Report::TRAINEES_NEAR_BY_EMPLOYERS
         select 'CNC 101', from: 'Class'
         select 'manufacturing', from: 'Sector'

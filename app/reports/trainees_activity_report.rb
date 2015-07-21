@@ -1,4 +1,3 @@
-include UtilitiesHelper
 # trainee with activities in a date range
 # with a particular status or all
 class TraineesActivityReport < Report

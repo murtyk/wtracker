@@ -1,3 +1,4 @@
+include UtilitiesHelper
 # mother of all reports
 class Report
   include ActiveModel::Conversion
