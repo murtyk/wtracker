@@ -50,6 +50,7 @@ class HubH1bViewBuilder
   # part 100
   def header_100s
     ['Name',
+     'TAPO No',
      'SSN',
      'Selective Service Status',
      'DOB',
@@ -66,11 +67,12 @@ class HubH1bViewBuilder
   end
 
   def header_100s_numbers
-    [nil, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113, 114]
+    [nil, nil, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113, 114]
   end
 
   def data_100s(t)
     [t.name,
+     t.id,
      t.trainee_id,
      9,
      f_date(t.dob),
@@ -231,21 +233,21 @@ class HubH1bViewBuilder
 
   def data_400s(t)
     [ojt_start_date(t),
-      '00000000',
+     "'00000000'",
      ojt?(t),
      '',
      '',
      ojt_completed_date(t),
      ojt_completed?(t),
      '',
-     '00000000', # 411
+     "'00000000'", # 411
      '',
      '',
      '',
      '',
      '',
      '',
-     '00000000', # 421
+     "'00000000'", # 421
      '',
      '',
      '',
