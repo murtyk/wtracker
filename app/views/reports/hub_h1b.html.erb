@@ -4,23 +4,37 @@
   <%= simple_form_for @report, as: :report,
                                method: :post,
                                url: '/reports',
-                               html: { class: 'form-search form-horizontal'} do |f| %>
+                               html: { class: 'form-search'} do |f| %>
 
     <%= f.hidden_field :report_name %>
-    <div class='span4'>
-      <%= f.input :end_date, label: 'Before',
-                             required: false,
+    <div class='span3'>
+      <%= f.input :funding_source_id, label: 'Funding Source',
+                                      collection: FundingSource.order(:name),
+                                      required: true,
+                                      include_blank: false %>
+    </div>
+    <div class='span2'>
+      <%= f.input :start_date, label: 'Start Date',
+                               required: true,
+                               as: :string,
+                               input_html: { data: { behaviour: "datepicker" },
+                                             style: 'width: 150px;' } %>
+
+    </div>
+    <div class='span2'>
+      <%= f.input :end_date, label: 'End Date',
+                             required: true,
                              as: :string,
                              input_html: { data: { behaviour: "datepicker" },
                                            style: 'width: 150px;' } %>
 
     </div>
     <div class='span2'>
-    <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
-            style='margin-left: 20px'
-            data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
-        <i class="icon-search icon-white"></i>Find
-    </button>
+      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
+              style='margin-left: 20px'
+              data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white"></i>Find
+      </button>
     </div>
 
   <% end %>
