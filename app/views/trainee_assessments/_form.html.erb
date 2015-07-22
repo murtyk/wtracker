@@ -1,7 +1,10 @@
 <%= simple_form_for(trainee_assessment, remote: true) do |f| %>
   <hr>
   <%= f.hidden_field :trainee_id %>
-  <%= f.association :assessment %>
+  <%= f.association :assessment, include_blank: false %>
+  <%= f.input :date, input_html: { data: { behaviour: "datepicker" },
+                                  value: trainee_assessment.date.to_s },
+                    as: :string %>
   <% if current_grant.assessments_include_score? %>
     <%= f.input :score %>
   <% end %>

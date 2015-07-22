@@ -71,7 +71,7 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def klasses(t)
-    t.klasses.map(&:name).join("\n")
+    t.klasses.map(&:to_label).join("\n")
   end
 
   def assessments(t)

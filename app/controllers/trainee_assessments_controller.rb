@@ -19,7 +19,7 @@ class TraineeAssessmentsController < ApplicationController
   # POST /trainee_assessments
   # POST /trainee_assessments.json
   def create
-    @trainee_assessment = TraineeAssessment.new(params[:trainee_assessment])
+    @trainee_assessment = TraineeAssessment.new(ta_params)
     logger.info { "[#{current_user.name}] [trainee_assessments create]" }
     authorize @trainee_assessment
     @trainee_assessment.save
@@ -28,5 +28,11 @@ class TraineeAssessmentsController < ApplicationController
   def destroy
     @trainee_assessment = TraineeAssessment.find(params[:id])
     @trainee_assessment.destroy
+  end
+
+  def ta_params
+    para = params[:trainee_assessment]
+    para[:date] = opero_str_to_date(para[:date])
+    para
   end
 end

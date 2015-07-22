@@ -51,7 +51,7 @@ class HubH1bReport < Report
   #   enrolled in OJT
   #   participated in a training class or workshop
   def build_trainees
-    trainee_ids = placed_ids + in_a_klass_ids
+    trainee_ids = placed_ids + in_a_klass_ids + assessed_ids
     @trainees = Trainee.includes(:klasses,
                                  :trainee_interactions,
                                  :applicant,
@@ -74,26 +74,10 @@ class HubH1bReport < Report
       .pluck(:trainee_id)
   end
 
-
-  # Employed in 1st Quarter After Program Completion
-  # Occupational Code
-  # Entered Training-Related Employment
-  # Retained Current Position
-  # "Advanced into a New Position with Current Employer in the 1st Quarter after Completion"
-  # Retained Current Position in the 2nd Quarter after Program Completion
-  # "Advanced into a New Position with Current Employer in the 2nd Quarter after Program Completion"
-  # Retained Current Position in the 3rd Quarter After Program Completion
-  # "Advanced into a New Position with Current Employer in the 3rd Quarter after Program Completion"
-  def data_500s(_t)
-  end
-
-  # Type of Recognized Credential #1
-  # Date Attained Recognized Credential #1
-  # Type of Recognized Credential #2
-  # Date Attained Recognized Credential #3
-  # Type of Recognized Credential #3
-  # Date Attained Recognized Credential #3
-  def data_600s(_t)
+  def assessed_ids
+    TraineeAssessment.where('date >= ?', start_date)
+                     .where('date <= ?', end_date)
+                     .pluck(:trainee_id)
   end
 
   def title

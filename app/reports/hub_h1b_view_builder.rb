@@ -36,15 +36,18 @@ class HubH1bViewBuilder
   end
 
   def header
-    [header_100s, header_200s, header_300s, header_400s].flatten
+    [header_100s, header_200s, header_300s,
+     header_400s, header_500s, header_600s].flatten
   end
 
   def header_numbers
-    [header_100s_numbers, header_200s_numbers, header_300s_numbers, header_400s_numbers].flatten
+    [header_100s_numbers, header_200s_numbers, header_300s_numbers,
+     header_400s_numbers, header_500s_numbers, header_600s_numbers].flatten
   end
 
   def build_row(t)
-    [data_100s(t), data_200s(t), data_300s(t), data_400s(t)].flatten
+    [data_100s(t), data_200s(t), data_300s(t),
+     data_400s(t), data_500s(t), data_600s(t)].flatten
   end
 
   # part 100
@@ -280,6 +283,55 @@ class HubH1bViewBuilder
     hi = ojt_interaction(t)
     return '' unless hi
     hi.status == 6 ? 1 : ''
+  end
+
+  # part 5
+  def header_500s
+    [
+      "Employed in 1st Quarter After Program Completion",
+      "Occupational Code",
+      "Entered Training-Related Employment",
+      "Retained Current Position",
+      "Advanced into a New Position with Current Employer in the 1st Quarter after Completion",
+      "Retained Current Position in the 2nd Quarter after Program Completion",
+      "Advanced into a New Position with Current Employer in the 2nd Quarter after Program Completion",
+      "Retained Current Position in the 3rd Quarter After Program Completion",
+      "Advanced into a New Position with Current Employer in the 3rd Quarter after Program Completion"
+    ]
+
+  end
+
+  def header_500s_numbers
+    [501, 502, 503, 504, 505, 514, 515, 524, 525]
+  end
+
+  def data_500s(t)
+    [f_date(t.start_date),
+     "'00000000'",
+     '',
+     '',
+     '',
+     '',
+     '',
+     '',
+     '']
+  end
+
+  def header_600s
+    ["Type of Recognized Credential #1",
+     "Date Attained Recognized Credential #1",
+     "Type of Recognized Credential #2",
+     "#Date Attained Recognized Credential #3",
+     "# Type of Recognized Credential #3",
+     "# Date Attained Recognized Credential #3"]
+  end
+
+  def header_600s_numbers
+    [601, 602, 611, 612, 621, 622]
+  end
+
+  def data_600s(_t)
+    ['', '', '', '', '', "''"]
   end
 
   # common to all parts
