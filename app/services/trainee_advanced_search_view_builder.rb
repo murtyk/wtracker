@@ -9,7 +9,7 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def header
-    ['First Name', 'Last Name'] +
+    ['First Name', 'Last Name', 'TAPO No'] +
       h_applied_on +
       ['Status', 'Email', 'Mobile No', 'County'] +
       header_part_1 +
@@ -33,7 +33,7 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def row(t)
-    names(t) +
+    names(t) + [t.id] +
       applied_on(t) +
       details_1(t) +
       details_2(t) +

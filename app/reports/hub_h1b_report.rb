@@ -35,7 +35,7 @@ class HubH1bReport < Report
   end
 
   def builder
-    @builder ||= HubH1bViewBuilder.new
+    @builder ||= HubH1bViewBuilder.new(start_date, end_date)
   end
 
   def th
@@ -54,6 +54,7 @@ class HubH1bReport < Report
     trainee_ids = placed_ids + in_a_klass_ids + assessed_ids
     @trainees = Trainee.includes(:klasses,
                                  :trainee_interactions,
+                                 :trainee_assessments,
                                  :applicant,
                                  tact_three: :education)
                 .where(id: trainee_ids,

@@ -1,4 +1,11 @@
 class HubH1bViewBuilder
+  attr_reader :start_date, :end_date
+
+  def initialize(sd, ed)
+    @start_date = sd
+    @end_date = ed
+  end
+
   RACES = ['Do not wish to disclose',
            'Hispanic/Latino',
            'American Indian/Alaska Native',
@@ -153,6 +160,7 @@ class HubH1bViewBuilder
       'Date of Program Completion',
       'Most Recent Date Received Case Management Service',
       'Previous Quarter Received Case Management Service',
+      'Most Recent Date Received Assessment Services',
       'Previous Quarter Received Assessment Services',
       'Most Recent Date Received Supportive Services',
       'Previous Quarter Received Supportive Services',
@@ -163,7 +171,7 @@ class HubH1bViewBuilder
   end
 
   def header_300s_numbers
-    [301, 302, 303, 304, 310, 311, 321, 330, 331, 340, 341, 350, 351]
+    [301, 302, 303, 304, 310, 311, 320, 321, 330, 331, 340, 341, 350, 351]
   end
 
   def data_300s(t)
@@ -173,6 +181,7 @@ class HubH1bViewBuilder
      program_completion_date(t),
      '',
      0,
+     assessment_date(t),
      0,
      '',
      0,
@@ -201,6 +210,13 @@ class HubH1bViewBuilder
     hi = t.hired_employer_interaction
     return '' unless hi
     hi.status == 5 ? f_date(end_date) : ''
+  end
+
+  def assessment_date(t)
+    dates = t.trainee_assessments.map do |ta|
+      ta.date if (ta.date >= start_date && ta.date <= end_date)
+    end.compact
+    dates.max
   end
 
   # part 4
@@ -279,6 +295,12 @@ class HubH1bViewBuilder
     hi.status == 6 ? f_date(hi.updated_at) : ''
   end
 
+  def ojt_completed_start_date(t)
+    hi = ojt_interaction(t)
+    return '' unless hi
+    hi.status == 6 ? f_date(hi.start_date) : ''
+  end
+
   def ojt_completed?(t)
     hi = ojt_interaction(t)
     return '' unless hi
@@ -308,7 +330,7 @@ class HubH1bViewBuilder
   def data_500s(t)
     [f_date(t.start_date),
      "'00000000'",
-     '',
+     ojt_completed_start_date(t),
      '',
      '',
      '',
