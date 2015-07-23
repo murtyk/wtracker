@@ -83,7 +83,7 @@ class HubH1bViewBuilder
   def data_100s(t)
     [t.name,
      t.id,
-     t.trainee_id,
+     trainee_id(t),
      9,
      f_date(t.dob),
      gender(t),
@@ -96,6 +96,11 @@ class HubH1bViewBuilder
      race(6, t),
      veteran(t),
      education(t)]
+  end
+
+  def trainee_id(t)
+    return '999999999' if t.trainee_id.blank?
+    t.trainee_id.gsub(/\D/, '')
   end
 
   def gender(t)
@@ -154,20 +159,20 @@ class HubH1bViewBuilder
 
   # part 3
   def header_300s
-    [ 'Date of Program Participation',
-      'Date of Exit',
-      'Other Reasons for Exit',
-      'Date of Program Completion',
-      'Most Recent Date Received Case Management Service',
-      'Previous Quarter Received Case Management Service',
-      'Most Recent Date Received Assessment Services',
-      'Previous Quarter Received Assessment Services',
-      'Most Recent Date Received Supportive Services',
-      'Previous Quarter Received Supportive Services',
-      'Most Recent Date Received Specialized Participant Services',
-      'Previous Quarter Received Specialized Services',
-      'Most Recent Date Participated in Work Experience',
-      'Previous Quarter Participated in Work Experience']
+    ['Date of Program Participation',
+     'Date of Exit',
+     'Other Reasons for Exit',
+     'Date of Program Completion',
+     'Most Recent Date Received Case Management Service',
+     'Previous Quarter Received Case Management Service',
+     'Most Recent Date Received Assessment Services',
+     'Previous Quarter Received Assessment Services',
+     'Most Recent Date Received Supportive Services',
+     'Previous Quarter Received Supportive Services',
+     'Most Recent Date Received Specialized Participant Services',
+     'Previous Quarter Received Specialized Services',
+     'Most Recent Date Participated in Work Experience',
+     'Previous Quarter Participated in Work Experience']
   end
 
   def header_300s_numbers
@@ -192,6 +197,7 @@ class HubH1bViewBuilder
   end
 
   def exit_date(t)
+    return '' unless t.start_date && t.start_date >= start_date && t.start_date <= end_date
     f_date(t.start_date)
   end
 
@@ -214,35 +220,35 @@ class HubH1bViewBuilder
 
   def assessment_date(t)
     dates = t.trainee_assessments.map do |ta|
-      ta.date if (ta.date >= start_date && ta.date <= end_date)
+      ta.date if ta.date && ta.date >= start_date && ta.date <= end_date
     end.compact
-    dates.max
+    f_date(dates.max)
   end
 
   # part 4
   def header_400s
     [
-      "Date Entered/Began Receiving Education/Job Training Activities #1",
-      "Occupational Skills Training Code  #1",
-      "Type of Training Service #1 - Primary",
-      "Type of Training Service #1 - Secondary",
-      "Type of Training Service #1 - Tertiary",
-      "Date Completed, or Withdrew from, Training #1",
-      "Training Completed #1",
-      "Date Entered/Began Receiving Education/Job Training Activities #2",
-      "Occupational Skills Training Code  #2",
-      "Type of Training Service #2 - Primary",
-      "Type of Training Service #2 - Secondary",
-      "Type of Training Service #2 - Tertiary",
-      "Date Completed, or Withdrew from, Training #2",
-      "Training Completed #2",
-      "Date Entered/Began Receiving Education/Job Training Activities #3",
-      "Occupational Skills Training Code  #3",
-      "Type of Training Service #3 - Primary",
-      "Type of Training Service #3 - Secondary",
-      "Type of Training Service #3 - Tertiary",
-      "Date Completed, or Withdrew from, Training #3",
-      "Training Completed #3"
+      'Date Entered/Began Receiving Education/Job Training Activities #1',
+      'Occupational Skills Training Code  #1',
+      'Type of Training Service #1 - Primary',
+      'Type of Training Service #1 - Secondary',
+      'Type of Training Service #1 - Tertiary',
+      'Date Completed, or Withdrew from, Training #1',
+      'Training Completed #1',
+      'Date Entered/Began Receiving Education/Job Training Activities #2',
+      'Occupational Skills Training Code  #2',
+      'Type of Training Service #2 - Primary',
+      'Type of Training Service #2 - Secondary',
+      'Type of Training Service #2 - Tertiary',
+      'Date Completed, or Withdrew from, Training #2',
+      'Training Completed #2',
+      'Date Entered/Began Receiving Education/Job Training Activities #3',
+      'Occupational Skills Training Code  #3',
+      'Type of Training Service #3 - Primary',
+      'Type of Training Service #3 - Secondary',
+      'Type of Training Service #3 - Tertiary',
+      'Date Completed, or Withdrew from, Training #3',
+      'Training Completed #3'
     ]
   end
 
@@ -275,18 +281,21 @@ class HubH1bViewBuilder
   end
 
   def ojt_interaction(t)
-    t.trainee_interactions.where(status: [5, 6]).last
+    t.trainee_interactions
+      .where(status: [5, 6])
+      .where('start_date >= ?', start_date)
+      .where('start_date <= ?', end_date)
+      .last
   end
+
   def ojt_start_date(t)
     hi = ojt_interaction(t)
-    return '' unless hi
-    (hi.status == 5 || hi.status == 6) ? f_date(hi.start_date) : ''
+    hi && f_date(hi.start_date)
   end
 
   def ojt?(t)
     hi = ojt_interaction(t)
-    return '' unless hi
-    (hi.status == 5 || hi.status == 6) ? 1 : ''
+    hi && 1
   end
 
   def ojt_completed_date(t)
@@ -310,17 +319,16 @@ class HubH1bViewBuilder
   # part 5
   def header_500s
     [
-      "Employed in 1st Quarter After Program Completion",
-      "Occupational Code",
-      "Entered Training-Related Employment",
-      "Retained Current Position",
-      "Advanced into a New Position with Current Employer in the 1st Quarter after Completion",
-      "Retained Current Position in the 2nd Quarter after Program Completion",
-      "Advanced into a New Position with Current Employer in the 2nd Quarter after Program Completion",
-      "Retained Current Position in the 3rd Quarter After Program Completion",
-      "Advanced into a New Position with Current Employer in the 3rd Quarter after Program Completion"
+      'Employed in 1st Quarter After Program Completion',
+      'Occupational Code',
+      'Entered Training-Related Employment',
+      'Retained Current Position',
+      'Advanced into a New Position with Current Employer in the 1st Quarter after Completion',
+      'Retained Current Position in the 2nd Quarter after Program Completion',
+      'Advanced into a New Position with Current Employer in the 2nd Quarter after Program Completion',
+      'Retained Current Position in the 3rd Quarter After Program Completion',
+      'Advanced into a New Position with Current Employer in the 3rd Quarter after Program Completion'
     ]
-
   end
 
   def header_500s_numbers
@@ -328,7 +336,7 @@ class HubH1bViewBuilder
   end
 
   def data_500s(t)
-    [f_date(t.start_date),
+    [exit_date(t),
      "'00000000'",
      ojt_completed_start_date(t),
      '',
@@ -340,12 +348,12 @@ class HubH1bViewBuilder
   end
 
   def header_600s
-    ["Type of Recognized Credential #1",
-     "Date Attained Recognized Credential #1",
-     "Type of Recognized Credential #2",
-     "#Date Attained Recognized Credential #3",
-     "# Type of Recognized Credential #3",
-     "# Date Attained Recognized Credential #3"]
+    ['Type of Recognized Credential #1',
+     'Date Attained Recognized Credential #1',
+     'Type of Recognized Credential #2',
+     '#Date Attained Recognized Credential #3',
+     '# Type of Recognized Credential #3',
+     '# Date Attained Recognized Credential #3']
   end
 
   def header_600s_numbers

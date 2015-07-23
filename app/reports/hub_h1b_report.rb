@@ -63,8 +63,8 @@ class HubH1bReport < Report
 
   def placed_ids
     TraineeInteraction.where(status: [4, 5, 6], termination_date: nil)
-      .where('created_at >= ?', start_date)
-      .where('created_at <= ?', end_date)
+      .where('start_date >= ?', start_date)
+      .where('start_date <= ?', end_date)
       .pluck(:trainee_id)
   end
 
@@ -77,8 +77,8 @@ class HubH1bReport < Report
 
   def assessed_ids
     TraineeAssessment.where('date >= ?', start_date)
-                     .where('date <= ?', end_date)
-                     .pluck(:trainee_id)
+      .where('date <= ?', end_date)
+      .pluck(:trainee_id)
   end
 
   def title
@@ -93,11 +93,11 @@ class HubH1bReport < Report
     'hub_h1b'
   end
 
-                      # JAN FEB MAR APR MAY JUN JULY AUG SEP OCT NOV DEC
+  # JAN FEB MAR APR MAY JUN JULY AUG SEP OCT NOV DEC
   QUARTER_START_MONTH = [10, 10, 10, 1,  1,  1,  4,   4,  4,  7,  7,  7]
   def quarter_start_date
     m  = Date.current.month
-    sm = QUARTER_START_MONTH[m-1]
+    sm = QUARTER_START_MONTH[m - 1]
     y  = Date.current.year
     y -= 1 if sm > m
     Date.new(y, sm, 1)
