@@ -46,40 +46,34 @@ class HubH1bReport < Report
     trainees[0..20].map { |t| builder.tr(t) }.join('').html_safe
   end
 
-  # trainees with any of the following on or before end_date
-  #   placed
-  #   enrolled in OJT
-  #   participated in a training class or workshop
   def build_trainees
-    trainee_ids = placed_ids + in_a_klass_ids + assessed_ids
     @trainees = Trainee.includes(:klasses,
                                  :trainee_interactions,
                                  :trainee_assessments,
                                  :applicant,
                                  tact_three: :education)
-                .where(id: trainee_ids,
-                       funding_source_id: funding_source_id)
+                .where(funding_source_id: funding_source_id)
   end
 
-  def placed_ids
-    TraineeInteraction.where(status: [4, 5, 6], termination_date: nil)
-      .where('start_date >= ?', start_date)
-      .where('start_date <= ?', end_date)
-      .pluck(:trainee_id)
-  end
+  # def placed_ids
+  #   TraineeInteraction.where(status: [4, 5, 6], termination_date: nil)
+  #     .where('start_date >= ?', start_date)
+  #     .where('start_date <= ?', end_date)
+  #     .pluck(:trainee_id)
+  # end
 
-  def in_a_klass_ids
-    KlassTrainee.joins(:klass)
-      .where('klasses.start_date >= ?', start_date)
-      .where('klasses.start_date <= ?', end_date)
-      .pluck(:trainee_id)
-  end
+  # def in_a_klass_ids
+  #   KlassTrainee.joins(:klass)
+  #     .where('klasses.start_date >= ?', start_date)
+  #     .where('klasses.start_date <= ?', end_date)
+  #     .pluck(:trainee_id)
+  # end
 
-  def assessed_ids
-    TraineeAssessment.where('date >= ?', start_date)
-      .where('date <= ?', end_date)
-      .pluck(:trainee_id)
-  end
+  # def assessed_ids
+  #   TraineeAssessment.where('date >= ?', start_date)
+  #     .where('date <= ?', end_date)
+  #     .pluck(:trainee_id)
+  # end
 
   def title
     'Hub H1B Report'
