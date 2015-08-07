@@ -12,6 +12,7 @@ FactoryGirl.define do
 
     first_name    { Faker::Name.first_name }
     last_name     { Faker::Name.last_name }
+    dob           { 40.years.ago.to_date.to_s }
     email         { Faker::Internet.email }
     email_confirmation { email }
 

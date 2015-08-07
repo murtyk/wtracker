@@ -1,11 +1,17 @@
 include UtilitiesHelper
 # to build and update applicant
 class ApplicantFactory
-  def self.create(grant, request, params)
+  def self.new_applicant(grant, params)
     applicant = grant.applicants.new(params)
     applicant.last_employed_on = opero_str_to_date(params[:last_employed_on])
+    applicant.dob = opero_str_to_date(params[:dob])
 
     applicant.navigator_id = navigator_id(applicant)
+    applicant
+  end
+
+  def self.create(grant, _request, params)
+    applicant = new_applicant(grant, params)
 
     Applicant.transaction do
       applicant.save
@@ -57,6 +63,7 @@ class ApplicantFactory
     applicant = Applicant.find params[:id]
     a_params  = params[:applicant]
     a_params[:last_employed_on] = opero_str_to_date(a_params[:last_employed_on])
+    a_params[:dob] = opero_str_to_date(a_params[:dob])
 
     Applicant.transaction do
       applicant.update_attributes(a_params)

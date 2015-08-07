@@ -20,7 +20,7 @@ class Trainee
 
     def trainee_params
       tp = params[:trainee].clone
-      tp[:dob] = opero_str_to_date(tp[:dob])
+      tp[:dob] = opero_str_to_date(tp[:dob]) if tp[:dob]
       tp
     end
   end

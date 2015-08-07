@@ -19,6 +19,15 @@
     </div>
     <div class='row-fluid'>
       <div class='span3'>
+        <%= f.input :dob, label: 'Date of Birth MM/DD/YYYY',
+                                       required: true,
+                                       input_html: { data: { behaviour: "datepicker" },
+                                       value: applicant.dob },
+                                       as: :string %>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span3'>
         <%= f.input :address_line1, label: 'Street Address 1', required: true %>
       </div>
       <div class='span3'>

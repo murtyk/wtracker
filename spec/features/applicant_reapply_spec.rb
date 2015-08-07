@@ -108,15 +108,9 @@ describe 'applicant re-apply' do
       # applicant clicks link in email
 
       visit_reapply_form_for(os_applicant.email)
-      os_applicant.employment_status = 'Employed Part Time'
-      first_name = os_applicant.first_name
-      os_applicant.first_name = ''
-      fill_applicant_form(os_applicant, true)
 
-      click_on 'Submit'
-      expect(page).to have_text "can't be blank"
+      select 'Employed Part Time',  from: 'applicant_current_employment_status'
 
-      fill_in 'applicant_first_name', with: first_name
       click_on 'Submit'
 
       expect(page).to have_text 'We have received your application and a '\

@@ -16,7 +16,7 @@ class Applicant < ActiveRecord::Base
                   :salt, :humanizer_answer, :humanizer_question_id,
                   :trainee_id, :navigator_id, :sector_id, :race_id, :last_wages,
                   :gender, :unemployment_proof, :special_service_ids, :reapply_key,
-                  :applied_on, :email_confirmation, :skills
+                  :applied_on, :email_confirmation, :skills, :dob
 
   store_accessor :data, :skills
 

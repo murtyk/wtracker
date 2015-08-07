@@ -98,7 +98,7 @@ class ApplicantsController < ApplicationController
               :gender, :race_id, :last_wages, :last_employer_line1,
               :last_employer_line2, :last_employer_zip, :last_employer_manager_name,
               :last_employer_manager_phone_no, :last_employer_manager_email,
-              :unemployment_proof, :skills, special_service_ids: []
+              :unemployment_proof, :skills, :dob, special_service_ids: []
                   )
   end
 

@@ -3,6 +3,7 @@ module ApplicantsHelper
     os = OpenStruct.new
     os.first_name    = 'Adaline'
     os.last_name     = 'Schuster'
+    os.dob           = '01/14/1991'
     os.email         = 'adaline_schuster@shields.biz'
 
     os.name = os.first_name + ' ' + os.last_name
@@ -78,6 +79,7 @@ module ApplicantsHelper
   def fill_in_name(a)
     fill_in 'applicant_first_name',      with: a.first_name
     fill_in 'applicant_last_name',       with: a.last_name
+    fill_in 'applicant_dob',             with: a.dob
   end
 
   def fill_in_address(a)

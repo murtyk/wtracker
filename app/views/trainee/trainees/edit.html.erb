@@ -10,10 +10,12 @@
         <div class="form-inputs offset1">
           <%= f.input :trainee_id, label: 'Social Security Number',
                                    required: true %>
+          <% unless @trainee.dob %>
           <%= f.input :dob, label: 'Date of Birth',
                             value: @trainee.dob.to_s,
                             as: :string,
                             required: true %>
+          <% end %>
         </div>
         <div class="form-actions">
           <div class='offset1'>

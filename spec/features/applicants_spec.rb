@@ -123,9 +123,8 @@ describe 'applicants' do
       fill_in 'password',  with: 'adaline_schuster'
       click_button 'Sign in'
 
-      expect(page).to have_text('Date of Birth')
+      expect(page).to have_text('Social Security Number')
       fill_in 'trainee_trainee_id', with: '123456789'
-      fill_in 'trainee_dob', with: '12/28/1990'
       click_on 'Next'
 
       # expect(page).to have_text('Please enter your preferences for job leads')

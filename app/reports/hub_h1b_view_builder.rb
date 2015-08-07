@@ -18,7 +18,7 @@ class HubH1bViewBuilder
     'Below High School', 10,
     'GED', 88,
     'High School Diploma', 87,
-    'Some college', 13,
+    'Some college', 90,
     'Post Secondary Credential or Certificate', 92,
     'Associate Degree', 91,
     'Bachelor Degree', 16,
@@ -100,7 +100,7 @@ class HubH1bViewBuilder
 
   def trainee_id(t)
     return '999999999' if t.trainee_id.blank?
-    t.trainee_id.gsub(/\D/, '')
+    "'" + t.trainee_id.gsub(/\D/, '')
   end
 
   def gender(t)
@@ -140,7 +140,7 @@ class HubH1bViewBuilder
   def data_200s(t)
     ap = t.applicant
     [employment_status(ap),
-     '',
+     0,
      under_employed(ap),
      longterm_unemployed(ap)]
   end
@@ -258,21 +258,21 @@ class HubH1bViewBuilder
 
   def data_400s(t)
     [ojt_start_date(t),
-     "'00000000'",
+     "'00000000",
      ojt?(t),
      '',
      '',
      ojt_completed_date(t),
      ojt_completed?(t),
      '',
-     "'00000000'", # 411
+     "'00000000", # 411
      '',
      '',
      '',
      '',
      '',
      '',
-     "'00000000'", # 421
+     "'00000000", # 421
      '',
      '',
      '',
@@ -337,7 +337,7 @@ class HubH1bViewBuilder
 
   def data_500s(t)
     [exit_date(t),
-     "'00000000'",
+     "'00000000",
      ojt_completed_start_date(t),
      '',
      '',
@@ -361,7 +361,7 @@ class HubH1bViewBuilder
   end
 
   def data_600s(_t)
-    ['', '', '', '', '', "''"]
+    ['', '', '', '', '', "'"]
   end
 
   # common to all parts
