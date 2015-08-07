@@ -50,6 +50,8 @@ class Applicant < ActiveRecord::Base
   delegate :ethnicity,                      to: :race,      allow_nil: true
   delegate :funding_source_name, :login_id, to: :trainee,   allow_nil: true
 
+  validates :first_name, presence: true, length: { minimum: 2, maximum: 20 }
+  validates :last_name,  presence: true, length: { minimum: 2, maximum: 20 }
   validates :address_line1, presence: true, length: { minimum: 5, maximum: 50 }
   validates :address_city,  presence: true, length: { minimum: 3, maximum: 30 }
   validates_format_of :address_zip, with: /\d{5}/, message: 'is invalid, should be 5 digits'
