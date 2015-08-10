@@ -12,6 +12,7 @@ end
 
 describe 'applicants' do
   before :each do
+    Delayed::Worker.delay_jobs = false
     switch_to_applicants_domain
 
     @resume = "#{Rails.root}/spec/fixtures/RESUME.docx"
@@ -30,16 +31,18 @@ describe 'applicants' do
     switch_to_main_domain
   end
 
-  it 'reports errors when trainee can not be created' do
-    allow(TraineeFactory).to receive(:create_trainee_from_applicant)
-      .and_return(Trainee.create)
+  it 'notifies tapo admin when trainee can not be created' do
+    allow_any_instance_of(ApplicantRegistration)
+      .to receive(:create_trainee_from_applicant).and_return(Trainee.create)
+
     visit_new_applicant_page
 
     fill_applicant_form(build_applicant_data)
 
     click_on 'Submit'
 
-    expect(page).to have_text("can't be blank")
+    mail = ActionMailer::Base.deliveries.last
+    expect(mail.subject).to eq('TAPO ERROR')
   end
 
   it 'accepts applicant and creates trainee' do

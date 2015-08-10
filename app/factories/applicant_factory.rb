@@ -18,7 +18,10 @@ class ApplicantFactory
       return applicant if applicant.errors.any?
       # skip location capture. it is causing time out errors.
       # capture_applicant_location(request, applicant)
-      process_applicant(applicant)
+
+
+      # process_applicant(applicant)
+      ApplicantRegistration.new(applicant.id).delay.process
     end
     applicant
   end
@@ -69,8 +72,10 @@ class ApplicantFactory
       applicant.update_attributes(a_params)
       return applicant if applicant.errors.any?
       applicant.navigator_id = navigator_id(applicant)
+      applicant.save
 
-      process_applicant(applicant)
+      ApplicantRegistration.new(applicant.id).delay.process
+      # process_applicant(applicant)
 
       applicant.void_reapplication
     end
@@ -91,24 +96,24 @@ class ApplicantFactory
     user && user.id
   end
 
-  def self.process_applicant(applicant)
-    if applicant.accepted?
-      trainee = TraineeFactory.create_trainee_from_applicant(applicant)
-      if trainee.errors.any?
-        copy_error_messages(applicant, trainee)
-        fail ActiveRecord::Rollback, 'Inform Grant Staff'
-      end
-      applicant.trainee_id = trainee.id
-      applicant.save
-    end
-    notify_applicant(applicant)
-  end
+  # def self.process_applicant(applicant)
+  #   if applicant.accepted?
+  #     trainee = TraineeFactory.create_trainee_from_applicant(applicant)
+  #     if trainee.errors.any?
+  #       copy_error_messages(applicant, trainee)
+  #       fail ActiveRecord::Rollback, 'Inform Grant Staff'
+  #     end
+  #     applicant.trainee_id = trainee.id
+  #     applicant.save
+  #   end
+  #   notify_applicant(applicant)
+  # end
 
-  def self.notify_applicant(applicant)
-    if applicant.accepted? || applicant.declined?
-      AutoMailer.notify_applicant_status(applicant).deliver_now
-    end
-  end
+  # def self.notify_applicant(applicant)
+  #   if applicant.accepted? || applicant.declined?
+  #     AutoMailer.notify_applicant_status(applicant).deliver_now
+  #   end
+  # end
 
   def self.capture_applicant_location(request, applicant)
     location = request.location

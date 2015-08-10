@@ -18,10 +18,10 @@ class JobSearchProfileJob
     return if trainee.home_address
     a = trainee.applicant
 
-    TraineeFactory.geocode_applicant(a) unless a.valid_address?
+    geocode_applicant(a) unless a.valid_address?
     return unless a.valid_address?
 
-    attrs = TraineeFactory.build_address_attrs(a)
+    attrs = build_address_attrs(a)
     trainee.create_home_address(attrs)
     Rails.logger.info "AutoJobLeads: created trainee address for #{trainee.name}"
   end
@@ -62,5 +62,22 @@ class JobSearchProfileJob
 
   def trainee_location(trainee)
     trainee.home_address.city + ',' + trainee.home_address.state
+  end
+
+  def geocode_applicant(a)
+    addr = "#{a.address_line1}, #{a.address_city}, #{a.address_state}, #{a.address_zip}"
+    result = GeoServices.perform_search(addr).first
+    if result
+      a.longitude = result.longitude
+      a.latitude = result.latitude
+    end
+  end
+
+  def build_address_attrs(applicant)
+    { line1:     applicant.address_line1, line2:     applicant.address_line2,
+      city:      applicant.address_city,  state:     applicant.address_state,
+      zip:       applicant.address_zip,
+      longitude: applicant.longitude,     latitude:  applicant.latitude
+    }
   end
 end

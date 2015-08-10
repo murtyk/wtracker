@@ -99,100 +99,100 @@ class TraineeFactory
     params.delete(maa)  unless valid_address_attributes params[maa]
   end
 
-  def self.create_trainee_from_applicant(applicant)
-    grant   = applicant.grant
-    attrs   = build_trainee_attrs(applicant)
-    attrs   = attrs.merge(credentials_attrs(applicant))
+  # def self.create_trainee_from_applicant(applicant)
+  #   grant   = applicant.grant
+  #   attrs   = build_trainee_attrs(applicant)
+  #   attrs   = attrs.merge(credentials_attrs(applicant))
 
-    trainee = grant.trainees.new(attrs)
-    build_job_search_profile(applicant, trainee)
-    trainee.save
-    trainee
-  end
+  #   trainee = grant.trainees.new(attrs)
+  #   build_job_search_profile(applicant, trainee)
+  #   trainee.save
+  #   trainee
+  # end
 
   private
 
-  def self.build_job_search_profile(applicant, trainee)
-    if applicant.valid_address?
-      location = applicant.address_city + ',' + applicant.address_state
-      trainee.build_job_search_profile(account_id: trainee.account_id,
-                                       skills: applicant.skills,
-                                       location: location,
-                                       zip: applicant.address_zip,
-                                       distance: 20)
-    else
-      trainee.build_job_search_profile(account_id: trainee.account_id)
-    end
-  end
+  # def self.build_job_search_profile(applicant, trainee)
+  #   if applicant.valid_address?
+  #     location = applicant.address_city + ',' + applicant.address_state
+  #     trainee.build_job_search_profile(account_id: trainee.account_id,
+  #                                      skills: applicant.skills,
+  #                                      location: location,
+  #                                      zip: applicant.address_zip,
+  #                                      distance: 20)
+  #   else
+  #     trainee.build_job_search_profile(account_id: trainee.account_id)
+  #   end
+  # end
 
-  def self.build_trainee_attrs(applicant)
-    tact_three_attributes = build_tact3_attrs(applicant)
-    attrs = { first: applicant.first_name, last: applicant.last_name,
-              email: applicant.email, mobile_no: applicant.mobile_phone_no,
-              legal_status: applicant.legal_status, veteran: applicant.veteran,
-              gender: applicant.gender, race_id: applicant.race_id,
-              dob: applicant.dob,
-              tact_three_attributes: tact_three_attributes
-            }
-    geocode_applicant(applicant)
+  # def self.build_trainee_attrs(applicant)
+  #   tact_three_attributes = build_tact3_attrs(applicant)
+  #   attrs = { first: applicant.first_name, last: applicant.last_name,
+  #             email: applicant.email, mobile_no: applicant.mobile_phone_no,
+  #             legal_status: applicant.legal_status, veteran: applicant.veteran,
+  #             gender: applicant.gender, race_id: applicant.race_id,
+  #             dob: applicant.dob,
+  #             tact_three_attributes: tact_three_attributes
+  #           }
+  #   geocode_applicant(applicant)
 
-    if applicant.valid_address?
-      attrs[:home_address_attributes] = build_address_attrs(applicant)
-    end
-    attrs
-  end
+  #   if applicant.valid_address?
+  #     attrs[:home_address_attributes] = build_address_attrs(applicant)
+  #   end
+  #   attrs
+  # end
 
-  def self.build_address_attrs(applicant)
-    { line1:     applicant.address_line1, line2:     applicant.address_line2,
-      city:      applicant.address_city,  state:     applicant.address_state,
-      zip:       applicant.address_zip,
-      longitude: applicant.longitude,     latitude:  applicant.latitude
-    }
-  end
+  # def self.build_address_attrs(applicant)
+  #   { line1:     applicant.address_line1, line2:     applicant.address_line2,
+  #     city:      applicant.address_city,  state:     applicant.address_state,
+  #     zip:       applicant.address_zip,
+  #     longitude: applicant.longitude,     latitude:  applicant.latitude
+  #   }
+  # end
 
-  def self.build_tact3_attrs(applicant)
-    { education_level: applicant.education_level,
-      recent_employer: applicant.last_employer_name,
-      job_title:       applicant.last_job_title
-    }
-  end
+  # def self.build_tact3_attrs(applicant)
+  #   { education_level: applicant.education_level,
+  #     recent_employer: applicant.last_employer_name,
+  #     job_title:       applicant.last_job_title
+  #   }
+  # end
 
-  def self.credentials_attrs(applicant)
-    pwd = password_for(applicant)
+  # def self.credentials_attrs(applicant)
+  #   pwd = password_for(applicant)
 
-    { login_id: login_id_for(applicant), password: pwd, password_confirmation: pwd }
-  end
+  #   { login_id: login_id_for(applicant), password: pwd, password_confirmation: pwd }
+  # end
 
-  def self.password_for(ap)
-    pwd = ap.email.split('@')[0]
-    return pwd if pwd.length > 7
-    (pwd + '12345678')[0..7]
-  end
+  # def self.password_for(ap)
+  #   pwd = ap.email.split('@')[0]
+  #   return pwd if pwd.length > 7
+  #   (pwd + '12345678')[0..7]
+  # end
 
-  def self.login_id_for(ap)
-    first = ap.first_name.delete('^a-zA-Z')
-    last  = ap.last_name.delete('^a-zA-Z')
-    id    = first + '_' + last
-    n = 0
-    loop do
-      t = Trainee.unscoped.where(login_id: id).first
-      break unless t
-      n += 1
-      id += n.to_s
-    end
-    id
-  end
+  # def self.login_id_for(ap)
+  #   first = ap.first_name.delete('^a-zA-Z')
+  #   last  = ap.last_name.delete('^a-zA-Z')
+  #   id    = first + '_' + last
+  #   n = 0
+  #   loop do
+  #     t = Trainee.unscoped.where(login_id: id).first
+  #     break unless t
+  #     n += 1
+  #     id += n.to_s
+  #   end
+  #   id
+  # end
 
   def valid_file_suffix(filename)
     %w(doc docs pdf).include? filename.split('.')[-1]
   end
 
-  def self.geocode_applicant(a)
-    addr = "#{a.address_line1}, #{a.address_city}, #{a.address_state}, #{a.address_zip}"
-    result = GeoServices.perform_search(addr).first
-    if result
-      a.longitude = result.longitude
-      a.latitude = result.latitude
-    end
-  end
+  # def self.geocode_applicant(a)
+  #   addr = "#{a.address_line1}, #{a.address_city}, #{a.address_state}, #{a.address_zip}"
+  #   result = GeoServices.perform_search(addr).first
+  #   if result
+  #     a.longitude = result.longitude
+  #     a.latitude = result.latitude
+  #   end
+  # end
 end

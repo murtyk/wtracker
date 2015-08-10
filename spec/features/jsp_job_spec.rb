@@ -25,6 +25,7 @@ end
 
 describe 'job search profile job' do
   before :each do
+    Delayed::Worker.delay_jobs = false
     switch_to_applicants_domain
 
     allow_any_instance_of(Applicant).to receive(:humanizer_questions)

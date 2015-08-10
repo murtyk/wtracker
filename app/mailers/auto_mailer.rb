@@ -142,6 +142,15 @@ class AutoMailer < ActionMailer::Base
     use_standard_email
   end
 
+  def notify_tapo_admin(msg, subject = 'TAPO ERROR')
+    to_email = ENV['TAPO_ADMIN_EMAIL'] || 'support@operoinc.com'
+    mail(to:      to_email,
+         subject: subject,
+         from:    'JobLeads<jobleads@operoinc.com>') do |format|
+           format.html { render inline: msg }
+         end
+  end
+
   def host
     Host.host
   end
