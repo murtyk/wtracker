@@ -19,14 +19,6 @@
     </div>
     <div class='row-fluid'>
       <div class='span3'>
-          <%= f.input :dob, label: 'Date of Birth MM/DD/YYYY',
-                            input_html: { value: applicant.dob.to_s },
-                            as: :string,
-                            required: true %>
-      </div>
-    </div>
-    <div class='row-fluid'>
-      <div class='span3'>
         <%= f.input :address_line1, label: 'Street Address 1', required: true %>
       </div>
       <div class='span3'>
@@ -80,6 +72,12 @@
                                    required: true,
                                    collection: trainee_legal_statues,
                                    include_blank: 'Please Select' %>
+      </div>
+      <div class='span3'>
+          <%= f.input :dob, label: 'Date of Birth MM/DD/YYYY',
+                            input_html: { value: applicant.dob.to_s },
+                            as: :string,
+                            required: true %>
       </div>
       <div class='span3'>
         <%= f.input :gender, required: true, collection: genders,
