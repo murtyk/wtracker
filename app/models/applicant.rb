@@ -60,7 +60,7 @@ class Applicant < ActiveRecord::Base
   validates :address_zip, presence: true, length: { is: 5, wrong_length: 'is the wrong length (should be 5 digits)' }
 
   validates :grant,  presence: true
-  validates_uniqueness_of :email, scope: :grant_id
+  validates_uniqueness_of :email, scope: :grant_id, case_sensitive: false
   validate :validate_applicant_data
 
   after_initialize :init
