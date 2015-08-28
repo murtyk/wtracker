@@ -8,7 +8,7 @@ class TraineePlacement < ActiveRecord::Base
               salary job_title start_date reported_date placement_type)
 
   FIELDS.each do |field|
-    attr_accessible field
+    attr_accessible field # permitted
   end
 
   validate :validate_data

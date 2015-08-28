@@ -4,7 +4,7 @@ class Attachment < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
   before_destroy :cb_before_destroy
 
-  attr_accessible :name, :file
+  attr_accessible :name, :file # permitted
 
   belongs_to :account
   belongs_to :email

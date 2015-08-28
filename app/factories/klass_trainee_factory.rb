@@ -10,9 +10,9 @@ include UtilitiesHelper
 #    2. From trainee page
 #    3. Add multiple trainees through near by colleges page
 class KlassTraineeFactory
-  def self.update_klass_trainee(all_params)
-    klass_trainee = KlassTrainee.find(all_params[:id])
-    params = extract_kt_params(all_params)
+  def self.update_klass_trainee(id, kt_params)
+    klass_trainee = KlassTrainee.find(id)
+    params = extract_kt_params(kt_params)
 
     trainee = klass_trainee.trainee
 
@@ -29,8 +29,8 @@ class KlassTraineeFactory
     kt_d
   end
 
-  def self.extract_kt_params(all_params)
-    params = all_params[:klass_trainee].clone
+  def self.extract_kt_params(kt_params)
+    params = kt_params.clone
     status = params[:status].to_i
     # KT status will be changed to Placed by TI update
     params.delete(:status) if status == 4
@@ -55,9 +55,8 @@ class KlassTraineeFactory
   end
 
   def self.clear_ti_attrs_from_params(params)
-    [:hire_title, :hire_salary, :start_date, :comment,
-     :employer_id, :employer_name, :ti_status].each { |k| params.delete(k) }
-    params
+    params.except(:hire_title, :hire_salary, :start_date, :comment,
+                  :employer_id, :employer_name, :ti_status)
   end
 
   def self.update(klass_trainee, params, t_i)
@@ -106,9 +105,7 @@ class KlassTraineeFactory
   #        @object should be Klass
   # Near By Colleges ->  new.html -> trainee_ids as string
   #        @object should be Klass
-  def self.add_klass_trainees(all_params)
-    params = all_params[:klass_trainee]
-
+  def self.add_klass_trainees(params)
     return add_klass_to_a_trainee(params) if params[:trainee_id] &&
                                              (params[:trainee_id].is_a? String)
 

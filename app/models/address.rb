@@ -13,6 +13,7 @@ class Address < ActiveRecord::Base
   alias_attribute(:state_code, :state)
   alias_attribute(:county_name, :county)
 
+  # permitted. no direct controller
   attr_accessible :city, :county, :county_id, :country, :gmaps,
                   :latitude, :line1, :line2, :longitude, :state, :zip
 

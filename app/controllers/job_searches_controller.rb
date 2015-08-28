@@ -139,4 +139,10 @@ class JobSearchesController < ApplicationController
     klass_title = KlassTitle.find(klass_title_id)
     klass_title.get_job_search(true)
   end
+
+  def job_search_params
+    params.require(:job_search)
+      .permit(:keywords, :location, :count, :distance,
+              :recruiters, :days, :klass_title_id, :in_state)
+  end
 end

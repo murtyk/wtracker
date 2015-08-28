@@ -20,6 +20,7 @@ class Trainee < ActiveRecord::Base
   devise :recoverable, :rememberable, :trackable
   extend DeviseOverrides
 
+  # permitted
   attr_accessible :remember_me, :login_id, :password, :password_confirmation,
                   :disability, :dob, :education, :email, :first, :last,
                   :gender, :land_no, :middle, :mobile_no, :trainee_id,

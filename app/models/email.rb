@@ -7,7 +7,7 @@ class Email < ActiveRecord::Base
 
   belongs_to :account
   belongs_to :user
-  attr_accessible :content, :subject, :trainee_file_ids
+  attr_accessible :content, :subject, :trainee_file_ids # permitted indirectly
   attr_accessor :klass_id, :contact_ids
 
   has_many :contact_emails, dependent: :destroy

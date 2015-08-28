@@ -4,6 +4,8 @@ class Applicant < ActiveRecord::Base
   include Humanizer
 
   default_scope { where(account_id: Account.current_id) }
+
+  # permitted
   attr_accessible :first_name, :last_name, :email, :address_line1, :address_line2,
                   :address_city, :address_state, :address_zip, :mobile_phone_no,
                   :last_employed_on, :current_employment_status, :last_job_title,

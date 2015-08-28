@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
   def update_password
     @user = current_user
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(password_params)
       # Sign in the user by passing validation in case his password changed
       sign_in @user, bypass: true
       flash[:notice] = 'Password successfully updated'
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def update_preferences
-    current_user.copy_job_shares = params[:user]
+    current_user.copy_job_shares = preferences_params
   end
 
   def show
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     authorize @user
 
-    if @user.update_and_assign_role(params[:user])
+    if @user.update_and_assign_role(user_params)
       redirect_to @user, notice: 'user was successfully updated.'
     else
       render :edit
@@ -67,8 +67,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user]
-                     .merge(password_confirmation: params[:user][:password]))
+    @user = User.new(user_params
+      .merge(password_confirmation: params[:user][:password]))
     authorize @user
 
     if valid_password && @user.save
@@ -84,5 +84,22 @@ class UsersController < ApplicationController
     return true if params[:user][:password].length >= 8
     @user.errors.add(:password, 'required. minimum 8 characters.')
     false
+  end
+
+  def password_params
+    params.require(:user)
+      .permit(:password, :password_confirmation)
+  end
+
+  def preferences_params
+    params.require(:user)
+      .permit(:pref_copy_jobshares)
+  end
+
+  def user_params
+    params.require(:user)
+      .permit(:first, :last, :location, :role, :acts_as_admin,
+              :status, :land_no, :ext, :mobile_no,
+              :email, :password, :comments, county_ids: [], grant_ids: [])
   end
 end

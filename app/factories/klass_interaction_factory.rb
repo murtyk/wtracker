@@ -18,7 +18,7 @@ class KlassInteractionFactory
   # create interaction if new
   def self.create_klass_interaction(params, user)
     employer, klass_event, new_event = find_or_build_objects(params.clone, user)
-    status      = params[:klass_interaction][:status]
+    status      = params[:status]
     saved       = save_objects(employer, klass_event, status)
 
     if saved && new_event
@@ -41,7 +41,7 @@ class KlassInteractionFactory
   end
 
   def self.find_or_build_employer(params, user)
-    employer_id = params[:klass_interaction][:employer_id]
+    employer_id = params[:employer_id]
     return Employer.find(employer_id) unless employer_id.blank?
 
     emp_params     = params[:employer]
@@ -53,12 +53,14 @@ class KlassInteractionFactory
 
   def self.find_or_build_event(params)
     if params[:klass_event][:name].blank?
-      return KlassEvent.find(params[:klass_interaction][:klass_event_id])
+      return KlassEvent.find(params[:klass_event_id])
     end
-    klass_id  = params[:klass_interaction][:klass_id]
-    ke_params = params[:klass_event]
+    klass_id  = params[:klass_id]
     klass     = Klass.find(klass_id)
+
+    ke_params = params[:klass_event]
     ke_params[:event_date] = opero_str_to_date(ke_params[:event_date])
+
     klass.klass_events.build(ke_params)
   end
 
@@ -88,19 +90,16 @@ class KlassInteractionFactory
     klass_event.event_date = params[:klass_event][:event_date]
   end
 
-  def self.update_klass_interaction(all_params, user)
-    klass_interaction = KlassInteraction.find(all_params[:id])
-    params = all_params[:klass_interaction]
-    params.delete(:employer_id)
+  def self.update_klass_interaction(ki_id, ki_params, user)
+    klass_interaction = KlassInteraction.find(ki_id)
 
-    if params[:klass_event]
+    if ki_params[:klass_event]
       # event data also might be changed
       klass_event = klass_interaction.klass_event
-      update_event(klass_event, params[:klass_event], user)
-      params.delete(:klass_event)
+      update_event(klass_event, ki_params[:klass_event], user)
     end
 
-    klass_interaction.update_attributes(params)
+    klass_interaction.update_attributes(ki_params.except(:employer_id, :klass_event))
     klass_interaction
   end
 

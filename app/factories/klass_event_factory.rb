@@ -1,22 +1,20 @@
 include UtilitiesHelper
 # factory for create and update
 class KlassEventFactory
-  def self.create(params, current_user)
-    klass_event = build_event(params.clone)
+  def self.create(ke_params, current_user)
+    klass_event = build_event(ke_params)
     if klass_event.save
       UserMailer.send_event_invite(klass_event, current_user).deliver_now
     else
-      klass_event.event_date = params[:klass_event][:event_date]
+      klass_event.event_date = ke_params[:event_date]
     end
     klass_event
   end
 
-  def self.build_event(params)
-    ke_params = params[:klass_event]
-    employer_ids = ke_params.delete(:employer_ids)
+  def self.build_event(ke_params)
+    employer_ids = ke_params[:employer_ids]
     employer_ids.delete('')
-    klass = Klass.find(params[:klass_id])
-    klass_event = klass.klass_events.new(ke_params)
+    klass_event = KlassEvent.new(ke_params.except(:event_date, :employer_ids))
 
     klass_event.event_date = opero_str_to_date(ke_params[:event_date])
     employer_ids.each do |e_id|
@@ -25,19 +23,16 @@ class KlassEventFactory
     klass_event
   end
 
-  def self.update_klass_event(params, current_user)
-    klass_event = KlassEvent.find(params[:id])
-    params[:klass_event][:event_date] =
-          opero_str_to_date(params[:klass_event][:event_date])
-    employer_ids = params[:klass_event].delete(:employer_ids)
+  def self.update_klass_event(ke, ke_params, current_user)
+    employer_ids = ke_params[:employer_ids]
     employer_ids.delete('')
 
     new_ids             = employer_ids.map(&:to_i)
-    existing_ids        = klass_event.klass_interactions.pluck(:employer_id)
+    existing_ids        = ke.klass_interactions.pluck(:employer_id)
     delete_ids, add_ids = delete_and_add_ids(existing_ids, new_ids)
 
-    update_event(params, current_user, klass_event, add_ids, delete_ids)
-    klass_event
+    update_event(ke, ke_params, current_user, add_ids, delete_ids)
+    ke
   end
 
   def self.delete_and_add_ids(existing_employer_ids, new_employer_ids)
@@ -46,8 +41,11 @@ class KlassEventFactory
     [delete_ids, add_ids]
   end
 
-  def self.update_event(params, current_user, ke, add_ids, del_ids)
-    if ke.update_attributes(params[:klass_event])
+  def self.update_event(ke, ke_params, current_user, add_ids, del_ids)
+    params = ke_params.except(:event_date, :employer_ids).clone
+    params[:event_date] = opero_str_to_date(ke_params[:event_date])
+
+    if ke.update_attributes(params)
       interactions_to_del = ke.klass_interactions.where(employer_id: del_ids)
       ke.klass_interactions.destroy(interactions_to_del)
       add_ids.each do |id|
@@ -55,7 +53,7 @@ class KlassEventFactory
       end
       UserMailer.send_event_invite(ke, current_user).deliver_now
     else
-      ke.event_date = params[:klass_event][:event_date]
+      ke.event_date = ke_params[:event_date]
     end
   end
 end

@@ -17,7 +17,7 @@ class Employer < ActiveRecord::Base
   }
 
   attr_accessible :name, :address_attributes,
-                  :phone_no, :website, :sector_ids, :trainee_ids, :employer_source_id
+                  :phone_no, :website, :sector_ids, :trainee_ids, :employer_source_id # permitted
 
   validates :name, presence: true, length: { minimum: 3, maximum: 100 }
 

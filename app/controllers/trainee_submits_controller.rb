@@ -20,10 +20,16 @@ class TraineeSubmitsController < ApplicationController
   private
 
   def build_trainee_submit
-    trainee = Trainee.find(params[:trainee_submit].delete(:trainee_id))
+    trainee = Trainee.find(params[:trainee_submit][:trainee_id])
 
-    trainee_submit = trainee.trainee_submits.new(params[:trainee_submit])
-    trainee_submit.applied_on = opero_str_to_date(params[:trainee_submit][:applied_on])
-    trainee_submit
+    trainee.trainee_submits.new(trainee_submit_params)
+  end
+
+  def trainee_submit_params
+    ts_params = params.require(:trainee_submit)
+                .permit(:title, :employer_id, :applied_on)
+
+    ts_params[:applied_on] = opero_str_to_date(ts_params[:applied_on])
+    ts_params
   end
 end

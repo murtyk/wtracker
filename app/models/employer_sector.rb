@@ -5,7 +5,7 @@ class EmployerSector < ActiveRecord::Base
   belongs_to :account
   belongs_to :employer
   belongs_to :sector
-  attr_accessible :sector_id, :account_id, :employer_id
+  attr_accessible :sector_id, :account_id, :employer_id # permitted
 
   delegate :name, to: :sector, prefix: true, allow_nil: true
 end

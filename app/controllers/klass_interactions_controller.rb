@@ -46,12 +46,10 @@ class KlassInteractionsController < ApplicationController
     # update interaction if exists
     # create interaction
 
-    # debugger
-
     saved,
     @klass_interaction,
     @klass_event,
-    @employer = KlassInteractionFactory.create_klass_interaction(params, current_user)
+    @employer = KlassInteractionFactory.create_klass_interaction(ki_params, current_user)
 
     respond_to do |format|
       if saved
@@ -69,9 +67,11 @@ class KlassInteractionsController < ApplicationController
   # PUT /klass_interactions/1
   # PUT /klass_interactions/1.json
   def update
-    @from_page = params[:klass_interaction].delete(:from_page).to_i
-    @klass_interaction = KlassInteractionFactory.update_klass_interaction(params,
-                                                                          current_user)
+    @from_page = params[:klass_interaction][:from_page].to_i
+    @klass_interaction = KlassInteractionFactory
+                         .update_klass_interaction(params[:id],
+                                                   ki_params_for_update,
+                                                   current_user)
   end
 
   # DELETE /klass_interactions/1
@@ -85,5 +85,38 @@ class KlassInteractionsController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def ki_params
+    kip = params.require(:klass_interaction)
+          .permit(:status, :klass_event_id, :employer_id, :klass_id)
+
+    if params[:employer]
+      kip[:employer] = params.require(:employer)
+                       .permit(:name,
+                               :phone_no,
+                               sector_ids: [],
+                               address_attributes: [:line1, :line2,
+                                                    :city, :state, :zip])
+    end
+
+    if params[:klass_event]
+      kip[:klass_event] = params.require(:klass_event)
+                          .permit(:event_date, :name, :klass_id, :notes,
+                                  :start_ampm, :start_time_hr, :start_time_min,
+                                  :end_ampm, :end_time_hr, :end_time_min)
+    end
+
+    kip
+  end
+
+  def ki_params_for_update
+    params.require(:klass_interaction)
+      .permit(:status, :klass_event_id, :employer_id, :klass_id,
+              klass_event: [:event_date, :name, :notes,
+                            :start_ampm, :start_time_hr, :start_time_min,
+                            :end_ampm, :end_time_hr, :end_time_min])
   end
 end

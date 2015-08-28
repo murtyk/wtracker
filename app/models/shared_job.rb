@@ -4,6 +4,8 @@ class SharedJob < ActiveRecord::Base
 
   belongs_to :job_share
   belongs_to :account
+
+  # permitted throug JobSharesController. No direct controller.
   attr_accessible :details_url, :excerpt, :title, :date_posted
 
   has_many :shared_job_statuses

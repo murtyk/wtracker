@@ -14,7 +14,7 @@ class KlassInstructorsController < ApplicationController
   end
 
   def create
-    @klass_instructor = KlassInstructor.new(params[:klass_instructor])
+    @klass_instructor = KlassInstructor.new(klass_instructor_params)
     @klass_instructor.save
     @klass = @klass_instructor.klass
   end
@@ -30,5 +30,12 @@ class KlassInstructorsController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def klass_instructor_params
+    params.require(:klass_instructor)
+      .permit(:user_id, :klass_id)
   end
 end

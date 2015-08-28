@@ -21,7 +21,7 @@ class FundingSourcesController < ApplicationController
   end
 
   def create
-    @funding_source = FundingSource.new(params[:funding_source])
+    @funding_source = FundingSource.new(funding_source_params)
     authorize @funding_source
     @funding_source.save
     @funding_sources = FundingSource.all
@@ -31,5 +31,11 @@ class FundingSourcesController < ApplicationController
     @funding_source = FundingSource.find(params[:id])
     authorize @funding_source
     @funding_source.destroy if @funding_source.trainees.empty?
+  end
+
+  private
+
+  def funding_source_params
+    params.require(:funding_source).permit(:name)
   end
 end

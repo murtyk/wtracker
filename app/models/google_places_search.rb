@@ -3,5 +3,5 @@
 class GooglePlacesSearch < ActiveRecord::Base
   belongs_to :city
   belongs_to :opero_company
-  attr_accessible :name, :score, :city_id
+  attr_accessible :name, :score, :city_id # permitted indirectly
 end

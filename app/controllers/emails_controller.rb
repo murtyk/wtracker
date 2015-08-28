@@ -35,7 +35,7 @@ class EmailsController < ApplicationController
   end
 
   def create
-    @email = EmailFactory.create_email(params, current_user)
+    @email = EmailFactory.create_email(email_params, current_user)
 
     respond_to do |format|
       if @email.errors.empty?
@@ -57,5 +57,14 @@ class EmailsController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def email_params
+    params.require(:email)
+      .permit(:content, :subject, :klass_id, :trainee_file_ids,
+              contact_ids: [],
+              attachments: [:name, :file])
   end
 end

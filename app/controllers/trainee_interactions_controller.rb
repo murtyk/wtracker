@@ -17,7 +17,7 @@ class TraineeInteractionsController < ApplicationController
   # GET /trainee_interactions/new
   # GET /trainee_interactions/new.json
   def new
-    @trainee_interaction = TraineeInteractionFactory.build(params)
+    @trainee_interaction = TraineeInteractionFactory.build(trainee_id)
     respond_to do |format|
       format.html # new.html.erb
       format.js
@@ -40,20 +40,35 @@ class TraineeInteractionsController < ApplicationController
   # POST /trainee_interactions.json
   def create
     # object is either Employer or Trainee
-    @object = TraineeInteractionFactory.create(params)
+    @object = TraineeInteractionFactory.create(trainee_id,
+                                               trainee_interaction_params)
   end
 
   # PUT /trainee_interactions/1
   # PUT /trainee_interactions/1.json
   def update
-    @trainee_interaction = TraineeInteractionFactory.update(params)
+    @trainee_interaction = TraineeInteractionFactory
+                           .update(params[:id], trainee_interaction_params)
     @trainee = @trainee_interaction.trainee
   end
 
   # DELETE /trainee_interactions/1
   # DELETE /trainee_interactions/1.json
   def destroy
-    @trainee_interaction = TraineeInteractionFactory.destroy(params)
+    @trainee_interaction = TraineeInteractionFactory.destroy(params[:id])
     @trainee = @trainee_interaction.trainee
+  end
+
+  private
+
+  def trainee_interaction_params
+    params.require(:trainee_interaction)
+      .permit(:employer_id, :comment, :status, :company, :employer_name,
+              :start_date, :hire_salary, :hire_title, :termination_date,
+              :klass_id, :trainee_ids, :employer_name)
+  end
+
+  def trainee_id
+    params[:trainee_id] || params[:trainee_interaction][:trainee_id]
   end
 end

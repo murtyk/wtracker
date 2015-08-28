@@ -3,7 +3,7 @@
 class UserEmployerSource < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
 
-  attr_accessible :user_id, :employer_source_id
+  attr_accessible :user_id, :employer_source_id # permitted indirectly
 
   belongs_to :account
   belongs_to :employer_source

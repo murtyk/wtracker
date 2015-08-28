@@ -10,7 +10,7 @@ class Account < ActiveRecord::Base
 
   attr_accessible :options, :description, :name, :status, :client_type,
                   :subdomain, :logo_file, :users_attributes,
-                  :grants_attributes, :account_states_attributes, :demo
+                  :grants_attributes, :account_states_attributes, :demo # permitted
 
   cattr_accessor :current_id, instance_writer: false, instance_reader: false
 
@@ -91,7 +91,7 @@ class Account < ActiveRecord::Base
   end
 
   def director
-    users.where(role: 1).first
+    users.unscoped.where(account_id: id, role: 1).first
   end
 
   def director_name

@@ -3,6 +3,8 @@
 class KlassSchedule < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
   belongs_to :klass
+
+  # permitted through klass controller
   attr_accessible :dayoftheweek, :scheduled,
                   :start_ampm, :start_time_hr, :start_time_min,
                   :end_ampm, :end_time_hr, :end_time_min

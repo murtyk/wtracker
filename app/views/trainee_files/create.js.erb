@@ -1,3 +1,7 @@
-$('#trainee_new_file_div').remove();
-$('#trainee_files').prepend('<%= j render(@trainee_file) %>');
-$('#new_trainee_file_link').show();
+<% if @error_message.blank? %>
+  $('#trainee_new_file_div').remove();
+  $('#trainee_files').prepend('<%= j render(@trainee_file) %>');
+  $('#new_trainee_file_link').show();
+<% else %>
+  alert('<%= @error_message %>');
+<% end %>

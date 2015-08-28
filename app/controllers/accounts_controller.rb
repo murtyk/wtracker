@@ -9,4 +9,10 @@ class AccountsController < ApplicationController
     authorize current_account, :update?
     current_account.update_options(params[:account])
   end
+
+  private
+
+  def account_params
+    params.require(:account).permit(:options, :track_trainee, :mark_jobs_applied)
+  end
 end

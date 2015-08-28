@@ -14,7 +14,7 @@ class KlassNavigatorsController < ApplicationController
   end
 
   def create
-    @klass_navigator = KlassNavigator.new(params[:klass_navigator])
+    @klass_navigator = KlassNavigator.new(klass_navigator_params)
     @klass_navigator.save
     @klass = @klass_navigator.klass
   end
@@ -30,5 +30,12 @@ class KlassNavigatorsController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def klass_navigator_params
+    params.require(:klass_navigator)
+      .permit(:user_id, :klass_id)
   end
 end

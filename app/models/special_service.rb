@@ -7,7 +7,7 @@ class SpecialService < ActiveRecord::Base
   belongs_to :account
   belongs_to :grant
 
-  attr_accessible :name
+  attr_accessible :name # permitted
   validates :name,
             presence: { message: 'name can not be blank.' },
             length: { minimum: 3, maximum: 50 }

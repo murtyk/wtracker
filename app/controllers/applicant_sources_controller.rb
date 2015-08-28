@@ -11,7 +11,7 @@ class ApplicantSourcesController < ApplicationController
   end
 
   def create
-    applicant_source = ApplicantSource.new(params[:applicant_source])
+    applicant_source = ApplicantSource.new(applicant_source_params)
     authorize applicant_source
     applicant_source.save
     @applicant_sources = ApplicantSource.order(:source)
@@ -21,5 +21,11 @@ class ApplicantSourcesController < ApplicationController
     @applicant_source = ApplicantSource.find(params[:id])
     authorize @applicant_source
     @applicant_source.destroy
+  end
+
+  private
+
+  def applicant_source_params
+    params.require(:applicant_source).permit(:source)
   end
 end

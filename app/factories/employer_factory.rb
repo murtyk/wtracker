@@ -116,10 +116,10 @@ class EmployerFactory
     saved
   end
 
-  def self.update_employer(all_params)
-    employer = Employer.find(all_params[:id])
+  def self.update_employer(id, employer_params)
+    employer = Employer.find(id)
 
-    params = all_params.clone[:employer]
+    params = employer_params.clone
     no_address = clean_address(params)
 
     saved, error_message = update(params, employer, no_address)

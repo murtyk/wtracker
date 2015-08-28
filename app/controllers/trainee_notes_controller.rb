@@ -18,7 +18,7 @@ class TraineeNotesController < ApplicationController
   # POST /trainee_notes
   # POST /trainee_notes.json
   def create
-    @trainee_note = TraineeNote.new(params[:trainee_note])
+    @trainee_note = TraineeNote.new(traiee_note_params)
     authorize @trainee_note
     @trainee_note.save
     @trainee = @trainee_note.trainee
@@ -30,7 +30,7 @@ class TraineeNotesController < ApplicationController
     @trainee_note = TraineeNote.find(params[:id])
     authorize @trainee_note
 
-    @trainee_note.update_attributes(params[:trainee_note])
+    @trainee_note.update_attributes(traiee_note_params)
   end
 
   # DELETE /trainee_notes/1
@@ -40,5 +40,12 @@ class TraineeNotesController < ApplicationController
     authorize @trainee_note
 
     @trainee_note.destroy
+  end
+
+  private
+
+  def traiee_note_params
+    params.require(:trainee_note)
+      .permit(:notes, :trainee_id)
   end
 end

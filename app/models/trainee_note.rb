@@ -1,6 +1,6 @@
 # notes on a trainee
 class TraineeNote < ActiveRecord::Base
-  attr_accessible :notes, :trainee_id
+  attr_accessible :notes, :trainee_id # permitted
   belongs_to :trainee
   validates :notes, presence: true, length: { minimum: 3 }
   def date_and_notes

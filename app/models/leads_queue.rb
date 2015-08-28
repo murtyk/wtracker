@@ -3,6 +3,7 @@ class LeadsQueue < ActiveRecord::Base
 
   scope :pending, -> { where(status: 1) }
 
+  # permitted because it comes directly from api client - tapo_worker
   attr_accessible :trainee_id, :status,
                   :jsp_id, :skills, :distance, :location, :zip,
                   :trainee_ip, :last_date_posted,

@@ -1,12 +1,12 @@
 # a Grant or College account can have multiple programs
 # and many classes in a program
 class Program < ActiveRecord::Base
-  INTEREST_TYPES = { 1 => 'Interested', 2 => 'Not Interested', 3 => 'No Response' }
-
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
+
+  # permitted
   attr_accessible :description, :name, :hours,
-                  :sector_id, :grant_id
+                  :sector_id
 
   validates :name, presence: true, length: { minimum: 3, maximum: 80 }
 

@@ -20,7 +20,7 @@ class UnemploymentProofsController < ApplicationController
   end
 
   def create
-    @unemployment_proof = UnemploymentProof.new(params[:unemployment_proof])
+    @unemployment_proof = UnemploymentProof.new(unemployment_proof_params)
     @unemployment_proof.save
     @unemployment_proofs = UnemploymentProof.all
   end
@@ -28,5 +28,11 @@ class UnemploymentProofsController < ApplicationController
   def destroy
     @unemployment_proof = UnemploymentProof.find(params[:id])
     @unemployment_proof.destroy
+  end
+
+  private
+
+  def unemployment_proof_params
+    params.require(:unemployment_proof).permit(:name)
   end
 end

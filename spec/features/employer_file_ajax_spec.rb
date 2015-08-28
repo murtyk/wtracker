@@ -33,7 +33,9 @@ describe 'EmployerFile', js: true do
       click_on 'Add File'
       wait_for_ajax
 
-      expect(page).to have_text 'Resume'
+      expect(page).to have_text 'RESUME'
+
+      allow(Amazon).to receive(:original_file_name).and_return('COVER LETTER.pdf')
 
       click_link 'new_employer_file_link'
       @filepath = cover_letter
@@ -44,7 +46,7 @@ describe 'EmployerFile', js: true do
       click_on 'Add File'
       wait_for_ajax
 
-      expect(page).to have_text 'Cover Letter'
+      expect(page).to have_text 'COVER LETTER'
     end
   end
   describe 'can open and delete attachments' do
@@ -71,8 +73,8 @@ describe 'EmployerFile', js: true do
       click_on 'Add File'
       wait_for_ajax
 
-      expect(page).to have_text 'Cover Letter'
-      click_on 'Cover Letter'
+      expect(page).to have_text 'COVER LETTER'
+      click_on 'COVER LETTER'
 
       new_window = windows.last
       page.within_window new_window do
@@ -84,7 +86,7 @@ describe 'EmployerFile', js: true do
 
       page.driver.browser.switch_to.alert.accept
       wait_for_ajax
-      expect(page).to_not have_text 'Cover Letter'
+      expect(page).to_not have_text 'COVER LETTER'
     end
   end
 end

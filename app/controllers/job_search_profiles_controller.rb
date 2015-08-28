@@ -41,7 +41,10 @@ class JobSearchProfilesController < ApplicationController
   private
 
   def profile_params
-    p_params = params[:job_search_profile].clone
+    p_params = params.require(:job_search_profile)
+               .permit(:skills, :location, :distance, :zip, :key,
+                       :opted_out, :opt_out_reason_code, :opt_out_reason,
+                       :company_name, :start_date, :title, :salary).clone
     start_date = p_params[:start_date]
     p_params[:start_date] = opero_str_to_date(start_date) if start_date
     p_params

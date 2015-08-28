@@ -26,7 +26,7 @@ class ProgramsController < ApplicationController
 
   # POST /programs
   def create
-    @program = Program.new(params[:program])
+    @program = Program.new(programs_params)
     authorize @program
 
     if @program.save
@@ -41,10 +41,17 @@ class ProgramsController < ApplicationController
     @program = Program.find(params[:id])
     authorize @program
 
-    if @program.update_attributes(params[:program])
+    if @program.update_attributes(programs_params)
       redirect_to @program, notice: 'Program was successfully updated.'
     else
       render :edit
     end
+  end
+
+  private
+
+  def programs_params
+    params.require(:program)
+      .permit(:description, :name, :hours, :sector_id)
   end
 end

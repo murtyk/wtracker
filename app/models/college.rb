@@ -5,7 +5,7 @@ class College < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
   default_scope { order(:name) }
 
-  attr_accessible :name, :address_attributes
+  attr_accessible :name, :address_attributes # permitted
   validates :name, presence: true, length: { minimum: 3, maximum: 50 }
 
   has_one :address, as: :addressable, dependent: :destroy

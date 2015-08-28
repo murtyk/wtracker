@@ -8,9 +8,14 @@
   <% if @employer_map.trainees.any? %>
   <div class='span3' style='background-color: #eee; padding:10px'>
     <b>Send Email:</b><hr>
-    <%= simple_form_for @trainee_email do |f| %>
+
+    <% url = { controller: :trainee_emails,
+               action: :create,
+               trainee_ids: @trainee_email.trainee_ids } %>
+
+    <%= simple_form_for @trainee_email, url: url do |f| %>
       <%= f.hidden_field :klass_id %>
-      <%= f.hidden_field :trainee_ids %>
+      <%#= f.hidden_field :trainee_ids %>
       <%= f.input :subject, input_html: { style: 'width: 90%'} %>
       <%= f.input :content, input_html: { style: 'width: 90%; height: 100px'} %>
       <%= submit_button(f, 'Send') %>

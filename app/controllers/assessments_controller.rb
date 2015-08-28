@@ -1,14 +1,12 @@
 class AssessmentsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
-  # GET /account_states/new.js
   def new
     @assessment = Assessment.new
   end
 
-  # POST /account_states.js
   def create
-    assessment = Assessment.new(name: params[:assessment][:name])
+    assessment = Assessment.new(assessment_params)
     assessment.save
     @assessments = Assessment.all
   end
@@ -17,9 +15,14 @@ class AssessmentsController < ApplicationController
     @assessments = Assessment.all
   end
 
-  # DELETE /account_states/1.js
   def destroy
     @assessment = Assessment.find(params[:id])
     @assessment.destroy
+  end
+
+  private
+
+  def assessment_params
+    params.require(:assessment).permit(:name)
   end
 end

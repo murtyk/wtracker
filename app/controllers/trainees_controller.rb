@@ -25,7 +25,7 @@ class TraineesController < ApplicationController
     @tas = TraineeAdvancedSearch.new(current_user)
 
     respond_to do |format|
-      format.html{ perform_advanced_search }
+      format.html { perform_advanced_search }
       format.js  { send_advanced_search_results_file_by_email }
       format.xls { send_advanced_search_results_file }
     end
@@ -50,7 +50,7 @@ class TraineesController < ApplicationController
   end
 
   def create
-    @trainee = TraineeFactory.new_trainee(params[:trainee])
+    @trainee = TraineeFactory.new_trainee(trainee_params)
     authorize @trainee
 
     respond_to do |format|
@@ -71,7 +71,7 @@ class TraineesController < ApplicationController
 
   def update
     authorize Trainee.find(params[:id])
-    @trainee = TraineeFactory.update_trainee(params)
+    @trainee = TraineeFactory.update_trainee(params[:id], trainee_params)
     if @trainee.errors.empty?
       redirect_to(@trainee, notice: 'Trainee was successfully updated.')
     else
@@ -96,16 +96,18 @@ class TraineesController < ApplicationController
     authorize @trainee
   end
 
-  def search_by_grant_type
-    if current_grant.trainee_applications?
-      return @q.result.includes(:klasses, :job_search_profile, :assessments,
-                                :funding_source, :home_address,
-                                tact_three: [:education],
-                                applicant: [:navigator, :sector])
-    end
-    @q.result.includes(:klasses, :funding_source, :home_address,
-                       :assessments, tact_three: [:education])
-  end
+  private
+
+  # def search_by_grant_type
+  #   if current_grant.trainee_applications?
+  #     return @q.result.includes(:klasses, :job_search_profile, :assessments,
+  #                               :funding_source, :home_address,
+  #                               tact_three: [:education],
+  #                               applicant: [:navigator, :sector])
+  #   end
+  #   @q.result.includes(:klasses, :funding_source, :home_address,
+  #                      :assessments, tact_three: [:education])
+  # end
 
   def send_advanced_search_results_file
     @tas.build_document(params[:q])
@@ -123,5 +125,19 @@ class TraineesController < ApplicationController
     @trainees = @tas.search(params[:q])
     @q = @tas.q
     @trainees = @trainees.to_a.paginate(page: params[:page], per_page: 20)
+  end
+
+  def trainee_params
+    params.require(:trainee)
+      .permit(:remember_me, :login_id, :password, :password_confirmation,
+              :disability, :dob, :education, :email, :first, :last,
+              :gender, :land_no, :middle, :mobile_no, :trainee_id,
+              :status, :veteran, :race_id,
+              :legal_status, :funding_source_id,
+              klass_ids: [],
+              tact_three_attributes: [:certifications, :education_level,
+                                      :job_title, :recent_employer, :years],
+              home_address_attributes: [:id, :line1, :line2, :city, :state, :zip],
+              mailing_address_attributes: [:id, :line1, :line2, :city, :state, :zip])
   end
 end

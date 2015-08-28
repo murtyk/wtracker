@@ -3,7 +3,7 @@ class HotJob < ActiveRecord::Base
   scope :open_jobs, -> { where('closing_date > ?', Date.today) }
 
   attr_accessible :date_posted, :employer_id, :location,
-                  :closing_date, :title, :description, :salary
+                  :closing_date, :title, :description, :salary # permitted
 
   belongs_to :account
   belongs_to :user

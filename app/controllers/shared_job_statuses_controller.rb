@@ -67,4 +67,11 @@ class SharedJobStatusesController < ApplicationController
       #                                    key: @shared_job_status.key)
     end
   end
+
+  private
+
+  def shared_job_status_params
+    params.require(:shared_job_status)
+      .permit(:feedback, :status)
+  end
 end

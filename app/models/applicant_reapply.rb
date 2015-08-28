@@ -2,7 +2,7 @@
 #    when they become eligible
 class ApplicantReapply < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id, grant_id: Grant.current_id) }
-  attr_accessible :key, :email, :used
+  attr_accessible :key, :email, :used # permitted
   attr_accessor :salt, :email
 
   belongs_to :account

@@ -101,7 +101,7 @@ class EmployersController < ApplicationController
   def create
     authorize Employer.new
 
-    @employer, saved = EmployerFactory.create_employer(current_user, params[:employer])
+    @employer, saved = EmployerFactory.create_employer(current_user, employer_params)
 
     respond_to do |format|
       if saved
@@ -118,7 +118,10 @@ class EmployersController < ApplicationController
   def update
     authorize Employer.find(params[:id])
 
-    saved, @employer, error_message = EmployerFactory.update_employer(params)
+    saved,
+    @employer,
+    error_message = EmployerFactory.update_employer(params[:id],
+                                                    employer_params)
 
     if saved
       notice = 'Employer was successfully updated.'
@@ -134,5 +137,13 @@ class EmployersController < ApplicationController
     authorize @employer
 
     @employer.destroy
+  end
+
+  private
+
+  def employer_params
+    params.require(:employer)
+      .permit(:name, :phone_no, :website, :sector_ids, :trainee_ids, :employer_source_id,
+              address_attributes: [:id, :line1, :line2, :city, :state, :zip])
   end
 end

@@ -17,7 +17,7 @@ class KlassCertificatesController < ApplicationController
   # POST /klass_certificates
   # POST /klass_certificates.json
   def create
-    @klass_certificate = KlassCertificate.new(params[:klass_certificate])
+    @klass_certificate = KlassCertificate.new(klass_certificate_params)
     authorize @klass_certificate
 
     respond_to do |format|
@@ -28,5 +28,12 @@ class KlassCertificatesController < ApplicationController
         format.js
       end
     end
+  end
+
+  private
+
+  def klass_certificate_params
+    params.require(:klass_certificate)
+      .permit(:description, :name, :klass_id)
   end
 end

@@ -11,7 +11,7 @@ class Admin
 
     # POST /account_states.js
     def create
-      @account_state = AccountState.new(params[:account_state])
+      @account_state = AccountState.new(account_state_params)
       @account_state.save
     end
 
@@ -19,6 +19,12 @@ class Admin
     def destroy
       @account_state = AccountState.find(params[:id])
       @account_state.destroy
+    end
+
+    private
+
+    def account_state_params
+      params.require(:account_state).permit(:account_id, :state_id)
     end
   end
 end

@@ -6,7 +6,7 @@ class ApplicantSource < ActiveRecord::Base
   default_scope { order(:created_at) }
   belongs_to :account
   belongs_to :grant
-  attr_accessible :source
+  attr_accessible :source # permitted
   belongs_to :grant
   belongs_to :account
 

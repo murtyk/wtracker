@@ -3,16 +3,24 @@
 <div class = 'row-fluid filters-div-compact'>
   <strong> Employer Search: </strong>
   <strong style='margin-left: 10px'>Sector</strong>
-  <%= select_tag :sector_id, options_for_select(employer_sectors_for_selection), include_blank: true, style: 'margin-top: 10px' %>
+    <%= select_tag :sector_id,
+                   options_for_select(employer_sectors_for_selection),
+                   include_blank: true,
+                   style: 'margin-top: 10px' %>
   <strong style='margin-left: 10px'>County</strong>
-  <%= select_tag :county_id, options_for_select(employer_counties_for_selection), include_blank: true, style: 'margin-top: 10px' %>
+    <%= select_tag :county_id,
+                   options_for_select(employer_counties_for_selection),
+                   include_blank: true,
+                   style: 'margin-top: 10px' %>
   <strong style = 'color: white; margin-left: 5px; margin-right: 5px'>
     | <strong style = 'color: darkblue'> OR </strong> |
   </strong>
   <strong>Name starting with</strong>
   <%= text_field_tag :name, nil, style: 'margin-top:10px; max-width: 75px;' %>
 
-  <button type = "button" id="button-getemployers" class="btn btn-flat btn-primary" style = 'margin-left: 0px'>
+  <button type = "button" id="button-getemployers"
+                          class="btn btn-flat btn-primary"
+                          style = 'margin-left: 0px'>
     <i class="icon-search icon-white"></i> Find
   </button>
 </div>
@@ -38,46 +46,60 @@
     <%= simple_form_for(klass_event) do |f| %>
         <%= f.error_notification %>
         <div class="form-inputs">
-          <input type='hidden' name='klass_id' id='klass_id' value='<%=klass_event.klass_id%>'/>
-
+          <%= f.hidden_field :klass_id %>
           <div class = 'row-fluid'>
             <div class ='span9'>
               Employers added for interaction<br>
-              <%= f.association :employers, label: false, collection: klass_event.employers, input_html: {multiple: true, style: 'width: 350px;height: 120px'} %>
+              <%= f.association :employers,
+                                label: false,
+                                collection: klass_event.employers,
+                                input_html: { multiple: true,
+                                              style: 'width: 350px;height: 120px'} %>
             </div>
           </div>
 
           <div class = 'row-fluid'>
             <div style='background-color: #ddd; padding: 10px'>
               <% event_name_collection = klass_default_events %>
-              <% event_name_collection.push([klass_event.name,klass_event.name]) unless Klass::DEFAULT_EVENTS.include?(klass_event.name)%>
-              <%= f.input :name, required: true, collection: event_name_collection, input_html: {class: 'combobox'} %>
+              <% event_name_collection.push([klass_event.name, klass_event.name]) unless Klass::DEFAULT_EVENTS.include?(klass_event.name)%>
+              <%= f.input :name, required: true,
+                                 collection: event_name_collection,
+                                 input_html: {class: 'combobox'} %>
 
               <% klass_event.event_date = klass_event.event_date.to_s %>
-              <%= f.input :event_date, required: true, input_html: { data: {behaviour: "datepicker"}}, as: :string %>
+              <%= f.input :event_date, required: true,
+                                       input_html: { data: {behaviour: "datepicker"} },
+                                       as: :string %>
               <%= f.input :notes %>
               From: <br>
                   <%=f.text_field :start_time_hr, style: 'width: 40px'%>
                   <%=f.text_field :start_time_min, style: 'width: 40px'%>
-                  <%=f.select :start_ampm, options_for_ampm_select(klass_event.start_ampm),{}, {style: 'width: 80px'}%>
+                  <%=f.select :start_ampm,
+                              options_for_ampm_select(klass_event.start_ampm),
+                              {},
+                              { style: 'width: 80px' } %>
                   <!-- display error messages here -->
-                  <% unless klass_event.errors.messages[:start_time_hr].blank? %>
-                    <%= "<p style='color:red'>Start Time Hour: #{klass_event.errors.messages[:start_time_hr][0]}</p>".html_safe  %>
+
+                  <% error_messages = klass_event.errors.messages[:start_time_hr] %>
+                  <% unless error_messages.blank? %>
+                    <%= "<p style='color:red'>Start Time Hour: #{error_messages[0]}</p>".html_safe  %>
                   <% end %>
-                  <% unless klass_event.errors.messages[:start_time_min].blank? %>
-                    <%= "<p style='color:red'>Start Time Minutes: #{klass_event.errors.messages[:start_time_min][0]}</p>".html_safe %>
+                  <% error_messages = klass_event.errors.messages[:start_time_min] %>
+                  <% unless error_messages.blank? %>
+                    <%= "<p style='color:red'>Start Time Minutes: #{error_messages[0]}</p>".html_safe %>
                   <% end %>
                   <br>
               To:<br>
                   <%=f.text_field :end_time_hr, style: 'width: 40px'%>
                   <%=f.text_field :end_time_min, style: 'width: 40px'%>
                   <%=f.select :end_ampm, options_for_ampm_select(klass_event.end_ampm),{}, {style: 'width: 80px'}%>
-                  <% unless klass_event.errors.messages[:end_time_hr].blank? %>
-                    <%= "<p style='color:red'>End Time Hour: #{klass_event.errors.messages[:end_time_hr][0]
-                    }</p>".html_safe  %>
+                  <% error_messages = klass_event.errors.messages[:end_time_hr] %>
+                  <% unless error_messages.blank? %>
+                    <%= "<p style='color:red'>End Time Hour: #{error_messages[0]}</p>".html_safe  %>
                   <% end %>
-                  <% unless klass_event.errors.messages[:end_time_min].blank? %>
-                    <%= "<p style='color:red'>End Time Minutes: #{klass_event.errors.messages[:end_time_min][0]}</p>".html_safe %>
+                  <% error_messages = klass_event.errors.messages[:end_time_min] %>
+                  <% unless error_messages.blank? %>
+                    <%= "<p style='color:red'>End Time Minutes: #{error_messages[0]}</p>".html_safe %>
                   <% end %>
             </div>
           </div>

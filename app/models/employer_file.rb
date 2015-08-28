@@ -5,7 +5,7 @@ class EmployerFile < ActiveRecord::Base
   belongs_to :employer
   belongs_to :user
 
-  attr_accessible :file, :notes, :user_id, :employer_id
+  attr_accessible :file, :notes, :user_id, :employer_id # permitted
   before_destroy :cb_before_destroy
 
   # original file name

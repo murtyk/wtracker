@@ -3,21 +3,19 @@ include UtilitiesHelper
 class TraineeInteractionFactory
   # Builds new trainee interaction for ajax form.
   # Called from Trainee Page
-  def self.build(params)
-    trainee = Trainee.find(params[:trainee_id])
+  def self.build(trainee_id)
+    trainee = Trainee.find(trainee_id)
     ti = trainee.trainee_interactions.new
     check_open_placement(ti)
   end
 
   # creates a TI
   # Updates status of klass_trainees
-  def self.create(all_params)
-    params = all_params[:trainee_interaction].clone
+  def self.create(trainee_id, ti_params)
+    trainee = Trainee.find(trainee_id)
 
-    trainee = Trainee.find(params.delete(:trainee_id))
-
-    start_date = opero_str_to_date(params['start_date'])
-    params[:start_date] = start_date
+    params = ti_params.clone
+    params[:start_date] = opero_str_to_date(params[:start_date])
 
     create_ti_and_update_statuses(trainee, params)
 
@@ -26,16 +24,12 @@ class TraineeInteractionFactory
 
   # updates start date, title, salary and comments
   # not Employer ID
-  def self.update(all_params)
-    params = all_params[:trainee_interaction].clone
+  def self.update(id, ti_params)
+    trainee_interaction = TraineeInteraction.find(id)
 
-    trainee_interaction = TraineeInteraction.find(all_params[:id])
-
-    params.delete(:trainee_id)
-
-    trainee_interaction.start_date = opero_str_to_date(params.delete('start_date'))
-    trainee_interaction.termination_date =
-      opero_str_to_date(params.delete('termination_date'))
+    params = ti_params.clone
+    params[:start_date] = opero_str_to_date(params[:start_date])
+    params[:termination_date] = opero_str_to_date(params[:termination_date])
     trainee_interaction.update_attributes(params)
 
     change_klass_statuses(trainee_interaction)
@@ -43,8 +37,8 @@ class TraineeInteractionFactory
   end
 
   # Change KlassTrainee status to Completed when unhired
-  def self.destroy(params)
-    ti = TraineeInteraction.find(params[:id])
+  def self.destroy(id)
+    ti = TraineeInteraction.find(id)
     klass_trainees = ti.trainee.klass_trainees
     ti.destroy
     # we do not use update_all since it does not update timestamp

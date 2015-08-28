@@ -1,5 +1,5 @@
 class EmployerFilesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /employer_files/1
   # GET /employer_files/1.json
@@ -20,8 +20,8 @@ class EmployerFilesController < ApplicationController
   # POST /employer_files.json
   def create
     saved,
-    error_message,
-    @employer_file = EmployerFactory.add_employer_file(params[:employer_file],
+    _error_message,
+    @employer_file = EmployerFactory.add_employer_file(employer_file_params,
                                                        current_user)
     respond_to do |format|
       if saved
@@ -46,5 +46,11 @@ class EmployerFilesController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def employer_file_params
+    params.require(:employer_file).permit(:employer_id, :file, :notice)
   end
 end

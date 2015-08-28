@@ -2,8 +2,8 @@ include UtilitiesHelper
 # builds and creates job share, shared jobs, job shared tos
 # also sends emails
 class JobShareFactory
-  def self.new_multiple(params, current_user)
-    job_ids    = params[:job_ids].split(',')
+  def self.new_multiple(s_ids, current_user)
+    job_ids    = s_ids.split(',')
     company     = JobSearchServices.company_and_jobs_from_cache(job_ids)
     job_share  = JobShare.new(company: company.name, location: company.city_state)
 
@@ -16,8 +16,8 @@ class JobShareFactory
     job_share
   end
 
-  def self.create_job_share(params, current_user)
-    job_share = build_job_share(params, current_user)
+  def self.create_job_share(job_share_params, job_ids, current_user)
+    job_share = build_job_share(job_share_params, job_ids, current_user)
 
     if job_share.save && job_share.job_shared_tos.any?
       UserMailer.share_jobs(job_share, job_share.sent_to_emails.join(';')).deliver_now
@@ -48,38 +48,40 @@ class JobShareFactory
     end
   end
 
-  def self.build_job_share(params, current_user)
-    job_share = new_job_share(params[:job_ids], params[:job_share])
+  def self.build_job_share(job_share_params, job_ids, current_user)
+    job_share = new_job_share(job_share_params, job_ids)
 
-    titles    = job_titles(params[:job_ids], params[:job_share])
+    titles    = job_titles(job_share_params, job_ids)
     build_shared_jobs(job_share, titles)
     job_share.from_id = current_user.id
 
-    to_ids = trainee_ids(params[:job_share])
+    to_ids = trainee_ids(job_share)
 
     to_ids.each { |tid| job_share.job_shared_tos.new(trainee_id: tid.to_i) }
 
     job_share
   end
 
-  def self.new_job_share(job_ids, job_share)
+  def self.new_job_share(job_share_params, job_ids)
     if job_ids.blank? # 1 job before analyze
 
-      JobShare.new(job_share.slice(:company, :location,
-                                   :excerpt, :details_url,
-                                   :source, :date_posted))
+      JobShare.new(job_share_params.slice(:company, :location,
+                                          :excerpt, :details_url,
+                                          :source, :date_posted))
     else # after analyze
       company = JobSearchServices.company_and_jobs_from_cache(job_ids)
       company_name = company.name
       location = company.poster_location
-      JobShare.new(company: company_name, comment: job_share[:comment],
+      JobShare.new(company: company_name,
+                   comment: job_share_params[:comment],
                    location: location)
     end
   end
 
-  def self.job_titles(job_ids, job_share)
+  def self.job_titles(job_share, job_ids)
     # 1 job before analyze
-    return [[job_share[:title], job_share[:details_url],
+    return [[job_share[:title],
+             job_share[:details_url],
              job_share[:date_posted]]] if job_ids.blank?
     # 1 or more after analyze
     company = JobSearchServices.company_and_jobs_from_cache(job_ids)

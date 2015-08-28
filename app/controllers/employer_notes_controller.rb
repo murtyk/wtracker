@@ -11,7 +11,7 @@ class EmployerNotesController < ApplicationController
   # POST /employer_notes
   # POST /employer_notes.json
   def create
-    @employer_note = EmployerNote.new(params[:employer_note])
+    @employer_note = EmployerNote.new(employer_note_params)
     authorize @employer_note
     @employer_note.save
   end
@@ -33,5 +33,11 @@ class EmployerNotesController < ApplicationController
     @employer_note = EmployerNote.find(params[:id])
     authorize @employer_note
     @employer_note.destroy
+  end
+
+  private
+
+  def employer_note_params
+    params.require(:employer_note).permit(:employer_id, :note)
   end
 end

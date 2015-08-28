@@ -19,17 +19,16 @@ class ApplicantFactory
       # skip location capture. it is causing time out errors.
       # capture_applicant_location(request, applicant)
 
-
       # process_applicant(applicant)
       ApplicantRegistration.new(applicant.id).delay.process
     end
     applicant
   end
 
-  def self.update(params)
-    return reapply(params) if params[:applicant][:reapply_key]
+  def self.update(id, params)
+    return reapply(id, params) if params[:reapply_key]
 
-    applicant = Applicant.find params[:id]
+    applicant = Applicant.find id
 
     a_params, t_params = parse_params(params)
 
@@ -56,15 +55,15 @@ class ApplicantFactory
   end
 
   def self.parse_params(params)
-    a_params  = params[:applicant].clone
+    a_params  = params.clone
     t_params  = a_params.delete(:trainee)
     t_params.delete(:id) if t_params
     [a_params, t_params]
   end
 
-  def self.reapply(params)
-    applicant = Applicant.find params[:id]
-    a_params  = params[:applicant]
+  def self.reapply(id, params)
+    applicant = Applicant.find id
+    a_params  = params.clone
     a_params[:last_employed_on] = opero_str_to_date(a_params[:last_employed_on])
     a_params[:dob] = opero_str_to_date(a_params[:dob])
 

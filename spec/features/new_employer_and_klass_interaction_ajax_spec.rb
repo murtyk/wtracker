@@ -28,6 +28,9 @@ describe 'Employer and Class Interaction' do
     select 'Confirmed', from: 'Status'
     click_on 'Update'
 
+    wait_for_ajax
+    sleep 1
+
     expect(page).to have_text 'Confirmed'
     expect(page).to_not have_text 'Interested'
 

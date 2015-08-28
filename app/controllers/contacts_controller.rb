@@ -4,9 +4,13 @@ class ContactsController < ApplicationController
   # GET /contacts/new
   # GET /contacts/new.json
   def new
-    contact_params = { contactable_type: params[:contactable_type],
-                       contactable_id: params[:contactable_id] }
-    @contact = Contact.new_with_contactable(contact_params)
+    # contact_params = { contactable_type: params[:contactable_type],
+    #                    contactable_id: params[:contactable_id] }
+    # @contact = Contact.new_with_contactable(contact_params)
+
+    @contact = contactable.contacts.new
+    @contact.land_no = contactable.try(:phone_no)
+
     authorize @contact
 
     respond_to do |format|
@@ -31,7 +35,8 @@ class ContactsController < ApplicationController
   # POST /contacts
   # POST /contacts.json
   def create
-    @contact = Contact.new_with_contactable(params[:contact])
+    # @contact = Contact.new_with_contactable(params[:contact])
+    @contact = contactable.contacts.new(contact_params)
     authorize @contact
     @contact.save
   end
@@ -39,13 +44,13 @@ class ContactsController < ApplicationController
   # PUT /contacts/1
   # PUT /contacts/1.json
   def update
-    params[:contact].delete :contactable_type
-    params[:contact].delete :contactable_id
+    # params[:contact].delete :contactable_type
+    # params[:contact].delete :contactable_id
     @contact = Contact.find(params[:id])
     authorize @contact
 
     respond_to do |format|
-      if @contact.update_attributes(params[:contact])
+      if @contact.update_attributes(contact_params)
         format.js
       else
         format.js
@@ -66,5 +71,19 @@ class ContactsController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def contact_params
+    params.require(:contact)
+      .permit(:email, :first, :last, :land_no, :ext, :mobile_no, :title)
+  end
+
+  def contactable
+    c_type = params[:contactable_type] || params[:contact][:contactable_type]
+    c_id = params[:contactable_id] || params[:contact][:contactable_id]
+    owner_class = Object.const_get(c_type)
+    owner_class.find(c_id)
   end
 end

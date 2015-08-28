@@ -48,6 +48,7 @@ class HotJobsController < ApplicationController
   end
 
   private
+
   def send_advanced_search_results_file
     @hjs.build_document(params[:q])
     send_file @hjs.file_path, type: 'application/vnd.ms-excel',
@@ -62,7 +63,9 @@ class HotJobsController < ApplicationController
   end
 
   def hot_job_params
-    hj_params = params[:hot_job].clone
+    hj_params = params.require(:hot_job)
+                .permit(:date_posted, :employer_id, :location,
+                        :closing_date, :title, :description, :salary).clone
     hj_params[:date_posted] = opero_str_to_date hj_params[:date_posted]
     hj_params[:closing_date] = opero_str_to_date hj_params[:closing_date]
     hj_params

@@ -31,13 +31,13 @@ class JobSharesController < ApplicationController
 
   # GET /job_shares/new
   def new
-    @job_share = JobShare.new(params[:job_info])
+    @job_share = JobShare.new(job_info_params)
     authorize @job_share
     @job_share.klass_id = current_user.last_klass_selected
   end
 
   def new_multiple
-    @job_share  = JobShareFactory.new_multiple(params, current_user)
+    @job_share  = JobShareFactory.new_multiple(params[:job_ids], current_user)
     authorize @job_share
     @job_share.klass_id = current_user.last_klass_selected
   end
@@ -54,8 +54,9 @@ class JobSharesController < ApplicationController
   # POST /job_shares.json
   def create
     # authorize @job_share
-
-    @job_share = JobShareFactory.create_job_share(params, current_user)
+    @job_share = JobShareFactory.create_job_share(job_share_params,
+                                                  job_ids_params,
+                                                  current_user)
     json_job_share = { job_share_id: @job_share.id, errors: @job_share.errors }
 
     respond_to do |format|
@@ -75,11 +76,29 @@ class JobSharesController < ApplicationController
       trainee = Trainee.find(params[:trainee_id])
       message = trainee.name
     rescue StandardError => error
-       # debugger
-       message = error
+      # debugger
+      message = error
     end
     respond_to do |format|
       format.json { render json: { message: message }, status: :created }
     end
+  end
+
+  private
+
+  def job_info_params
+    params.require(:job_info)
+      .permit(:company, :date_posted, :details_url, :excerpt, :location, :source, :title)
+  end
+
+  def job_share_params
+    params.require(:job_share)
+      .permit(:company, :date_posted, :details_url, :details_url_type,
+              :excerpt, :from_id, :location, :source, :title,
+              :comment)
+  end
+
+  def job_ids_params
+    params[:job_ids]
   end
 end

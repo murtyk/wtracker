@@ -1,9 +1,9 @@
 include UtilitiesHelper
 # new, save, update, trainee file
 class TraineeFactory
-  def self.new_trainee(request_params = nil)
-    if request_params
-      params = request_params.clone
+  def self.new_trainee(trainee_params = nil)
+    if trainee_params
+      params = trainee_params.clone
       params[:dob] = opero_str_to_date(params[:dob]) unless params[:dob].blank?
       clean_addresses(params)
       trainee = Trainee.new(params)
@@ -20,12 +20,12 @@ class TraineeFactory
     saved
   end
 
-  def self.update_trainee(all_params)
-    params = all_params[:trainee].clone
+  def self.update_trainee(id, trainee_params)
+    params = trainee_params.clone
     clean_addresses(params)
 
     params[:dob] = opero_str_to_date(params[:dob])
-    trainee = Trainee.find(all_params[:id])
+    trainee = Trainee.find(id)
     trainee.update_attributes(params)
     trainee
   end

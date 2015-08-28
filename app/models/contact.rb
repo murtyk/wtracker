@@ -7,7 +7,7 @@ class Contact < ActiveRecord::Base
   # default_scope order('first, last')
 
   attr_accessible :contable_id, :contactable_type, :email, :first, :last,
-                  :land_no, :ext, :mobile_no, :title
+                  :land_no, :ext, :mobile_no, :title # permitted
   before_save :cb_before_save
 
   belongs_to :account
@@ -27,14 +27,14 @@ class Contact < ActiveRecord::Base
     (first || '') + ' ' + (last || '')
   end
 
-  def self.new_with_contactable(params)
-    owner_class = Object.const_get(params[:contactable_type])
-    owner_instance = owner_class.find(params[:contactable_id])
-    params.delete :contactable_type
-    params.delete :contactable_id
-    params[:land_no] = owner_instance.phone_no unless params[:land_no]
-    owner_instance.contacts.new(params)
-  end
+  # def self.new_with_contactable(params)
+  #   owner_class = Object.const_get(params[:contactable_type])
+  #   owner_instance = owner_class.find(params[:contactable_id])
+  #   params.delete :contactable_type
+  #   params.delete :contactable_id
+  #   params[:land_no] = owner_instance.phone_no unless params[:land_no]
+  #   owner_instance.contacts.new(params)
+  # end
 
   private
 

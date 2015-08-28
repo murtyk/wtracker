@@ -1,7 +1,7 @@
 # states in USA
 class State < ActiveRecord::Base
   default_scope { order(:name) }
-  attr_accessible :code, :name
+  attr_accessible :code, :name # permitted no controller
   has_many :counties, -> { order(:name) }
   has_many :cities
 

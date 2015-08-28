@@ -1,7 +1,7 @@
 # instructors assigned to a class
 class KlassInstructor < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
-  attr_accessible :user_id, :klass_id
+  attr_accessible :user_id, :klass_id # permitted
   belongs_to :klass
   belongs_to :user
 

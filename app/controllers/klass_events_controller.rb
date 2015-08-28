@@ -72,9 +72,17 @@ class KlassEventsController < ApplicationController
 
   private
 
+  def klass_event_params
+    params.require(:klass_event)
+      .permit(:event_date, :name, :klass_id, :notes,
+              :start_ampm, :start_time_hr, :start_time_min,
+              :end_ampm, :end_time_hr, :end_time_min,
+              employer_ids: [])
+  end
+
   def find_and_update_from_factory
-    find_klass_event
-    KlassEventFactory.update_klass_event(params, current_user)
+    ke = find_klass_event
+    KlassEventFactory.update_klass_event(ke, klass_event_params, current_user)
   end
 
   def find_klass_event
@@ -84,8 +92,8 @@ class KlassEventsController < ApplicationController
   end
 
   def create_from_factory
-    authorize Klass.find(params[:klass_id]).klass_events.new
-    KlassEventFactory.create(params, current_user)
+    authorize KlassEvent.new
+    KlassEventFactory.create(klass_event_params, current_user)
   end
 
   def notice_created

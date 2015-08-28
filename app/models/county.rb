@@ -6,7 +6,7 @@ class County < ActiveRecord::Base
   has_many :cities
 
   has_many :polygons, as: :mappable, dependent: :destroy
-  attr_accessible :name
+  attr_accessible :name # permitted indirectly
 
   def self.search(filters, include_polygons = false)
     counties = find_counties(filters)

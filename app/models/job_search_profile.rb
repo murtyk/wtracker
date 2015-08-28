@@ -7,7 +7,7 @@ class JobSearchProfile < ActiveRecord::Base
 
   attr_accessible :account_id, :trainee_id, :skills, :location, :distance, :zip, :key,
                   :opted_out, :opt_out_reason_code, :opt_out_reason,
-                  :company_name, :start_date, :title, :salary
+                  :company_name, :start_date, :title, :salary # permitted
   belongs_to :account
   belongs_to :trainee
 

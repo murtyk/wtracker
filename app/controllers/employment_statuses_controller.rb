@@ -22,7 +22,7 @@ class EmploymentStatusesController < ApplicationController
   end
 
   def create
-    @employment_status = EmploymentStatus.new(params[:employment_status])
+    @employment_status = EmploymentStatus.new(employment_status_params)
     authorize @employment_status
     if @employment_status.save
       redirect_to(@employment_status,
@@ -45,7 +45,7 @@ class EmploymentStatusesController < ApplicationController
   def update
     @employment_status = EmploymentStatus.find(params[:id])
     authorize @employment_status
-    if @employment_status.update_attributes(params[:employment_status])
+    if @employment_status.update_attributes(employment_status_params)
       redirect_to(@employment_status,
                   notice: 'Employment Status was successfully updated.')
     else
@@ -62,5 +62,12 @@ class EmploymentStatusesController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def employment_status_params
+    params.require(:employment_status)
+      .permit(:status, :action, :email_subject, :email_body)
   end
 end

@@ -10,7 +10,9 @@ class ApplicantReappliesController < ApplicationController
   end
 
   def create
-    @applicant_reapply = ApplicantFactory.create_reapply(params[:applicant_reapply], current_grant)
+    @applicant_reapply = ApplicantFactory
+                         .create_reapply(applicant_reapply_params,
+                                         current_grant)
 
     if @applicant_reapply.errors.any?
       render 'new'
@@ -19,6 +21,11 @@ class ApplicantReappliesController < ApplicationController
   end
 
   private
+
+  def applicant_reapply_params
+    params.require(:applicant_reapply)
+      .permit(:email)
+  end
 
   def set_grant
     salt = params[:salt] ||

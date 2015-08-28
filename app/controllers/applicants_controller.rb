@@ -52,7 +52,7 @@ class ApplicantsController < ApplicationController
 
   # PATCH/PUT /applicants/1
   def update
-    @applicant = ApplicantFactory.update(params)
+    @applicant = ApplicantFactory.update(params[:id], applicant_params)
 
     if @applicant.errors.empty?
       if params[:applicant][:reapply_key]
@@ -86,8 +86,9 @@ class ApplicantsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def applicant_params
     params.require(:applicant)
-      .permit(:salt, :first_name, :last_name, :address_line1, :address_line2,
-              :address_city, :address_state, :address_zip, :county_id, :email,
+      .permit(:salt, :reapply_key, :first_name, :last_name,
+              :address_line1, :address_line2, :address_city, :address_state,
+              :address_zip, :county_id, :email,
               :mobile_phone_no, :last_employed_on, :current_employment_status,
               :last_job_title, :salary_expected, :education_level,
               :transportation, :computer_access, :comments, :status, :navigator_id,
@@ -98,8 +99,8 @@ class ApplicantsController < ApplicationController
               :gender, :race_id, :last_wages, :last_employer_line1,
               :last_employer_line2, :last_employer_zip, :last_employer_manager_name,
               :last_employer_manager_phone_no, :last_employer_manager_email,
-              :unemployment_proof, :skills, :dob, special_service_ids: []
-                  )
+              :unemployment_proof, :skills, :dob, special_service_ids: [],
+                                                  trainee: [:funding_source_id])
   end
 
   def salt_from_params

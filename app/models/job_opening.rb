@@ -3,7 +3,7 @@ class JobOpening < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :employer
-  attr_accessible :jobs_no, :skills
+  attr_accessible :jobs_no, :skills # permitted
 
   validates :jobs_no,
             presence: true,

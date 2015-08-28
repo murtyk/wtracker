@@ -31,7 +31,9 @@ class TraineeAssessmentsController < ApplicationController
   end
 
   def ta_params
-    para = params[:trainee_assessment]
+    para = params.require(:trainee_assessment)
+           .permit(:pass, :score, :assessment_id, :trainee_id, :date)
+           .clone
     para[:date] = opero_str_to_date(para[:date])
     para
   end

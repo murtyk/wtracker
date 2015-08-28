@@ -30,7 +30,7 @@ class CollegesController < ApplicationController
   # POST /colleges
   # POST /colleges.json
   def create
-    @college = College.new(params[:college])
+    @college = College.new(college_params)
     authorize @college
 
     if @college.save
@@ -46,7 +46,7 @@ class CollegesController < ApplicationController
     @college = College.find(params[:id])
     authorize @college
 
-    if @college.update_attributes(params[:college])
+    if @college.update_attributes(college_params)
       redirect_to @college, notice: 'College was successfully updated.'
     else
       render :edit
@@ -57,5 +57,12 @@ class CollegesController < ApplicationController
     @college = College.find(params[:id])
     authorize @college
     @college.destroy
+  end
+
+  private
+
+  def college_params
+    params.require(:college)
+      .permit(:name, address_attributes: [:id, :line1, :line2, :city, :state, :zip])
   end
 end

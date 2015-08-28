@@ -9,6 +9,7 @@ class Admin < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
+  # permitted no controller
   attr_accessible :email, :password, :password_confirmation, :remember_me,
                   :auth_token
 

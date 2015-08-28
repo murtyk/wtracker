@@ -3,7 +3,7 @@ class AutoSharedJob < ActiveRecord::Base
   belongs_to :account
 
   attr_accessible :company, :location, :title, :excerpt, :date_posted, :url
-  attr_accessible :status, :notes, :status_updated_at, :notes_updated_at
+  attr_accessible :status, :notes, :status_updated_at, :notes_updated_at # permitted indirectly
 
   def trainee
     Trainee.unscoped.find(trainee_id)

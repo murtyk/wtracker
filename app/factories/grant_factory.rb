@@ -30,14 +30,14 @@ class GrantFactory
     Grant.unscoped.new(params)
   end
 
-  def self.update(params)
-    grant = Grant.unscoped.find(params[:id])
+  def self.update(id, params)
+    grant = Grant.unscoped.find(id)
     if params[:delete_applicant_logo]
       grant.delete_applicant_logo
       return [grant, 'logo deleted!!!']
     end
-    store_logo_file(params[:grant]) if params[:grant][:applicant_logo_file]
-    attrs = clean_attributes(params[:grant])
+    store_logo_file(params) if params[:applicant_logo_file]
+    attrs = clean_attributes(params)
     if grant.update_attributes(attrs)
       [grant, 'Grant was successfully updated.']
     else
@@ -50,7 +50,8 @@ class GrantFactory
     params[:applicant_logo_file] = aws_file
   end
 
-  def self.clean_attributes(params)
+  def self.clean_attributes(g_params)
+    params = g_params.clone
     params[:start_date] = opero_str_to_date(params[:start_date])
     params[:end_date] = opero_str_to_date(params[:end_date])
     if params[:auto_job_leads]

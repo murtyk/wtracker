@@ -6,7 +6,7 @@ class ImportFail < ActiveRecord::Base
   belongs_to :import_status
   delegate :get_param, :importer, to: :import_status
   attr_accessible :can_retry, :error_message,
-                  :geocoder_fail, :row_data, :row_no
+                  :geocoder_fail, :row_data, :row_no # permitted
 
   def retry
     @retry_success = importer.retry_import_row(self)

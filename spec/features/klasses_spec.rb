@@ -1,6 +1,6 @@
 require 'rails_helper'
 describe 'klasses' do
-  describe 'existimg klasses' do
+  describe 'existing klasses' do
     before(:each) do
       signin_admin
       Account.current_id = 1
@@ -36,7 +36,7 @@ describe 'klasses' do
       signin_admin
     end
 
-    it 'can create just with name' do
+    it 'can create' do
       visit '/klasses'
 
       page.first(:css, '#new_klass_link').click

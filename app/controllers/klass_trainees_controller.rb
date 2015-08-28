@@ -17,7 +17,7 @@ class KlassTraineesController < ApplicationController
   def new
     @klass_trainee,
     @trainees,
-    @klasses_collection = KlassTraineeFactory.new(params)
+    @klasses_collection = KlassTraineeFactory.new(params_for_new)
   end
 
   # GET /klass_trainees/1/edit
@@ -29,7 +29,7 @@ class KlassTraineesController < ApplicationController
   end
 
   def create
-    @object = KlassTraineeFactory.add_klass_trainees(params).decorate
+    @object = KlassTraineeFactory.add_klass_trainees(params_for_create).decorate
     respond_to do |format|
       if @object.errors.empty?
         format.html { redirect_to @object, notice: 'Trainees Added.' }
@@ -43,7 +43,8 @@ class KlassTraineesController < ApplicationController
 
   # PUT /klass_trainees/1
   def update
-    @klass_trainee = KlassTraineeFactory.update_klass_trainee(params)
+    @klass_trainee = KlassTraineeFactory
+                     .update_klass_trainee(params[:id], params_for_update)
   end
 
   # DELETE /klass_trainees/1
@@ -51,5 +52,23 @@ class KlassTraineesController < ApplicationController
     @klass_trainee = KlassTrainee.find(params[:id]).decorate
     @trainee_page = params[:from]
     @klass_trainee.destroy
+  end
+
+  private
+
+  def params_for_new
+    params.permit(:klass_id, :trainee_id, :trainee_ids)
+  end
+
+  def params_for_create
+    params.require(:klass_trainee)
+      .permit(:klass_id, :trainee_id, :trainee_ids, trainee_id: [], trainee_ids: [])
+  end
+
+  def params_for_update
+    params.require(:klass_trainee)
+      .permit(:status, :notes, :employer_id, :employer_id,
+              :start_date, :hire_title, :hire_salary, :comment,
+              :ti_status)
   end
 end

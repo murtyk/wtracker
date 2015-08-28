@@ -3,7 +3,7 @@ class TraineeFile < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :trainee
-  attr_accessible :file, :notes, :uploaded_by, :trainee_id
+  attr_accessible :file, :notes, :uploaded_by, :trainee_id # permitted
   before_destroy :cb_before_destroy
 
   def name

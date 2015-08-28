@@ -11,7 +11,7 @@ class EmployersMap < MapService
     return unless in_filters
 
     init_addresses
-    init_county_name_and_polygons_of_state
+    init_county_name_and_polygons_of_state unless near_by_trainees?
 
     generate_markers_json
   end

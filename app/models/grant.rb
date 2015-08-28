@@ -10,6 +10,8 @@ class Grant < ActiveRecord::Base
   include Sidebars
 
   serialize :options
+
+  # permitted
   attr_accessible :account_id, :end_date, :name, :start_date, :status, :spots, :amount,
                   :auto_job_leads, :profile_request_content_attributes,
                   :profile_request_subject_attributes, :job_leads_subject_attributes,

@@ -9,7 +9,7 @@ class ImportStatus < ActiveRecord::Base
 
   attr_accessible :file_name, :status, :rows_failed, :rows_successful,
                   :type, :user_id, :sector_ids, :klass_id, :params, :data,
-                  :aws_file_name
+                  :aws_file_name # permitted
 
   belongs_to :user
   belongs_to :account

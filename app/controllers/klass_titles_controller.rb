@@ -15,12 +15,19 @@ class KlassTitlesController < ApplicationController
   end
 
   def create
-    @klass_title = KlassTitle.new(params[:klass_title])
+    @klass_title = KlassTitle.new(klass_title_params)
     @klass_title.save
   end
 
   def destroy
     @klass_title = KlassTitle.find(params[:id])
     @klass_title.destroy
+  end
+
+  private
+
+  def klass_title_params
+    params.require(:klass_title)
+      .permit(:title, :klass_id)
   end
 end

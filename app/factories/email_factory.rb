@@ -1,13 +1,15 @@
 # factory for sending bulk emails to trainees and employers
 class EmailFactory
-  def self.create_trainee_email(all_params, current_user)
-    params      = all_params[:trainee_email]
+  def self.create_trainee_email(params, current_user)
     trainee_ids = find_trainee_ids(params)
 
-    e_params, email_addresses = build_email_params(trainee_ids, params)
+    e_params,
+    email_addresses = build_email_params(trainee_ids, params)
+
     trainee_email = current_user.trainee_emails.new(e_params)
     if trainee_email.save
-      UserMailer.send_trainee_email(trainee_email, email_addresses,
+      UserMailer.send_trainee_email(trainee_email,
+                                    email_addresses,
                                     params[:use_job_leads_email]).deliver_now
     end
     trainee_email
@@ -38,8 +40,7 @@ class EmailFactory
   end
 
   # below methods are for building employer email
-  def self.create_email(all_params, user)
-    params = all_params[:email]
+  def self.create_email(params, user)
     email = build_employer_email(params, user)
 
     return email if email.errors.any?

@@ -94,7 +94,7 @@ class KlassesController < ApplicationController
   # POST /klasses.json
   def create
     # debugger
-    @klass = KlassFactory.new_klass(params)
+    @klass = KlassFactory.build_klass(klass_params)
     authorize @klass
 
     respond_to do |format|
@@ -114,7 +114,7 @@ class KlassesController < ApplicationController
     klass = Klass.find(params[:id])
     authorize klass
 
-    @klass = KlassFactory.update_klass(params)
+    @klass = KlassFactory.update_klass(params[:id], klass_params)
 
     if @klass.errors.any?
       render :edit
@@ -131,5 +131,16 @@ class KlassesController < ApplicationController
     logger.info { "[#{current_user.name}] [klass destroy] [klass_id: #{@klass.id}]" }
     authorize @klass
     @klass.destroy
+  end
+
+  private
+
+  def klass_params
+    params.require(:klass)
+      .permit(:program_id, :name, :credits, :description,
+              :end_date, :start_date, :training_hours, :college_id,
+              klass_schedules_attributes: [:id, :dayoftheweek, :scheduled,
+                                           :start_ampm, :start_time_hr, :start_time_min,
+                                           :end_ampm, :end_time_hr, :end_time_min])
   end
 end

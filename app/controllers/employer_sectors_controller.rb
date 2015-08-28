@@ -1,14 +1,13 @@
 class EmployerSectorsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
+  before_action :set_employer, only: [:new, :create]
 
   # GET /employer_sectors/new
   # GET /employer_sectors/new.json
   def new
-    employer = Employer.find(params[:employer_id])
-
-    @employer_sector = employer.employer_sectors.build
-    # authorize @employer_sector
-    authorize EmployerSector
+    @employer_sector = @employer.employer_sectors.new
+    authorize @employer_sector
+    # authorize EmployerSector
 
     respond_to do |format|
       format.html # new.html.erb
@@ -20,9 +19,8 @@ class EmployerSectorsController < ApplicationController
   # POST /employer_sectors
   # POST /employer_sectors.json
   def create
-    @employer = Employer.find(params[:employer_sector][:employer_id])
     @employer_sector = @employer.employer_sectors
-                                .new(sector_id: params[:employer_sector][:sector_id])
+                       .new(employer_sector_params)
     authorize @employer_sector
 
     @employer_sector.save
@@ -41,5 +39,16 @@ class EmployerSectorsController < ApplicationController
       format.js
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def employer_sector_params
+    params.require(:employer_sector).permit(:sector_id)
+  end
+
+  def set_employer
+    e_id = params[:employer_id] || params[:employer_sector][:employer_id]
+    @employer = Employer.find e_id
   end
 end

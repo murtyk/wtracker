@@ -20,7 +20,7 @@ class SpecialServicesController < ApplicationController
   end
 
   def create
-    @special_service = SpecialService.new(params[:special_service])
+    @special_service = SpecialService.new(special_service_params)
     @special_service.save
     @special_services = SpecialService.all
   end
@@ -28,5 +28,11 @@ class SpecialServicesController < ApplicationController
   def destroy
     @special_service = SpecialService.find(params[:id])
     @special_service.destroy if @special_service.applicants.empty?
+  end
+
+  private
+
+  def special_service_params
+    params.require(:special_service).permit(:name)
   end
 end

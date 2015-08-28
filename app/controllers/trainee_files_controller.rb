@@ -21,26 +21,21 @@ class TraineeFilesController < ApplicationController
   # POST /trainee_files.json
   def create
     saved,
-    error_message,
-    @trainee_file = TraineeFactory.add_trainee_file(params[:trainee_file],
+    @error_message,
+    @trainee_file = TraineeFactory.add_trainee_file(trainee_file_params,
                                                     current_user || current_trainee)
-    respond_to do |format|
-      if saved
-        notice = 'file was successfully saved.'
-        if current_trainee
-          redirect_to(portal_trainees_path, notice: notice)
-          return
-        end
-        trainee = @trainee_file.trainee
-        format.html { redirect_to trainee, notice: notice }
-        format.js
-      else
-        if current_trainee
-          redirect_to(portal_trainees_path(error_message: error_message),
-                      alert: 'error saving file')
-          return
-        end
-        format.html { render :new }
+
+    if saved
+      notice = 'file was successfully saved.'
+      if current_trainee
+        redirect_to(portal_trainees_path, notice: notice)
+        return
+      end
+    else
+      if current_trainee
+        redirect_to(portal_trainees_path(error_message: @error_message),
+                    alert: 'error saving file')
+        return
       end
     end
   end
@@ -60,5 +55,12 @@ class TraineeFilesController < ApplicationController
 
   def authenticate
     current_user || current_trainee
+  end
+
+  private
+
+  def trainee_file_params
+    params.require(:trainee_file)
+      .permit(:file, :notes, :uploaded_by, :trainee_id)
   end
 end

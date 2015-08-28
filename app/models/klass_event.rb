@@ -9,6 +9,8 @@ class KlassEvent < ActiveRecord::Base
            -> { order 'employers.name' },
            through: :klass_interactions
   accepts_nested_attributes_for :klass_interactions
+
+  # permitted
   attr_accessible :event_date, :name, :klass_id, :notes,
                   :start_ampm, :start_time_hr, :start_time_min,
                   :end_ampm, :end_time_hr, :end_time_min

@@ -13,7 +13,7 @@ class JobSearch < ActiveRecord::Base
   belongs_to :account
   belongs_to :klass_title
   attr_accessible :keywords, :location, :count, :distance,
-                  :recruiters, :days, :klass_title_id, :in_state
+                  :recruiters, :days, :klass_title_id, :in_state # permitted
   attr_accessor :college_id
   attr_reader :analyzer, :jobs, :jobs_count, :page, :pages
 

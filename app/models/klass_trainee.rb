@@ -9,6 +9,8 @@ class KlassTrainee < ActiveRecord::Base
   belongs_to :account
   belongs_to :klass
   belongs_to :trainee
+
+  # permitted
   attr_accessible :status, :trainee_id, :klass_id, :notes, :account_id
   attr_accessor :employer_name, :employer_id,
                 :start_date, :hire_title, :hire_salary, :comment,

@@ -42,7 +42,7 @@ class Admin
     # POST /accounts
     def create
       set_up_user_params
-      @account = Account.new(params[:account])
+      @account = Account.new(account_params)
 
       if @account.save
         notice = 'Account was successfully created.'
@@ -58,7 +58,7 @@ class Admin
     def update
       @account = Account.find(params[:id])
 
-      if @account.update_attributes(params[:account])
+      if @account.update_attributes(account_params)
         notice = 'Account was successfully updated.'
         redirect_to [:admin, @account], notice: notice
       else
@@ -91,6 +91,14 @@ class Admin
       user_params[:password_confirmation] = user_params[:password]
       user_params[:status] = 1
       user_params[:role] = 1
+    end
+
+    def account_params
+      params.require(:account)
+        .permit(:options, :description, :name, :status, :client_type,
+                :subdomain, :logo_file, :demo,
+                users_attributes: [:first, :last, :email, :password,
+                                   :password_confirmation, :role, :status, :location])
     end
   end
 end

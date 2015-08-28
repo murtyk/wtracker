@@ -39,7 +39,7 @@ class Admin
     # POST /sectors
     # POST /sectors.json
     def create
-      @sector = Sector.new(params[:sector])
+      @sector = Sector.new(sector_params)
 
       respond_to do |format|
         if @sector.save
@@ -51,6 +51,13 @@ class Admin
           format.json { render json: @sector.errors, status: :unprocessable_entity }
         end
       end
+    end
+
+    private
+
+    def sector_params
+      params.require(:sector)
+        .permit(:name)
     end
   end
 end

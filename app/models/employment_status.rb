@@ -4,7 +4,7 @@ class EmploymentStatus < ActiveRecord::Base
   default_scope { where(grant_id: Grant.current_id) }
   default_scope { order(:created_at) }
 
-  attr_accessible :status, :action, :email_subject, :email_body
+  attr_accessible :status, :action, :email_subject, :email_body # permitted
   belongs_to :grant
   belongs_to :account
   before_save :correct_other
