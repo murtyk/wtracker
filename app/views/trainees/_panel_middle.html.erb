@@ -2,6 +2,11 @@
 <div id="<%=div_id_for_collection(TraineeAssessment)%>">
   <%= render trainee.trainee_assessments %>
 </div>
+
+<% if current_grant.trainee_applications? %>
+  <br>
+  EDP Date: <%= trainee.edp_date.to_s %>
+<% end %>
 <hr>
 
 <%= trainee.trainee_submits_header %>

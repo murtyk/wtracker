@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150806143005) do
+ActiveRecord::Schema.define(version: 20150829144855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1001,6 +1001,7 @@ ActiveRecord::Schema.define(version: 20150806143005) do
     t.string   "encrypted_trainee_id",   limit: 255
     t.string   "login_id",               limit: 255
     t.integer  "race_id"
+    t.date     "edp_date"
   end
 
   add_index "trainees", ["account_id", "grant_id"], name: "index_trainees_on_account_id_and_grant_id", using: :btree

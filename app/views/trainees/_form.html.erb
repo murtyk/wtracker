@@ -14,6 +14,13 @@
             <%= f.input :trainee_id, label: 'Trainee ID' %>
 
             <%= f.association :funding_source %>
+            <% if current_grant.trainee_applications? %>
+              <%= f.input :edp_date,
+                          label: 'EDP Date',
+                          input_html: { data: { behaviour: "datepicker" },
+                                        value: trainee.edp_date.to_s },
+                          as: :string %>
+            <% end %>
 
             <h4>Home Address</h4>
             Note: Address is ignored if street not entered

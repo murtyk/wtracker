@@ -132,7 +132,7 @@ class TraineesController < ApplicationController
       .permit(:remember_me, :login_id, :password, :password_confirmation,
               :disability, :dob, :education, :email, :first, :last,
               :gender, :land_no, :middle, :mobile_no, :trainee_id,
-              :status, :veteran, :race_id,
+              :status, :veteran, :race_id, :edp_date,
               :legal_status, :funding_source_id,
               klass_ids: [],
               tact_three_attributes: [:certifications, :education_level,

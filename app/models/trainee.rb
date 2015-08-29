@@ -24,7 +24,7 @@ class Trainee < ActiveRecord::Base
   attr_accessible :remember_me, :login_id, :password, :password_confirmation,
                   :disability, :dob, :education, :email, :first, :last,
                   :gender, :land_no, :middle, :mobile_no, :trainee_id,
-                  :status, :veteran, :race_id, :klass_ids,
+                  :status, :veteran, :race_id, :klass_ids, :edp_date,
                   :tact_three_attributes, :legal_status, :funding_source_id,
                   :home_address_attributes, :mailing_address_attributes
 
