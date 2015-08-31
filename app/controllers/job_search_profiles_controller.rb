@@ -58,6 +58,8 @@ class JobSearchProfilesController < ApplicationController
   end
 
   def valid_key!
+    return if current_user
+    return permission_denied if @job_search_profile.key.blank?
     return if @job_search_profile.key == params[:key]
     return if params[:job_search_profile] &&
               @job_search_profile.key == params[:job_search_profile][:key]
@@ -81,5 +83,9 @@ class JobSearchProfilesController < ApplicationController
   rescue StandardError => error
     Rails.logger.info "request location error #{error} for trainee id #{trainee_id}"
     nil
+  end
+
+  def permission_denied
+    render :file => "public/401.html", :status => :unauthorized
   end
 end
