@@ -31,6 +31,7 @@ class EmployersHiredReport < Report
 
   def trainee_interactions
     status_ids = 5 if status == 5
+    status_ids = [4, 5, 6] if status == 1
     status_ids ||= [4, 6]
     if all_trainees
       return TraineeInteraction.joins(:trainee)
@@ -43,6 +44,6 @@ class EmployersHiredReport < Report
   end
 
   def status_collection
-    [['Hired', 4], ['OJT Enrolled', 5]]
+    [['Hired', 4], ['OJT Enrolled', 5], ['Hired Or OJT Entrolled', 1]]
   end
 end

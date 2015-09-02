@@ -27,7 +27,7 @@ function validate_unemployment_proof(){
   var date = $('#trainee_file_unemployment_proof_date').val();
 
   if (initial.trim() == '' || date.trim() == ''){
-    alert('Select a file OR enter initial and date');
+    alert('Please upload a file OR enter initial and date');
     return false;
   }
 }
