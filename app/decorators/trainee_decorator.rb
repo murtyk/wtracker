@@ -129,4 +129,10 @@ class TraineeDecorator < Draper::Decorator
           .where(klasses: { grant_id: Grant.current_id })
     kts.decorate
   end
+
+  def unemployment_status_attestation
+    txt = grant.unemployment_proof_text.gsub(/\r\n/, '<br>')
+    txt.gsub!('$EMPLOYMENT_STATUS$', '&emsp;' + applicant.current_employment_status)
+    txt.html_safe
+  end
 end

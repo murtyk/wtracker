@@ -8,6 +8,8 @@ class Trainee
     end
 
     def create
+      return update_unemployment_proof_attestation if do_unemployment_proof
+
       saved,
       error_message,
       @trainee_file = TraineeFactory.add_trainee_file(params[:trainee_file],
@@ -46,6 +48,25 @@ class Trainee
       @caption = 'your recent resume' if params[:notes] == 'Resume'
       @caption = 'unemployment proof' if params[:notes] == 'Unemployment Proof'
       @caption = "Please upload #{@caption} document in MS Word or PDF format"
+    end
+
+    def do_unemployment_proof
+      tf = params[:trainee_file]
+
+      tf[:file].blank? &&
+        !tf[:unemployment_proof_initial].blank? &&
+        !tf[:unemployment_proof_date].blank?
+    end
+
+    def update_unemployment_proof_attestation
+      tf = params[:trainee_file]
+
+      applicant = Trainee.find(tf[:trainee_id]).applicant
+      applicant.unemployment_proof_initial = tf[:unemployment_proof_initial]
+      applicant.unemployment_proof_date = tf[:unemployment_proof_date]
+      applicant.save(validate: false)
+
+      perform_portal_action
     end
   end
 end

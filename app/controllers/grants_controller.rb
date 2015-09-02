@@ -23,10 +23,14 @@ class GrantsController < ApplicationController
     @grant = Grant.find(params[:id])
     authorize @grant
 
-    if @grant.update_attributes(params[:grant])
-      redirect_to @grant, notice: update_notice
-    else
-      render :edit
+    respond_to do |format|
+      if @grant.update_attributes(grant_params)
+        format.html { redirect_to @grant, notice: update_notice }
+        format.js
+      else
+        format.html { render :edit }
+        format.js
+      end
     end
   end
 
@@ -36,6 +40,18 @@ class GrantsController < ApplicationController
 
   def hot_jobs_notify_message
     @grant = current_grant
+  end
+
+  private
+
+  def grant_params
+    params.require(:grant)
+      .permit(:name, :spots, :amount, :reply_to_email,
+              :reapply_subject, :reapply_body,
+              :reapply_instructions, :reapply_email_not_found_message,
+              :reapply_already_accepted_message, :reapply_confirmation_message,
+              :hot_jobs_notification_subject, :hot_jobs_notification_body,
+              :unemployment_proof_text)
   end
 
   def update_notice

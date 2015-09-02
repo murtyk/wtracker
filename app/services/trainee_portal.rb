@@ -1,3 +1,4 @@
+# primarily to determine workflow for a trainee
 class TraineePortal
   attr_accessor :trainee
 
@@ -22,7 +23,7 @@ class TraineePortal
   end
 
   def pending_profile?
-    #should always have a profile
+    # should always have a profile
     unless trainee.job_search_profile
       trainee.create_job_search_profile(account_id: trainee.account_id)
     end
@@ -35,6 +36,9 @@ class TraineePortal
   end
 
   def pending_unemployment_proof?
-    trainee.trainee_files.count == 1
+    applicant = trainee.applicant.reload
+    trainee.trainee_files.count == 1 &&
+      (applicant.unemployment_proof_initial.blank? ||
+       applicant.unemployment_proof_date.blank?)
   end
 end

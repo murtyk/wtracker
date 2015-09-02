@@ -1,0 +1,5 @@
+<% if @grant.errors.any? %>
+  alert('<%= @grant.error_messages[0] %>');
+<% else %>
+  alert('Updated');
+<% end %>

@@ -6,6 +6,9 @@ def visit_new_applicant_page
   grant = Grant.first
   Grant.current_id = grant.id
 
+  grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
+  grant.save
+
   salt = "salted#{grant.id}andpeppered"
   visit "/applicants/new?salt=#{salt}"
 end
@@ -144,6 +147,9 @@ describe 'applicants' do
       click_on 'Submit'
 
       expect(page).to have_text 'unemployment'
+
+      applicant = Applicant.unscoped.first
+      expect(page).to have_text applicant.current_employment_status
 
       attach_file 'trainee_file_file', @unemp_proof
 

@@ -3,10 +3,37 @@
                     authenticity_token: true) do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
-    <%= f.hidden_field :trainee_id %>
-    Select a File:
-    <%= f.input :file, as: :file, label: false %>
-    <%= f.input :notes, label: 'Notes/Comments', readonly: @required_file %>
+    <div class='row-fluid'>
+      <div class = 'span4'>
+        <%= f.hidden_field :trainee_id %>
+        Select a File:
+        <%= f.input :file, as: :file, label: false %>
+        <%= f.input :notes, label: 'Notes/Comments', readonly: @required_file %>
+      </div>
+      <div class = 'span7'>
+        <% if params[:notes] == 'Unemployment Proof' %>
+          <% trainee = trainee_file.trainee.decorate %>
+          <%= trainee.unemployment_status_attestation %>
+          <hr>
+          <div class='row-fluid'>
+            <div class='span6'>
+              <%= f.input :unemployment_proof_initial,
+                          label: 'Initial',
+                          input_html: { style: 'width: 40px' }%>
+            </div>
+            <div class='span6'>
+              <%= f.input :unemployment_proof_date,
+                          label: 'Date',
+                          input_html: {  style:  'width: 100px',
+                                         data: { behaviour: "datepicker" } }%>
+            </div>
+          </div>
+
+          <%= content_tag("div", id: "page_data", data: { unemployment_proof: 1 }){} %>
+
+        <% end %>
+      </div>
+    </div>
   </div>
   <div class="form-actions">
     <%= submit_button(f, 'Submit') %>
