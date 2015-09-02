@@ -1,6 +1,5 @@
 class TraineePolicy < Struct.new(:user, :trainee)
   def new?
-    grant = Grant.find(Grant.current_id)
     return false if grant.trainee_applications?
     user.admin_access? || (user.navigator? && user.grants.include?(grant))
   end
@@ -21,6 +20,10 @@ class TraineePolicy < Struct.new(:user, :trainee)
     edit?
   end
 
+  def import_updates?
+    grant.trainee_applications? && edit?
+  end
+
   def index?
     show?
   end
@@ -35,5 +38,9 @@ class TraineePolicy < Struct.new(:user, :trainee)
 
   def mapview?
     show?
+  end
+
+  def grant
+    @grant ||= Grant.find(Grant.current_id)
   end
 end

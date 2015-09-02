@@ -16,9 +16,12 @@ class Importer
   def self.new_importer(params, current_user = nil)
     resource  = params[:resource]
     return KlassesImporter.new(params, current_user)   if resource == 'klasses'
-    return TraineesImporter.new(params, current_user)  if resource == 'trainees'
     return EmployersImporter.new(params, current_user) if resource == 'employers'
     return CitiesImporter.new(params, current_user)    if resource == 'cities'
+    if resource == 'trainees'
+      return TraineesImporter.new(params, current_user) unless params[:updates]
+      return TraineeUpdatesImporter.new(params, current_user)
+    end
     nil
   end
 

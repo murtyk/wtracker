@@ -9,6 +9,7 @@ class TraineeAssessment < ActiveRecord::Base
   attr_accessible :pass, :score, :assessment_id, :trainee_id, :date
 
   delegate :grant, to: :assessment
+  delegate :name, to: :assessment
 
   validates :assessment, presence: true
   delegate :name, to: :assessment, prefix: true

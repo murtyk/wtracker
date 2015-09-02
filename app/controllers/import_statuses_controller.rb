@@ -3,15 +3,16 @@ class ImportStatusesController < ApplicationController
 
   def new
     resource = params[:resource]
-    render "new_#{resource}"
+    render "new_#{resource}" unless params[:updates]
+    render "update_#{resource}" if params[:updates]
   end
 
   def create
     @importer = Importer.new_importer(params, current_user)
-    unless @importer.errors?
-      Delayed::Job.enqueue CustomJob.new(current_account)
-      @importer.delay.import
-    end
+    return if @importer.errors?
+
+    Delayed::Job.enqueue CustomJob.new(current_account)
+    @importer.delay.import
   end
 
   def show
@@ -25,7 +26,7 @@ class ImportStatusesController < ApplicationController
       status: import_status.status,
       rows_failed: import_status.rows_failed || 0,
       rows_successful: import_status.rows_successful || 0
-           }
+    }
     respond_to do |format|
       format.json { render json: data }
     end

@@ -178,8 +178,13 @@ module MenusHelper
   end
 
   def trainees_create_menu_items
-    return unless policy(Trainee).create?
-    divider_menu + trainees_add_menu + trainees_import_menu
+    menu = ''
+    if policy(Trainee).create?
+      menu = divider_menu + trainees_add_menu + trainees_import_menu
+    end
+    return menu unless policy(Trainee).import_updates?
+    return trainee_import_updates_menu if menu.blank?
+    menu + trainee_import_updates_menu
   end
 
   def trainees_mapview_menu_items
@@ -219,6 +224,11 @@ module MenusHelper
   def trainees_import_menu
     return unless policy(Trainee).import?
     menu_link('Import from a file', new_import_status_path(resource: 'trainees'))
+  end
+
+  def trainee_import_updates_menu
+    menu_link('Import Updates',
+              new_import_status_path(resource: 'trainees', updates: true))
   end
 
   def trainees_map_view_menu
