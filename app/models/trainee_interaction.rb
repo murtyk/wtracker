@@ -34,6 +34,10 @@ class TraineeInteraction < ActiveRecord::Base
     status == 5
   end
 
+  def placed?
+    hired? || ojt_enrolled?
+  end
+
   def status_name
     return 'Terminated' if termination_date
     return "Hired (#{ojt_status})" if hired?
