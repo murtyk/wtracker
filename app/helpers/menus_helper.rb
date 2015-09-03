@@ -78,6 +78,7 @@ module MenusHelper
              employment_statuses_menu,
              funding_sources_menu,
              notify_hot_jobs_message_menu,
+             trainee_password_message_menu,
              reapply_message_menu,
              special_services_menu,
              trainee_options_menu,
@@ -99,6 +100,10 @@ module MenusHelper
 
   def funding_sources_menu
     settings_menu? ? menu_link('Funding Sources', funding_sources_path) : ''
+  end
+
+  def trainee_password_message_menu
+    ta_settings_menu? ? menu_link('Trainee Password Email Messages', password_message_grants_path) : ''
   end
 
   def reapply_message_menu

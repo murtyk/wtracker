@@ -109,6 +109,27 @@ class AutoMailer < ActionMailer::Base
     Rails.logger.info "Application confirmation email sent to #{applicant.name}"
   end
 
+  def notify_applicant_password(applicant, password)
+    from      = applicant.account.admins.first
+    to_email  = applicant.email
+    reply_to_email = applicant.grant.reply_to_email || from.email
+
+    subject   = applicant_password_subject(applicant)
+    body_text = applicant_password_body(applicant, password)
+
+    use_job_leads_email
+
+    mail(to:      to_email,
+         subject: subject,
+         from:    'JobLeads<jobleads@operoinc.com>',
+         reply_to: reply_to_email) do |format|
+           format.html { render inline: body_text }
+         end
+    use_standard_email
+
+    Rails.logger.info "Application confirmation email sent to #{applicant.name}"
+  end
+
   def applicant_reapply(applicant)
     from      = applicant.account.admins.first
     to_email  = applicant.email
@@ -217,5 +238,14 @@ class AutoMailer < ActionMailer::Base
 
   def reapply_body(applicant)
     parse_applicant_msg(applicant.grant.reapply_body, applicant)
+  end
+
+  def applicant_password_subject(applicant)
+    applicant.grant.email_password_subject
+  end
+
+  def applicant_password_body(applicant, password)
+    msg = parse_applicant_msg(applicant.grant.email_password_body, applicant)
+    msg.gsub('$PASSWORD$', password)
   end
 end

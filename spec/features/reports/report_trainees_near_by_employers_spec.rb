@@ -52,7 +52,7 @@ describe 'Reports' do
         select 'manufacturing', from: 'Sector'
         fill_in 'Distance', with: '25'
         click_on 'Find'
-        sleep 3
+        sleep 7
         wait_for_ajax
         expect(page).to have_text 'Paul Harris'
         expect(page).to have_text 'Tom Cruise'
@@ -89,7 +89,7 @@ describe 'Reports' do
         select 'manufacturing', from: 'Sector'
         fill_in 'Distance', with: '25'
         click_on 'Find'
-        sleep 3
+        sleep 6
         wait_for_ajax
         expect(page).to have_text 'Paul Harris'
         expect(page).to have_text 'Tom Cruise'

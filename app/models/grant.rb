@@ -25,7 +25,8 @@ class Grant < ActiveRecord::Base
                   :reapply_already_accepted_message,
                   :reapply_confirmation_message,
                   :hot_jobs_notification_subject, :hot_jobs_notification_body,
-                  :unemployment_proof_text
+                  :unemployment_proof_text,
+                  :email_password_subject, :email_password_body
 
   store_accessor :specific_data,
                  :assessments_include_score, :assessments_include_pass,
@@ -34,7 +35,8 @@ class Grant < ActiveRecord::Base
                  :reapply_already_accepted_message, :reapply_confirmation_message,
                  :default_trainee_status_id,
                  :hot_jobs_notification_subject, :hot_jobs_notification_body,
-                 :unemployment_proof_text
+                 :unemployment_proof_text,
+                 :email_password_subject, :email_password_body
 
   validates :name, presence: true, length: { minimum: 4, maximum: 40 }
   validates :start_date, presence: true

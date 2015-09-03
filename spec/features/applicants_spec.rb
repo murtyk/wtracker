@@ -7,6 +7,10 @@ def visit_new_applicant_page
   Grant.current_id = grant.id
 
   grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
+
+  grant.email_password_subject = "Here is your password"
+  grant.email_password_body = "Hello $FIRST_NAME$, password is $PASSWORD$"
+
   grant.save
 
   salt = "salted#{grant.id}andpeppered"
@@ -68,6 +72,11 @@ describe 'applicants' do
       expect(applicant.status).to eq('Accepted')
       expect(trainee.name).to eq(os_applicant.name)
 
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.subject).to eq('Here is your password')
+      pwd = applicant.first_name[0..2] + '00000'
+      expect(mail.body).to include(pwd)
+
       signin_applicants_admin
       visit "/trainees/#{trainee_id}"
 
@@ -126,7 +135,7 @@ describe 'applicants' do
       visit '/trainees/sign_in'
 
       fill_in 'trainee_login_id',     with: 'Adaline_Schuster'
-      fill_in 'password',  with: 'adaline_schuster'
+      fill_in 'password',  with: 'Ada00000'
       click_button 'Sign in'
 
       expect(page).to have_text('Social Security Number')

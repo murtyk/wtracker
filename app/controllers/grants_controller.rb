@@ -34,6 +34,10 @@ class GrantsController < ApplicationController
     end
   end
 
+  def password_message
+    @grant = current_grant
+  end
+
   def reapply_message
     @grant = current_grant
   end
@@ -51,7 +55,8 @@ class GrantsController < ApplicationController
               :reapply_instructions, :reapply_email_not_found_message,
               :reapply_already_accepted_message, :reapply_confirmation_message,
               :hot_jobs_notification_subject, :hot_jobs_notification_body,
-              :unemployment_proof_text)
+              :unemployment_proof_text,
+              :email_password_subject, :email_password_body)
   end
 
   def update_notice

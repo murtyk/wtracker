@@ -19,6 +19,7 @@ class ApplicantRegistration
     ok = true
     ok = create_objects if applicant.accepted?
     notify_applicant if ok
+    notify_password if ok
   end
 
   private
@@ -62,6 +63,11 @@ class ApplicantRegistration
   def notify_applicant
     AutoMailer.notify_applicant_status(applicant).deliver_now
     Rails.logger.info "Applicant Notification Sent id = #{applicant_id}"
+  end
+
+  def notify_password
+    AutoMailer.notify_applicant_password(applicant, password).deliver_now
+    Rails.logger.info "Password is sent to Applicant id = #{applicant_id}"
   end
 
   def build_job_search_profile(trainee)
@@ -128,9 +134,7 @@ class ApplicantRegistration
   end
 
   def password
-    pwd = applicant.email.split('@')[0]
-    return pwd if pwd.length > 7
-    (pwd + '12345678')[0..7]
+    (applicant.first_name[0..2] + '00000000')[0..7]
   end
 
   def login_id

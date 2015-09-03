@@ -7,6 +7,14 @@ def submit_new_applicant_form
   Account.current_id = @account_id
 
   grant = Grant.first
+  grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
+
+  grant.email_password_subject = "Here is your password"
+  grant.email_password_body = "Hello $FIRST_NAME$, password is $PASSWORD$"
+
+  grant.save
+
+
   @grant_id = grant.id
   Grant.current_id = @grant_id
 
