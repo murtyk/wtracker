@@ -129,7 +129,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def hired_employer_interaction
-    trainee_interactions.where(status: [4, 6], termination_date: nil).first
+    trainee_interactions.where(status: [4, 5, 6], termination_date: nil).first
   end
 
   delegate :start_date, :employer_name, :hire_title, :hire_salary,

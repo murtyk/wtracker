@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150829144855) do
+ActiveRecord::Schema.define(version: 20150902211027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -917,6 +917,7 @@ ActiveRecord::Schema.define(version: 20150829144855) do
     t.datetime "updated_at",                   null: false
     t.string   "company",          limit: 255
     t.date     "termination_date"
+    t.date     "completion_date"
   end
 
   add_index "trainee_interactions", ["account_id", "grant_id", "employer_id"], name: "trainee_interactions_employer_id_index", using: :btree

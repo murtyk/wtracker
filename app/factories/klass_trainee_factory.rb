@@ -48,6 +48,7 @@ class KlassTraineeFactory
   def self.assign_ti_attributes(ei, params)
     title = params[:hire_title]
     ei.start_date  = opero_str_to_date(params[:start_date])
+    ei.completion_date  = opero_str_to_date(params[:completion_date])
     ei.hire_title  = title.blank? ? 'missing' : title
     ei.hire_salary = params[:hire_salary]
     ei.comment     = params[:comment]
@@ -55,8 +56,8 @@ class KlassTraineeFactory
   end
 
   def self.clear_ti_attrs_from_params(params)
-    params.except(:hire_title, :hire_salary, :start_date, :comment,
-                  :employer_id, :employer_name, :ti_status)
+    params.except(:hire_title, :hire_salary, :start_date, :completion_date,
+                  :comment, :employer_id, :employer_name, :ti_status)
   end
 
   def self.update(klass_trainee, params, t_i)

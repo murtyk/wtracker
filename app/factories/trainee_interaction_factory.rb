@@ -16,6 +16,7 @@ class TraineeInteractionFactory
 
     params = ti_params.clone
     params[:start_date] = opero_str_to_date(params[:start_date])
+    params[:completion_date] = opero_str_to_date(params[:completion_date])
 
     create_ti_and_update_statuses(trainee, params)
 
@@ -29,6 +30,7 @@ class TraineeInteractionFactory
 
     params = ti_params.clone
     params[:start_date] = opero_str_to_date(params[:start_date])
+    params[:completion_date] = opero_str_to_date(params[:completion_date])
     params[:termination_date] = opero_str_to_date(params[:termination_date])
     trainee_interaction.update_attributes(params)
 
@@ -61,7 +63,7 @@ class TraineeInteractionFactory
   # ti status: terminated || hired || ojt enrolled
   def self.change_klass_statuses(ti)
     trainee = ti.trainee
-    if ti.terminated? || ti.hired?
+    if ti.terminated? || ti.placed?
       status = ti.terminated? ? 2 : 4 # Completed or Placed
       kts = trainee.klass_trainees
     else # ti.ojt_enrolled?

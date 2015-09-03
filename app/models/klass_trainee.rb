@@ -13,7 +13,8 @@ class KlassTrainee < ActiveRecord::Base
   # permitted
   attr_accessible :status, :trainee_id, :klass_id, :notes, :account_id
   attr_accessor :employer_name, :employer_id,
-                :start_date, :hire_title, :hire_salary, :comment,
+                :start_date, :completion_date, :hire_title,
+                :hire_salary, :comment,
                 :ti_status
 
   before_save :determine_status

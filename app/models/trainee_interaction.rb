@@ -15,7 +15,8 @@ class TraineeInteraction < ActiveRecord::Base
   # permitted
   attr_accessible :trainee_id, :employer_id, :comment, :status,
                   :company, :employer_name,
-                  :start_date, :hire_salary, :hire_title, :termination_date
+                  :start_date, :hire_salary, :hire_title, :termination_date,
+                  :completion_date
 
   attr_accessor :klass_id, :trainee_ids, :employer_name
 

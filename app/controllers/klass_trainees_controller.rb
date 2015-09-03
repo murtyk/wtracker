@@ -68,7 +68,8 @@ class KlassTraineesController < ApplicationController
   def params_for_update
     params.require(:klass_trainee)
       .permit(:status, :notes, :employer_id, :employer_id,
-              :start_date, :hire_title, :hire_salary, :comment,
+              :start_date, :completion_date,
+              :hire_title, :hire_salary, :comment,
               :ti_status)
   end
 end

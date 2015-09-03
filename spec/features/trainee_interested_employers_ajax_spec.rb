@@ -61,8 +61,7 @@ describe 'Trainee Interaction' do
       expect(page).to have_text 'OJT Enrolled'
       expect(page).to have_text comment
 
-      # klass status should not change
-      expect(page).to have_text 'Completed'
+      expect(page).to have_text 'Placed'
 
       Account.current_id = 1
       ti = TraineeInteraction.where(trainee_id: get_trainee_ids[0]).first

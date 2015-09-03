@@ -30,9 +30,17 @@
                          collection: trainee_interaction_statuses,
                          include_blank: false %>
 
-    <%= f.input :start_date, as: :string,
-                             input_html: {class: 'date', data: {behaviour: "datepicker"},
-                             value: trainee_interaction.start_date.to_s} %>
+    <%= f.input :start_date,
+                as: :string,
+                input_html: { class: 'date',
+                              data: { behaviour: "datepicker" },
+                              value: trainee_interaction.start_date.to_s } %>
+
+    <%= f.input :completion_date,
+                as: :string,
+                input_html: { class: 'date',
+                              data: { behaviour: "datepicker" },
+                              value: trainee_interaction.completion_date.to_s } %>
 
     <%= f.input :hire_title %>
 

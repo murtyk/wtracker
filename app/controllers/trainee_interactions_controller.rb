@@ -65,7 +65,7 @@ class TraineeInteractionsController < ApplicationController
     params.require(:trainee_interaction)
       .permit(:employer_id, :comment, :status, :company, :employer_name,
               :start_date, :hire_salary, :hire_title, :termination_date,
-              :klass_id, :trainee_ids, :employer_name)
+              :klass_id, :trainee_ids, :employer_name, :completion_date)
   end
 
   def trainee_id

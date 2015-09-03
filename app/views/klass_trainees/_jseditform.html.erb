@@ -24,6 +24,11 @@
                              input_html: { class: 'date',
                                            data: { behaviour: "datepicker" },
                                            value: klass_trainee.start_date.to_s } %>
+    <%= f.input :completion_date,
+                as: :string,
+                input_html: { class: 'date',
+                              data: { behaviour: "datepicker" },
+                              value: klass_trainee.completion_date.to_s } %>
     <%= f.input :hire_title %>
     <%= f.input :hire_salary %>
 
