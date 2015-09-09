@@ -12,11 +12,16 @@
     <% end %>
   </div>
   <div class = 'span5'>
-    <%= simple_form_for(current_grant, remote: true) do |f| %>
-      <%= f.input :unemployment_proof_text,
-                  as: :text,
-                  input_html: { style: 'width: 500px; height: 200px' } %>
-      <%= f.submit 'Update' %>
+    <% if policy(Grant).edit? %>
+      <%= simple_form_for(current_grant, remote: true) do |f| %>
+        <%= f.input :unemployment_proof_text,
+                    as: :text,
+                    input_html: { style: 'width: 500px; height: 200px' } %>
+        <%= f.submit 'Update' %>
+      <% end %>
+    <% else %>
+      <h2>Unemployment Email Text:</h2>
+      <p><%= current_grant.unemployment_proof_text.gsub(/\r\n/, '<br>').html_safe %> </p>
     <% end %>
   </div>
 </div>

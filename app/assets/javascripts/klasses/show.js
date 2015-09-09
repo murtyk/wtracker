@@ -11,7 +11,7 @@ $('#expandcollapse').click(function () {
       $(this).collapse("toggle");
     });
     $(this).html("<i class='icon-white icon-plus-sign'></i> Expand All");
-  };
+  }
 });
 
 $('#trainees_more_info_show').click(function () {
@@ -63,19 +63,9 @@ $("#brief_calendar_table tr td").click(function(event) {
   }
 });
 
-function refresh_job_counts(kt_ids) {
-  $.each(kt_ids, function(index, value) {
-    console.log( index + ": " + value );
-    $.get("/klass_titles/"+ value +"/job_search_count", function(data) {
-      console.log(data);
-      $('#job_count_' + value).html('(' + data + ' as of now)');
-    }, "json");
-  });
-}
-
 $(document).ready(function() {
   var kt_ids = $('#klass_titles_data').data('kt-ids');
-  if (kt_ids != null) {
+  if (kt_ids) {
     refresh_job_counts(kt_ids);
   }
 });

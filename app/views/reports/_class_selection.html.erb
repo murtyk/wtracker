@@ -3,13 +3,13 @@
                               method: :post,
                               url: '/reports',
                               html: { class: 'form-search form-horizontal'} do |f| %>
-    <div class='span7'>
+    <div class='span9'>
       <%= f.hidden_field :report_name %>
 
       <%= f.input :klass_ids, label: 'Class',
                               collection: current_user.klasses_for_selection(true),
                               input_html: { class: "search-query",
-                                            style: 'width: 490px;',
+                                            style: 'width: 590px;',
                                             multiple: true } %>
     </div>
     <div class='span2'>
