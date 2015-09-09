@@ -32,6 +32,17 @@
           <%= content_tag("div", id: "page_data", data: { unemployment_proof: 1 }){} %>
 
         <% end %>
+
+        <% if params[:notes] == 'Resume' %>
+          <hr>
+          <div class='row-fluid'>
+              <%= f.input :skip_resume,
+                          as: :boolean,
+                          label: false,
+                          inline_label: 'Skip, I will upload/send later' %>
+          </div>
+          <%= content_tag("div", id: "page_data", data: { resume: 1 }){} %>
+        <% end %>
       </div>
     </div>
   </div>

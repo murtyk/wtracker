@@ -32,13 +32,22 @@ class TraineePortal
   end
 
   def pending_resume?
-    trainee.trainee_files.empty?
+    return false if file_exists?('Resume')
+
+    applicant = trainee.applicant.reload
+
+    !applicant.skip_resume
   end
 
   def pending_unemployment_proof?
-    applicant = trainee.applicant.reload
-    trainee.trainee_files.count == 1 &&
-      (applicant.unemployment_proof_initial.blank? ||
-       applicant.unemployment_proof_date.blank?)
+    return false if file_exists?('Unemployment Proof')
+
+    ap = trainee.applicant.reload
+
+    ap.unemployment_proof_initial.blank? || ap.unemployment_proof_date.blank?
+  end
+
+  def file_exists?(notes)
+    trainee.trainee_files.where('notes ilike ?', notes).first
   end
 end

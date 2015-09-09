@@ -4,7 +4,7 @@
     <%= f.input :status, required: true %>
     <%= f.input :action, collection: applicant_employment_statuses, include_blank: false %>
     <%= f.input :email_subject %>
-    <%= f.input :email_body, input_html: { style: 'width: 400px; height: 100px' }, hint: "meta key words for applicant's name: $FIRSTNAME$, $LASTNAME$, $LOGIN_ID$" %>
+    <%= f.input :email_body, input_html: { style: 'width: 600px; height: 400px' }, hint: "meta key words for applicant's name: $FIRSTNAME$, $LASTNAME$, $LOGIN_ID$" %>
   </div>
   <div class="form-actions">
     <%= render 'shared/cancel_link' %>

@@ -4,7 +4,9 @@ class TraineeFile < ActiveRecord::Base
 
   belongs_to :trainee
   attr_accessible :file, :notes, :uploaded_by, :trainee_id # permitted
-  attr_accessor :unemployment_proof_initial, :unemployment_proof_date
+  attr_accessor :unemployment_proof_initial,
+                :unemployment_proof_date,
+                :skip_resume
   before_destroy :cb_before_destroy
 
   def name

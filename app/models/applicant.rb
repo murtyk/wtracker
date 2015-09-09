@@ -20,7 +20,10 @@ class Applicant < ActiveRecord::Base
                   :gender, :unemployment_proof, :special_service_ids, :reapply_key,
                   :applied_on, :email_confirmation, :skills, :dob
 
-  store_accessor :data, :skills, :unemployment_proof_initial, :unemployment_proof_date
+  store_accessor :data, :skills,
+                        :unemployment_proof_initial,
+                        :unemployment_proof_date,
+                        :skip_resume
 
   attr_accessor :salt, :bypass_humanizer, :email_confirmation
   attr_accessor :latitude, :longitude

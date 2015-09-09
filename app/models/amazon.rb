@@ -11,6 +11,11 @@ class Amazon
   end
 
   def delete_file(aws_file)
+    unless file_exists?(aws_file)
+      Rails.logger.error "AWS delete called on non existing file #{aws_file}"
+      return
+    end
+
     check_trash_bucket
     o = bucket.objects[aws_file]
     o.move_to(o.key, bucket_name: aws_bucket_deleted)
@@ -82,6 +87,11 @@ class Amazon
     name_parts = name.split('/')
     bare_name = name_parts[-1]
     bare_name[12..-1]
+  end
+
+  def file_exists?(name)
+    obj = bucket.objects[name]
+    obj.exists?
   end
 
     private

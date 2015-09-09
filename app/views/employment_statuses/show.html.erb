@@ -9,5 +9,6 @@
   Email Subject: <%= @employment_status.email_subject %>
 </p>
 <p>
-  Email Body: <%= @employment_status.email_body %>
+  Email Body:<br>
+  <%= @employment_status.email_body.gsub(/\r\n/, '<br>').html_safe %>
 </p>

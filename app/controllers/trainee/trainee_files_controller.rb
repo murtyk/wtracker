@@ -9,6 +9,7 @@ class Trainee
 
     def create
       return update_unemployment_proof_attestation if do_unemployment_proof
+      return update_skip_resume if do_resume
 
       saved,
       error_message,
@@ -50,8 +51,24 @@ class Trainee
       @caption = "Please upload #{@caption} document in MS Word or PDF format"
     end
 
+    def do_resume
+      tf = trainee_file_params
+
+      tf[:file].blank? && tf[:skip_resume] == '1'
+    end
+
+    def update_skip_resume
+      tf = trainee_file_params
+
+      applicant = Trainee.find(tf[:trainee_id]).applicant
+      applicant.skip_resume = true
+      applicant.save(validate: false)
+
+      perform_portal_action
+    end
+
     def do_unemployment_proof
-      tf = params[:trainee_file]
+      tf = trainee_file_params
 
       tf[:file].blank? &&
         !tf[:unemployment_proof_initial].blank? &&
@@ -59,7 +76,7 @@ class Trainee
     end
 
     def update_unemployment_proof_attestation
-      tf = params[:trainee_file]
+      tf = trainee_file_params
 
       applicant = Trainee.find(tf[:trainee_id]).applicant
       applicant.unemployment_proof_initial = tf[:unemployment_proof_initial]
@@ -67,6 +84,16 @@ class Trainee
       applicant.save(validate: false)
 
       perform_portal_action
+    end
+
+    def trainee_file_params
+      params.require(:trainee_file)
+        .permit(:trainee_id,
+                :file,
+                :notes,
+                :skip_resume,
+                :unemployment_proof_initial,
+                :unemployment_proof_date)
     end
   end
 end

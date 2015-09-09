@@ -1,11 +1,17 @@
 $('#trainee_file_form').submit(function() {
   var unemployment_proof = $('#page_data').data('unemployment-proof');
+  var resume = $('#page_data').data('resume');
   var txt = $('#trainee_file_file').val();
 
   if (txt == ''){
     if (unemployment_proof){
       return validate_unemployment_proof();
     }
+
+    if (resume){
+      return validate_resume();
+    }
+
     alert("Please select a file");
     return false;
   }
@@ -28,6 +34,14 @@ function validate_unemployment_proof(){
 
   if (initial.trim() == '' || date.trim() == ''){
     alert('Please upload a file OR enter initial and date');
+    return false;
+  }
+}
+
+function validate_resume(){
+  var skip = $('#trainee_file_skip_resume').prop('checked');
+  if (!skip){
+    alert('Please upload a file OR check Skip checkbox');
     return false;
   }
 }
