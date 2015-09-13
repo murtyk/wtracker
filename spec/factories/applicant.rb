@@ -20,7 +20,7 @@ FactoryGirl.define do
     address_city  'Edison'
     address_zip   '08817'
 
-    county_id     { County.find_by(state_id: 1, name: 'Middlesex').id }
+    county_id     { County.find_by(state_id: State.find_by(code: 'NJ'), name: 'Middlesex').id }
 
     mobile_phone_no { Faker::PhoneNumber.cell_phone }
     sector_id       { Sector.all.sample.id }

@@ -10,6 +10,7 @@
   <tr>
     <th>ID</th>
     <th>Name</th>
+    <th>DOB</th>
     <th>EDP Date</th>
     <th>Assessments</th>
     <th></th>
@@ -19,6 +20,7 @@
     <tr id='tr_<%=trainee.id%>'>
       <td><%= link_to trainee.id, trainee_path(trainee)%></td>
       <td><%= link_to trainee.name, trainee_path(trainee)%></td>
+      <td><%= trainee.dob %></td>
       <td><%= trainee.edp_date%></td>
       <td><%= trainee.trainee_assessments
                      .map{ |ta| ta.name + ' - ' + ta.date.to_s }
