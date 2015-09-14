@@ -66,7 +66,7 @@ class EmployersMap < MapService
 
   def employers
     return [] unless @employer_ids.any?
-    Employer.includes(:employer_sectors, :sectors, :contacts, :employer_source, :address)
+    Employer.includes(:contacts, :address)
       .where(id: @employer_ids).order(:name)
   end
 
@@ -120,7 +120,8 @@ class EmployersMap < MapService
     end
 
     t_ids = Klass.find(klass_id).trainees.pluck(:id)
-    @trainee_addresses = HomeAddress.includes(:addressable)
+    @trainee_addresses = HomeAddress
+                         .includes(:addressable)
                          .where(addressable_type: 'Trainee', addressable_id: t_ids)
   end
 
@@ -143,13 +144,12 @@ class EmployersMap < MapService
 
   # exclude trainees with any placement status (no ojt, ojt enrolled, ojt completed)
   def not_hired_trainee_ids
-    user_trainee_ids - TraineeInteraction.where(termination_date: nil)
-      .pluck(:trainee_id)
+    user_trainee_ids -
+      TraineeInteraction.where(termination_date: nil).pluck(:trainee_id)
   end
 
   def search_address(address)
-    a = Address.new(latitude:  address.latitude,
-                    longitude: address.longitude)
+    a = Address.new(latitude:  address.latitude, longitude: address.longitude)
     a.id = address.id
     a
   end
@@ -157,7 +157,8 @@ class EmployersMap < MapService
   def user_trainee_ids
     return Trainee.pluck(:id) if user.admin_access?
     k_ids = user.klasses.pluck(:id)
-    Trainee.joins(:klass_trainees).where(klass_trainees: { klass_id: k_ids }).pluck(:id)
+    Trainee.joins(:klass_trainees)
+      .where(klass_trainees: { klass_id: k_ids }).pluck(:id)
   end
 
   def init_addresses
@@ -169,7 +170,8 @@ class EmployersMap < MapService
   def init_employer_and_addresses
     return unless valid_filters?
     return if employer_ids_to_search.empty?
-    @employers_addresses = Address.includes(:addressable)
+    @employers_addresses = Address
+                           .includes(addressable: [:sectors, :employer_source])
                            .where(addressable_type: 'Employer',
                                   addressable_id: employer_ids_to_search)
     @employer_ids = @employers_addresses.map(&:addressable_id)
