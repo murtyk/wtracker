@@ -42,7 +42,7 @@ class TraineesMap < MapService
   end
 
   def klass_trainees
-    (klass && klass.trainees) || []
+    (klass && klass.trainees.includes(:home_address)) || []
   end
 
   def trainees
@@ -74,7 +74,9 @@ class TraineesMap < MapService
   end
 
   def init_trainees_addresses
-    @addresses = HomeAddress.where(addressable_id: trainees.pluck(:id))
+    @addresses = HomeAddress
+                 .includes(:addressable)
+                 .where(addressable_id: trainees.pluck(:id))
   end
 
   def init_employer_addresses
@@ -87,7 +89,10 @@ class TraineesMap < MapService
 
     employers_addresses = near_by_employers_addresses
     @addresses = [trainee_address] + employers_addresses
-    @employers = employers_addresses.map(&:addressable)
+    # @employers = employers_addresses.map(&:addressable)
+
+    e_ids = employers_addresses.map(&:addressable_id)
+    @employers = Employer.includes(:address, :employer_notes).where(id: e_ids)
   end
 
   private
@@ -99,14 +104,15 @@ class TraineesMap < MapService
       .pluck(:id)
   end
 
+  # since @trainee_address is HOME_ADDRESS,
+  # geocoder.nearby looks for only HOME_ADDRESSES
+  # SOLUTION: create a new address with same coordinates but don't save it
   def near_by_employers_addresses
-    # since @trainee_address is HOME_ADDRESS,
-    # geocoder.nearby looks for only HOME_ADDRESSES
-    # SOLUTION: create a new address with same coordinates but don't save it
     a = Address.new(latitude: trainee_address.latitude,
                     longitude: trainee_address.longitude)
     a.id = trainee_address.id
     e_addresses = a.nearbys(radius)
+                  .includes(addressable: [:sectors, :employer_source])
                   .where(addressable_type: 'Employer', addressable_id: employers_ids)
     a.id = nil
     a.delete
