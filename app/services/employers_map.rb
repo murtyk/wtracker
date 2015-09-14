@@ -1,8 +1,7 @@
 # for rendering employers on map
 class EmployersMap < MapService
   attr_reader :filters, :employers, :employers_addresses,
-              :state_county_polygons, :state_county_names,
-              :user
+              :state_county_polygons, :state_county_names, :user
 
   def initialize(user, in_filters)
     @user = user
@@ -66,8 +65,7 @@ class EmployersMap < MapService
 
   def employers
     return [] unless @employer_ids.any?
-    Employer.includes(:contacts, :address)
-      .where(id: @employer_ids).order(:name)
+    Employer.includes(:contacts, :address).where(id: @employer_ids).order(:name)
   end
 
   def employers_addresses
@@ -75,7 +73,9 @@ class EmployersMap < MapService
   end
 
   def trainees
-    Trainee.includes(:klass_trainees, :klasses).where(id: trainee_ids)
+    Trainee
+      .includes(:job_search_profile, :klass_trainees, :klasses, applicant: [:sector])
+      .where(id: trainee_ids)
   end
 
   def trainee_ids
@@ -136,6 +136,7 @@ class EmployersMap < MapService
   def find_near_by_trainees_addresses
     a = search_address(employer_address)
     @trainee_addresses = a.nearbys(radius)
+                         .includes(:addressable)
                          .where(addressable_type: 'Trainee')
                          .where(addressable_id: not_hired_trainee_ids)
     a.id = nil
