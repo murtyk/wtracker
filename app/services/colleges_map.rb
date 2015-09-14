@@ -8,8 +8,12 @@ class CollegesMap < MapService
   end
 
   def init_addresses
-    @colleges  = College.includes(:address).load
-    @addresses = @colleges.map(&:address)
+    @colleges  = College.includes(:address)
+    college_ids = @colleges.pluck(:id)
+    @addresses = Address
+                 .includes(:addressable)
+                 .where(addressable_type: 'College',
+                        addressable_id: college_ids)
   end
 
   def init_klasses_counts
