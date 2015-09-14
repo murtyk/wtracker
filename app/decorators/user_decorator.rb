@@ -50,7 +50,7 @@ class UserDecorator < Draper::Decorator
   end
 
   def assigned_county_names
-    counties.pluck(:name).join('; ')
+    counties.map(&:name).join('; ')
   end
 
   def employer_sources_list

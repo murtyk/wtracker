@@ -37,7 +37,10 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = current_account.users.order(:first, :last).decorate
+    @users = current_account.users
+             .includes(:counties, :grants)
+             .order(:first, :last)
+             .decorate
     authorize User
   end
 

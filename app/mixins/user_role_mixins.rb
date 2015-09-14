@@ -38,7 +38,7 @@ module UserRoleMixins
 
   def grant_names
     return nil unless navigator?
-    grants.pluck(:name).join('<br>').html_safe
+    grants.map(&:name).join('<br>').html_safe
   end
 
   def update_and_assign_role(params)
