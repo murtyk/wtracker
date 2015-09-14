@@ -19,13 +19,23 @@ class TraineeAdvancedSearch
 
   def search_by_grant_type
     if grant.trainee_applications?
-      return @q.result.includes(:klasses, :job_search_profile, :assessments,
-                                :funding_source, :home_address,
-                                tact_three: [:education],
-                                applicant: [:navigator, :sector])
+      return @q.result.includes(
+        :funding_source,
+        :home_address,
+        :assessments,
+        :job_search_profile,
+        klasses: [:college],
+        trainee_interactions: [:employer],
+        tact_three: [:education],
+        applicant: [:navigator, :sector])
     end
-    @q.result.includes(:klasses, :funding_source, :home_address,
-                       :assessments, tact_three: [:education])
+    @q.result.includes(
+      :funding_source,
+      :home_address,
+      :assessments,
+      klasses: [:college],
+      trainee_interactions: [:employer],
+      tact_three: [:education])
   end
 
   def send_results(q_params)
