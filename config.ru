@@ -11,8 +11,10 @@ if ENV['RAILS_ENV'] == 'production' || ENV['RAILS_ENV'] == 'staging'
   # Max requests per worker
   use Unicorn::WorkerKiller::MaxRequests, max_request_min, max_request_max
 
-  oom_min = (240) * (1024**2)
-  oom_max = (260) * (1024**2)
+  dyno_size = ENV['RAILS_ENV'] == 'production' ? 2 : 1
+
+  oom_min = dyno_size * (230) * (1024**2)
+  oom_max = dyno_size * (250) * (1024**2)
 
   # Max memory size (RSS) per worker
   use Unicorn::WorkerKiller::Oom, oom_min, oom_max
