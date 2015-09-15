@@ -60,14 +60,15 @@ class KlassEventDecorator < Draper::Decorator
 
   def interactions_grouped_by_status
     KlassInteraction::STATUSES.map do |k, v|
-      klass_interactions = interactions_by_status(k)
-      next if klass_interactions.empty?
+# debugger
+      interactions = interactions_by_status(k)
+      next if interactions.empty?
 
       data = OpenStruct.new
       data.status = k
       data.header = "<p><strong>#{v} " \
-                    "(#{klass_interactions.count})</strong></p>".html_safe
-      data.klass_interactions = klass_interactions
+                    "(#{interactions.count})</strong></p>".html_safe
+      data.klass_interactions = interactions
       data
     end.compact
   end
