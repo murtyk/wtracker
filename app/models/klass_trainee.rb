@@ -28,6 +28,10 @@ class KlassTrainee < ActiveRecord::Base
     status == 4
   end
 
+  def hired_employer_interaction
+    trainee.hired_employer_interaction
+  end
+
   def hired_employer
     Employer.find(@employer_id) if hired? && @employer_id
   end
@@ -48,7 +52,7 @@ class KlassTrainee < ActiveRecord::Base
 
   def default_values
     self.status ||= 1
-    copy_employer_interaction_details
+    # copy_employer_interaction_details
   end
 
   def determine_status

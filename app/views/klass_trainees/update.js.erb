@@ -1,4 +1,1 @@
 $('#klass_trainees').html('<%= j render("klass_trainees", object: @klass_trainee.klass) %>');
-<% if @klass_trainee.updated_with_ojt_enrolled? %>
-  alert('<%= @klass_trainee.ojt_enrolled_message%>');
-<% end %>

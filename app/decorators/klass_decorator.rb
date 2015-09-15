@@ -106,12 +106,13 @@ class KlassDecorator < Draper::Decorator
   end
 
   def klass_trainees_sorted
-    klass_trainees.includes(:trainee)
+    klass_trainees.includes(trainee: :trainee_notes)
       .order('klass_trainees.status, trainees.first, trainees.last')
       .references(:trainees)
   end
 
   def klass_trainees_by_status(status)
-    klass_trainees_sorted.where(status: status)
+    @trainees_sorted ||= klass_trainees_sorted
+    @trainees_sorted.where(status: status)
   end
 end

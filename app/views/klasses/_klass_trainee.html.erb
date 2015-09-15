@@ -8,10 +8,11 @@
     </p>
     <div class='trainee_details' id = 'klass_trainee_details_<%=klass_trainee.id%>' style="display: none;">
       <% if klass_trainee.hired?%>
-          Start Date: <%= klass_trainee.start_date %><br>
-          Title: <%= klass_trainee.hire_title %><br>
-          Salary: <%= klass_trainee.hire_salary %><br>
-          Employer: <%= klass_trainee.employer_name %><br>
+          <% hei = klass_trainee.hired_employer_interaction %>
+          Start Date: <%= hei.start_date %><br>
+          Title: <%= hei.hire_title %><br>
+          Salary: <%= hei.hire_salary %><br>
+          Employer: <%= hei.employer_name %><br>
       <% end %>
       <h5>
           Notes

@@ -57,7 +57,7 @@ class EmployerServices
   end
 
   def search_by_name
-    user.employers.where('name ilike ?', name + '%') unless name.blank?
+    user.employers.includes(:address).where('name ilike ?', name + '%') unless name.blank?
   end
 
   def employers_currently_interested_in_trainee

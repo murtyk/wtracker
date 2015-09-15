@@ -18,8 +18,10 @@ class KlassTraineeFactory
 
     t_i = init_trainee_interaction(trainee, params)
     params = clear_ti_attrs_from_params(params)
-    update(klass_trainee, params, t_i)
 
+    updated = update(klass_trainee, params, t_i)
+
+    klass_trainee.reload if updated
     build_decorator(klass_trainee, t_i)
   end
 
@@ -64,7 +66,7 @@ class KlassTraineeFactory
     klass_trainee.update_attributes(params)
     if t_i
       saved = t_i.save
-      update_klass_trainees_to_placed(t_i.trainee) if saved && t_i.hired?
+      update_klass_trainees_to_placed(t_i.trainee) if saved && t_i.placed?
     end
     true
   rescue StandardError => error
@@ -125,7 +127,11 @@ class KlassTraineeFactory
     trainee_ids = params[:trainee_id] || params[:trainee_ids]
     trainee_ids = trainee_ids.split(',') if trainee_ids.is_a? String
     trainee_ids.delete('')
-    trainee_ids.each { |id| object.klass_trainees.new(trainee_id: id) }
+    trainee_ids.each do |id|
+      trainee = Trainee.find id
+      status = trainee.not_placed? ? 1 : 4
+      object.klass_trainees.new(trainee_id: id, status: status)
+    end
     object.save
     object
   end
