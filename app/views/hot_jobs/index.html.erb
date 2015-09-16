@@ -77,7 +77,7 @@
           <td><%= hot_job.location %></td>
           <td><%= hot_job.closing_date %></td>
           <td><%= hot_job.title %></td>
-          <td><%= hot_job.description.truncate(30) %></td>
+          <td><%= hot_job.description.try(:truncate, 30) %></td>
           <td><%= hot_job.salary %></td>
           <td>
             <%= button_destroy_association(hot_job) %>

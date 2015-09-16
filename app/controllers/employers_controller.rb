@@ -55,7 +55,7 @@ class EmployersController < ApplicationController
     @employers = EmployerServices.new(current_user, params[:filters]).search
     @employers_count = @employers.count
     return if request.format.xls?
-    @employers = @employers.to_a.paginate(page: params[:page], per_page: 20)
+    @employers = @employers.paginate(page: params[:page], per_page: 20)
   end
 
   def mapview

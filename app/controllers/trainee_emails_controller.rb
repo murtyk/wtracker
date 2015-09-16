@@ -5,7 +5,7 @@ class TraineeEmailsController < ApplicationController
 
   # GET /trainee_emails
   def index
-    @trainee_emails = sent_emails.to_a.paginate(page: params[:page], per_page: 15)
+    @trainee_emails = sent_emails.paginate(page: params[:page], per_page: 15)
   end
 
   # GET /trainee_emails/1

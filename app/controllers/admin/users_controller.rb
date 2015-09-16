@@ -5,7 +5,7 @@ class Admin
 
     def index
       init_filters
-      @users = find_users.to_a.paginate(page: params[:page], per_page: 10)
+      @users = find_users
     end
 
     private
@@ -16,13 +16,15 @@ class Admin
     end
 
     def find_users
-      if @account_id > 0
-        users = User.unscoped.where(account_id: @account_id).order(:first, :last).decorate
-      else
-        users = User.unscoped.order(:account_id, :first, :last).decorate
-      end
-      users = users.map { |user| user if user.online? }.compact if @online_only
-      users
+      users = account_users.paginate(page: params[:page], per_page: 10).decorate
+
+      return users unless @online_only
+      users.map { |user| user if user.online? }.compact if @online_only
+    end
+
+    def account_users
+      return User.unscoped.order(:account_id, :first, :last) if @account_id == 0
+      User.unscoped.where(account_id: @account_id).order(:first, :last)
     end
   end
 end

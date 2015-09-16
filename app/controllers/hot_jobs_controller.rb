@@ -18,7 +18,9 @@ class HotJobsController < ApplicationController
 
   def new
     @hot_job = HotJob.new(employer_id: params[:employer_id])
-    @hot_job.location = Employer.find(params[:employer_id]).location if params[:employer_id]
+    if params[:employer_id]
+      @hot_job.location = Employer.find(params[:employer_id]).location
+    end
     authorize @hot_job
   end
 
@@ -59,7 +61,7 @@ class HotJobsController < ApplicationController
   def perform_advanced_search
     @hot_jobs = @hjs.search(params[:q])
     @q = @hjs.q
-    @hot_jobs = @hot_jobs.to_a.paginate(page: params[:page], per_page: 20)
+    @hot_jobs = @hot_jobs.paginate(page: params[:page], per_page: 20)
   end
 
   def hot_job_params

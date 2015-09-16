@@ -12,7 +12,6 @@ class AutoSharedJobsController < ApplicationController
                         .order(created_at: :desc)
     @count = @auto_shared_jobs.count
     @auto_shared_jobs = @auto_shared_jobs
-                        .to_a
                         .paginate(page: params[:page], per_page: 25)
   end
 

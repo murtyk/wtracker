@@ -20,6 +20,8 @@ class ApplicantsController < ApplicationController
     end
     @filter_info = params[:filters] || {}
     @applicants  = search_applicants(@filter_info)
+    return if request.format.xls?
+    @applicants  = @applicants.paginate(page: params[:page], per_page: 20)
   end
 
   # GET /applicants/1

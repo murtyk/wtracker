@@ -5,8 +5,8 @@ class SharedJobStatusesController < ApplicationController
     @shared_job_statuses = SharedJobStatus.search(params[:filters])
 
     unless request.format.xls?
-      @shared_job_statuses = @shared_job_statuses.to_a.paginate(page: params[:page],
-                                                                per_page: 10)
+      @shared_job_statuses = @shared_job_statuses.paginate(page: params[:page],
+                                                           per_page: 10)
     end
 
     respond_to do |format|

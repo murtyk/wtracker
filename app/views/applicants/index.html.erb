@@ -23,8 +23,13 @@
 </div>
 
 <div class = 'row' style='margin-top: 30px'>
-  <div class = 'span8'>
+  <div class = 'span2'>
     <h4><%= "Count: #{@applicants.count}" %></h4>
+  </div>
+  <div class='span6'>
+    <% if @applicants.any? %>
+      <div align="center" class='span8'><%= will_paginate(@applicants) %></div>
+    <% end %>
   </div>
   <% if @applicants.any? %>
     <div class = 'span2' style = 'padding-top: 5px'><%= download_button %></div>

@@ -7,7 +7,7 @@ class JobSharesController < ApplicationController
     @job_shares = JobShare.search(params[:filters])
 
     unless request.format.xls?
-      @job_shares = @job_shares.to_a.paginate(page: params[:page], per_page: 10)
+      @job_shares = @job_shares.paginate(page: params[:page], per_page: 10)
     end
 
     respond_to do |format|

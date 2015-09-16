@@ -9,7 +9,7 @@ class Admin
 
     def index
       if params[:filters]
-        @counties = find_counties.to_a.paginate(page: params[:page], per_page: 20)
+        @counties = find_counties.paginate(page: params[:page], per_page: 20)
       else
         @counties = []
       end

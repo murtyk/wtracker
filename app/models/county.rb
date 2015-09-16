@@ -29,7 +29,7 @@ class County < ActiveRecord::Base
 
   def self.find_counties(filters)
     name = filters[:name]
-    state = filters[:state_id] && State.find(filters[:state_id])
+    state = !filters[:state_id].blank? && State.find(filters[:state_id])
 
     return [] if name.blank? && !state
 

@@ -1,6 +1,6 @@
 # user decorator
 # mainly used in index view
-class UserDecorator < Draper::Decorator
+class UserDecorator < ApplicationDecorator
   delegate_all
 
   # Define presentation-specific methods here. Helpers are accessed through
