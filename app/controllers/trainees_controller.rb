@@ -124,7 +124,7 @@ class TraineesController < ApplicationController
   def perform_advanced_search
     @trainees = @tas.search(params[:q])
     @q = @tas.q
-    @trainees = @trainees.to_a.paginate(page: params[:page], per_page: 20)
+    @trainees = @trainees.paginate(page: params[:page], per_page: 20)
   end
 
   def trainee_params

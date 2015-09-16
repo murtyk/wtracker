@@ -43,7 +43,7 @@ gem 'rest-client', '1.6.7'
 gem 'aws-sdk', '1.33.0'
 gem 'fuzzy-string-match_pure', '0.9.5'
 
-gem 'will_paginate', '3.0.3'
+gem 'will_paginate', '3.0.7'
 gem 'bootstrap-will_paginate', '0.0.6'
 
 gem 'pundit', '0.2.1'
