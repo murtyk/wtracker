@@ -50,7 +50,7 @@ class KlassesController < ApplicationController
   # GET /klasses
   # GET /klasses.json
   def index
-    @programs = Program.includes(klasses: :college).decorate
+    @programs_data = KlassesService.new.metrics(current_user)
   end
 
   # GET /klasses/1

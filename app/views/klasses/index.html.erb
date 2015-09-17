@@ -2,15 +2,15 @@
   <h1>Classes</h1>
 </div>
 
-<% unless @programs.any? %>
+<% unless @programs_data.any? %>
   <h4>Please define a program and add classes</h4>
 <% end %>
 
-<% @programs.each do |program| %>
-  <% next if program.user_klasses(current_user).empty? %>
+<% @programs_data.each do |program_data| %>
+  <% next if program_data[2].empty? %>
   <h4>
-    <%= program.name%>
-    <%= new_button(Klass, {program_id: program.id}, "New Class for #{program.name}")%>
+    <%= program_data[0]%>
+    <%= new_button(Klass, {program_id: program_data[1]}, "New Class for #{program_data[0]}")%>
   </h4>
   <table class="table table-condensed table-bordered table-striped table-hover">
     <tr>
@@ -24,12 +24,12 @@
       <th>End date      </th>
       <th></th>
     </tr>
-    <% program.user_klasses(current_user).each do |klass| %>
-      <tr id='tr_<%=klass.id%>'>
+    <% program_data[2].each do |klass, enrolled_count, placed_count| %>
+      <tr>
         <td><%= name_and_link(klass) %> </td>
         <td><%= klass.college_name %>   </td>
-        <td><%= klass.enrolled_count %> </td>
-        <td><%= klass.placed_count %> </td>
+        <td><%= enrolled_count %> </td>
+        <td><%= placed_count %> </td>
         <td><%= klass.training_hours %> </td>
         <td><%= klass.credits %>        </td>
         <td><%= klass.start_date %>     </td>
