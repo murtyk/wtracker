@@ -3,4 +3,8 @@ class TraineesDetailsWithPlacementReport < TraineesDetailsReport
   def title
     'Trainees Details With Placement Information'
   end
+
+  def placements?
+    true
+  end
 end

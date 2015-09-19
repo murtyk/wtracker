@@ -28,12 +28,6 @@ class TraineesActivityReport < Report
 
   delegate :count, to: :trainee_activities
 
-  def render_counts
-    strong_class = "<strong class='align-right' style='font-color: blue'>"
-    ctxt = "#{count_label}: #{count}"
-    (strong_class + ctxt + '</strong>').html_safe
-  end
-
   private
 
   def filter_start_date

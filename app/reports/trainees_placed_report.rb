@@ -5,10 +5,7 @@ class TraineesPlacedReport < Report
 
     @trainee_interactions = trainee_placed_interactions
 
-    t_ids = @trainee_interactions.map(&:trainee_id)
-    @trainee_interactions.to_a.sort! do |a, b|
-      a.trainee.name <=> b.trainee.name
-    end
+    t_ids = @trainee_interactions.pluck(:trainee_id)
     @trainees_placed_no_employer = find_trainees_placed_no_employer(t_ids)
   end
 
@@ -29,9 +26,14 @@ class TraineesPlacedReport < Report
   end
 
   def trainee_placed_interactions
-    TraineeInteraction.joins(trainee: :klasses)
+    klass_ids = klasses.pluck :id
+    t_ids = KlassTrainee.where(klass_id: klass_ids).pluck(:trainee_id)
+
+    TraineeInteraction
       .includes(employer: :address)
-      .where(status: [4, 6], termination_date: nil, klasses: { id: klass_ids })
+      .includes(trainee: { klass_trainees: { klass: { college: :address } } })
+      .where(termination_date: nil, trainee_id: t_ids)
+      .order('trainees.first, trainees.middle, trainees.last')
   end
 
   def find_trainees_placed_no_employer(trainee_ids)

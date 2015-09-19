@@ -26,28 +26,31 @@
     <th>Pay</th>
   </tr>
 
-  <% report.klasses_and_trainees.each do |klass, trainees| %>
-    <% trainees.each do |trainee| %>
+  <% report.klasses_data.each do |klass, klass_link, trainees_data| %>
+    <% trainees_data.each do |trainee_data| %>
       <tr>
-        <td><%= link_to(trainee.name, trainee)%></td>
-        <td><%= policy(klass).show? ? link_to(klass.to_label, klass) : klass.to_label %></td>
-        <td><%= trainee.funding_source_name %></td>
-        <td><%= klass.start_date %></td>
-        <td><%= klass.end_date %></td>
-        <td><%= trainee.status_in_klass(klass) %></td>
-        <td><%= trainee.trainee_id %></td>
-        <td><%= trainee.formatted_address%></td>
-        <td><%= trainee.dob %></td>
-        <td><%= trainee.gender%></td>
-        <td><%= trainee.veteran%></td>
-        <td><%= trainee.education%></td>
-        <td><%= trainee.land_no%></td>
-        <td><%= trainee.mobile_no%></td>
-        <td><%= trainee.email%></td>
-        <td><%= employer_link_or_name(trainee.hired_employer) if trainee.hired %></td>
-        <td><%= trainee.employer_location %></td>
-        <td><%= trainee.job_start_date %></td>
-        <td><%= trainee.pay %></td>
+        <td><%= trainee_data[0]%></td>
+        <td>
+            <%#= policy(klass).show? ? link_to(klass.to_label, klass) : klass.to_label %>
+            <%= klass_link %>
+        </td>
+        <td><%= trainee_data[1]%></td>
+        <td><%= klass.start_date%></td>
+        <td><%= klass.end_date%></td>
+        <td><%= trainee_data[2]%></td>
+        <td><%= trainee_data[3]%></td>
+        <td><%= trainee_data[4]%></td>
+        <td><%= trainee_data[5]%></td>
+        <td><%= trainee_data[6]%></td>
+        <td><%= trainee_data[7]%></td>
+        <td><%= trainee_data[8]%></td>
+        <td><%= trainee_data[9]%></td>
+        <td><%= trainee_data[10]%></td>
+        <td><%= trainee_data[11]%></td>
+        <td><%= trainee_data[12]%></td>
+        <td><%= trainee_data[13]%></td>
+        <td><%= trainee_data[14]%></td>
+        <td><%= trainee_data[15]%></td>
       </tr>
     <% end %>
   <% end %>

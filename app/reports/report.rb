@@ -93,8 +93,7 @@ class Report
 
   def klasses
     return [] unless klass_ids
-    # fail 'Class(s) not selected for report' unless klass_ids
-    Klass.includes(college: :address).where(klasses: { id: klass_ids })
+    Klass.includes(college: :address).where(id: klass_ids)
   end
 
   def self.new_report(user, params)
@@ -170,5 +169,31 @@ class Report
     k_ids = (@klass_id && [@klass_id]) || @klass_ids
     k_ids.delete('')
     k_ids
+  end
+
+  def klass_link(k)
+    href = "/klasses/#{k.id}"
+    name_link(href, k.to_label)
+  end
+
+  def trainee_link(t)
+    href = "/trainees/#{t.id}"
+    name_link(href, t.name)
+  end
+
+  def employer_link(e)
+    href = "/employers/#{e.id}"
+    name_link(href, e.name)
+  end
+
+  def name_link(href, name)
+    "<a href = '#{href}'>#{name}</a>".html_safe
+  end
+
+  def notes(trainee)
+    trainee
+      .trainee_notes
+      .map { |tn| "#{tn.created_at.to_date}: #{tn.notes}" }.join('<br>')
+      .html_safe
   end
 end

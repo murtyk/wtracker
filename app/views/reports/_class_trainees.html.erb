@@ -53,17 +53,15 @@
     <th>Funding Source</th>
   </tr>
   <% n = 0 %>
-  <% report.klasses_and_trainees.each do |klass, trainees| %>
-    <% trainees.each do |trainee| %>
+    <% report.trainees.each do |trainee| %>
       <% n += 1 %>
       <tr>
         <td><%= n %></td>
         <td><%= link_to trainee.name, trainee%></td>
-        <td><%= trainee.mobile_no%></td>
+        <td><%= format_phone_no(trainee.mobile_no) %></td>
         <td><%= trainee.email%></td>
         <td><%= trainee.formatted_address%></td>
         <td><%= trainee.funding_source_name %></td>
       </tr>
     <% end %>
-  <% end %>
 </table>

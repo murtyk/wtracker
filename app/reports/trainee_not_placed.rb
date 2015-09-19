@@ -15,4 +15,11 @@ class TraineeNotPlaced < DelegateClass(KlassTrainee)
   def status
     KlassTrainee::STATUSES[super]
   end
+
+  def notes
+    trainee
+     .trainee_notes
+     .map{|tn| "#{tn.created_at.to_date.to_s}: #{tn.notes}"}.join('<br>')
+     .html_safe
+  end
 end
