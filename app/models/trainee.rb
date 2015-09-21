@@ -209,8 +209,16 @@ class Trainee < ActiveRecord::Base
     trainee_id.blank? || dob.blank?
   end
 
+  def pending_files_upload?
+    return false if trainee_files.any?
+
+    !(applicant.unemployment_proof_initial &&
+      applicant.unemployment_proof_date &&
+      applicant.skip_resume)
+  end
+
   def completed_trainee_data?
-    !(pending_data? || trainee_files.empty?)
+    !(pending_data? || pending_files_upload?)
   end
 
   def klasses_for_selection
