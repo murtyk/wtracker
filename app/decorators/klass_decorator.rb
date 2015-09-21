@@ -48,15 +48,15 @@ class KlassDecorator < Draper::Decorator
 
   NOT_OTHER_EVENTS = ['class visit', 'site visit', 'information session']
   def events_by_type(event_type)
-    if event_type.downcase == 'other'
-      klass_events.where('LOWER(name) not in (?)', NOT_OTHER_EVENTS)
-        .order('event_date desc')
-        .decorate
-    else
-      klass_events.where('name ilike ?', event_type)
-        .order('event_date desc')
-        .decorate
-    end
+    @kes ||= klass_events
+             .includes(klass_interactions: :employer)
+             .order('event_date desc').decorate
+
+    et = event_type.downcase
+
+    return @kes.select { |ke| ke.name.downcase == et } unless et == 'other'
+
+    @kes.select { |ke| !NOT_OTHER_EVENTS.index(ke.name.downcase) }
   end
 
   # below are for dashboard
@@ -112,7 +112,10 @@ class KlassDecorator < Draper::Decorator
   end
 
   def klass_trainees_by_status(status)
-    @trainees_sorted ||= klass_trainees_sorted
-    @trainees_sorted.where(status: status)
+    klass_trainees.select { |kt| kt.status == status }
+  end
+
+  def calendar
+    @calendar ||= KlassCalendar.new(self)
   end
 end

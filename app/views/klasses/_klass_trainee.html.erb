@@ -8,7 +8,7 @@
     </p>
     <div class='trainee_details' id = 'klass_trainee_details_<%=klass_trainee.id%>' style="display: none;">
       <% if klass_trainee.hired?%>
-          <% hei = klass_trainee.hired_employer_interaction %>
+          <% hei = klass_trainee.trainee.hired_interaction %>
           Start Date: <%= hei.start_date %><br>
           Title: <%= hei.hire_title %><br>
           Salary: <%= hei.hire_salary %><br>

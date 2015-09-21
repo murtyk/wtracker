@@ -8,6 +8,9 @@ class KlassCalendar
       @first_monday = klass.start_date.beginning_of_week
       @last_monday = klass.end_date.beginning_of_week
       @event_counts = @klass.klass_events.group(:event_date).count
+      @klass_events = @klass.klass_events
+                      .includes(klass_interactions: { employer: :address })
+                      .decorate
     else
       @invalid_dates = true
       @error = 'invalid class start/end dates'
@@ -37,7 +40,7 @@ class KlassCalendar
     return nil if @invalid_dates
     date_event_count = @event_counts[dt].to_i
     return nil if date_event_count < row_no
-    events = @klass.klass_events.where('event_date = ?', dt).order(:id)
+    events = @klass_events.select { |ke| ke.event_date == dt }
     events[row_no - 1]
   end
 

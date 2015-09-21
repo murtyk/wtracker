@@ -54,10 +54,6 @@ class Klass < ActiveRecord::Base
   delegate :name,     to: :college, prefix: true
   delegate :location, to: :college
 
-  def calendar
-    @calendar ||= KlassCalendar.new(self)
-  end
-
   def college_name_location
     "#{college_name} (#{location})"
   end
@@ -99,14 +95,15 @@ class Klass < ActiveRecord::Base
   end
 
   def klass_instructors_sorted
-    klass_instructors.joins(:user)
+    klass_instructors.includes(:user)
       .where(users: { status: 1 })
       .order('users.first, users.last')
   end
 
   def klass_navigators_sorted
-    klass_navigators.joins(:user)
-      .where(users: { status: 1 }).order('users.first, users.last')
+    klass_navigators.includes(:user)
+      .where(users: { status: 1 })
+      .order('users.first, users.last')
   end
 
   def instructors_for_selection

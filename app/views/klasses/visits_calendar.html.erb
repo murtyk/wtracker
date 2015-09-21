@@ -38,7 +38,7 @@
                 <%= calendar.event_time(event) %><br>
                 <%= event.notes %><br>
                 <% if event_type > 0 %>
-                  <% if employer = event.employers.first %>
+                  <% if employer = event.first_employer %>
                     <%= employer.name%><br>
                     <%= format_phone_no(employer.phone_no)%><br>
                     <%= employer.formatted_address %><br>

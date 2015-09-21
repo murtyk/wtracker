@@ -39,7 +39,7 @@ class KlassesController < ApplicationController
   end
 
   def visits_calendar
-    @klass = Klass.find(params[:id])
+    @klass = Klass.find(params[:id]).decorate
 
     respond_to do |format|
       format.html
@@ -56,9 +56,10 @@ class KlassesController < ApplicationController
   # GET /klasses/1
   # GET /klasses/1.json
   def show
-    @klass = Klass.includes(:klass_titles,
-                            klass_trainees: :trainee,
-                            klass_events: { klass_interactions: :employer })
+    @klass = Klass
+             .includes(:klass_titles,
+                       klass_trainees: { trainee: [:trainee_notes,
+                                                   hired_interaction: :employer] })
              .find(params[:id])
              .decorate
     authorize @klass

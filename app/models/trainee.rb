@@ -78,6 +78,9 @@ class Trainee < ActiveRecord::Base
   has_many :interested_employers,
            source: :employer, through: :trainee_interactions
 
+  has_one :hired_interaction, -> { where termination_date: nil },
+          class_name: 'TraineeInteraction'
+
   has_many :klass_trainees, dependent: :destroy
   has_many :klasses, through: :klass_trainees
 

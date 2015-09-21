@@ -50,8 +50,8 @@
                   <td id = 'event_id_<%=event.id%>' bgcolor= '<%=color%>' style='padding: 4px; word-wrap: break-word'>
                     <% if event_type < 1 %>
                       <small><%= event.name%></small><br>
-                    <% elsif event.employers.any? %>
-                      <small><%= event.employers.first.name%></small><br>
+                    <% else %>
+                      <small><%= event.employer_name %></small><br>
                     <% end %>
                     <%= calendar.event_time(event) %><br>
                   </td>

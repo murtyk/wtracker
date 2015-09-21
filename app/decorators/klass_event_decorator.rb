@@ -60,7 +60,6 @@ class KlassEventDecorator < Draper::Decorator
 
   def interactions_grouped_by_status
     KlassInteraction::STATUSES.map do |k, v|
-# debugger
       interactions = interactions_by_status(k)
       next if interactions.empty?
 
@@ -71,5 +70,26 @@ class KlassEventDecorator < Draper::Decorator
       data.klass_interactions = interactions
       data
     end.compact
+  end
+
+  def interactions_by_status(status)
+    klass_interactions
+      .select { |ki| ki.klass_event_id == id && ki.status == status }
+  end
+
+  def cancelled?
+    kis = klass_interactions.select { |ki| ki.klass_event_id == id }
+    kis.size == 1 && kis.first.status == 4
+  end
+
+  def employer_name
+    first_employer.try(:name)
+  end
+
+  def first_employer
+    klass_interactions.each do |ki|
+      return ki.employer if ki.employer
+    end
+    nil
   end
 end

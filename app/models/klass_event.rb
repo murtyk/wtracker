@@ -52,12 +52,6 @@ class KlassEvent < ActiveRecord::Base
     klass_interactions.count == 1 && klass_interactions.first.status == 4
   end
 
-  def interactions_by_status(status)
-    klass_interactions.joins(:employer)
-      .where(status: status)
-      .order('employers.name')
-  end
-
   def next_sequence
     sequence += 1
     save
