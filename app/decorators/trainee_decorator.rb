@@ -83,7 +83,7 @@ class TraineeDecorator < Draper::Decorator
   end
 
   def trainee_assessments
-    object.trainee_assessments.decorate
+    object.trainee_assessments.includes(:assessment).decorate
   end
 
   def trainee_submits_header
@@ -98,7 +98,7 @@ class TraineeDecorator < Draper::Decorator
 
   def trainee_submits
     return [] unless TraineeSubmitPolicy.new(h.current_user).index?
-    object.trainee_submits
+    object.trainee_submits.includes(:employer)
   end
 
   def job_shares_header
@@ -108,7 +108,7 @@ class TraineeDecorator < Draper::Decorator
 
   def job_shares
     return [] unless JobSharePolicy.new(h.current_user).index?
-    object.job_shares
+    object.job_shares.includes(shared_jobs: :shared_job_statuses)
   end
 
   def trainee_interactions_header
@@ -123,11 +123,12 @@ class TraineeDecorator < Draper::Decorator
     html.html_safe
   end
 
+  def trainee_interactions
+    object.trainee_interactions.includes(:employer)
+  end
+
   def klass_trainees
-    kts = object.klass_trainees
-          .joins(:klass)
-          .where(klasses: { grant_id: Grant.current_id })
-    kts.decorate
+    object.klass_trainees.includes(klass: :college).decorate
   end
 
   def unemployment_status_attestation
