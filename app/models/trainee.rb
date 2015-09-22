@@ -173,19 +173,21 @@ class Trainee < ActiveRecord::Base
   end
 
   def not_viewed_job_leads_count
-    auto_shared_jobs.where(status: [0, nil]).count
+    job_leads_counts_grouped_by_status[0].to_i +
+    job_leads_counts_grouped_by_status[nil].to_i
   end
 
   def viewed_job_leads_count
-    auto_shared_jobs.where(status: 1).count
+    job_leads_counts_grouped_by_status[1]
   end
 
   def applied_job_leads_count
-    auto_shared_jobs.where('status = 2').count
+    job_leads_counts_grouped_by_status[2]
   end
 
   def not_interested_job_leads_count
-    auto_shared_jobs.where(status: [3, 4]).count
+    job_leads_counts_grouped_by_status[3].to_i +
+    job_leads_counts_grouped_by_status[4].to_i
   end
 
   def job_lead_counts_by_status
@@ -195,6 +197,10 @@ class Trainee < ActiveRecord::Base
       'Applied'        => applied_job_leads_count,
       'Not Interested' => not_interested_job_leads_count
     }
+  end
+
+  def job_leads_counts_grouped_by_status
+    @jlcgbs ||= auto_shared_jobs.group(:status).count
   end
 
   def job_leads_count

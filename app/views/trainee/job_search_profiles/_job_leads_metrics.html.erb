@@ -6,8 +6,9 @@
 
   <% job_search_profile.job_lead_counts_by_status.each do |job_status, count| %>
     <% span_id = job_status.downcase.split.join('_') + '_count' %>
+    <% show_all = true if job_status != 'Not Viewed' %>
     <tr>
-      <td><%= link_to job_status, trainee_job_search_profile_path(status: job_status) %></td>
+      <td><%= link_to job_status, trainee_job_search_profile_path(show_all: show_all, status: job_status) %></td>
       <td><span id = '<%=span_id%>'><%= count %></span></td>
     </tr>
   <% end %>

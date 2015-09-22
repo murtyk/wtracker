@@ -46,10 +46,24 @@ describe 'auto job leads' do
         expect(page).to have_text 'You will begin receiving e-mails with job postings ' \
                                   'that match your skills and geographic preference.'
         AutoJobLeads.new.perform
-        visit "/profiles/#{id}?key=#{key}"
+        profile_url = "/profiles/#{id}?key=#{key}"
+        visit profile_url
 
         expect(page).to have_text 'Senior SAP ABAP - PI Programmer'
         expect(page).to have_text 'Status:Not Viewed'
+        expect(page).to have_text 'Not Viewed 25'
+        expect(page).to_not have_text 'Applied 1'
+
+        profile = JobSearchProfile.last
+        trainee = Trainee.unscoped.find profile.trainee_id
+        Account.current_id = trainee.account_id
+        Grant.current_id = trainee.grant_id
+        trainee = Trainee.find profile.trainee_id
+        job = trainee.auto_shared_jobs.first
+        job.update(status: 2)
+
+        visit profile_url
+        expect(page).to have_text 'Applied 1'
       end
     end
     # it "can send profile reminder" do

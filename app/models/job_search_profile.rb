@@ -68,18 +68,17 @@ class JobSearchProfile < ActiveRecord::Base
     grant.optout_message_three.content
   end
 
-  def auto_shared_jobs(show_all = true, status = 'Not Viewed')
+  def auto_shared_jobs(show_all = true, status = nil)
     jobs = jobs_with_status(status)
 
-    jobs = jobs.where('created_at >= :sd',
-                      sd: recent_job_lead.created_at.to_date) if !show_all &&
-                                                                 recent_job_lead
-    jobs.order(date_posted: :desc).to_a
+    return jobs unless !show_all && recent_job_lead
+    jobs.where('created_at >= :sd', sd: recent_job_lead.created_at.to_date)
   end
 
   def jobs_with_status(status)
+    return trainee.auto_shared_jobs.order(date_posted: :desc) unless status
     status_codes = AutoSharedJob.status_codes(status)
-    trainee.auto_shared_jobs.where(status: status_codes)
+    trainee.auto_shared_jobs.where(status: status_codes).order(date_posted: :desc)
   end
 
   def recent_job_lead
