@@ -9,6 +9,10 @@
     <th>Sector</th>
     <th>Employment Status</th>
     <th>Status</th>
+    <th>DOB</th>
+    <th>EDP Date</th>
+    <th>Assessed?</th>
+    <th>Assigned to class?</th>
   </tr>
   <% @applicants.each do |applicant| %>
     <tr>
@@ -21,6 +25,10 @@
       <td><%= applicant.sector_name %></td>
       <td><%= applicant.current_employment_status %></td>
       <td><%= applicant.status %></td>
+      <td><%= applicant.trainee_dob %></td>
+      <td><%= applicant.trainee_edp_date %></td>
+      <td><%= applicant.trainee_assessed? %></td>
+      <td><%= applicant.trainee_assigned_to_klass?%></td>
     </tr>
   <% end %>
 </table>

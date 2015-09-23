@@ -2,7 +2,6 @@
 # one trainee record for each gran
 # trainee can be assigned to any number of classes
 # status defines placement status and it is updated by TI
-
 class Trainee < ActiveRecord::Base
   LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }
   STATUSES = { 0 => 'Not Placed', 4 => 'Placed', 5 => 'OJT Enrolled' }
@@ -15,6 +14,10 @@ class Trainee < ActiveRecord::Base
                   using: { tsearch: { prefix: true } }
 
   default_scope { where(account_id: Account.current_id, grant_id: Grant.current_id) }
+
+  scope :with_assessments,
+        -> { where('id in (select trainee_id from trainee_assessments)') }
+  scope :in_klass, -> { where('id in (select trainee_id from klass_trainees)') }
 
   devise :database_authenticatable, authentication_keys: [:login_id]
   devise :recoverable, :rememberable, :trackable
@@ -168,13 +171,21 @@ class Trainee < ActiveRecord::Base
     job_search_profile && job_search_profile.valid_profile?
   end
 
+  def assessed?
+    assessments[0] ? 'Yes' : 'No'
+  end
+
+  def assigned_to_klass?
+    klasses[0] ? 'Yes' : 'No'
+  end
+
   def opted_out_from_auto_leads?
     job_search_profile && job_search_profile.opted_out
   end
 
   def not_viewed_job_leads_count
     job_leads_counts_grouped_by_status[0].to_i +
-    job_leads_counts_grouped_by_status[nil].to_i
+      job_leads_counts_grouped_by_status[nil].to_i
   end
 
   def viewed_job_leads_count
@@ -187,7 +198,7 @@ class Trainee < ActiveRecord::Base
 
   def not_interested_job_leads_count
     job_leads_counts_grouped_by_status[3].to_i +
-    job_leads_counts_grouped_by_status[4].to_i
+      job_leads_counts_grouped_by_status[4].to_i
   end
 
   def job_lead_counts_by_status

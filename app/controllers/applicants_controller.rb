@@ -18,8 +18,8 @@ class ApplicantsController < ApplicationController
       render 'index_from_metrics'
       return
     end
-    @filter_info = params[:filters] || {}
-    @applicants  = search_applicants(@filter_info)
+
+    @applicants  = search_applicants
     return if request.format.xls?
     @applicants  = @applicants.paginate(page: params[:page], per_page: 20)
   end
@@ -56,19 +56,11 @@ class ApplicantsController < ApplicationController
   def update
     @applicant = ApplicantFactory.update(params[:id], applicant_params)
 
-    if @applicant.errors.empty?
-      if params[:applicant][:reapply_key]
-        render 'create'
-        return
-      end
-      action_after_update
-    else
-      if params[:applicant][:reapply_key]
-        render 'new'
-      else
-        render 'show'
-      end
-    end
+    return reapply_action if params[:applicant][:reapply_key]
+
+    return render('show') if @applicant.errors.any?
+
+    action_after_update
   end
 
   private
@@ -78,6 +70,11 @@ class ApplicantsController < ApplicationController
     applicant = next_applicant
     redirect_to(applicant, notice: notice) if applicant
     redirect_to('/applicants/analysis', notice: notice) unless applicant
+  end
+
+  def reapply_action
+    return render('new') if @applicant.errors.any?
+    render 'create'
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -141,16 +138,57 @@ class ApplicantsController < ApplicationController
     params[:key] || (params[:applicant] && params[:applicant][:reapply_key])
   end
 
-  def search_applicants(filters)
-    navigator_id = filters[:navigator_id]
-    status       = filters[:status]
+  def search_applicants
+    navigator_id,
+    status,
+    edp,
+    assessments,
+    in_klass     = search_filters
 
     return [] unless navigator_id || status
 
-    predicate = {}
-    predicate.merge!(navigator_id: navigator_id) unless navigator_id.blank?
-    predicate.merge!(status: status) unless status.blank?
-    Applicant.where(predicate).order(created_at: :desc)
+    applicants = Applicant
+                 .includes(:county, :sector)
+                 .includes(trainee: [:assessments, :klasses])
+                 .where(predicate(navigator_id, status))
+                 .order(created_at: :desc)
+    return applicants unless edp || assessments || in_klass
+
+    apply_filters(applicants, edp, assessments, in_klass)
+  end
+
+  def predicate(navigator_id, status)
+    pred = {}
+    pred.merge!(navigator_id: navigator_id) unless navigator_id.blank?
+    pred.merge!(status: status) unless status.blank?
+    pred
+  end
+
+  def apply_filters(applicants, edp, assessments, in_klass)
+    applicants = applicants.where.not(trainees: { edp_date: nil }) if edp
+
+    if assessments
+      trainee_ids = Trainee.with_assessments.pluck(:id)
+      applicants = applicants.where(trainee_id: trainee_ids)
+    end
+
+    if in_klass
+      trainee_ids = Trainee.in_klass.pluck(:id)
+      applicants = applicants.where(trainee_id: trainee_ids)
+    end
+
+    applicants
+  end
+
+  def search_filters
+    @filter_info = params[:filters] || {}
+    [
+      @filter_info[:navigator_id],
+      @filter_info[:status],
+      @filter_info[:edp].to_i > 0,
+      @filter_info[:assessments].to_i > 0,
+      @filter_info[:in_klass].to_i > 0
+    ]
   end
 
   def next_applicant

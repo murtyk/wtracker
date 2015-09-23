@@ -21,9 +21,9 @@ class Applicant < ActiveRecord::Base
                   :applied_on, :email_confirmation, :skills, :dob
 
   store_accessor :data, :skills,
-                        :unemployment_proof_initial,
-                        :unemployment_proof_date,
-                        :skip_resume
+                 :unemployment_proof_initial,
+                 :unemployment_proof_date,
+                 :skip_resume
 
   attr_accessor :salt, :bypass_humanizer, :email_confirmation
   attr_accessor :latitude, :longitude
@@ -47,6 +47,9 @@ class Applicant < ActiveRecord::Base
   belongs_to :race
   belongs_to :sector
   belongs_to :trainee
+
+  delegate :dob, :edp_date, :assessed?, :assigned_to_klass?,
+           to: :trainee, prefix: true, allow_nil: true
 
   delegate :name,  to: :county,    prefix: true, allow_nil: true
   delegate :name,  to: :education, prefix: true, allow_nil: true
