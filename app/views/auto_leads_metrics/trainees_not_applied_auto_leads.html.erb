@@ -1,4 +1,5 @@
 <h2>Following trainees NOT applied any job lead</h2>
+<div align="center"><%= will_paginate(@data.trainees) %></div>
 <ol>
   <%= @data.trainees.map{ |t| '<li>' + name_and_link(t) + '</li>' }.join('').html_safe %>
 </ol>

@@ -2,6 +2,7 @@
   <div class='span6'>
     <h2>Following trainees have not updated job search profile yet</h2>
     <div class='row-fluid'>
+      <%= will_paginate(@data.trainees) %>
       <%= link_to 'Send a Reminder to All', remind_job_search_profiles_path,
                   class: 'btn btn-flat btn-small btn-primary pull-right' %>
     </div>

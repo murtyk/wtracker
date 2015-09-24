@@ -1,13 +1,13 @@
 <div class = 'row-fluid page-caption-div' >
   <h1>Job Leads Metrics</h1>
 </div>
-<h2>
-  <%= link_to 'Skill Metrics', dashboards_path(auto_leads_metrics: true,
-                                               skill_metrics: true) %>
-</h2>
 <div class='row'>
   <% trainee_counts = @data.counts_by_status %>
   <div id = 'jobs_leads_metrics' class='span4'>
+    <h2>
+      <%= link_to 'Skill Metrics', dashboards_path(auto_leads_metrics: true,
+                                                   skill_metrics: true) %>
+    </h2>
     <table class="table table-condensed table-bordered table-striped table-hover">
       <tr>
         <td>No. of students</td>
@@ -75,29 +75,34 @@
       </tr>
     </table>
   </div>
-  <div id = 'jobs_leads_trainees' class='span7 vertical-scroll-div' style='max-height: 320px;'>
-    <table class="table table-condensed table-bordered table-striped table-hover">
-      <tr>
-        <th>Name</th>
-        <th>Profile</th>
-        <th>Leads</th>
-        <th>Viewed</th>
-        <th>Applied</th>
-        <th>Not Interested</th>
-      </tr>
-      <% trainee_metrics = @data.metrics_by_trainee%>
-      <% trainee_metrics.each do |tm| %>
-      <tr>
-        <td><%= tm[:name] %></td>
-        <td style='<%= "color: red" unless tm[:valid_profile] %>'>
-          <%= tm[:valid_profile] ? 'updated' : 'not updated' %>
-        </td>
-        <td><%= tm[:leads_count].to_i %></td>
-        <td><%= tm[:viewed_count].to_i %></td>
-        <td><%= tm[:applied_count].to_i %></td>
-        <td><%= tm[:not_interested_count].to_i %></td>
-      </tr>
-      <% end %>
-    </table>
+
+  <div class ='span7'>
+    <div align="center"><%= will_paginate(@data.trainees_list_page) %></div>
+
+    <div id = 'jobs_leads_trainees' class='vertical-scroll-div' style='max-height: 320px;'>
+      <table class="table table-condensed table-bordered table-striped table-hover">
+        <tr>
+          <th>Name</th>
+          <th>Profile</th>
+          <th>Leads</th>
+          <th>Viewed</th>
+          <th>Applied</th>
+          <th>Not Interested</th>
+        </tr>
+        <% trainee_metrics = @data.metrics_by_trainee%>
+        <% trainee_metrics.each do |tm| %>
+        <tr>
+          <td><%= tm[:name] %></td>
+          <td style='<%= "color: red" unless tm[:valid_profile] %>'>
+            <%= tm[:valid_profile] ? 'updated' : 'not updated' %>
+          </td>
+          <td><%= tm[:leads_count].to_i %></td>
+          <td><%= tm[:viewed_count].to_i %></td>
+          <td><%= tm[:applied_count].to_i %></td>
+          <td><%= tm[:not_interested_count].to_i %></td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
   </div>
 </div>
