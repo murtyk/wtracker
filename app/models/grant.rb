@@ -134,11 +134,8 @@ class Grant < ActiveRecord::Base
   end
 
   OTHER_PLEASE_SPECIFY = 'Other, Please specify'
-  def collection_employment_statuses(applicant)
-    statuses = (employment_statuses.pluck(:status)  +
-                [applicant.current_employment_status]).compact.uniq
-
-    shift_other_to_end(statuses)
+  def collection_employment_statuses
+    employment_statuses.pluck(:status)
   end
 
   def collection_applicant_sources(applicant)

@@ -101,7 +101,7 @@
       <div class='span3'>
         <%= f.input :current_employment_status, label: 'Current Employment Status',
                                                 required: true,
-                                                collection: current_grant.collection_employment_statuses(applicant),
+                                                collection: current_grant.collection_employment_statuses,
                                                 include_blank: 'Please Select' %>
       </div>
       <div class='span3'>
