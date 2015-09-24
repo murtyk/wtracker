@@ -19,7 +19,7 @@ class ApplicantRegistration
     ok = true
     ok = create_objects if applicant.accepted?
     notify_applicant if ok
-    notify_password if ok
+    notify_password if ok && applicant.accepted?
   end
 
   private
