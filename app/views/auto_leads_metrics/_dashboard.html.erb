@@ -15,11 +15,11 @@
       </tr>
       <tr>
         <td>Total Job Leads Sent</td>
-        <td><b><%= @data.job_leads_sent_count%></b></td>
+        <td><b><%= trainee_counts[:TOTAL_LEADS] %></b></td>
       </tr>
       <tr>
         <td>Job Leads / Student </td>
-        <td><b><%= @data.average_leads %></b></td>
+        <td><b><%= trainee_counts[:AVERAGE] %></b></td>
       </tr>
     </table>
     <table class="table table-condensed table-bordered table-striped table-hover">
@@ -77,7 +77,7 @@
   </div>
 
   <div class ='span7'>
-    <div align="center"><%= will_paginate(@data.trainees_list_page) %></div>
+    <div align="center"><%= will_paginate(@data.pagination_date) %></div>
 
     <div id = 'jobs_leads_trainees' class='vertical-scroll-div' style='max-height: 320px;'>
       <table class="table table-condensed table-bordered table-striped table-hover">

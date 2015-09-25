@@ -17,6 +17,23 @@ class AutoLeadsMetrics < DashboardMetrics
     init_skill_metrics if params[:skill_metrics]
   end
 
+  # on dashboard
+  def counts_by_status
+    summary_metrics.counts_by_status
+  end
+
+  # on dashboard
+  def metrics_by_trainee
+    altm.metrics(trainees_list)
+  end
+
+  # link from dashboard
+  def init_skill_metrics
+    @skill_metrics = SkillMetrics.new.generate
+    @template = path_dir + 'skill_metrics'
+  end
+
+  # link from dashboard
   def init_by_status(params)
     by_status(params[:status])
 
@@ -26,29 +43,7 @@ class AutoLeadsMetrics < DashboardMetrics
     @template += '_map'
   end
 
-  def init_skill_metrics
-    @skill_metrics = SkillMetrics.new.generate
-    @template = path_dir + 'skill_metrics'
-  end
-
-  def metrics_by_trainee
-    trainees_list_page.map do |id, first, last|
-      trainee_metric(id, first + ' ' + last)
-    end
-  end
-
-  def trainee_metric(id, name)
-    {
-      id: id,
-      name: name,
-      valid_profile:        trainees_valid.include?(id),
-      leads_count:          job_leads_count(id),
-      viewed_count:         jobs_viewed_count(id),
-      applied_count:        jobs_applied_count(id),
-      not_interested_count: not_interested_count(id)
-    }
-  end
-
+  # link from dashboard
   def by_status(status)
     status_method = METHOD_MAP[status.to_sym]
     @template = path_dir + status_method
@@ -59,67 +54,32 @@ class AutoLeadsMetrics < DashboardMetrics
                 .paginate(page: @page, per_page: 40)
   end
 
-  def counts_by_status
-    METHOD_MAP.map do |status, method|
-      [status, send(method).count]
-    end.to_h
-  end
-
-  def job_leads_sent_count
-    AutoSharedJob.unscoped.where(trainee_id: trainee_ids).count
-  end
-
-  def average_leads
-    valid_jsp_count = trainees_with_valid_job_search_profiles.count
-    return unless valid_jsp_count > 0
-    job_leads_sent_count / valid_jsp_count
-  end
-
   def trainee_job_counts
-    AutoSharedJob.where(trainee_id: trainee_ids).group(:trainee_id).count
+    AutoSharedJob.where(trainee_id: page_trainee_ids).group(:trainee_id).count
   end
 
-  def trainees_list_page
-    @trainees_list_page ||= trainees_list.paginate(page: @page, per_page: 50)
+  def pagination_date
+    trainees_page
   end
 
   private
 
-  def trainees_list
-    @trainees_list ||= Trainee.select('id, first, last')
+  def summary_metrics
+    @summary_metrics ||= AutoLeadsSummaryMetrics.new(trainee_ids)
+  end
+
+  def altm
+    @altm ||= AutoLeadsTraineeMetrics.new(page_trainee_ids)
+  end
+
+  def trainees_page
+    @trainees_page ||= Trainee
                        .order(:first, :last)
-                       .pluck(:id, :first, :last)
+                       .paginate(page: @page, per_page: 50)
   end
 
-  def trainees_valid
-    @trainees_valid ||= trainees_with_valid_job_search_profiles
-  end
-
-  def asjs
-    @asjs ||= AutoSharedJob.where(trainee_id: trainee_ids)
-  end
-
-  def job_leads_count(id)
-    @job_leads_counts ||= asjs.group(:trainee_id).count
-    @job_leads_counts[id]
-  end
-
-  def leads_count_by_status
-    @leads_count_by_status ||= asjs.group(:trainee_id, :status).count
-  end
-
-  def jobs_viewed_count(id)
-    leads_count_by_status[[id, 1]].to_i +
-      leads_count_by_status[[id, 2]].to_i +
-      leads_count_by_status[[id, 3]].to_i
-  end
-
-  def jobs_applied_count(id)
-    leads_count_by_status[[id, 2]]
-  end
-
-  def not_interested_count(id)
-    leads_count_by_status[[id, 3]].to_i + leads_count_by_status[[id, 4]].to_i
+  def trainees_list
+    @trainees_list ||= trainees_page.pluck(:id, :first, :last)
   end
 
   def trainees_with_valid_job_search_profiles
@@ -157,6 +117,10 @@ class AutoLeadsMetrics < DashboardMetrics
 
   def trainee_ids
     @trainee_ids = Trainee.pluck(:id)
+  end
+
+  def page_trainee_ids
+    @page_trainee_ids ||= trainees_page.pluck(:id)
   end
 
   def path_dir

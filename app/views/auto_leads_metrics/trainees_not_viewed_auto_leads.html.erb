@@ -1,6 +1,6 @@
 <h2>Following trainees NOT viewed at least one job lead</h2>
 <div align="center"><%= will_paginate(@data.trainees) %></div>
 
-<ol>
+<ol start='<%=@data.trainees.offset + 1%>'>
   <%= @data.trainees.map{ |t| '<li>' + name_and_link(t) + '</li>' }.join('').html_safe %>
 </ol>
