@@ -89,6 +89,8 @@ class Trainee < ActiveRecord::Base
 
   has_many :trainee_submits, dependent: :destroy
   has_many :trainee_files, dependent: :destroy
+  has_one  :unemployment_proof_file, -> { where notes: 'Unemployment Proof' },
+           class_name: 'TraineeFile'
 
   has_many :job_shared_tos # job_share should do dependent: :destroy
   has_many :job_shares, -> { order('created_at DESC') },

@@ -20,8 +20,14 @@ class ApplicantsController < ApplicationController
     end
 
     @applicants  = search_applicants
-    return if request.format.xls?
-    @applicants  = @applicants.paginate(page: params[:page], per_page: 20)
+
+    return unless @applicants.any?
+
+    unless request.format.xls?
+      @applicants  = @applicants.paginate(page: params[:page], per_page: 20)
+    end
+
+    @applicants = @applicants.decorate
   end
 
   # GET /applicants/1
@@ -149,7 +155,7 @@ class ApplicantsController < ApplicationController
 
     applicants = Applicant
                  .includes(:county, :sector)
-                 .includes(trainee: [:assessments, :klasses])
+                 .includes(trainee: [:assessments, :klasses, :unemployment_proof_file])
                  .where(predicate(navigator_id, status))
                  .order(created_at: :desc)
     return applicants unless edp || assessments || in_klass

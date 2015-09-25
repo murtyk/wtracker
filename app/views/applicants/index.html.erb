@@ -39,7 +39,7 @@
 
 <div class = 'row' style='margin-top: 30px'>
   <div class = 'span2'>
-    <h4><%= "Count: #{@applicants.count}" %></h4>
+    <h4><%= "Count: #{@applicants.total_entries}" %></h4>
   </div>
   <div class='span6'>
     <% if @applicants.any? %>
@@ -54,6 +54,7 @@
 <table class="table table-bordered table-striped table-hover table-condensed">
   <tr>
     <th>Name</th>
+    <th>TAPO ID(Trainee)</th>
     <th>Applied On</th>
     <th>Email</th>
     <th>Phone No</th>
@@ -66,16 +67,18 @@
     <th>EDP Date</th>
     <th>Assessed?</th>
     <th>Assigned to class?</th>
+    <th>Unemployment Proof</th>
   </tr>
   <% @applicants.each do |applicant| %>
     <% trainee = applicant.trainee %>
     <tr>
       <td><%= name_and_link applicant %></td>
+      <td><%= applicant.trainee_tapo_id%></td>
       <td><%= applicant.created_at.to_date %></td>
       <td><%= applicant.email %></td>
       <td><%= applicant.mobile_phone_number %></td>
       <td><%= applicant.county_name %></td>
-      <td><%= applicant.source %></td>
+      <td><%= applicant.source_name %></td>
       <td><%= applicant.sector_name %></td>
       <td><%= applicant.current_employment_status %></td>
       <td><%= applicant.status %></td>
@@ -83,6 +86,7 @@
       <td><%= applicant.trainee_edp_date %></td>
       <td><%= applicant.trainee_assessed? %></td>
       <td><%= applicant.trainee_assigned_to_klass?%></td>
+      <td><%= applicant.unemployment_proof_supplied %></td>
     </tr>
   <% end %>
 </table>
