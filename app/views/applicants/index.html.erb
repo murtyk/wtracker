@@ -37,19 +37,17 @@
   <% end %>
 </div>
 
+<% if @applicants.any? %>
 <div class = 'row' style='margin-top: 30px'>
   <div class = 'span2'>
-    <h4><%= "Count: #{@applicants.total_entries}" %></h4>
+      <h4><%= "Count: #{@applicants.total_entries}" %></h4>
   </div>
   <div class='span6'>
-    <% if @applicants.any? %>
       <div align="center" class='span8'><%= will_paginate(@applicants) %></div>
-    <% end %>
   </div>
-  <% if @applicants.any? %>
-    <div class = 'span2' style = 'padding-top: 5px'><%= download_button %></div>
-  <% end %>
+  <div class = 'span2' style = 'padding-top: 5px'><%= download_button %></div>
 </div>
+<% end %>
 
 <table class="table table-bordered table-striped table-hover table-condensed">
   <tr>
