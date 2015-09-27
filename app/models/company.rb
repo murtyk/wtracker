@@ -136,6 +136,10 @@ class Company
     "#{poster_name}(#{poster_location})"
   end
 
+  def name_location_formatted
+    "#{poster_name}::#{poster_location}".gsub!(',', '---')
+  end
+
   def poster_name_location_id
     "#{poster_name}::#{poster_location}::#{poster_city_id}"
   end

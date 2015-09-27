@@ -2,7 +2,7 @@
 
 <input type='hidden' name='job_search_id' value='<%=@job_search.id%>' id='job_search_id'/>
 
-<div class = 'row-fluid' style='background-color: #eee; padding: 10px 5px 5px 5px;margin-right: 5px;margin-bottom: 5px'>
+<div class = 'row-fluid' style='background-color: #eee; padding: 10px 5px 5px 5px; margin-right: 5px; margin-bottom: 5px'>
   <div class = 'span6 pull-left'>
     <strong>Search Criteria:</strong>
     <strong style='color: blue'><%= @job_search.search_criteria %></strong><br>
@@ -37,8 +37,10 @@
         <th>Action</th>
       </tr>
 
+      <% keywords = @job_search.keywords.split %>
       <% num = 0%>
       <% @analyzer.companies.each do |company|%>
+      <% name_location = company.name_location_formatted %>
       <% num += 1%>
         <tr id="tr_<%=num%>" class='<%=company.row_class%>'>
           <td><%=num%></td>
@@ -49,18 +51,17 @@
             <% id = "titles_#{@job_search.id}_#{num-1}" %>
             <% title_num = 0 %>
             <ol id = '<%=id%>'>
-              <% company.titles.each do |title_and_url|%>
+              <% company.titles.each do |title, url, _date|%>
                 <li>
                     <% if company.poster_name.blank? || company.poster_location.blank? %>
-                      <% company_and_title = "#{@job_search.id}::#{company.poster_name}::#{(company.poster_location||'').gsub(',','---')}::#{title_and_url[0]}::#{title_and_url[1]}" %>
+                      <% company_and_title = "#{@job_search.id}::#{name_location}::#{title}::#{url}" %>
                     <% else %>
-                      <% company_and_title = "#{@job_search.id}::#{company.poster_name}::#{(company.poster_location||'').gsub(',','---')}::#{title_num}" %>
+                      <% company_and_title = "#{@job_search.id}::#{name_location}::#{title_num}" %>
                     <% end %>
                     <% cb_id = "#{@job_search.id}:#{num-1}:#{title_num}" %>
-                    <%# debugger %>
-                    <% title = highlight(title_and_url[0],@job_search.keywords.split) %>
-                    <%= check_box_tag(title_and_url[0], company_and_title, true, {id: cb_id, style: "margin: 0px;"}) %>
-                  <%= title %>
+                    <% job_title = highlight(title, keywords) %>
+                    <%= check_box_tag(title, company_and_title, true, {id: cb_id, style: "margin: 0px;"}) %>
+                  <%= job_title %>
                 </li>
                 <% title_num += 1%>
               <% end %>

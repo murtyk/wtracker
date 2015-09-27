@@ -58,8 +58,10 @@ class JobSearchServices
   #
   # if name or location is missing then we will have title and url
   def self.company_and_jobs_from_cache(job_ids)
-    job_search_id, company_name, location = job_ids[0].split('::')
-    location.gsub!('---', ',')
+
+    job_search_id, company_name, location, _job_no = job_ids[0].split('::')
+    location && location.gsub!('---', ',')
+    company_name && company_name.gsub!('---', ',')
 
     if company_name.blank? || location.blank?
       return build_blank_company(company_name, location, job_ids)
