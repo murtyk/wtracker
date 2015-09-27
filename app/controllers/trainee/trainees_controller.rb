@@ -19,9 +19,12 @@ class Trainee
     end
 
     def trainee_params
-      tp = params[:trainee].clone
-      tp[:dob] = opero_str_to_date(tp[:dob]) if tp[:dob]
-      tp
+      dob = params[:trainee][:dob]
+      return params.require(:trainee).permit(:dob, :trainee_id) unless dob
+
+      tp = params.clone
+      tp[:trainee][:dob] = opero_str_to_date(dob)
+      tp.require(:trainee).permit(:dob, :trainee_id)
     end
   end
 end

@@ -11,28 +11,12 @@ class Grant < ActiveRecord::Base
 
   serialize :options
 
-  # permitted
-  attr_accessible :account_id, :end_date, :name, :start_date, :status, :spots, :amount,
-                  :auto_job_leads, :profile_request_content_attributes,
-                  :profile_request_subject_attributes, :job_leads_subject_attributes,
-                  :job_leads_content_attributes, :optout_message_one_attributes,
-                  :optout_message_two_attributes, :optout_message_three_attributes,
-                  :trainee_applications, :applicant_logo_file,
-                  :assessments_include_score, :assessments_include_pass
-
-  attr_accessible :reply_to_email, :reapply_subject, :reapply_body,
-                  :reapply_instructions, :reapply_email_not_found_message,
-                  :reapply_already_accepted_message,
-                  :reapply_confirmation_message,
-                  :hot_jobs_notification_subject, :hot_jobs_notification_body,
-                  :unemployment_proof_text,
-                  :email_password_subject, :email_password_body
-
   store_accessor :specific_data,
                  :assessments_include_score, :assessments_include_pass,
                  :reply_to_email, :reapply_subject, :reapply_body,
                  :reapply_instructions, :reapply_email_not_found_message,
-                 :reapply_already_accepted_message, :reapply_confirmation_message,
+                 :reapply_already_accepted_message,
+                 :reapply_confirmation_message,
                  :default_trainee_status_id,
                  :hot_jobs_notification_subject, :hot_jobs_notification_body,
                  :unemployment_proof_text,
@@ -57,17 +41,27 @@ class Grant < ActiveRecord::Base
   has_one :profile_request_content, -> { unscope(where: :account_id) },
           dependent: :destroy
   accepts_nested_attributes_for :profile_request_content
-  has_one :job_leads_content, -> { unscope(where: :account_id) }, dependent: :destroy
+  has_one :job_leads_content,
+          -> { unscope(where: :account_id) },
+          dependent: :destroy
   accepts_nested_attributes_for :job_leads_content
   has_one :profile_request_subject, -> { unscoped }, dependent: :destroy
   accepts_nested_attributes_for :profile_request_subject
-  has_one :job_leads_subject, -> { unscope(where: :account_id) }, dependent: :destroy
+  has_one :job_leads_subject,
+          -> { unscope(where: :account_id) },
+          dependent: :destroy
   accepts_nested_attributes_for :job_leads_subject
-  has_one :optout_message_one, -> { unscope(where: :account_id) }, dependent: :destroy
+  has_one :optout_message_one,
+          -> { unscope(where: :account_id) },
+          dependent: :destroy
   accepts_nested_attributes_for :optout_message_one
-  has_one :optout_message_two, -> { unscope(where: :account_id) }, dependent: :destroy
+  has_one :optout_message_two,
+          -> { unscope(where: :account_id) },
+          dependent: :destroy
   accepts_nested_attributes_for :optout_message_two
-  has_one :optout_message_three, -> { unscope(where: :account_id) }, dependent: :destroy
+  has_one :optout_message_three,
+          -> { unscope(where: :account_id) },
+          dependent: :destroy
   accepts_nested_attributes_for :optout_message_three
 
   has_many :applicants
@@ -139,7 +133,9 @@ class Grant < ActiveRecord::Base
   end
 
   def collection_applicant_sources(applicant)
-    sources = (applicant_sources.pluck(:source) + [applicant.source]).compact.uniq
+    sources = (applicant_sources.pluck(:source) + [applicant.source])
+              .compact
+              .uniq
 
     shift_other_to_end(sources)
   end
@@ -182,19 +178,29 @@ class Grant < ActiveRecord::Base
 
   def save_options
     auto_job_leads_setting
-    if @trainee_applications.is_a? String
-      @trainee_applications = @trainee_applications.to_i
-      @trainee_applications = @trainee_applications > 0
-    end
+    trainee_applications_setting
+
     self.options ||= {}
-    self.options = self.options.merge(auto_job_leads: @auto_job_leads)
-    self.options = self.options.merge(trainee_applications: @trainee_applications)
-    self.options = self.options.merge(applicant_logo_file: @applicant_logo_file)
+
+    self.options = self.options.merge(options_hash)
   end
 
   def auto_job_leads_setting
     return unless @auto_job_leads.is_a? String
     ajl = @auto_job_leads.to_i
     @auto_job_leads = ajl > 0
+  end
+
+  def trainee_applications_setting
+    return unless @trainee_applications.is_a? String
+
+    @trainee_applications = @trainee_applications.to_i
+    @trainee_applications = @trainee_applications > 0
+  end
+
+  def options_hash
+    { auto_job_leads: @auto_job_leads,
+      trainee_applications: @trainee_applications,
+      applicant_logo_file: @applicant_logo_file }
   end
 end

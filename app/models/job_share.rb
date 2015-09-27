@@ -1,9 +1,7 @@
 # captures the information of jobs sent to trainees
 class JobShare < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
-  attr_accessible :company, :date_posted, :details_url, :details_url_type,
-                  :excerpt, :from_id,
-                  :location, :source, :title, :comment # permitted
+
   attr_accessor :to_ids, :klass_id, :js_company, :job_ids
 
   delegate :found, :county, :marker, :circles, to: :js_company

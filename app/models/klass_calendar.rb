@@ -5,16 +5,21 @@ class KlassCalendar
   def initialize(klass)
     @klass = klass
     if klass.start_date && klass.end_date
-      @first_monday = klass.start_date.beginning_of_week
-      @last_monday = klass.end_date.beginning_of_week
-      @event_counts = @klass.klass_events.group(:event_date).count
-      @klass_events = @klass.klass_events
-                      .includes(klass_interactions: { employer: :address })
-                      .decorate
-    else
-      @invalid_dates = true
-      @error = 'invalid class start/end dates'
+      init_days
+      return
     end
+
+    @invalid_dates = true
+    @error = 'invalid class start/end dates'
+  end
+
+  def init_days
+    @first_monday = klass.start_date.beginning_of_week
+    @last_monday = klass.end_date.beginning_of_week
+    @event_counts = @klass.klass_events.group(:event_date).count
+    @klass_events = @klass.klass_events
+                    .includes(klass_interactions: { employer: :address })
+                    .decorate
   end
 
   def visit_type(event)
@@ -66,10 +71,14 @@ class KlassCalendar
   end
 
   def build_start_time_string(event)
-    time_s(event.start_time_hr.to_s, event.start_time_min.to_i, event.start_ampm)
+    time_s(event.start_time_hr.to_s,
+           event.start_time_min.to_i,
+           event.start_ampm)
   end
 
   def build_end_time_string(event)
-    time_s(event.end_time_hr.to_s, event.end_time_min.to_i, event.end_ampm)
+    time_s(event.end_time_hr.to_s,
+           event.end_time_min.to_i,
+           event.end_ampm)
   end
 end

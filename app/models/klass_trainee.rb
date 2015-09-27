@@ -10,8 +10,6 @@ class KlassTrainee < ActiveRecord::Base
   belongs_to :klass
   belongs_to :trainee
 
-  # permitted
-  attr_accessible :status, :trainee_id, :klass_id, :notes, :account_id
   attr_accessor :employer_name, :employer_id,
                 :start_date, :completion_date, :hire_title,
                 :hire_salary, :comment,
@@ -42,7 +40,8 @@ class KlassTrainee < ActiveRecord::Base
 
   private
 
-  EMP_ATTRS = %w(employer_id employer_name hire_title hire_salary start_date comment)
+  EMP_ATTRS = %w(employer_id employer_name hire_title
+                 hire_salary start_date comment)
   def copy_employer_interaction_details
     return unless id && hired? && trainee
     ei = trainee.hired_employer_interaction

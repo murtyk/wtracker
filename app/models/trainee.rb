@@ -13,7 +13,8 @@ class Trainee < ActiveRecord::Base
                   against: [:first, :last],
                   using: { tsearch: { prefix: true } }
 
-  default_scope { where(account_id: Account.current_id, grant_id: Grant.current_id) }
+  default_scope { where(account_id: Account.current_id) }
+  default_scope { where(grant_id: Grant.current_id) }
 
   scope :with_assessments,
         -> { where('id in (select trainee_id from trainee_assessments)') }
@@ -22,14 +23,6 @@ class Trainee < ActiveRecord::Base
   devise :database_authenticatable, authentication_keys: [:login_id]
   devise :recoverable, :rememberable, :trackable
   extend DeviseOverrides
-
-  # permitted
-  attr_accessible :remember_me, :login_id, :password, :password_confirmation,
-                  :disability, :dob, :education, :email, :first, :last,
-                  :gender, :land_no, :middle, :mobile_no, :trainee_id,
-                  :status, :veteran, :race_id, :klass_ids, :edp_date,
-                  :tact_three_attributes, :legal_status, :funding_source_id,
-                  :home_address_attributes, :mailing_address_attributes
 
   attr_encrypted :trainee_id, key: :encryption_key
 
@@ -61,7 +54,8 @@ class Trainee < ActiveRecord::Base
 
   has_one :tact_three, dependent: :destroy
   accepts_nested_attributes_for :tact_three
-  delegate :education_name, :recent_employer, :job_title, :years, :certifications,
+  delegate :education_name, :recent_employer,
+           :job_title, :years, :certifications,
            to: :tact_three, allow_nil: true
 
   alias_attribute(:education, :education_name)
@@ -77,7 +71,9 @@ class Trainee < ActiveRecord::Base
   has_many :assessments, through: :trainee_assessments
   has_many :trainee_notes, -> { order('created_at DESC') }, dependent: :destroy
 
-  has_many :trainee_interactions, -> { order('created_at DESC') }, dependent: :destroy
+  has_many :trainee_interactions,
+           -> { order('created_at DESC') },
+           dependent: :destroy
   has_many :interested_employers,
            source: :employer, through: :trainee_interactions
 
@@ -89,8 +85,8 @@ class Trainee < ActiveRecord::Base
 
   has_many :trainee_submits, dependent: :destroy
   has_many :trainee_files, dependent: :destroy
-  has_one  :unemployment_proof_file, -> { where notes: 'Unemployment Proof' },
-           class_name: 'TraineeFile'
+  has_one :unemployment_proof_file, -> { where notes: 'Unemployment Proof' },
+          class_name: 'TraineeFile'
 
   has_many :job_shared_tos # job_share should do dependent: :destroy
   has_many :job_shares, -> { order('created_at DESC') },
@@ -242,7 +238,9 @@ class Trainee < ActiveRecord::Base
 
   def klasses_for_selection
     ks = Klass.where('start_date > ?', Date.today) - klasses
-    ks.map { |k| [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id] }
+    ks.map do |k|
+      [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id]
+    end
   end
 
   def self.status_collection

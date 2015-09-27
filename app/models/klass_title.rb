@@ -7,7 +7,6 @@ class KlassTitle < ActiveRecord::Base
   delegate :line1, :city, :county, :state, :zip, to: :klass
 
   has_one :job_search
-  attr_accessible :title, :klass_id # permitted
 
   validates :title, presence: true, length: { minimum: 3 }
 

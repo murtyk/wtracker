@@ -9,10 +9,6 @@ class Klass < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
 
-  # permitted
-  attr_accessible :program_id, :credits, :description,
-                  :end_date, :name, :start_date, :training_hours,
-                  :college_id, :klass_schedules_attributes
   validates :name, presence: true, length: { minimum: 3, maximum: 80 }
   validates :college_id, presence: true
   validates :program_id, presence: true

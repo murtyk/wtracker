@@ -6,7 +6,6 @@ class County < ActiveRecord::Base
   has_many :cities
 
   has_many :polygons, as: :mappable, dependent: :destroy
-  attr_accessible :name # permitted indirectly
 
   def self.search(filters, include_polygons = false)
     counties = find_counties(filters)
@@ -29,13 +28,18 @@ class County < ActiveRecord::Base
 
   def self.find_counties(filters)
     name = filters[:name]
-    state = !filters[:state_id].blank? && State.find(filters[:state_id])
+    state = state_from_filters(filters)
 
     return [] if name.blank? && !state
 
     counties = state ? state.counties : all
     counties = counties.where('name ilike ?', name + '%') unless name.blank?
     counties.order(:name)
+  end
+
+  def self.state_from_filters(filters)
+    return if filters[:state_id].blank?
+    State.find(filters[:state_id])
   end
 
   def self.counties_polygons(counties)

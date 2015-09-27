@@ -10,10 +10,6 @@ class KlassEvent < ActiveRecord::Base
            through: :klass_interactions
   accepts_nested_attributes_for :klass_interactions
 
-  # permitted
-  attr_accessible :event_date, :name, :klass_id, :notes,
-                  :start_ampm, :start_time_hr, :start_time_min,
-                  :end_ampm, :end_time_hr, :end_time_min
   validates :name, presence: true, length: { minimum: 5 }
   validates :start_time_hr,
             numericality: { greater_than_or_equal_to: 0,

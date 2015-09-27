@@ -5,21 +5,6 @@ class Applicant < ActiveRecord::Base
 
   default_scope { where(account_id: Account.current_id) }
 
-  # permitted
-  attr_accessible :first_name, :last_name, :email, :address_line1, :address_line2,
-                  :address_city, :address_state, :address_zip, :mobile_phone_no,
-                  :last_employed_on, :current_employment_status, :last_job_title,
-                  :salary_expected, :education_level, :transportation,
-                  :computer_access, :comments, :county_id, :legal_status, :veteran,
-                  :last_employer_name, :last_employer_city, :last_employer_state,
-                  :last_employer_line1, :last_employer_line2, :last_employer_zip,
-                  :last_employer_manager_name, :last_employer_manager_phone_no,
-                  :last_employer_manager_email, :resume, :source, :signature, :status,
-                  :salt, :humanizer_answer, :humanizer_question_id,
-                  :trainee_id, :navigator_id, :sector_id, :race_id, :last_wages,
-                  :gender, :unemployment_proof, :special_service_ids, :reapply_key,
-                  :applied_on, :email_confirmation, :skills, :dob
-
   store_accessor :data, :skills,
                  :unemployment_proof_initial,
                  :unemployment_proof_date,
@@ -148,9 +133,18 @@ class Applicant < ActiveRecord::Base
 
   def last_employer_contact
     (last_employer_manager_name + '<br>' +
-     format_phone_no(last_employer_manager_phone_no) + '<br>' +
-     (last_employer_manager_email && (last_employer_manager_email.to_s + '<br>')).to_s +
+     last_emp_formatted_phone + '<br>' +
+     last_emp_email +
      last_employer_address).html_safe
+  end
+
+  def last_emp_formatted_phone
+    format_phone_no(last_employer_manager_phone_no)
+  end
+
+  def last_emp_email
+    return '' unless last_employer_manager_email
+    last_employer_manager_email.to_s + '<br>'
   end
 
   def special_services_requested
@@ -216,7 +210,8 @@ class Applicant < ActiveRecord::Base
   end
 
   def validate_applicant_data
-    non_bool_attributes.each { |at| errors.add(at, "can't be blank") if send(at).blank? }
+    msg = "can't be blank"
+    non_bool_attributes.each { |at| errors.add(at, msg) if send(at).blank? }
 
     validate_boolean_attributes
     validate_self_services
@@ -273,7 +268,8 @@ class Applicant < ActiveRecord::Base
   def validate_mobile_phone_no
     return if mobile_phone_no.blank?
     phone = mobile_phone_no.delete('^0-9')
-    errors.add(:mobile_phone_no, 'Should contain minimum 10 digits') if phone.size < 10
+    return unless phone.size < 10
+    errors.add(:mobile_phone_no, 'Should contain minimum 10 digits')
   end
 
   def validate_emp_phone_no

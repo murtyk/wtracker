@@ -7,10 +7,6 @@ class ImportStatus < ActiveRecord::Base
   serialize :params
   serialize :data
 
-  attr_accessible :file_name, :status, :rows_failed, :rows_successful,
-                  :type, :user_id, :sector_ids, :klass_id, :params, :data,
-                  :aws_file_name # permitted
-
   belongs_to :user
   belongs_to :account
   has_many :import_fails, dependent: :destroy

@@ -1,8 +1,11 @@
 # captures search criteria and results
 # searched jobs are not persisted
 class JobSearch < ActiveRecord::Base
-  JOBSEARCH_DAYS     = { 'Last 24 hours' => 1, 'Last 7 days' => 7, 'Last 14 days' => 14,
-                         'Last 30 days' => 30, 'Anytime' => 0 }
+  JOBSEARCH_DAYS     = { 'Last 24 hours' => 1,
+                         'Last 7 days' => 7,
+                         'Last 14 days' => 14,
+                         'Last 30 days' => 30,
+                         'Anytime' => 0 }
   JOBSEARCH_DISTANCE = { 5 => 5, 10 => 10, 15 => 15, 25 => 25, 50 => 50,
                          'Exact Location' => 0 }
   JOBS_SLICE_SIZE     = 100
@@ -12,8 +15,7 @@ class JobSearch < ActiveRecord::Base
   belongs_to :user
   belongs_to :account
   belongs_to :klass_title
-  attr_accessible :keywords, :location, :count, :distance,
-                  :recruiters, :days, :klass_title_id, :in_state # permitted
+
   attr_accessor :college_id
   attr_reader :analyzer, :jobs, :jobs_count, :page, :pages
 

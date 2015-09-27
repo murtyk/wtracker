@@ -2,7 +2,6 @@
 class EmployerSource < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
 
-  attr_accessible :name # permitted indirectly
   validates :name, presence: true, length: { minimum: 3, maximum: 100 }
 
   belongs_to :account

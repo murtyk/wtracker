@@ -7,7 +7,6 @@ class TraineeSubmit < ActiveRecord::Base
   belongs_to :trainee
   belongs_to :employer
   belongs_to :email
-  attr_accessible :title, :trainee_id, :employer_id, :applied_on # permitted
 
   validates :employer, presence: true
   validates :title, presence: true

@@ -4,7 +4,6 @@ class EmployerNote < ActiveRecord::Base
 
   belongs_to :employer
   belongs_to :account
-  attr_accessible :note, :employer_id # permitted
 
   validates :note, presence: true, length: { minimum: 3 }
 end

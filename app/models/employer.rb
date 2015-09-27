@@ -16,9 +16,6 @@ class Employer < ActiveRecord::Base
     joins(:address).where(addresses: { county_id: county_ids })
   }
 
-  attr_accessible :name, :address_attributes,
-                  :phone_no, :website, :sector_ids, :trainee_ids, :employer_source_id # permitted
-
   validates :name, presence: true, length: { minimum: 3, maximum: 100 }
 
   before_save :cb_before_save
@@ -102,9 +99,9 @@ class Employer < ActiveRecord::Base
   end
 
   def duplicate_with_address
+    pr = 'addresses.line1 ILIKE ? and addresses.city ILIKE ? and state ILIKE ?'
     potential_duplicates
-      .where('addresses.line1 ILIKE ? and addresses.city ILIKE ? and state ILIKE ?',
-             address.line1, address.city, address.state)
+      .where(pr, address.line1, address.city, address.state)
       .first
   end
 

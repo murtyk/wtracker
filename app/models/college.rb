@@ -5,12 +5,12 @@ class College < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
   default_scope { order(:name) }
 
-  attr_accessible :name, :address_attributes # permitted
   validates :name, presence: true, length: { minimum: 3, maximum: 50 }
 
   has_one :address, as: :addressable, dependent: :destroy
   accepts_nested_attributes_for :address
-  delegate :line1, :city, :county, :county_id, :state, :zip, to: :address, allow_nil: true
+  delegate :line1, :city, :county, :county_id, :state, :zip,
+           to: :address, allow_nil: true
 
   has_many :klasses
 

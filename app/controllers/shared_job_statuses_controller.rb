@@ -40,7 +40,7 @@ class SharedJobStatusesController < ApplicationController
     @shared_job_status = SharedJobStatus.find(params[:id])
 
     respond_to do |format|
-      if @shared_job_status.update_attributes(params[:shared_job_status])
+      if @shared_job_status.update_attributes(shared_job_status_params)
         url = shared_job_status_path(@shared_job_status, key: @shared_job_status.key)
         notice = 'Thank you for your feedback.'
         format.html { redirect_to url, notice: notice }

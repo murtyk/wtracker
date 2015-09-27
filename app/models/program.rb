@@ -4,10 +4,6 @@ class Program < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
 
-  # permitted
-  attr_accessible :description, :name, :hours,
-                  :sector_id
-
   validates :name, presence: true, length: { minimum: 3, maximum: 80 }
 
   belongs_to :grant

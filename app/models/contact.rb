@@ -4,10 +4,7 @@
 class Contact < ActiveRecord::Base
   include ValidationsMixins
   default_scope { where(account_id: Account.current_id) }
-  # default_scope order('first, last')
 
-  attr_accessible :contable_id, :contactable_type, :email, :first, :last,
-                  :land_no, :ext, :mobile_no, :title # permitted
   before_save :cb_before_save
 
   belongs_to :account

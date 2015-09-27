@@ -8,8 +8,6 @@ class TraineeEmail < ActiveRecord::Base
   belongs_to :user
   belongs_to :klass
 
-  # permitted
-  attr_accessible :content, :subject, :trainee_ids, :trainee_names, :klass_id
   attr_accessor :use_job_leads_email
 
   validates :subject, presence: true, length: { minimum: 5 }

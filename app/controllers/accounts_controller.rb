@@ -7,7 +7,7 @@ class AccountsController < ApplicationController
 
   def update_trainee_options
     authorize current_account, :update?
-    current_account.update_options(params[:account])
+    current_account.update_options(account_params)
   end
 
   private

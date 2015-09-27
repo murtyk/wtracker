@@ -1,9 +1,7 @@
 # taacct 3 attributes for trainee
 class TactThree < ActiveRecord::Base
   default_scope { where(account_id: Account.current_id) }
-  # permitted
-  attr_accessible :certifications, :education_level,
-                  :job_title, :recent_employer, :years
+
   belongs_to :trainee
 
   def education_name

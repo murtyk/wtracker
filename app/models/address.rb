@@ -13,15 +13,9 @@ class Address < ActiveRecord::Base
   alias_attribute(:state_code, :state)
   alias_attribute(:county_name, :county)
 
-  # permitted. no direct controller
-  attr_accessible :city, :county, :county_id, :country, :gmaps,
-                  :latitude, :line1, :line2, :longitude, :state, :zip
-
-  # validates :line1, presence: true, length: {minimum: 5, maximum: 40}
   validates :city,  presence: true, length: { minimum: 3, maximum: 30 }
   validates :state, presence: true, length: { minimum: 2, maximum: 2 }
   validate :validate_state_code
-  # validates :zip, presence: true, length: {minimum: 5, maximum: 10}
 
   belongs_to :addressable, polymorphic: true
 

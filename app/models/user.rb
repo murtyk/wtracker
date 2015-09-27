@@ -18,13 +18,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, authentication_keys: [:email]
   devise :recoverable, :rememberable, :trackable, :validatable
 
-  # Setup accessible (or protected) attributes for your model
-  # permitted
-  attr_accessible :remember_me, :password, :password_confirmation,
-                  :options, :email, :location, :status, :role,
-                  :first, :last, :land_no, :ext, :mobile_no, :comments,
-                  :county_ids, :grant_ids, :acts_as_admin
-  # attr_accessible :title, :body
   attr_accessor :pref_copy_jobshares
 
   store_accessor :data, :acts_as_admin, :default_employer_source_id
@@ -122,7 +115,9 @@ class User < ActiveRecord::Base
   end
 
   def online_users
-    User.where('last_activity_at > ? and not id = ?', 3.minutes.ago, id).map(&:name)
+    User
+      .where('last_activity_at > ? and not id = ?', 3.minutes.ago, id)
+      .map(&:name)
   end
 
   def acts_as_admin?

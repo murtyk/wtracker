@@ -9,8 +9,6 @@ class KlassInteraction < ActiveRecord::Base
   belongs_to :employer
   belongs_to :klass_event
 
-  # permitted
-  attr_accessible :status, :klass_event_id, :employer_id
   attr_accessor :from_page, :klass_id, :county_id, :sector_id
 
   delegate :klass, :event_date, :for_klass?, to: :klass_event

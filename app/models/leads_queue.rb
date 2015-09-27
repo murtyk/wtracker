@@ -1,14 +1,8 @@
+#
 class LeadsQueue < ActiveRecord::Base
   enum status: [:inactive, :pending, :wip, :processed]
 
   scope :pending, -> { where(status: 1) }
-
-  # permitted because it comes directly from api client - tapo_worker
-  attr_accessible :trainee_id, :status,
-                  :jsp_id, :skills, :distance, :location, :zip,
-                  :trainee_ip, :last_date_posted,
-                  :email_from, :email_reply_to,
-                  :email_to, :email_subject, :email_body
 
   store_accessor :data,
                  :jsp_id, :skills, :distance, :location, :zip,

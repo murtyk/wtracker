@@ -5,9 +5,6 @@ class TraineeAssessment < ActiveRecord::Base
   belongs_to :trainee
   belongs_to :assessment
 
-  # permitted
-  attr_accessible :pass, :score, :assessment_id, :trainee_id, :date
-
   delegate :grant, to: :assessment
   delegate :name, to: :assessment
 

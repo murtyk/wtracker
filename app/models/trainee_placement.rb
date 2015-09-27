@@ -7,10 +7,6 @@ class TraineePlacement < ActiveRecord::Base
   FIELDS = %w(company_name address_line1 address_line2 city state zip phone_no
               salary job_title start_date reported_date placement_type)
 
-  FIELDS.each do |field|
-    attr_accessible field # permitted
-  end
-
   validate :validate_data
 
   belongs_to :account
@@ -72,7 +68,8 @@ class TraineePlacement < ActiveRecord::Base
 
   def details
     "<strong>#{created_at.to_date} - #{company_name}</strong>" \
-    "<br>#{salary}#{job_title}#{start_date}<br>Type: #{placement_type_description}"
+    "<br>#{salary}#{job_title}#{start_date}<br>" \
+    "Type: #{placement_type_description}"
   end
 
   private

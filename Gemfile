@@ -6,7 +6,7 @@ group :production, :staging, :integration do
 end
 
 gem 'rails', '4.2.0'
-gem 'protected_attributes', '1.0.7'
+# gem 'protected_attributes', '1.0.7'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 # gem 'bootstrap-sass', '~> 2.1.0.0' #trying new one

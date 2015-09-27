@@ -2,9 +2,6 @@
 class AutoSharedJob < ActiveRecord::Base
   belongs_to :account
 
-  attr_accessible :company, :location, :title, :excerpt, :date_posted, :url
-  attr_accessible :status, :notes, :status_updated_at, :notes_updated_at # permitted indirectly
-
   def trainee
     Trainee.unscoped.find(trainee_id)
   end
@@ -52,7 +49,8 @@ class AutoSharedJob < ActiveRecord::Base
 
   def change_status(new_status)
     if status.to_i == 0
-      return update_attributes(status: new_status, status_updated_at: Date.today)
+      return update_attributes(status: new_status,
+                               status_updated_at: Date.today)
     end
 
     next_status = STATE_MACHINE[status][new_status]

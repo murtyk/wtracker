@@ -4,8 +4,6 @@ class Assessment < ActiveRecord::Base
   default_scope { where(grant_id: Grant.current_id) }
   default_scope { order(:name) }
 
-  attr_accessible :administered_by, :name # permitted
-
   belongs_to :account
   belongs_to :grant
 

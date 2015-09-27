@@ -5,6 +5,4 @@ class TraineeRace < ActiveRecord::Base
 
   belongs_to :trainee
   belongs_to :race
-  attr_accessible :race_id, :account_id, :trainee_id
-  # attr_accessible :title, :body
 end

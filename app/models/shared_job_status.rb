@@ -8,7 +8,7 @@ class SharedJobStatus < ActiveRecord::Base
   belongs_to :account
   belongs_to :trainee
   belongs_to :shared_job
-  attr_accessible :feedback, :key, :status, :trainee_id # permitted
+
   delegate :title, :location, :company, :comment, :details_url, :from_user,
            to: :shared_job
 

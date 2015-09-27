@@ -134,7 +134,7 @@ class JobSearchesController < ApplicationController
     params[:job_search].delete(:college_id)
     klass_title_id = params[:job_search][:klass_title_id].to_i
 
-    return current_user.job_searches.new(params[:job_search]) unless klass_title_id > 0
+    return current_user.job_searches.new(job_search_params) unless klass_title_id > 0
 
     klass_title = KlassTitle.find(klass_title_id)
     klass_title.get_job_search(true)

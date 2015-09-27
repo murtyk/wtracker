@@ -2,7 +2,6 @@
 # an employer can be in multiple sectors
 class Sector < ActiveRecord::Base
   default_scope { order(:name) }
-  attr_accessible :name # permitted
 
   has_many :employer_sectors, dependent: :destroy
   has_many :employers, through: :employer_sectors

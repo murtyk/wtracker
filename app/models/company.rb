@@ -6,7 +6,8 @@
 class Company
   include CacheHelper
 
-  attr_reader :poster_name, :poster_location, :poster_city_id, :employer_source_id,
+  attr_reader :poster_name, :poster_location, :poster_city_id,
+              :employer_source_id,
               :poster_city_name, :poster_county_name, :poster_state_code
 
   attr_reader :titles, :duplicate, :found, :searched, :circles
@@ -20,16 +21,16 @@ class Company
     @poster_location      = p_location
     city = GeoServices.findcity(@poster_location) unless @poster_location.blank?
 
-    if city
-      @poster_city_id     = city.id
-      @poster_city_name   = city.name
-      @poster_county_name = city.county_name
-      @poster_state_code  = city.state_code
-    else
-      @poster_city_id     = nil
-    end
+    city ? init_city_attrs(city) : (@poster_city_id = nil)
 
     init_defaults
+  end
+
+  def init_city_attrs(city)
+    @poster_city_id     = city.id
+    @poster_city_name   = city.name
+    @poster_county_name = city.county_name
+    @poster_state_code  = city.state_code
   end
 
   def init_defaults
@@ -85,9 +86,7 @@ class Company
   end
 
   def circles
-    @circles ||= [10, 20].map do |radius|
-      Circle.new(radius, longitude, latitude).marker
-    end
+    @circles ||= [10, 20].map { |r| Circle.new(r, longitude, latitude).marker }
   end
 
   def marker
@@ -171,7 +170,10 @@ class Company
     @gps_id            = gps.id
     @opero_company_id  = oc.id
     # cache_oc_company(gps, oc)
-    cacheit(found: true, score: gps.score, opero_company_id: oc.id, gps_id: gps.id)
+    cacheit(found: true,
+            score: gps.score,
+            opero_company_id: oc.id,
+            gps_id: gps.id)
   end
 
   def found_gc(gc)

@@ -5,16 +5,14 @@ class JobSearchProfile < ActiveRecord::Base
                   against: :skills,
                   using: { tsearch: { any_word: true } }
 
-  attr_accessible :account_id, :trainee_id, :skills, :location, :distance, :zip, :key,
-                  :opted_out, :opt_out_reason_code, :opt_out_reason,
-                  :company_name, :start_date, :title, :salary # permitted
   belongs_to :account
   belongs_to :trainee
 
   validate :validate_search_params, :validate_opt_out_params
   before_save :cb_before_save
 
-  OPT_OUT_REASONS = { 1 => 'Found Employment', 2 => 'No longer looking for work',
+  OPT_OUT_REASONS = { 1 => 'Found Employment',
+                      2 => 'No longer looking for work',
                       3 => 'Moved out of the area' }
 
   def trainee
@@ -50,15 +48,15 @@ class JobSearchProfile < ActiveRecord::Base
   end
 
   def opted_out_new_employer
-    company_name if  opt_out_reason_code == 1
+    company_name if opt_out_reason_code == 1
   end
 
   def opted_out_title
-    title if  opt_out_reason_code == 1
+    title if opt_out_reason_code == 1
   end
 
   def opted_out_start_date
-    start_date if  opt_out_reason_code == 1
+    start_date if opt_out_reason_code == 1
   end
 
   def opted_out_confirmation_message
@@ -78,7 +76,10 @@ class JobSearchProfile < ActiveRecord::Base
   def jobs_with_status(status)
     return trainee.auto_shared_jobs.order(date_posted: :desc) unless status
     status_codes = AutoSharedJob.status_codes(status)
-    trainee.auto_shared_jobs.where(status: status_codes).order(date_posted: :desc)
+    trainee
+      .auto_shared_jobs
+      .where(status: status_codes)
+      .order(date_posted: :desc)
   end
 
   def recent_job_lead
@@ -86,22 +87,20 @@ class JobSearchProfile < ActiveRecord::Base
   end
 
   def validate_search_params
-    return true if skills.nil? && location.nil? && zip.nil? && distance.nil?
-    valid  = validate_skills
-    valid &= validate_distance
-    valid &= validate_location
+    return true if all_params_blank?
 
-    return false unless valid
+    validate_skills && validate_distance && validate_location
+  end
 
-    # we need to resolve simplyhired issues
-    # check if this results in any jobs
-    # can_find_jobs?
-    valid
+  def all_params_blank?
+    skills.nil? && location.nil? && zip.nil? && distance.nil?
   end
 
   def location_error_messages
     msgs = [errors[:location][0], errors[:zip][0]].compact
-    msgs.map { |m| "<br><span style='color: #B94A48'>#{m}</span>" }.join('').html_safe
+    msgs.map { |m| "<br><span style='color: #B94A48'>#{m}</span>" }
+      .join('')
+      .html_safe
   end
 
   private
@@ -145,8 +144,10 @@ class JobSearchProfile < ActiveRecord::Base
   end
 
   def valid_state_code(code)
-    errors.add(:location, 'please enter state code. ex: Edison,NJ') if code.blank?
-    return false if code.blank?
+    if code.blank?
+      errors.add(:location, 'please enter state code. ex: Edison,NJ')
+      return false
+    end
 
     valid_code = State.valid_state_code?(code)
     errors.add(:location, 'state code missing or invalid') unless valid_code
@@ -168,29 +169,32 @@ class JobSearchProfile < ActiveRecord::Base
   end
 
   def validate_opt_out_params
-    valid = true
-    if opt_out_reason_code == 1
-      [:company_name, :title, :start_date].each do |attr|
-        if send(attr).blank?
-          errors.add(attr, "can't be blank")
-          valid = false
-        end
-      end
+    validate_optout_data
+    validate_optout_reason_text
+    errors.empty?
+  end
+
+  def validate_optout_data
+    return true unless opt_out_reason_code == 1
+
+    [:company_name, :title, :start_date].each do |attr|
+      errors.add(attr, "can't be blank") if send(attr).blank?
     end
-    if opt_out_reason && opt_out_reason.length > 254
-      errors.add(:opt_out_reason, 'please limit to 255 characters')
-      valid = false
-    end
-    valid
+  end
+
+  def validate_optout_reason_text
+    return true unless opt_out_reason && opt_out_reason.length > 254
+    errors.add(:opt_out_reason, 'please limit to 255 characters')
   end
 
   def cb_before_save
     return true if zip.blank? && location.blank?
-    if zip.blank?
-      city = GeoServices.findcity(location, '')
-    else
-      city = City.find_by(zip: zip) || GeoServices.findcity('', zip)
-    end
+    city = find_city
     self.location = "#{city.name},#{city.state_code}"
+  end
+
+  def find_city
+    return GeoServices.findcity(location, '') if zip.blank?
+    City.find_by(zip: zip) || GeoServices.findcity('', zip)
   end
 end

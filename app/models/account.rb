@@ -4,13 +4,10 @@
 class Account < ActiveRecord::Base
   TYPES     = { 1 => 'Grant Recipient', 2 => 'College' }
   STATUSES  = { 1 => 'Active', 2 => 'Not Active', 3 => 'Readonly' }
-  TRACK_TRAINEE_OPTIONS = { 0 => 'Do not track status', 1 => 'Track status by email' }
+  TRACK_TRAINEE_OPTIONS = { 0 => 'Do not track status',
+                            1 => 'Track status by email' }
 
   serialize :options
-
-  attr_accessible :options, :description, :name, :status, :client_type,
-                  :subdomain, :logo_file, :users_attributes,
-                  :grants_attributes, :account_states_attributes, :demo # permitted
 
   cattr_accessor :current_id, instance_writer: false, instance_reader: false
 
