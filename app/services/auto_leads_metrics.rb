@@ -75,7 +75,7 @@ class AutoLeadsMetrics < DashboardMetrics
   def trainees_page
     @trainees_page ||= Trainee
                        .order(:first, :last)
-                       .paginate(page: @page, per_page: 50)
+                       .paginate(page: @page, per_page: 25)
   end
 
   def trainees_list
