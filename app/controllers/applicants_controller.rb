@@ -12,22 +12,15 @@ class ApplicantsController < ApplicationController
 
   # GET /applicants
   def index
-    if params[:query]
-      @applicant_metrics = ApplicantMetrics.new
-      @applicant_metrics.query(params[:query])
-      render 'index_from_metrics'
-      return
+    return show_metrics if params[:query]
+
+    @as = ApplicantSearch.new(current_user)
+
+    respond_to do |format|
+      format.html { perform_search }
+      format.js  { send_search_results_file_by_email }
+      format.xls { send_search_results_file }
     end
-
-    @applicants  = search_applicants
-
-    return unless @applicants.any?
-
-    unless request.format.xls?
-      @applicants  = @applicants.paginate(page: params[:page], per_page: 20)
-    end
-
-    @applicants = @applicants.decorate
   end
 
   # GET /applicants/1
@@ -70,6 +63,12 @@ class ApplicantsController < ApplicationController
   end
 
   private
+
+  def show_metrics
+    @applicant_metrics = ApplicantMetrics.new
+    @applicant_metrics.query(params[:query])
+    render 'index_from_metrics'
+  end
 
   def action_after_update
     notice = 'Applicant updated successfully'
@@ -144,57 +143,36 @@ class ApplicantsController < ApplicationController
     params[:key] || (params[:applicant] && params[:applicant][:reapply_key])
   end
 
-  def search_applicants
-    navigator_id,
-    status,
-    edp,
-    assessments,
-    in_klass     = search_filters
-
-    return [] unless navigator_id || status
-
-    applicants = Applicant
-                 .includes(:county, :sector)
-                 .includes(trainee: [:assessments, :klasses, :unemployment_proof_file])
-                 .where(predicate(navigator_id, status))
-                 .order(created_at: :desc)
-    return applicants unless edp || assessments || in_klass
-
-    apply_filters(applicants, edp, assessments, in_klass)
+  def send_search_results_file
+    @as.build_document(search_params)
+    send_file @as.file_path, type: 'application/vnd.ms-excel',
+                             filename: @as.file_name,
+                             stream: false
   end
 
-  def predicate(navigator_id, status)
-    pred = {}
-    pred.merge!(navigator_id: navigator_id) unless navigator_id.blank?
-    pred.merge!(status: status) unless status.blank?
-    pred
+  def send_search_results_file_by_email
+    @as.delay.send_results(search_params)
+    Rails.logger.info "#{current_user.name} has requested Applicant Search file by email"
   end
 
-  def apply_filters(applicants, edp, assessments, in_klass)
-    applicants = applicants.where.not(trainees: { edp_date: nil }) if edp
+  def perform_search
+    @applicants = @as.perform(search_params)
+    return unless @applicants.any?
+    @applicants = @applicants.paginate(page: params[:page], per_page: 20).decorate
+  end
 
-    if assessments
-      trainee_ids = Trainee.with_assessments.pluck(:id)
-      applicants = applicants.where(trainee_id: trainee_ids)
+  def search_params
+    unless params[:filters]
+      @filter_info = {}
+      return @filter_info
     end
-
-    if in_klass
-      trainee_ids = Trainee.in_klass.pluck(:id)
-      applicants = applicants.where(trainee_id: trainee_ids)
-    end
-
-    applicants
-  end
-
-  def search_filters
-    @filter_info = params[:filters] || {}
-    [
-      @filter_info[:navigator_id],
-      @filter_info[:status],
-      @filter_info[:edp].to_i > 0,
-      @filter_info[:assessments].to_i > 0,
-      @filter_info[:in_klass].to_i > 0
-    ]
+    @filter_info ||= params.require(:filters)
+                     .permit(:navigator_id,
+                             :status,
+                             :funding_source_id,
+                             :edp,
+                             :assessments,
+                             :in_klass)
   end
 
   def next_applicant

@@ -1,0 +1,45 @@
+<%= simple_form_for :filters, method: :get, url: '/applicants',
+                              html: { class: 'form-vertical',
+                                      style: 'margin-bottom: 0px' } do |f| %>
+
+  Navigator<br>
+  <%= f.input_field :navigator_id, collection: current_grant.navigators,
+                                   selected: @filter_info[:navigator_id],
+                                   include_blank: true,
+                                   style: 'width: 170px' %>
+  <br>
+  Status<br>
+  <%= f.input_field :status, collection: applicant_filter_statuses,
+                             selected: @filter_info[:status],
+                             include_blank: true,
+                             style: 'width: 170px' %>
+
+  <br>
+  Funding Source<br>
+  <%= f.input_field :funding_source_id,
+                    collection: FundingSource.order(:name),
+                    selected: @filter_info[:funding_source_id],
+                    include_blank: true,
+                    style: 'width: 170px' %>
+
+
+  <%= f.input_field :edp, as: :boolean,
+                          checked: @filter_info[:edp].to_i > 0,
+                          label: false,
+                          inline_label: 'Only with EDP' %>
+
+  <%= f.input_field :assessments, as: :boolean,
+                                  checked: @filter_info[:assessments].to_i > 0,
+                                  label: false,
+                                  inline_label: 'Only with Assessment(s)' %>
+
+  <%= f.input_field :in_klass, as: :boolean,
+                               checked: @filter_info[:in_klass].to_i > 0,
+                               label: false,
+                               inline_label: 'Only assigned to class(es)' %>
+
+  <br>
+  <button type="submit" class="btn btn-flat btn-small btn-primary">
+    <i class="icon-search icon-white"></i>Find
+  </button>
+<% end %>

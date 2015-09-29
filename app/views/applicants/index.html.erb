@@ -1,90 +1,68 @@
 <h1>Applicants</h1>
 
-<div class = 'row-fluid filters-div' >
-  <%= simple_form_for :filters, method: :get, url: '/applicants',
-                                html: { class: 'form-search',
-                                        style: 'margin-bottom: 0px' } do |f| %>
-
-    Navigator
-    <%= f.input_field :navigator_id, collection: current_grant.navigators,
-                                     selected: @filter_info[:navigator_id],
-                                     include_blank: true,
-                                     class: "search-query", style: 'width: 200px' %>
-    Status
-    <%= f.input_field :status, collection: applicant_filter_statuses,
-                               selected: @filter_info[:status],
-                               include_blank: true,
-                               class: "search-query", style: 'width: 120px' %>
-
-    <%= f.input_field :edp, as: :boolean,
-                            checked: @filter_info[:edp].to_i > 0,
-                            label: false,
-                            inline_label: 'Only with EDP' %>
-
-    <%= f.input_field :assessments, as: :boolean,
-                                    checked: @filter_info[:assessments].to_i > 0,
-                                    label: false,
-                                    inline_label: 'Only with Assessment(s)' %>
-
-    <%= f.input_field :in_klass, as: :boolean,
-                                 checked: @filter_info[:in_klass].to_i > 0,
-                                 label: false,
-                                 inline_label: 'Only assigned to class(es)' %>
-
-    <button type="submit" class="btn btn-flat btn-small btn-primary">
-      <i class="icon-search icon-white"></i>Find
-    </button>
-  <% end %>
-</div>
-
-<% if @applicants.any? %>
-<div class = 'row' style='margin-top: 30px'>
-  <div class = 'span2'>
-      <h4><%= "Count: #{@applicants.total_entries}" %></h4>
+<div class = 'row-fluid' >
+  <div class='span3 filters-div' style="height: 500px">
+    <%= render 'search_form' %>
   </div>
-  <div class='span6'>
-      <div align="center" class='span8'><%= will_paginate(@applicants) %></div>
-  </div>
-  <div class = 'span2' style = 'padding-top: 5px'><%= download_button %></div>
-</div>
-<% end %>
+  <div class='span9'>
+    <% if @applicants.any? %>
+      <div class = 'row' style='margin-top: 30px'>
+        <div class = 'span2'>
+            <h4><%= "Count: #{@applicants.total_entries}" %></h4>
+        </div>
+        <div class='span9'>
+            <div align="center"><%= will_paginate(@applicants) %></div>
+        </div>
+        <div class = 'span1' style = 'padding-top: 5px'>
+          <% max_rows = (ENV['MAX_ROWS_FOR_DOWNLOAD'] || 6).to_i %>
+          <% if @applicants.total_entries > max_rows %>
+            <%= email_download_button(filters: @filter_info) %>
+          <% else %>
+            <%= download_button %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
 
-<table class="table table-bordered table-striped table-hover table-condensed">
-  <tr>
-    <th>Name</th>
-    <th>TAPO ID(Trainee)</th>
-    <th>Applied On</th>
-    <th>Email</th>
-    <th>Phone No</th>
-    <th>County</th>
-    <th>Source</th>
-    <th>Sector</th>
-    <th>Employment Status</th>
-    <th>Status</th>
-    <th>DOB</th>
-    <th>EDP Date</th>
-    <th>Assessed?</th>
-    <th>Assigned to class?</th>
-    <th>Unemployment Proof</th>
-  </tr>
-  <% @applicants.each do |applicant| %>
-    <% trainee = applicant.trainee %>
-    <tr>
-      <td><%= name_and_link applicant %></td>
-      <td><%= applicant.trainee_tapo_id%></td>
-      <td><%= applicant.created_at.to_date %></td>
-      <td><%= applicant.email %></td>
-      <td><%= applicant.mobile_phone_number %></td>
-      <td><%= applicant.county_name %></td>
-      <td><%= applicant.source_name %></td>
-      <td><%= applicant.sector_name %></td>
-      <td><%= applicant.current_employment_status %></td>
-      <td><%= applicant.status %></td>
-      <td><%= applicant.trainee_dob %></td>
-      <td><%= applicant.trainee_edp_date %></td>
-      <td><%= applicant.trainee_assessed? %></td>
-      <td><%= applicant.trainee_assigned_to_klass?%></td>
-      <td><%= applicant.unemployment_proof_supplied %></td>
-    </tr>
-  <% end %>
-</table>
+    <table class="table table-bordered table-striped table-hover table-condensed">
+      <tr>
+        <th>Name</th>
+        <th>TAPO ID(Trainee)</th>
+        <th>Applied On</th>
+        <th>Email</th>
+        <th>Phone No</th>
+        <th>County</th>
+        <th>Funding Source</th>
+        <th>Source</th>
+        <th>Sector</th>
+        <th>Employment Status</th>
+        <th>Status</th>
+        <th>DOB</th>
+        <th>EDP Date</th>
+        <th>Assessed?</th>
+        <th>Assigned to class?</th>
+        <th>Unemployment Proof</th>
+      </tr>
+      <% @applicants.each do |applicant| %>
+        <tr>
+          <td><%= name_and_link applicant %></td>
+          <td><%= applicant.trainee_tapo_id%></td>
+          <td><%= applicant.created_at.to_date %></td>
+          <td><%= applicant.email %></td>
+          <td><%= applicant.mobile_phone_number %></td>
+          <td><%= applicant.county_name %></td>
+          <td><%= applicant.funding_source_name %></td>
+          <td><%= applicant.source_name %></td>
+          <td><%= applicant.sector_name %></td>
+          <td><%= applicant.current_employment_status %></td>
+          <td><%= applicant.status %></td>
+          <td><%= applicant.trainee_dob %></td>
+          <td><%= applicant.trainee_edp_date %></td>
+          <td><%= applicant.trainee_assessed? %></td>
+          <td><%= applicant.trainee_assigned_to_klass?%></td>
+          <td><%= applicant.unemployment_proof_supplied %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
