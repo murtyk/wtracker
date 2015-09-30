@@ -13,12 +13,12 @@ class Trainee
 
       saved,
       error_message,
-      @trainee_file = TraineeFactory.add_trainee_file(params[:trainee_file],
+      @trainee_file = TraineeFactory.add_trainee_file(trainee_file_params,
                                                       current_trainee)
 
       return action_after_create if saved
 
-      @trainee_file ||= current_trainee.trainee_files.new(params[:trainee_file])
+      @trainee_file ||= current_trainee.trainee_files.new(trainee_file_params)
       @trainee_file.errors.add(:file, error_message)
       render 'new'
     end

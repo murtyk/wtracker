@@ -7,7 +7,7 @@ class Trainee
     end
 
     def update
-      if @job_search_profile.update_attributes(params[:job_search_profile])
+      if @job_search_profile.update_attributes(jsp_params)
         if params[:job_search_profile][:opted_out]
           render 'opted_out'
         else
@@ -22,6 +22,11 @@ class Trainee
       @auto_shared_jobs = @job_search_profile
                           .auto_shared_jobs(params[:show_all], params[:status])
                           .paginate(page: params[:page], per_page: 15)
+    end
+
+    def jsp_params
+      params.require(:job_search_profile)
+        .permit(:key, :skills, :location, :zip, :distance)
     end
   end
 end
