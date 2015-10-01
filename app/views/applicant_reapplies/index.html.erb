@@ -1,0 +1,16 @@
+<h1>Applicants Reapplied</h1>
+
+<table class="table table-bordered table-striped table-hover table-condensed">
+  <tr>
+    <th>Applicant</th>
+    <th>Accepted?</th>
+    <th>Applied On</th>
+  </tr>
+  <% @applicant_reapplys.each do |ar| %>
+    <tr>
+      <td><%= name_and_link ar.applicant %></td>
+      <td><%= ar.applicant.accepted? %></td>
+      <td><%= ar.updated_at.to_date %></td>
+    </tr>
+  <% end %>
+</table>

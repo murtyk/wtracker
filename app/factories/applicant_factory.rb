@@ -2,9 +2,7 @@ include UtilitiesHelper
 # to build and update applicant
 class ApplicantFactory
   def self.new_applicant(grant, params)
-    applicant = grant.applicants.new(params)
-    applicant.last_employed_on = opero_str_to_date(params[:last_employed_on])
-    applicant.dob = opero_str_to_date(params[:dob])
+    applicant = grant.applicants.new(params_opero_dates(params))
 
     applicant.navigator_id = navigator_id(applicant)
     applicant
@@ -16,10 +14,6 @@ class ApplicantFactory
     Applicant.transaction do
       applicant.save
       return applicant if applicant.errors.any?
-      # skip location capture. it is causing time out errors.
-      # capture_applicant_location(request, applicant)
-
-      # process_applicant(applicant)
       ApplicantRegistration.new(applicant.id).delay.process
     end
     applicant
@@ -48,10 +42,11 @@ class ApplicantFactory
   def self.update_trainee(applicant, t_params)
     trainee = applicant.trainee
     trainee.update_attributes(t_params) if t_params
-    if trainee.errors.any?
-      copy_error_messages(applicant, trainee)
-      fail ActiveRecord::Rollback, 'Inform TAPO Support Staff'
-    end
+
+    return unless trainee.errors.any?
+
+    copy_error_messages(applicant, trainee)
+    fail ActiveRecord::Rollback, 'Inform TAPO Support Staff'
   end
 
   def self.parse_params(params)
@@ -63,18 +58,17 @@ class ApplicantFactory
 
   def self.reapply(id, params)
     applicant = Applicant.find id
-    a_params  = params.clone
-    a_params[:last_employed_on] = opero_str_to_date(a_params[:last_employed_on])
-    a_params[:dob] = opero_str_to_date(a_params[:dob])
+    process_reapply(applicant, params_opero_dates(params))
+  end
 
+  def self.process_reapply(applicant, params)
     Applicant.transaction do
-      applicant.update_attributes(a_params)
+      applicant.update_attributes(params)
       return applicant if applicant.errors.any?
       applicant.navigator_id = navigator_id(applicant)
       applicant.save
 
       ApplicantRegistration.new(applicant.id).delay.process
-      # process_applicant(applicant)
 
       applicant.void_reapplication
     end
@@ -87,49 +81,31 @@ class ApplicantFactory
     user  = users.joins(:user_counties)
             .where(user_counties: { county_id: applicant.county_id })
             .first
-    unless user
-      msg = "navigator not found for #{applicant.first_name} #{applicant.last_name}" \
-            " county_id #{applicant.county_id}"
-      Rails.logger.error(msg)
-    end
+
+    log_navigator_not_found(applicant) unless user
+
     user && user.id
   end
 
-  # def self.process_applicant(applicant)
-  #   if applicant.accepted?
-  #     trainee = TraineeFactory.create_trainee_from_applicant(applicant)
-  #     if trainee.errors.any?
-  #       copy_error_messages(applicant, trainee)
-  #       fail ActiveRecord::Rollback, 'Inform Grant Staff'
-  #     end
-  #     applicant.trainee_id = trainee.id
-  #     applicant.save
-  #   end
-  #   notify_applicant(applicant)
-  # end
-
-  # def self.notify_applicant(applicant)
-  #   if applicant.accepted? || applicant.declined?
-  #     AutoMailer.notify_applicant_status(applicant).deliver_now
-  #   end
-  # end
-
-  def self.capture_applicant_location(request, applicant)
-    location = request.location
-    if location
-      applicant.create_agent(info: request.location.data)
-    else
-      error = "request.location returned null ip: #{request.remote_ip}"
-      applicant.create_agent(info: { error:  error })
-    end
+  def self.log_navigator_not_found(ap)
+    msg = "navigator not found for #{ap.name} county_id #{ap.county_id}"
+    Rails.logger.error(msg)
   end
 
-  def self.copy_error_messages(applicant, trainee)
-    message = trainee.errors.full_messages[0]
-    applicant.errors.add(:trainee_id, message)
-    trainee.errors.each do |f, m|
-      applicant.errors.add(f, m) if applicant.respond_to?(f)
-    end
+  # def self.capture_applicant_location(request, applicant)
+  #   location = request.location
+  #   if location
+  #     applicant.create_agent(info: request.location.data)
+  #   else
+  #     error = "request.location returned null ip: #{request.remote_ip}"
+  #     applicant.create_agent(info: { error:  error })
+  #   end
+  # end
+
+  def self.copy_error_messages(ap, t)
+    message = t.errors.full_messages[0]
+    ap.errors.add(:trainee_id, message)
+    t.errors.each { |f, m| ap.errors.add(f, m) if ap.respond_to?(f) }
   end
 
   def self.create_reapply(params, grant)
@@ -139,22 +115,27 @@ class ApplicantFactory
 
     validate_reapply(grant, ap, ra)
 
-    # ra.errors.add(:base, grant.reapply_email_not_found_message) unless ap
-    # ra.errors.add(:base, grant.reapply_already_accepted_message) if ap && ap.accepted?
-
     return ra if ra.errors.any?
 
     ra = ap.applicant_reapplies.create(key: random_key)
-    AutoMailer.applicant_reapply(ap).deliver_now
+    ApplicantMailer.applicant_reapply(ap).deliver_now
     ra
   end
 
   def self.validate_reapply(grant, ap, ra)
     ra.errors.add(:base, grant.reapply_email_not_found_message) unless ap
-    ra.errors.add(:base, grant.reapply_already_accepted_message) if ap && ap.accepted?
+    return unless ap && ap.accepted?
+    ra.errors.add(:base, grant.reapply_already_accepted_message)
   end
 
   def self.random_key
     SecureRandom.urlsafe_base64(6)
+  end
+
+  def self.params_opero_dates(params)
+    a_params  = params.clone
+    a_params[:last_employed_on] = opero_str_to_date(a_params[:last_employed_on])
+    a_params[:dob] = opero_str_to_date(a_params[:dob])
+    a_params
   end
 end

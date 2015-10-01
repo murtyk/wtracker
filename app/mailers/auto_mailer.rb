@@ -9,153 +9,61 @@ class AutoMailer < ActionMailer::Base
   delegate :use_job_leads_email, :use_standard_email, to: EmailSettings
 
   def solicit_job_search_profile(trainee)
-    grant          = trainee.grant
+    to_email, reply_to_email, subject, body_text =
+                            TraineeEmailTextBuilder.new(trainee)
+                            .profile_request_attributes
 
-    from           = trainee.account.director
-    reply_to_email = grant.reply_to_email || from.email
-    to_email       = trainee.email
-
-    profile_text = TraineeEmailTextBuilder.new.profile_request_body(trainee)
-    mail(to:      to_email,
-         subject: grant.profile_request_subject.content,
-         from:    'JobLeads<jobleads@operoinc.com>',
-         reply_to: reply_to_email) do |format|
-           format.html { render inline: profile_text }
-         end
+    inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 
     Rails.logger.info "sent job search profile request to #{trainee.name}"
   end
 
   def send_job_leads(auto_shared_jobs)
     return if auto_shared_jobs.blank?
-    account  = auto_shared_jobs.first.account
-    trainee  = Trainee.unscoped.where(id: auto_shared_jobs.first.trainee_id).first
-    from     = account.director
-    to_email = trainee.email
 
-    reply_to_email = trainee.grant.reply_to_email || from.email
+    trainee_id = auto_shared_jobs.first.trainee_id
+    trainee = Trainee.unscoped.where(id: trainee_id).first
 
-    job_leads_text = TraineeEmailTextBuilder.new
-                     .job_leads_body(trainee, auto_shared_jobs)
+    to_email, reply_to_email, subject, body_text =
+                TraineeEmailTextBuilder.new(trainee)
+                .job_leads_email_attrs(auto_shared_jobs)
 
-    grant = trainee.grant
-    mail(to:       to_email,
-         subject:  grant.job_leads_subject.content,
-         from:    'JobLeads<jobleads@operoinc.com>',
-         reply_to: reply_to_email) do |format|
-           format.html { render inline: job_leads_text }
-         end
+    inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 
-    Rails.logger.info "sent job leads email to #{to_email} : #{auto_shared_jobs.count}"
+    log_entry "sent job leads email to #{to_email} : #{auto_shared_jobs.count}"
   end
 
   def notify_grant_status(grant, status)
     return if status.error_message
-    to_email   = grant.account.director.email +
-                 ';' +
-                 grant.account.admins.map(&:email).join(';')
-    from_email = 'JobLeads<jobleads@operoinc.com>'
+    to_email   = grant_status_to_emails(grant)
     subject    =  'Job Leads - Status Summary'
+    body       = grant_status_body(status)
 
-    body = "<p>Job Leads Status - #{Date.today}</p>"
-    body += '<hr>'
-    body += auto_leads_status_body(status)
+    inline_email(from_job_leads, to_email, nil, subject, body)
 
-    mail(to:       to_email,
-         from:     from_email,
-         subject:  subject) do |format|
-           format.html { render inline: body }
-         end
     Rails.logger.info "sent daily job leads status summary email to #{to_email}"
   end
 
   def notify_status(statuses)
-    to_email   = 'support@operoinc.com'
-    from_email = 'JobLeads<jobleads@operoinc.com>'
     subject    =  'Auto Leads Status'
 
     body = "<p>Job Leads Status - #{Date.today}</p>"
     statuses.each do |status|
-      body += "<b>Account: #{status.account_name}<br>Grant: #{status.grant_name}</b>"
+      body += "<b>Account: #{status.account_name}<br>"
+      body += "Grant: #{status.grant_name}</b>"
       body += auto_leads_status_body(status)
     end
 
-    mail(to:       to_email,
-         from:     from_email,
-         subject:  subject) do |format|
-           format.html { render inline: body }
-         end
-    Rails.logger.info "sent daily job leads notification email to #{to_email}"
-  end
+    inline_email(from_job_leads, support_email, nil, subject, body)
 
-  def notify_applicant_status(applicant)
-    from      = applicant.account.admins.first
-    to_email  = applicant.email
-    reply_to_email = applicant.grant.reply_to_email || from.email
-
-    subject   = applicant_notify_subject(applicant)
-    body_text = applicant_notify_body(applicant)
-
-    use_job_leads_email
-
-    mail(to:      to_email,
-         subject: subject,
-         from:    'JobLeads<jobleads@operoinc.com>',
-         reply_to: reply_to_email) do |format|
-           format.html { render inline: body_text }
-         end
-    use_standard_email
-
-    Rails.logger.info "Application confirmation email sent to #{applicant.name}"
-  end
-
-  def notify_applicant_password(applicant, password)
-    from      = applicant.account.admins.first
-    to_email  = applicant.email
-    reply_to_email = applicant.grant.reply_to_email || from.email
-
-    subject   = applicant_password_subject(applicant)
-    body_text = applicant_password_body(applicant, password)
-
-    use_job_leads_email
-
-    mail(to:      to_email,
-         subject: subject,
-         from:    'JobLeads<jobleads@operoinc.com>',
-         reply_to: reply_to_email) do |format|
-           format.html { render inline: body_text }
-         end
-    use_standard_email
-
-    Rails.logger.info "Application confirmation email sent to #{applicant.name}"
-  end
-
-  def applicant_reapply(applicant)
-    from      = applicant.account.admins.first
-    to_email  = applicant.email
-    reply_to_email = applicant.grant.reply_to_email || from.email
-
-    subject   = reapply_subject(applicant)
-    body_text = reapply_body(applicant)
-
-    use_job_leads_email
-
-    mail(to:      to_email,
-         subject: subject,
-         from:    'JobLeads<jobleads@operoinc.com>',
-         reply_to: reply_to_email) do |format|
-           format.html { render inline: body_text }
-         end
-    use_standard_email
-
-    Rails.logger.info "Applicant reapply email sent to #{applicant.name}"
+    log_entry "sent daily job leads notification email to #{support_email}"
   end
 
   def notify_hot_jobs(a_emails, subject, body)
     use_job_leads_email
     emails = a_emails.join(';')
-    mail(from: 'JobLeads<jobleads@operoinc.com>',
-         to: 'JobLeads<jobleads@operoinc.com>',
+    mail(from: from_job_leads,
+         to: from_job_leads,
          bcc: emails,
          subject: subject) do |format|
            format.html { render inline: body }
@@ -164,88 +72,77 @@ class AutoMailer < ActionMailer::Base
   end
 
   def notify_tapo_admin(msg, subject = 'TAPO ERROR')
-    to_email = ENV['TAPO_ADMIN_EMAIL'] || 'support@operoinc.com'
-    mail(to:      to_email,
-         subject: subject,
-         from:    'JobLeads<jobleads@operoinc.com>') do |format|
-           format.html { render inline: msg }
-         end
-  end
+    to_email = ENV['TAPO_ADMIN_EMAIL'] || support_email
 
-  def host
-    Host.host
+    inline_email(from_job_leads, to_email, nil, subject, msg)
   end
 
   private
 
+  def grant_status_to_emails(grant)
+    grant.account.director.email +
+      ';' +
+      grant.account.admins.map(&:email).join(';')
+  end
+
+  def grant_status_body(status)
+    "<p>Job Leads Status - #{Date.today}</p>" \
+    '<hr>' +
+      auto_leads_status_body(status)
+  end
+
+  def inline_email(f_email, t_email, r_email, subject, body)
+    use_job_leads_email
+    wait_a_bit
+
+    atrs = { from: f_email, to: t_email, reply_to: r_email, subject: subject }
+    mail(atrs) { |format| format.html { render inline: body } }
+
+    use_standard_email
+  end
+
   def auto_leads_status_body(status)
-    body = ''
-    unless status.error_messages.empty?
-      body += "<p style='color: red'>Errors:</p>" + "<ol style='color: red'>"
-      status.error_messages.each do |msg|
-        body += "<li>#{msg}</li>"
-      end
-      body += '</ol><hr>'
+    html_for_status_error_messages(status.error_messages) +
+      html_for_jsps(status.job_search_profiles) +
+      html_for_trainee_job_leads(status.trainee_job_leads)
+  end
+
+  def html_for_status_error_messages(error_messages)
+    return '' if error_messages.empty?
+    body = "<p style='color: red'>Errors:</p>" + "<ol style='color: red'>"
+    error_messages.each { |msg| body += "<li>#{msg}</li>" }
+    body + '</ol><hr>'
+  end
+
+  def html_for_jsps(jsps)
+    return '' if jsps.empty?
+
+    body = '<p>Profile Requests Sent To:</p>' + '<ol>'
+    jsps.each { |profile| body += "<li>#{profile.name}</li>" }
+    body + '</ol><hr>'
+  end
+
+  def html_for_trainee_job_leads(trainee_job_leads)
+    body = '<p>Job Leads Sent To:</p>' + '<ol>'
+    trainee_job_leads.each do |trainee_count|
+      body += "<li>#{trainee_count[0].name} - #{trainee_count[1]}</li>"
     end
-    unless status.job_search_profiles.empty?
-      body += '<p>Profile Requests Sent To:</p>' + '<ol>'
-      status.job_search_profiles.each do |profile|
-        body += "<li>#{profile.name}</li>"
-      end
-      body += '</ol><hr>'
-    end
-    unless status.trainee_job_leads.empty?
-      body += '<p>Job Leads Sent To:</p>' + '<ol>'
-      status.trainee_job_leads.each do |trainee_count|
-        body += "<li>#{trainee_count[0].name} - #{trainee_count[1]}</li>"
-      end
-      body += '</ol><hr>'
-    end
-    body
+    body + '</ol><hr>'
   end
 
-  def parse_applicant_msg(s, applicant)
-    msg = s.gsub('$FIRSTNAME$', applicant.first_name)
-          .gsub('$LASTNAME$',  applicant.last_name)
-
-    msg = msg.gsub('$LOGIN_ID$',  applicant.login_id) if applicant.accepted?
-
-    if applicant.reapply_key
-      url = edit_polymorphic_url(applicant,
-                                 host: host,
-                                 subdomain: applicant.account.subdomain,
-                                 salt: applicant.grant.salt,
-                                 key: applicant.reapply_key)
-
-      link =  "<a href= '#{url}'>Click here</a>"
-      msg = msg.gsub('$REAPPLY_LINK$',  link)
-    end
-
-    msg.gsub(/\r\n/, '<br>')
+  def wait_a_bit
+    sleep 2
   end
 
-  def applicant_notify_subject(applicant)
-    parse_applicant_msg(applicant.email_subject, applicant)
+  def log_entry(msg)
+    Rails.logger.info msg
   end
 
-  def applicant_notify_body(applicant)
-    parse_applicant_msg(applicant.email_body, applicant)
+  def from_job_leads
+    'JobLeads<jobleads@operoinc.com>'
   end
 
-  def reapply_subject(applicant)
-    applicant.grant.reapply_subject
-  end
-
-  def reapply_body(applicant)
-    parse_applicant_msg(applicant.grant.reapply_body, applicant)
-  end
-
-  def applicant_password_subject(applicant)
-    applicant.grant.email_password_subject
-  end
-
-  def applicant_password_body(applicant, password)
-    msg = parse_applicant_msg(applicant.grant.email_password_body, applicant)
-    msg.gsub('$PASSWORD$', password)
+  def support_email
+    'support@operoinc.com'
   end
 end

@@ -1,5 +1,5 @@
 # when a grant is set for auto job leads, the trainees in that grant get job leads daily
-# first check if trainee has updates job search profile. If not send an email
+# first check if trainee has updated job search profile. If not send an email
 # find matching jobs for each trainee and send them in an email
 # find the most recent (max) job posted date from the leads sent earlier
 # only send the jobs with posted date later than above
@@ -109,8 +109,8 @@ class LeadsQueueFactory
   end
 
   def email_body(trainee)
-    @builder ||= TraineeEmailTextBuilder.new
-    @builder.job_leads_body(trainee)
+    @builder ||= TraineeEmailTextBuilder.new(trainee)
+    @builder.job_leads_body
   end
 
   def random_key

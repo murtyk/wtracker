@@ -61,12 +61,12 @@ class ApplicantRegistration
   end
 
   def notify_applicant
-    AutoMailer.notify_applicant_status(applicant).deliver_now
+    ApplicantMailer.notify_applicant_status(applicant).deliver_now
     Rails.logger.info "Applicant Notification Sent id = #{applicant_id}"
   end
 
   def notify_password
-    AutoMailer.notify_applicant_password(applicant, password).deliver_now
+    ApplicantMailer.notify_applicant_password(applicant, password).deliver_now
     Rails.logger.info "Password is sent to Applicant id = #{applicant_id}"
   end
 
