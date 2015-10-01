@@ -68,6 +68,6 @@ class EmploymentStatusesController < ApplicationController
 
   def employment_status_params
     params.require(:employment_status)
-      .permit(:status, :action, :email_subject, :email_body)
+      .permit(:status, :action, :email_subject, :email_body, :pre_selected)
   end
 end

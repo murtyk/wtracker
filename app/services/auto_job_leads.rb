@@ -101,7 +101,6 @@ class AutoJobLeads
   end
 
   def send_leads_to_trainee(trainee)
-debugger
     leads_sent_count = search_and_send_jobs(trainee)
     @trainee_job_leads << [trainee, leads_sent_count]
     sleep((1 + rand * 10).round)
@@ -112,7 +111,6 @@ debugger
   end
 
   def action_for_trainee(trainee)
-debugger
     return :SKIP unless trainee.not_placed?
     return :OPTED_OUT if trainee.opted_out_from_auto_leads?
     return :SEND_LEADS if trainee.valid_profile?

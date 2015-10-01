@@ -8,12 +8,14 @@
   <table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
     <tr>
       <th>Status</th>
+      <th>Pre Selected</th>
       <th>Applicant Action</th>
       <th></th>
     </tr>
     <% @employment_statuses.each do |employment_status| %>
     <tr id="tr_<%=employment_status.id%>">
       <td><%= employment_status.status %></td>
+      <td><%= employment_status.pre_selected ? 'Yes' : nil%></td>
       <td><%= employment_status.action %></td>
       <td>
         <%= render('shared/show_edit_destroy_buttons', resource: employment_status, confirm_message: 'Are You Sure?') %>

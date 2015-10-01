@@ -129,7 +129,7 @@ class Grant < ActiveRecord::Base
 
   OTHER_PLEASE_SPECIFY = 'Other, Please specify'
   def collection_employment_statuses
-    employment_statuses.pluck(:status)
+    employment_statuses.where(pre_selected: [nil, false]).pluck(:status)
   end
 
   def collection_applicant_sources(applicant)

@@ -65,6 +65,12 @@ class Applicant < ActiveRecord::Base
     self.address_state ||= Account.current_account.states.first.code
   end
 
+  def employment_status_pre_selected?
+    return false unless current_employment_status
+    es = EmploymentStatus.where(status: current_employment_status).first
+    es && es.pre_selected
+  end
+
   def week
     created_at.strftime('%Y-%W')
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902211027) do
+ActiveRecord::Schema.define(version: 20151001182428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -423,6 +423,7 @@ ActiveRecord::Schema.define(version: 20150902211027) do
     t.string   "action",        limit: 255
     t.string   "email_subject", limit: 255
     t.text     "email_body"
+    t.boolean  "pre_selected"
   end
 
   add_index "employment_statuses", ["account_id"], name: "index_employment_statuses_on_account_id", using: :btree

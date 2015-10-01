@@ -29,7 +29,7 @@ class ApplicantsController < ApplicationController
 
   # GET /applicants/new
   def new
-    @applicant = Applicant.new
+    @applicant = Applicant.new(new_applicant_params)
     @applicant.salt = @grant.id.to_s
   end
 
@@ -85,6 +85,11 @@ class ApplicantsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_applicant
     @applicant = Applicant.find(params[:id])
+  end
+
+  def new_applicant_params
+    return {} unless params[:employment_status]
+    { current_employment_status: params[:employment_status] }
   end
 
   # Only allow a trusted parameter "white list" through.
