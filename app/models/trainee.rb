@@ -124,6 +124,10 @@ class Trainee < ActiveRecord::Base
     middle.blank? ? "#{first} #{last}" : "#{first} #{middle} #{last}"
   end
 
+  def name_fs
+    name + ' -- ' + funding_source_name
+  end
+
   def funding_source_name
     funding_source ? funding_source.name : 'N/A'
   end
