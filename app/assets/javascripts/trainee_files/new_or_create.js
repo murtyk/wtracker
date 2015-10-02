@@ -1,4 +1,3 @@
-// why heroku not finding it?
 $('#trainee_file_form').submit(function() {
   var unemployment_proof = $('#page_data').data('unemployment-proof');
   var resume = $('#page_data').data('resume');
