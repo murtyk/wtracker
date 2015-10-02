@@ -1,3 +1,3 @@
 // why heroku not compiling this?
 //= require ./new_or_create.js
-alert('index.js');
+alert('notindex');
