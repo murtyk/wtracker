@@ -29,9 +29,11 @@
         <th>Name</th>
         <th>TAPO ID(Trainee)</th>
         <th>Applied On</th>
+        <th>Placement Status</th>
         <th>Email</th>
         <th>Phone No</th>
         <th>County</th>
+        <th>Navigator</th>
         <th>Funding Source</th>
         <th>Source</th>
         <th>Sector</th>
@@ -48,9 +50,11 @@
           <td><%= name_and_link applicant %></td>
           <td><%= applicant.trainee_tapo_id%></td>
           <td><%= applicant.created_at.to_date %></td>
+          <td><%= applicant.placement_status %></td>
           <td><%= applicant.email %></td>
           <td><%= applicant.mobile_phone_number %></td>
           <td><%= applicant.county_name %></td>
+          <td><%= applicant.navigator_name %></td>
           <td><%= applicant.funding_source_name %></td>
           <td><%= applicant.source_name %></td>
           <td><%= applicant.sector_name %></td>

@@ -41,7 +41,8 @@ class Applicant < ActiveRecord::Base
   delegate :name,  to: :sector,    prefix: true, allow_nil: true
 
   delegate :ethnicity,                      to: :race,      allow_nil: true
-  delegate :funding_source_name, :login_id, to: :trainee,   allow_nil: true
+  delegate :funding_source_name, :login_id, :placement_status,
+           to: :trainee, allow_nil: true
 
   validates :first_name, presence: true, length: { minimum: 2, maximum: 20 }
   validates :last_name,  presence: true, length: { minimum: 2, maximum: 20 }
