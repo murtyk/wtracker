@@ -21,7 +21,7 @@
         <%= show_button(c) %>
         <%= edit_button(c) %>
         <%=
-          if @colleges_map.klasses_count(c) == 0 && policy(c).destroy?
+          if policy(c).destroy?
             button_destroy_association(c, confirm_message: 'Are you sure?')
           else
             delete_message_button('Can not delete. Has classes in some grants.')

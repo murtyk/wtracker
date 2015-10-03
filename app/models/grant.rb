@@ -37,6 +37,9 @@ class Grant < ActiveRecord::Base
   has_many :klass_trainees, through: :klasses
 
   has_many :trainees, dependent: :destroy
+  has_many :not_disabled_trainees,
+           -> { where(disabled_date: nil) },
+           class_name: 'Trainee'
 
   has_one :profile_request_content, -> { unscope(where: :account_id) },
           dependent: :destroy

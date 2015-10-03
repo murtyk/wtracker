@@ -1,0 +1,25 @@
+<%= simple_form_for(trainee, html: { class: "form-horizontal",
+                                     style: "margin-bottom: 0px",
+                                     id: 'form_disable_trainee' },
+                             remote: true) do |f| %>
+  <%= f.error_notification %>
+  <ul class="errors" style='color: red'></ul>
+  <div class="form-inputs">
+    <div class = 'row'>
+      <div class = 'span5'>
+          <%= f.input :disabled_date,
+                      input_html: { data: { behaviour: "datepicker" },
+                                    value: trainee.disabled_date.to_s },
+                      as: :string %>
+          <%= f.input :disabled_notes,
+                      input_html: { style: 'width: 300px;'} %>
+      </div>
+    </div>
+  </div>
+  <div class="form-actions" style='padding-top: 5px;padding-bottom: 5px;margin-bottom: 0px;'>
+    <%= link_to "Cancel", "#", class: "btn btn-flat btn-small btn-danger", data: { dismiss: "modal" } %>
+    <%= button_tag(type: 'submit', class: "btn btn-flat btn-small btn-primary") do %>
+      <i class="icon-ok"></i> Save
+    <% end %>
+  </div>
+<% end %>

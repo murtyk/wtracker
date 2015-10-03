@@ -51,7 +51,7 @@ class NearByCollegesMap < MapService
   # key: college id
   # value: college name and trainess
   def build_colleges
-    os_colleges  = College.includes(:address).order(:name).map do |college|
+    os_colleges  = College.includes(:address, :open_klasses).order(:name).map do |college|
       os         = build_college_open_struct(college)
       os.klasses = open_klasses(college)
       [college.id, os]
@@ -66,8 +66,8 @@ class NearByCollegesMap < MapService
   end
 
   def open_klasses(college)
-    college.klasses.where('start_date > ?', Date.today).order(:start_date).map do |k|
-      k.name + '-' + k.start_date.to_s + " (#{k.trainees.count})"
+    college.open_klasses.map do |k|
+      k.name + '-' + k.start_date.to_s + " (#{klass_trainee_count(k.id)})"
     end.join('<br/>').html_safe
   end
 
@@ -84,7 +84,7 @@ class NearByCollegesMap < MapService
   end
 
   def build_addresses
-    @addresses = Address.where(addressable_type: 'College') + trainee_addresses
+    @addresses = college_addresses + trainee_addresses
   end
 
   # for each trainee, finds colleges within 15 miles
@@ -135,17 +135,25 @@ class NearByCollegesMap < MapService
     @trainee_addresses ||= HomeAddress.where(addressable_id: trainee_ids)
   end
 
+  def college_addresses
+    @college_addresses ||= Address
+                           .includes(:addressable)
+                           .where(addressable_type: 'College')
+  end
+
   # all trainees not assigned to a class and not placed
   def trainee_ids
     return @trainee_ids if @trainee_ids
     predicate = { status: 0 }
     predicate.merge!(funding_source_id: fs_id) if fs_id > 0
-    @trainee_ids = Trainee.where(predicate).pluck(:id) -
-                     KlassTrainee.pluck(:trainee_id)
+    @trainee_ids = Trainee.not_disabled.where(predicate).pluck(:id) -
+                   KlassTrainee.pluck(:trainee_id)
   end
 
   def trainees
-    Trainee.includes(:home_address).where(id: trainee_ids).order(:first, :last)
+    Trainee.includes(:home_address)
+      .where(id: trainee_ids)
+      .order(:first, :last)
   end
 
   def college_navigator(college)
@@ -153,5 +161,13 @@ class NearByCollegesMap < MapService
                            .pluck(:county_id, :user_id)]
     nav_id          = @nav_counties[college.county_id]
     @navigators[nav_id]
+  end
+
+  def klass_trainee_counts
+    @ktc ||= Hash[KlassTrainee.group(:klass_id).count]
+  end
+
+  def klass_trainee_count(klass_id)
+    klass_trainee_counts[klass_id].to_i
   end
 end

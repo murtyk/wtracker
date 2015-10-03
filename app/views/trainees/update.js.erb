@@ -1,0 +1,13 @@
+<% if params[:trainee][:disabled_date] %>
+  <% disabled = @trainee.disabled? %>
+  <% status = disabled ? 'Yes' : 'No' %>
+  $('#disabled_status').html('<%=status%>');
+  $("#modal_disable_trainee").modal("hide");
+  <% if disabled %>
+    $('#trainee_disabled_show_or_hide').show();
+    $('#disabled_date').html('<%=@trainee.disabled_date%>');
+    $('#disabled_notes').html('<%=@trainee.disabled_notes%>');
+  <% else %>
+    $('#trainee_disabled_show_or_hide').hide();
+  <% end %>
+<% end %>

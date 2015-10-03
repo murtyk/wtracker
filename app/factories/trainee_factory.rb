@@ -27,10 +27,12 @@ class TraineeFactory
 
   def self.update_trainee(id, trainee_params)
     params = trainee_params.clone
+
     clean_addresses(params)
 
     params[:dob] = opero_str_to_date(params[:dob])
     params[:edp_date] = opero_str_to_date(params[:edp_date])
+    params[:disabled_date] = opero_str_to_date(params[:disabled_date])
 
     trainee = Trainee.find(id)
     trainee.update_attributes(params)

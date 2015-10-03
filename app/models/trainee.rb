@@ -20,6 +20,9 @@ class Trainee < ActiveRecord::Base
         -> { where('id in (select trainee_id from trainee_assessments)') }
   scope :in_klass, -> { where('id in (select trainee_id from klass_trainees)') }
 
+  scope :disabled, -> { where.not(disabled_date: nil) }
+  scope :not_disabled, -> { where(disabled_date: nil) }
+
   devise :database_authenticatable, authentication_keys: [:login_id]
   devise :recoverable, :rememberable, :trackable
   extend DeviseOverrides
@@ -37,7 +40,7 @@ class Trainee < ActiveRecord::Base
     # remember to call the super
     # then put our own check to determine "active" state using
     # our own "is_active" column
-    super && applicant
+    super && applicant && not_disabled?
   end
 
   before_save :cb_before_save
@@ -126,6 +129,14 @@ class Trainee < ActiveRecord::Base
 
   def name_fs
     name + ' -- ' + funding_source_name
+  end
+
+  def not_disabled?
+    disabled_date.nil?
+  end
+
+  def disabled?
+    !not_disabled?
   end
 
   def funding_source_name

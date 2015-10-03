@@ -63,12 +63,12 @@ class Klass < ActiveRecord::Base
   # end
 
   def trainees_with_email
-    trainees.where('length(email) > 3')
+    trainees.not_disabled.where('length(email) > 3')
   end
 
   def trainees_for_job_leads
     trainee_ids = klass_trainees.where(status: [1, 2]).pluck(:trainee_id)
-    trainees.where('length(email) > 3 and trainees.id in (?)', trainee_ids)
+    trainees_with_email.where(id: trainee_ids)
   end
 
   def trainees_markers_for_job_leads
@@ -87,7 +87,7 @@ class Klass < ActiveRecord::Base
   end
 
   def trainees_for_selection
-    Trainee.all - trainees
+    Trainee.not_disabled - trainees
   end
 
   def klass_instructors_sorted
@@ -122,5 +122,9 @@ class Klass < ActiveRecord::Base
       klass_events.new(name: e, event_date: dt)
       dt = dt.next_week
     end
+  end
+
+  def not_disabled_trainees
+    trainees.not_disabled
   end
 end

@@ -69,9 +69,18 @@ class TraineesController < ApplicationController
     TraineeFactory.build_addresses_and_tact3(@trainee)
   end
 
+  def disable
+    @trainee = Trainee.find(params[:id])
+    authorize @trainee
+    @trainee.disabled_date ||= Date.today
+  end
+
   def update
     authorize Trainee.find(params[:id])
     @trainee = TraineeFactory.update_trainee(params[:id], trainee_params)
+
+    return if request.format.js?
+
     if @trainee.errors.empty?
       redirect_to(@trainee, notice: 'Trainee was successfully updated.')
     else
@@ -134,6 +143,7 @@ class TraineesController < ApplicationController
               :gender, :land_no, :middle, :mobile_no, :trainee_id,
               :status, :veteran, :race_id, :edp_date,
               :legal_status, :funding_source_id,
+              :disabled_date, :disabled_notes,
               klass_ids: [],
               tact_three_attributes: [:certifications, :education_level,
                                       :job_title, :recent_employer, :years],

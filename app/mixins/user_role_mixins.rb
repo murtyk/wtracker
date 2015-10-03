@@ -67,14 +67,15 @@ module UserRoleMixins
   end
 
   def trainees_for_search(q_params)
+    trainees = Trainee.not_disabled
     if navigator_through_klasses?
       if q_params.nil? || q_params['klasses_id_eq'].blank?
         klass_ids = klasses.pluck(:id)
         trainee_ids = KlassTrainee.where(klass_id: klass_ids).pluck(:trainee_id)
-        return Trainee.where(id: trainee_ids)
+        return trainees.where(id: trainee_ids)
       end
     end
-    Trainee
+    trainees
   end
 
   def navigate_klasses(klass_ids)

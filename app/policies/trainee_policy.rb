@@ -16,6 +16,10 @@ class TraineePolicy < Struct.new(:user, :trainee)
     user.admin_or_director? || user.navigator?
   end
 
+  def disable?
+    edit?
+  end
+
   def update?
     edit?
   end

@@ -1,0 +1,27 @@
+<p>
+  <b>Disabled:</b>
+  <span id='disabled_status'>
+    <%= trainee.disabled? ? 'Yes' : 'No' %>
+  </span>
+  <%= link_to disable_trainee_path, class: "btn btn-flat btn-mini btn-warning",
+                                 id: 'disable_trainee', remote: true,
+                                 data: { toggle: 'modal',
+                                         target: "#modal_disable_trainee" },
+                                 rel:"tooltip", title:"Disable Trainee" do %>
+      <i class="icon-edit"></i>
+  <% end %>
+  <% style = trainee.disabled? ? '' : 'display: none;'%>
+  <button type = 'button'
+          id = 'trainee_disabled_show_or_hide'
+          style='<%= style%>'
+          class = 'btn btn-flat btn-mini btn-primary trainee-disabled-info'>
+    <i class="icon-arrow-down white"></i>
+  </button>
+</p>
+
+<div class='trainee_disabled_details'
+     id = 'trainee_disabled_details'
+     style="display: none;">
+  <p>Date: <span id='disabled_date'><%= trainee.disabled_date %></span></p>
+  <p>Notes: <span id='disabled_notes'><%= trainee.disabled_notes %></span></p>
+</div>

@@ -183,6 +183,9 @@ WTracker::Application.routes.draw do
       get :search_by_skills
       match 'advanced_search' => 'trainees#advanced_search', via: [:get, :post], as: :advanced_search
     end
+    member do
+      get :disable
+    end
   end
 
   resources :users, except: [:destroy] do

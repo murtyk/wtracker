@@ -13,6 +13,9 @@ class College < ActiveRecord::Base
            to: :address, allow_nil: true
 
   has_many :klasses
+  has_many :open_klasses,
+           -> { where('start_date > ?', Date.today) },
+           class_name: 'Klass'
 
   def self.locations_hash
     loc = {}
