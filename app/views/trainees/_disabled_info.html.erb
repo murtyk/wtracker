@@ -3,12 +3,14 @@
   <span id='disabled_status'>
     <%= trainee.disabled? ? 'Yes' : 'No' %>
   </span>
-  <%= link_to disable_trainee_path, class: "btn btn-flat btn-mini btn-warning",
-                                 id: 'disable_trainee', remote: true,
-                                 data: { toggle: 'modal',
-                                         target: "#modal_disable_trainee" },
-                                 rel:"tooltip", title:"Disable Trainee" do %>
-      <i class="icon-edit"></i>
+  <% if current_user.director? %>
+    <%= link_to disable_trainee_path, class: "btn btn-flat btn-mini btn-warning",
+                                   id: 'disable_trainee', remote: true,
+                                   data: { toggle: 'modal',
+                                           target: "#modal_disable_trainee" },
+                                   rel:"tooltip", title:"Disable Trainee" do %>
+        <i class="icon-edit"></i>
+    <% end %>
   <% end %>
   <% style = trainee.disabled? ? '' : 'display: none;'%>
   <button type = 'button'

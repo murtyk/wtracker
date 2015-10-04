@@ -126,7 +126,11 @@
             <%= f.simple_fields_for @applicant.trainee do |f_trainee| %>
               <%= f_trainee.association :funding_source, label: 'Funding Source' %>
             <% end %>
-
+            <% sources = current_grant.collection_applicant_sources(@applicant) %>
+            <% sources -= ['Other, Please specify'] %>
+            <%= f.input :source,
+                       collection: sources,
+                       include_blank: false %>
             <%= f.association :sector, label: 'Industry' %>
           <% end %>
           <%= f.input :navigator_id,  collection: current_grant.navigators,
