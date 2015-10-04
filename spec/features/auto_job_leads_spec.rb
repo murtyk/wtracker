@@ -22,9 +22,9 @@ describe 'auto job leads' do
         # we have a trainee without a job search profile.
         # it should send an email to update profile
         expect(JobSearchProfile.count).to eq(0)
+        expect(GrantJobLeadCount.count).to eq(0)
 
-        AutoJobLeads.new.delay.perform
-        # Delayed::Worker.new.work_off
+        AutoJobLeads.new.perform
 
         expect(JobSearchProfile.count).to eq(1)
 
@@ -32,6 +32,9 @@ describe 'auto job leads' do
         profile = JobSearchProfile.last
         id   = profile.id
         key  = profile.key
+
+        trainee = Trainee.unscoped.find profile.trainee_id
+        grant = Grant.unscoped.find trainee.grant_id
 
         switch_to_auto_leads_domain
         visit "/profiles/#{id}/edit?key=#{key}"
@@ -46,6 +49,13 @@ describe 'auto job leads' do
         expect(page).to have_text 'You will begin receiving e-mails with job postings ' \
                                   'that match your skills and geographic preference.'
         AutoJobLeads.new.perform
+
+        # it should create GrantJobLeadCount
+
+        gjlc = GrantJobLeadCount.unscoped.where(grant_id: grant.id).last
+
+        expect(gjlc.count).to eql(25)
+
         profile_url = "/profiles/#{id}?key=#{key}"
         visit profile_url
 

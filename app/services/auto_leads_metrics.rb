@@ -92,15 +92,11 @@ class AutoLeadsMetrics < DashboardMetrics
   end
 
   def trainees_viewed_auto_leads
-    AutoSharedJob.select(:trainee_id)
-      .where(trainee_id: trainee_ids)
-      .where('status > 0 and status < 4').pluck(:trainee_id).uniq
+    TraineeAutoLeadStatus.where(viewed: true).pluck(:trainee_id)
   end
 
   def trainees_applied_auto_leads
-    AutoSharedJob.select(:trainee_id)
-      .where(trainee_id: trainee_ids)
-      .where('status = 2').pluck(:trainee_id).uniq
+    TraineeAutoLeadStatus.where(applied: true).pluck(:trainee_id)
   end
 
   def trainees_not_applied_auto_leads
@@ -116,7 +112,7 @@ class AutoLeadsMetrics < DashboardMetrics
   end
 
   def trainee_ids
-    @trainee_ids = Trainee.pluck(:id)
+    @trainee_ids ||= Trainee.pluck(:id)
   end
 
   def page_trainee_ids

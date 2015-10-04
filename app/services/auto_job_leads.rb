@@ -102,6 +102,7 @@ class AutoJobLeads
 
   def send_leads_to_trainee(trainee)
     leads_sent_count = search_and_send_jobs(trainee)
+    @grant_leads_count += leads_sent_count
     @trainee_job_leads << [trainee, leads_sent_count]
     sleep((1 + rand * 10).round)
   rescue StandardError => error
@@ -127,9 +128,11 @@ class AutoJobLeads
     @trainee_job_leads   = []
     @trainees_opted_out  = []
     @error_messages = []
+    @grant_leads_count = 0
   end
 
   def build_status(grant)
+    GrantJobLeadCount.create(sent_on: Date.today, count: @grant_leads_count)
     status = new_status(grant, @error_messages)
 
     status.job_search_profiles = @job_search_profiles.compact

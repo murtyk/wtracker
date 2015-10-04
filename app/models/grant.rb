@@ -72,6 +72,8 @@ class Grant < ActiveRecord::Base
   has_many :employment_statuses
   has_many :applicant_sources
 
+  has_many :grant_job_lead_counts
+
   before_save :save_options
 
   after_find :initialize_option_accessors

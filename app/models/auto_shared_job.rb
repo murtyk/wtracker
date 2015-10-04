@@ -48,15 +48,21 @@ class AutoSharedJob < ActiveRecord::Base
   }
 
   def change_status(new_status)
-    if status.to_i == 0
-      return update_attributes(status: new_status,
-                               status_updated_at: Date.today)
-    end
-
-    next_status = STATE_MACHINE[status][new_status]
+    next_status = new_status if status.to_i == 0
+    next_status ||= STATE_MACHINE[status][new_status]
 
     return if status == next_status
     update_attributes(status: next_status, status_updated_at: Date.today)
+    update_trainee_auto_lead_status unless status == 4
+  end
+
+  def update_trainee_auto_lead_status
+    tuls = trainee.trainee_auto_lead_status
+    return unless tuls
+
+    attrs = viewed? ? { viewed: true } : { viewed: true, applied: true }
+
+    tuls.update(attrs)
   end
 
   def viewed?

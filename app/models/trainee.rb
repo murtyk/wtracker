@@ -108,6 +108,8 @@ class Trainee < ActiveRecord::Base
   has_one :agent, as: :identifiable, dependent: :destroy
   has_one :leads_queue, dependent: :destroy
 
+  has_one :trainee_auto_lead_status, dependent: :destroy
+
   after_initialize :init
 
   def self.reset_password_keys
@@ -202,7 +204,9 @@ class Trainee < ActiveRecord::Base
   end
 
   def viewed_job_leads_count
-    job_leads_counts_grouped_by_status[1]
+    job_leads_counts_grouped_by_status[1].to_i +
+      job_leads_counts_grouped_by_status[2].to_i +
+      job_leads_counts_grouped_by_status[3].to_i
   end
 
   def applied_job_leads_count

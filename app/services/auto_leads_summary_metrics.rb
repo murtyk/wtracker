@@ -58,7 +58,7 @@ class AutoLeadsSummaryMetrics
   end
 
   def job_leads_sent_count
-    AutoSharedJob.unscoped.where(trainee_id: trainee_ids).count
+    GrantJobLeadCount.sum(:count)
   end
 
   def average_leads

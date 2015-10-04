@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151002161244) do
+ActiveRecord::Schema.define(version: 20151004032526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -463,6 +463,18 @@ ActiveRecord::Schema.define(version: 20151002161244) do
   add_index "grant_admins", ["grant_id"], name: "index_klass_admins_on_grant_id", using: :btree
   add_index "grant_admins", ["user_id"], name: "index_klass_admins_on_user_id", using: :btree
 
+  create_table "grant_job_lead_counts", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "grant_id"
+    t.date     "sent_on"
+    t.integer  "count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "grant_job_lead_counts", ["account_id"], name: "index_grant_job_lead_counts_on_account_id", using: :btree
+  add_index "grant_job_lead_counts", ["grant_id"], name: "index_grant_job_lead_counts_on_grant_id", using: :btree
+
   create_table "grants", force: :cascade do |t|
     t.string   "name",          limit: 255, null: false
     t.date     "start_date",                null: false
@@ -876,6 +888,20 @@ ActiveRecord::Schema.define(version: 20151002161244) do
 
   add_index "trainee_assessments", ["account_id", "trainee_id"], name: "index_trainee_assessments_on_account_id_and_trainee_id", using: :btree
 
+  create_table "trainee_auto_lead_statuses", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "grant_id"
+    t.integer  "trainee_id"
+    t.boolean  "viewed"
+    t.boolean  "applied"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "trainee_auto_lead_statuses", ["account_id"], name: "index_trainee_auto_lead_statuses_on_account_id", using: :btree
+  add_index "trainee_auto_lead_statuses", ["grant_id"], name: "index_trainee_auto_lead_statuses_on_grant_id", using: :btree
+  add_index "trainee_auto_lead_statuses", ["trainee_id"], name: "index_trainee_auto_lead_statuses_on_trainee_id", using: :btree
+
   create_table "trainee_emails", force: :cascade do |t|
     t.integer  "account_id"
     t.integer  "user_id"
@@ -1077,8 +1103,13 @@ ActiveRecord::Schema.define(version: 20151002161244) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "grant_job_lead_counts", "accounts"
+  add_foreign_key "grant_job_lead_counts", "grants"
   add_foreign_key "hot_jobs", "accounts"
   add_foreign_key "hot_jobs", "employers"
   add_foreign_key "hot_jobs", "users"
   add_foreign_key "leads_queues", "trainees"
+  add_foreign_key "trainee_auto_lead_statuses", "accounts"
+  add_foreign_key "trainee_auto_lead_statuses", "grants"
+  add_foreign_key "trainee_auto_lead_statuses", "trainees"
 end

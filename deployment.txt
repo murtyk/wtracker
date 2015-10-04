@@ -1,17 +1,30 @@
-# derived placement status is stored in Trainee
-# update all with current status
+# create GrantJobLeadCount records
+ajl = AutoJobLeads.new
+ajl.grants_for_auto_leads.each do |grant|
+  Account.current_id = grant.account_id
+  Grant.current_id = grant.id
 
-Account.all.each do |a|
-  Account.current_id = a.id
-  Grant.all.each do |g|
-    Grant.current_id = g.id
-    TraineeInteraction.where(termination_date: nil).each do |ti|
-      ti.update_trainee_status
-    end
-    Trainee.where(status: nil).update_all(status: 0)
+  trainee_ids = Trainee.pluck(:id)
+
+  lead_counts = AutoSharedJob.where(trainee_id: trainee_ids).group('Date(created_at)').count
+
+  lead_counts.each do |k, v|
+    GrantJobLeadCount.create(sent_on: k, count: v)
   end
 end
 
+#create and update TraineeAutoLeadStatus
+ajl = AutoJobLeads.new
+ajl.grants_for_auto_leads.each do |grant|
+  Account.current_id = grant.account_id
+  Grant.current_id = grant.id
+
+  grant.trainees.each do |t|
+    viewed = t.auto_shared_jobs.where('status > 0 and status < 4').count > 0
+    applied = t.auto_shared_jobs.where('status = 2').count > 0
+    t.create_trainee_auto_lead_status(viewed: viewed, applied: applied)
+  end
+end
 
 Pending:
 
