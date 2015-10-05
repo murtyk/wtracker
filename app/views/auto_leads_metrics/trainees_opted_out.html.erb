@@ -5,8 +5,10 @@
 <table class="table table-condensed table-bordered table-striped table-hover">
   <tr>
     <th>Name</th>
+    <th>TAPO ID</th>
     <th>Date</th>
     <th>email</th>
+    <th>Placement Status</th>
     <th>Reason</th>
     <th>Notes</th>
     <th>Company</th>
@@ -16,8 +18,10 @@
   <% @data.trainees.each do |trainee| %>
   <tr>
     <td><%= name_and_link trainee %></td>
+    <td><%= trainee.id%></td>
     <td><%= trainee.opted_out_date %></td>
     <td><%= trainee.email %></td>
+    <td><%= trainee.placement_status %>
     <td><%= trainee.opted_out_reason %></td>
     <td><%= trainee.opted_out_reason_desc %></td>
     <td><%= trainee.opted_out_new_employer %></td>

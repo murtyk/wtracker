@@ -26,7 +26,7 @@ class Trainee
 
     def jsp_params
       params.require(:job_search_profile)
-        .permit(:key, :skills, :location, :zip, :distance)
+        .permit(:key, :skills, :location, :zip, :distance, :opted_out)
     end
   end
 end
