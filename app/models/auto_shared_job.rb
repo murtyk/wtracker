@@ -60,7 +60,7 @@ class AutoSharedJob < ActiveRecord::Base
     tuls = trainee.trainee_auto_lead_status
     return unless tuls
 
-    attrs = viewed? ? { viewed: true } : { viewed: true, applied: true }
+    attrs = applied? ? { viewed: true, applied: true } : { viewed: true }
 
     tuls.update(attrs)
   end
