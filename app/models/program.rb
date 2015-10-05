@@ -1,6 +1,8 @@
 # a Grant or College account can have multiple programs
 # and many classes in a program
 class Program < ActiveRecord::Base
+  KLASSES_ORDER = 'colleges.name, start_date desc, end_date desc'
+
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
 
@@ -12,6 +14,18 @@ class Program < ActiveRecord::Base
 
   has_many :klasses, dependent: :destroy
   has_many :klass_interactions, through: :klasses
+
+  has_many :scheduled_classes,
+           -> { includes(:college).where('start_date > ?', Date.today).order(KLASSES_ORDER) },
+           class_name: 'Klass'
+
+  has_many :ongoing_classes,
+           -> { includes(:college).where(pred_ongoing_klasses).order(KLASSES_ORDER) },
+           class_name: 'Klass'
+
+  has_many :completed_classes,
+           -> { includes(:college).where(pred_completed_klasses).order(KLASSES_ORDER) },
+           class_name: 'Klass'
 
   has_many :klass_trainees, through: :klasses
   has_many :trainees, -> { order(:first, :last).uniq }, through: :klass_trainees

@@ -27,19 +27,15 @@ class ProgramDecorator < Draper::Decorator
 
   # below are for dashboard
   def scheduled_classes
-    predicate = format("DATE(start_date) > '%s'", Date.today.strftime('%Y-%m-%d'))
-    query_classes(predicate)
+    object.scheduled_classes.map(&:decorate)
   end
 
   def ongoing_classes
-    predicate = format("DATE(start_date) <= '%s' and DATE(end_date) >= '%s'",
-                       Date.today.strftime('%Y-%m-%d'), Date.today.strftime('%Y-%m-%d'))
-    query_classes(predicate)
+    object.ongoing_classes.map(&:decorate)
   end
 
   def completed_classes
-    predicate = format("DATE(end_date) < '%s'", Date.today.strftime('%Y-%m-%d'))
-    query_classes(predicate)
+    object.completed_classes.map(&:decorate)
   end
 
   def query_classes(predicate)

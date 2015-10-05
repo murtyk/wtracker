@@ -26,7 +26,7 @@ gem 'bson_ext'
 gem 'mongoid', github: 'mongoid/mongoid'
 
 gem 'attr_encrypted', '1.3.3'
-gem 'draper', '1.3.1'
+gem 'draper'
 gem 'simple_form', '~> 3.1.0'
 gem 'devise', '~> 3.4.1'
 gem 'gmaps4rails', '1.5.6'

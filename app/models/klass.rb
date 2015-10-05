@@ -127,4 +127,14 @@ class Klass < ActiveRecord::Base
   def not_disabled_trainees
     trainees.not_disabled
   end
+
+  # the following are used by program.rb
+  def self.pred_ongoing_klasses
+    format("DATE(start_date) <= '%s' and DATE(end_date) >= '%s'",
+           Date.today.strftime('%Y-%m-%d'), Date.today.strftime('%Y-%m-%d'))
+  end
+
+  def self.pred_completed_klasses
+    format("DATE(end_date) < '%s'", Date.today.strftime('%Y-%m-%d'))
+  end
 end

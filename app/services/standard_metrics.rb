@@ -22,7 +22,9 @@ class StandardMetrics < DashboardMetrics
   end
 
   def generate_data
-    @programs = Program.all.decorate
+    @programs = Program.includes(:scheduled_classes,
+                                 :ongoing_classes,
+                                 :completed_classes).decorate
     @template = 'standard_metrics/index'
   end
 
