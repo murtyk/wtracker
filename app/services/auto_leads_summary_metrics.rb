@@ -30,11 +30,7 @@ class AutoLeadsSummaryMetrics
   end
 
   def viewed_auto_leads_count
-    AutoSharedJob.select(:trainee_id)
-      .where(trainee_id: trainee_ids)
-      .where('status > 0 and status < 4')
-      .distinct
-      .count
+    TraineeAutoLeadStatus.where(viewed: true).count
   end
 
   def not_viewed_auto_leads_count
@@ -42,11 +38,7 @@ class AutoLeadsSummaryMetrics
   end
 
   def applied_auto_leads_count
-    AutoSharedJob.select(:trainee_id)
-      .where(trainee_id: trainee_ids)
-      .where('status = 2')
-      .distinct
-      .count
+    TraineeAutoLeadStatus.where(applied: true).count
   end
 
   def not_applied_auto_leads_count
