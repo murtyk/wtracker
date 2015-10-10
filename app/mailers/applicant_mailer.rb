@@ -66,7 +66,7 @@ class ApplicantMailer < ActionMailer::Base
   end
 
   def wait_a_bit
-    sleep 5
+    sleep 5 if Rails.env.production?
   end
 
   def log_entry(msg)

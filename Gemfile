@@ -105,7 +105,10 @@ group :test do
   gem 'simplecov' #, require: false
   gem 'simplecov-csv'
   gem "rspec_junit_formatter"
+
+  gem 'shog'
 end
+
 gem "parallel_tests", group: :development
 gem 'jquery-rails', '4.0.3'
 gem "jquery.fileupload-rails", '1.11.0'

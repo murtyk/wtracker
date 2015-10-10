@@ -1,30 +1,5 @@
 require 'rails_helper'
 
-def generate_applicants(n, acceptable = true)
-  account = Account.where(subdomain: 'apple').first
-
-  @account_id = account.id
-  Account.current_id = @account_id
-
-  grant = Grant.first
-
-  grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
-
-  grant.email_password_subject = "Here is your password"
-  grant.email_password_body = "Hello $FIRST_NAME$, password is $PASSWORD$"
-
-  grant.save
-
-  @grant_id = grant.id
-  Grant.current_id = @grant_id
-
-  n.times do
-    attrs = FactoryGirl.attributes_for(:acceptable_applicant) if acceptable
-    attrs = FactoryGirl.attributes_for(:not_acceptable_applicant) unless acceptable
-    ApplicantFactory.create(grant, nil, attrs)
-  end
-end
-
 describe 'applicant' do
   before :each do
     Delayed::Worker.delay_jobs = false
@@ -48,8 +23,8 @@ describe 'applicant' do
     #--------applicants created---------
 
     # an user should be able to assign funding source
-    Account.current_id = @account_id
-    Grant.current_id = @grant_id
+    # set_grant_context
+
     applicant = Applicant.first
     applicant_id = applicant.id
 

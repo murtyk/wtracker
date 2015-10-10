@@ -136,4 +136,39 @@ module ApplicantsHelper
     select a.computer_access,               from: 'applicant_computer_access'
     select a.source,                        from: 'applicant_source'
   end
+
+  def apple_account_id
+    Account.find_by(subdomain: 'apple').id
+  end
+
+  def apple_grant
+    Account.current_id = apple_account_id
+    Grant.first
+  end
+
+  def set_grant_context
+    Account.current_id = apple_account_id
+    Grant.current_id = apple_grant.id
+  end
+
+  def generate_applicants(n, acceptable = true)
+    set_grant_context
+
+    grant = apple_grant
+
+    grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
+
+    grant.email_password_subject = "Here is your password"
+    grant.email_password_body = "Hello $FIRST_NAME$, password is $PASSWORD$"
+
+    grant.save
+
+    n.times do
+      attrs = FactoryGirl.attributes_for(:acceptable_applicant) if acceptable
+      attrs = FactoryGirl.attributes_for(:not_acceptable_applicant) unless acceptable
+      ApplicantFactory.create(grant, nil, attrs)
+    end
+    Applicant.all
+  end
+
 end
