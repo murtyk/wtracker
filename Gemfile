@@ -60,7 +60,9 @@ gem 'pg_search'
 
 # Gems used only for assets and not required
 # in production environments by default.
-gem 'sprockets', '~> 3.4.0'
+# gem 'sprockets', '~> 3.4.0'
+gem 'sprockets-rails', :require => 'sprockets/railtie'
+
 gem 'sass-rails', '~> 5.0'
 gem 'bootstrap-sass', '~> 2.3.0.0'
 gem 'bootstrap-datepicker-rails', '1.1.1.6'
