@@ -52,6 +52,7 @@ WTracker::Application.configure do
   dir_list = Dir.entries('app/assets/javascripts') -
             ['.', '..', 'application.js', 'global', 'gmaps4rails']
   js_list  = dir_list.map{|d| d + '/*.js'}
+  js_list  << 'dashboards/index.js'
   config.assets.precompile += js_list
 
   # config.assets.precompile += ['applicants/*.js', 'applicant_sources/*.js',
