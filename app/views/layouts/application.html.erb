@@ -33,10 +33,11 @@
     <%= render 'layouts/notsigned' %>
   <% end %>
 
-  <%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>
+  <% js_file = js_asset_name(controller_name, action_name) %>
+
+  <%= javascript_include_tag(js_file) if js_file %>
 
   <%=  render'layouts/footer' %>
-
 
 </body>
 </html>

@@ -41,4 +41,19 @@ module ApplicantsHelper
   def css_asset_exists?(filename)
     asset_exists?("stylesheets/#{filename}", 'css')
   end
+
+  def js_asset_name(c_name, a_name)
+    asset_name = "#{c_name}/#{a_name}"
+    return asset_name if js_asset_exists?(asset_name)
+
+    return nil unless a_name == 'index'
+
+    js_index_asset(c_name)
+  end
+
+  def js_index_asset(c_name)
+    asset_name = "#{c_name}/indirect_index"
+
+    js_asset_exists?(asset_name) ? asset_name : nil
+  end
 end
