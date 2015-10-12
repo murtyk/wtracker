@@ -6,14 +6,14 @@ class TraineesNotPlacedReport < Report
     build_not_placed_data
   end
 
-  #find trainees with klass status Completed or Dropped
+  # find trainees with klass status Completed or Dropped
   def build_not_placed_data
     kts = KlassTrainee
-           .includes(trainee: [:funding_source, :trainee_notes],
-                     klass: { college: :address })
-           .where(klass_trainees: { status: [2, 3] })
-           .where(klasses: { id: klass_ids })
-           .order('trainees.first, trainees.last')
+          .includes(trainee: [:funding_source, :trainee_notes],
+                    klass: { college: :address })
+          .where(klass_trainees: { status: [2, 3] })
+          .where(klasses: { id: klass_ids })
+          .order('trainees.first, trainees.last')
     @trainees_not_placed = kts.map { |kt| TraineeNotPlaced.new(kt) }
   end
 

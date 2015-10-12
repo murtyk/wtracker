@@ -153,7 +153,8 @@ class Trainee < ActiveRecord::Base
     trainee_interactions.where(status: [4, 5, 6], termination_date: nil).first
   end
 
-  delegate :start_date, :employer_name, :hire_title, :hire_salary,
+  delegate :start_date, :completion_date, :ojt_completed?, :ojt_enrolled?,
+           :employer_name, :hire_title, :hire_salary,
            to: :hired_employer_interaction, allow_nil: true
 
   # placed with No OJT or OJT Completed

@@ -1,0 +1,101 @@
+headers:
+  100s:
+    nil_1: 'Name'
+    nil_2: 'TAPO No'
+    101: 'SSN'
+    102: 'Selective Service Status'
+    103: 'DOB'
+    104: 'Gender'
+    105: 'Disability'
+    106: 'Ethnicity Hispanic/ Latino'
+    107: 'American Indian or Alaska Native'
+    108: 'Asian'
+    109: 'Black or African American'
+    110: 'Native Hawaiian or other Pacific Islander'
+    111: 'White'
+    113: 'Veteran'
+    114: 'Education'
+
+  200s:
+    200: 'Employment Status at Participation'
+    201: 'Incumbent Worker'
+    202: 'Underemployed Worker'
+    204: 'Long-term Unemployed'
+
+  300s:
+    301: 'Date of Program Participation'
+    302: 'Date of Exit'
+    303: 'Other Reasons for Exit'
+    304: 'Date of Program Completion'
+    310: 'Most Recent Date Received Case Management Service'
+    311: 'Previous Quarter Received Case Management Service'
+    320: 'Most Recent Date Received Assessment Services'
+    321: 'Previous Quarter Received Assessment Services'
+    330: 'Most Recent Date Received Supportive Services'
+    331: 'Previous Quarter Received Supportive Services'
+    340: 'Most Recent Date Received Specialized Participant Services'
+    341: 'Previous Quarter Received Specialized Services'
+    350: 'Most Recent Date Participated in Work Experience'
+    351: 'Previous Quarter Participated in Work Experience'
+
+  400s:
+    400: 'Date Entered/Began Receiving Education/Job Training Activities #1'
+    401: 'Occupational Skills Training Code  #1'
+    402: 'Type of Training Service #1 - Primary'
+    403: 'Type of Training Service #1 - Secondary'
+    404: 'Type of Training Service #1 - Tertiary'
+    405: 'Date Completed, or Withdrew from, Training #1'
+    406: 'Training Completed #1'
+    410: 'Date Entered/Began Receiving Education/Job Training Activities #2'
+    411: 'Occupational Skills Training Code  #2'
+    412: 'Type of Training Service #2 - Primary'
+    413: 'Type of Training Service #2 - Secondary'
+    414: 'Type of Training Service #2 - Tertiary'
+    415: 'Date Completed, or Withdrew from, Training #2'
+    416: 'Training Completed #2'
+    420: 'Date Entered/Began Receiving Education/Job Training Activities #3'
+    421: 'Occupational Skills Training Code  #3'
+    422: 'Type of Training Service #3 - Primary'
+    423: 'Type of Training Service #3 - Secondary'
+    424: 'Type of Training Service #3 - Tertiary'
+    425: 'Date Completed, or Withdrew from, Training #3'
+    426: 'Training Completed #3'
+
+  500s:
+    501: 'Employed in 1st Quarter After Program Completion'
+    502: 'Occupational Code'
+    503: 'Entered Training-Related Employment'
+    504: 'Retained Current Position'
+    505: 'Advanced into a New Position with Current Employer in the 1st Quarter after Completion'
+    514: 'Retained Current Position in the 2nd Quarter after Program Completion'
+    515: 'Advanced into a New Position with Current Employer in the 2nd Quarter after Program Completion'
+    524: 'Retained Current Position in the 3rd Quarter After Program Completion'
+    525: 'Advanced into a New Position with Current Employer in the 3rd Quarter after Program Completion'
+
+  600s:
+    601: 'Type of Recognized Credential #1'
+    602: 'Date Attained Recognized Credential #1'
+    611: 'Type of Recognized Credential #2'
+    612: '#Date Attained Recognized Credential #3'
+    621: '# Type of Recognized Credential #3'
+    622: '# Date Attained Recognized Credential #3'
+
+ethnicities:
+  1: 'Do not wish to disclose'
+  2: 'Hispanic/Latino'
+  3: 'American Indian/Alaska Native'
+  4: 'Asian'
+  5: 'Black or African American'
+  6: 'Hawaiian Native or Other Pacific Islander'
+  7: 'White/Caucasian'
+
+educations:
+  Below High School: 10
+  GED: 88
+  High School Diploma: 87
+  Some college: 90
+  Post Secondary Credential or Certificate: 92
+  Associate Degree: 91
+  Bachelor Degree: 16
+  Graduate Degree or above: 99
+

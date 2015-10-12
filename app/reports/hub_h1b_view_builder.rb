@@ -1,3 +1,5 @@
+# for grants where applicants can register
+# Federal govt specifies the report format
 class HubH1bViewBuilder
   attr_reader :start_date, :end_date
 
@@ -6,24 +8,6 @@ class HubH1bViewBuilder
     @end_date = ed
   end
 
-  RACES = ['Do not wish to disclose',
-           'Hispanic/Latino',
-           'American Indian/Alaska Native',
-           'Asian',
-           'Black or African American',
-           'Hawaiian Native or Other Pacific Islander',
-           'White/Caucasian']
-
-  EDUCATIONS = Hash[
-    'Below High School', 10,
-    'GED', 88,
-    'High School Diploma', 87,
-    'Some college', 90,
-    'Post Secondary Credential or Certificate', 92,
-    'Associate Degree', 91,
-    'Bachelor Degree', 16,
-    'Graduate Degree or above', 99
-   ]
   EMPLOYMENT_STATUSES = Hash[
     'Unemployed - 6 Months or more', 0,
     'Part-time Employed (Underemployed for 6 months or more)', 1,
@@ -59,25 +43,27 @@ class HubH1bViewBuilder
 
   # part 100
   def header_100s
-    ['Name',
-     'TAPO No',
-     'SSN',
-     'Selective Service Status',
-     'DOB',
-     'Gender',
-     'Disability',
-     'Ethnicity Hispanic/ Latino',
-     'American Indian or Alaska Native',
-     'Asian',
-     'Black or African American',
-     'Native Hawaiian or other Pacific Islander',
-     'White',
-     'Veteran',
-     'Education']
+    # ['Name',
+    #  'TAPO No',
+    #  'SSN',
+    #  'Selective Service Status',
+    #  'DOB',
+    #  'Gender',
+    #  'Disability',
+    #  'Ethnicity Hispanic/ Latino',
+    #  'American Indian or Alaska Native',
+    #  'Asian',
+    #  'Black or African American',
+    #  'Native Hawaiian or other Pacific Islander',
+    #  'White',
+    #  'Veteran',
+    #  'Education']
+    headers['100s'].values
   end
 
   def header_100s_numbers
-    [nil, nil, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113, 114]
+    # [nil, nil, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113, 114]
+    headers['100s'].keys.map { |k| k.to_s['nil_'] ? '' : k }
   end
 
   def data_100s(t)
@@ -88,12 +74,7 @@ class HubH1bViewBuilder
      f_date(t.dob),
      gender(t),
      9,            # Disability
-     race(1, t),
-     race(2, t),
-     race(3, t),
-     race(4, t),
-     race(5, t),
-     race(6, t),
+     race(1, t), race(2, t), race(3, t), race(4, t), race(5, t), race(6, t),
      veteran(t),
      education(t)]
   end
@@ -108,7 +89,7 @@ class HubH1bViewBuilder
   end
 
   def race(n, t)
-    race_n = RACES[n]
+    race_n = ethnicities[n]
     race_id = race_ids[race_n]
     t.race_id == race_id ? 1 : 0
   end
@@ -122,19 +103,21 @@ class HubH1bViewBuilder
   end
 
   def education(t)
-    EDUCATIONS[t.education]
+    educations[t.education]
   end
 
   # part 200
   def header_200s
-    ['Employment Status at Participation',
-     'Incumbent Worker',
-     'Underemployed Worker',
-     'Long-term Unemployed']
+    # 'Employment Status at Participation',
+    # 'Incumbent Worker',
+    # 'Underemployed Worker',
+    # 'Long-term Unemployed'
+    headers['200s'].values
   end
 
   def header_200s_numbers
-    [200, 201, 202, 204]
+    # [200, 201, 202, 204]
+    headers['200s'].keys
   end
 
   def data_200s(t)
@@ -154,29 +137,31 @@ class HubH1bViewBuilder
   end
 
   def longterm_unemployed(ap)
-    ap.current_employment_status == 'Unemployed - 6 Months or more' ? 1 : 0
+    ap.current_employment_status == 'Unemployed - 6 Months or more' ? 1 : 2
   end
 
   # part 3
   def header_300s
-    ['Date of Program Participation',
-     'Date of Exit',
-     'Other Reasons for Exit',
-     'Date of Program Completion',
-     'Most Recent Date Received Case Management Service',
-     'Previous Quarter Received Case Management Service',
-     'Most Recent Date Received Assessment Services',
-     'Previous Quarter Received Assessment Services',
-     'Most Recent Date Received Supportive Services',
-     'Previous Quarter Received Supportive Services',
-     'Most Recent Date Received Specialized Participant Services',
-     'Previous Quarter Received Specialized Services',
-     'Most Recent Date Participated in Work Experience',
-     'Previous Quarter Participated in Work Experience']
+    # ['Date of Program Participation',
+    #  'Date of Exit',
+    #  'Other Reasons for Exit',
+    #  'Date of Program Completion',
+    #  'Most Recent Date Received Case Management Service',
+    #  'Previous Quarter Received Case Management Service',
+    #  'Most Recent Date Received Assessment Services',
+    #  'Previous Quarter Received Assessment Services',
+    #  'Most Recent Date Received Supportive Services',
+    #  'Previous Quarter Received Supportive Services',
+    #  'Most Recent Date Received Specialized Participant Services',
+    #  'Previous Quarter Received Specialized Services',
+    #  'Most Recent Date Participated in Work Experience',
+    #  'Previous Quarter Participated in Work Experience']
+    headers['300s'].values
   end
 
   def header_300s_numbers
-    [301, 302, 303, 304, 310, 311, 320, 321, 330, 331, 340, 341, 350, 351]
+    headers['300s'].keys
+    # [301, 302, 303, 304, 310, 311, 320, 321, 330, 331, 340, 341, 350, 351]
   end
 
   def data_300s(t)
@@ -192,13 +177,16 @@ class HubH1bViewBuilder
      0,
      klasses_end_date(t),
      0,
-     recent_ojt_enrolled_date(t),
+     recent_work_exp_data(t),
      0]
   end
 
   def exit_date(t)
-    return '' unless t.start_date && t.start_date >= start_date && t.start_date <= end_date
-    f_date(t.start_date)
+    dt = t.completion_date if t.ojt_completed?
+    dt ||= t.start_date if t.hired?
+    dt ||= t.disabled_date
+
+    dt ? f_date(dt) : ''
   end
 
   def program_completion_date(t)
@@ -210,6 +198,22 @@ class HubH1bViewBuilder
   def klasses_end_date(t)
     return '' unless t.klasses.any?
     f_date t.klasses.map(&:end_date).compact.max
+  end
+
+  def recent_work_exp_data(t)
+    return f_date(t.completion_date) if t.ojt_completed?
+    return '' unless t.ojt_enrolled?
+    quarter_end_date
+  end
+
+  def quarter_end_date
+    m = Date.today.strftime('%m').to_i
+
+    return '12/31' if [1, 2, 3].include? m
+    return '1/31' if [4, 5, 6].include? m
+    return '6/30' if [7, 8, 9].include? m
+
+    '9/30'
   end
 
   def recent_ojt_enrolled_date(t)
@@ -227,33 +231,36 @@ class HubH1bViewBuilder
 
   # part 4
   def header_400s
-    [
-      'Date Entered/Began Receiving Education/Job Training Activities #1',
-      'Occupational Skills Training Code  #1',
-      'Type of Training Service #1 - Primary',
-      'Type of Training Service #1 - Secondary',
-      'Type of Training Service #1 - Tertiary',
-      'Date Completed, or Withdrew from, Training #1',
-      'Training Completed #1',
-      'Date Entered/Began Receiving Education/Job Training Activities #2',
-      'Occupational Skills Training Code  #2',
-      'Type of Training Service #2 - Primary',
-      'Type of Training Service #2 - Secondary',
-      'Type of Training Service #2 - Tertiary',
-      'Date Completed, or Withdrew from, Training #2',
-      'Training Completed #2',
-      'Date Entered/Began Receiving Education/Job Training Activities #3',
-      'Occupational Skills Training Code  #3',
-      'Type of Training Service #3 - Primary',
-      'Type of Training Service #3 - Secondary',
-      'Type of Training Service #3 - Tertiary',
-      'Date Completed, or Withdrew from, Training #3',
-      'Training Completed #3'
-    ]
+    # [
+    #   'Date Entered/Began Receiving Education/Job Training Activities #1',
+    #   'Occupational Skills Training Code  #1',
+    #   'Type of Training Service #1 - Primary',
+    #   'Type of Training Service #1 - Secondary',
+    #   'Type of Training Service #1 - Tertiary',
+    #   'Date Completed, or Withdrew from, Training #1',
+    #   'Training Completed #1',
+    #   'Date Entered/Began Receiving Education/Job Training Activities #2',
+    #   'Occupational Skills Training Code  #2',
+    #   'Type of Training Service #2 - Primary',
+    #   'Type of Training Service #2 - Secondary',
+    #   'Type of Training Service #2 - Tertiary',
+    #   'Date Completed, or Withdrew from, Training #2',
+    #   'Training Completed #2',
+    #   'Date Entered/Began Receiving Education/Job Training Activities #3',
+    #   'Occupational Skills Training Code  #3',
+    #   'Type of Training Service #3 - Primary',
+    #   'Type of Training Service #3 - Secondary',
+    #   'Type of Training Service #3 - Tertiary',
+    #   'Date Completed, or Withdrew from, Training #3',
+    #   'Training Completed #3'
+    # ]
+    headers['200s'].values
   end
 
   def header_400s_numbers
-    [400, 401, 402, 403, 404, 405, 406, 410, 411, 412, 413, 414, 415, 416, 420, 421, 422, 423, 424, 425, 426]
+    # [400, 401, 402, 403, 404, 405, 406, 410, 411, 412, 413, 414, 415,
+    #  416, 420, 421, 422, 423, 424, 425, 426]
+    headers['200s'].keys
   end
 
   def data_400s(t)
@@ -266,18 +273,9 @@ class HubH1bViewBuilder
      ojt_completed?(t),
      '',
      "'00000000", # 411
-     '',
-     '',
-     '',
-     '',
-     '',
-     '',
+     '', '', '', '', '', '',
      "'00000000", # 421
-     '',
-     '',
-     '',
-     '',
-     '']
+     '', '', '',  '', '']
   end
 
   def ojt_interaction(t)
@@ -318,46 +316,52 @@ class HubH1bViewBuilder
 
   # part 5
   def header_500s
-    [
-      'Employed in 1st Quarter After Program Completion',
-      'Occupational Code',
-      'Entered Training-Related Employment',
-      'Retained Current Position',
-      'Advanced into a New Position with Current Employer in the 1st Quarter after Completion',
-      'Retained Current Position in the 2nd Quarter after Program Completion',
-      'Advanced into a New Position with Current Employer in the 2nd Quarter after Program Completion',
-      'Retained Current Position in the 3rd Quarter After Program Completion',
-      'Advanced into a New Position with Current Employer in the 3rd Quarter after Program Completion'
-    ]
+    # 'Employed in 1st Quarter After Program Completion',
+    # 'Occupational Code',
+    # 'Entered Training-Related Employment',
+    # 'Retained Current Position',
+    # 'Advanced into a New Position with Current Employer in the
+    #       1st Quarter after Completion',
+    # 'Retained Current Position in the 2nd Quarter after Program Completion',
+    # 'Advanced into a New Position with Current Employer in the
+    #       2nd Quarter after Program Completion',
+    # 'Retained Current Position in the 3rd Quarter After Program Completion',
+    # 'Advanced into a New Position with Current Employer in the
+    #       3rd Quarter after Program Completion'
+    headers['500s'].values
   end
 
   def header_500s_numbers
-    [501, 502, 503, 504, 505, 514, 515, 524, 525]
+    # [501, 502, 503, 504, 505, 514, 515, 524, 525]
+    headers['200s'].keys
   end
 
   def data_500s(t)
-    [exit_date(t),
+    [hired_or_ojt_completed_data(t),
      "'00000000",
      ojt_completed_start_date(t),
-     '',
-     '',
-     '',
-     '',
-     '',
-     '']
+     '', '', '', '', '', '']
+  end
+
+  def hired_or_ojt_completed_data(t)
+    return f_date(t.completion_date) if t.ojt_completed?
+    return '' unless t.hired?
+    f_date(t.start_date)
   end
 
   def header_600s
-    ['Type of Recognized Credential #1',
-     'Date Attained Recognized Credential #1',
-     'Type of Recognized Credential #2',
-     '#Date Attained Recognized Credential #3',
-     '# Type of Recognized Credential #3',
-     '# Date Attained Recognized Credential #3']
+    # 'Type of Recognized Credential #1',
+    # 'Date Attained Recognized Credential #1',
+    # 'Type of Recognized Credential #2',
+    # '#Date Attained Recognized Credential #3',
+    # '# Type of Recognized Credential #3',
+    # '# Date Attained Recognized Credential #3'
+    headers['600s'].values
   end
 
   def header_600s_numbers
-    [601, 602, 611, 612, 621, 622]
+    # [601, 602, 611, 612, 621, 622]
+    headers['600s'].keys
   end
 
   def data_600s(_t)
@@ -367,5 +371,42 @@ class HubH1bViewBuilder
   # common to all parts
   def f_date(dt)
     dt.try(:strftime, '%Y%m%d')
+  end
+
+  def headers
+    @headers ||= config['headers']
+  end
+
+  # RACES = ['Do not wish to disclose',
+  #          'Hispanic/Latino',
+  #          'American Indian/Alaska Native',
+  #          'Asian',
+  #          'Black or African American',
+  #          'Hawaiian Native or Other Pacific Islander',
+  #          'White/Caucasian']
+  def ethnicities
+    @ethnicities ||= config['ethnicities'].values
+  end
+
+  # EDUCATIONS = Hash[
+  #   'Below High School', 10,
+  #   'GED', 88,
+  #   'High School Diploma', 87,
+  #   'Some college', 90,
+  #   'Post Secondary Credential or Certificate', 92,
+  #   'Associate Degree', 91,
+  #   'Bachelor Degree', 16,
+  #   'Graduate Degree or above', 99
+  #  ]
+  def educations
+    @educations ||= config['educations']
+  end
+
+  def config
+    @config ||= YAML.load_file(yml_path)
+  end
+
+  def yml_path
+    Rails.root.join('config', 'locales', 'reports').to_s + '/hubh1b.yml'
   end
 end

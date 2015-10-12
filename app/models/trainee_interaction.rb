@@ -29,6 +29,10 @@ class TraineeInteraction < ActiveRecord::Base
     status == 5
   end
 
+  def ojt_completed?
+    status == 6
+  end
+
   def placed?
     hired? || ojt_enrolled?
   end

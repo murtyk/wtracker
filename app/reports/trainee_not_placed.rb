@@ -18,8 +18,8 @@ class TraineeNotPlaced < DelegateClass(KlassTrainee)
 
   def notes
     trainee
-     .trainee_notes
-     .map{|tn| "#{tn.created_at.to_date.to_s}: #{tn.notes}"}.join('<br>')
-     .html_safe
+      .trainee_notes
+      .map { |tn| "#{tn.created_at.to_date}: #{tn.notes}" }.join('<br>')
+      .html_safe
   end
 end
