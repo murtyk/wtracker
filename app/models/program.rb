@@ -11,6 +11,7 @@ class Program < ActiveRecord::Base
   belongs_to :grant
   belongs_to :account
   belongs_to :sector
+  belongs_to :klass_category
 
   has_many :klasses, dependent: :destroy
   has_many :klass_interactions, through: :klasses

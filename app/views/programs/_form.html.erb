@@ -9,6 +9,9 @@
         <%= f.input :description %>
         <%= f.input :hours %>
         <%= f.association :sector %>
+        <%= f.association :klass_category,
+                          label: 'Default Category for Classes',
+                          include_blank: false %>
       </div>
       <div class="form-actions">
         <%= render 'shared/cancel_link' %>

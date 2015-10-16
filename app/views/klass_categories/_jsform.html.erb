@@ -1,0 +1,11 @@
+<%= simple_form_for(klass_category, remote: true) do |f| %>
+  <%= f.error_notification %>
+  <div class='form-inputs'>
+    <%= f.input :code %>
+    <%= f.input :description %>
+  </div>
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+<% end %>
+<%= ajax_form_cancel_script(klass_category) %>

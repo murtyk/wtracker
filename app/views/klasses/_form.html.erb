@@ -15,6 +15,7 @@
             <%= f.input :credits %>
             <%= f.association :college, include_blank: false %>
             <%= f.association :program, include_blank: false %>
+            <%= f.association :klass_category, include_blank: false %>
           </div>
           <div class = 'span7'>
             <%= f.fields_for :klass_schedules do |k| %>

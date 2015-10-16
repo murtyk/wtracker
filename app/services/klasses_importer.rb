@@ -48,9 +48,8 @@ class KlassesImporter < Importer
   private
 
   def import_row(row)
-    klass = program.klasses.new
+    klass = KlassFactory.new_klass(program)
     assign_klass_attributes(klass, row)
-    build_klass_schedules(klass)
 
     klass.save!
 

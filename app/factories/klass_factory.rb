@@ -1,8 +1,8 @@
 include UtilitiesHelper
 # to build and update klass
 class KlassFactory
-  def self.new_klass(program_id)
-    klass = Klass.new(program_id: program_id)
+  def self.new_klass(program)
+    klass = program.klasses.new(klass_category_id: program.klass_category_id)
     (1..6).each { |d| klass.klass_schedules.build(dayoftheweek: d) }
     klass
   end

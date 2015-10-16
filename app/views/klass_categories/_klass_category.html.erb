@@ -1,0 +1,7 @@
+<div id = '<%=div_id_for(klass_category)%>'>
+  <p>
+    <%= button_destroy_association(klass_category) if klass_category.destroyable? %>
+    <%= klass_category.code %>
+    <%= klass_category.description %>
+  </p>
+</div>

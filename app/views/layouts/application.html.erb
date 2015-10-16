@@ -13,14 +13,16 @@
   <%=  render 'layouts/' + top_bar %>
   <% if admin_signed_in? || user_signed_in? || trainee_signed_in? %>
     <div class = 'container' style = "min-height:500px;">
-      <% flash.each do |name, msg| %>
-        <% if msg.is_a?(String) %>
-          <div class="alert alert-<%= name.to_s == 'notice' ? 'success' : name %>" style = 'margin-bottom: 5px'>
-            <a class="close" data-dismiss="alert">&#215;</a>
-            <%= content_tag :div, msg, :id => "flash_#{name}" %>
-          </div>
+      <div id="flash_notice">
+        <% flash.each do |name, msg| %>
+          <% if msg.is_a?(String) %>
+            <div class="alert alert-<%= name.to_s == 'notice' ? 'success' : name %>" style = 'margin-bottom: 5px'>
+              <a class="close" data-dismiss="alert">&#215;</a>
+              <%= content_tag :div, msg, :id => "flash_#{name}" %>
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
       <%= yield %>
     </div>
   <% elsif controller_name == 'shared_job_statuses' %>

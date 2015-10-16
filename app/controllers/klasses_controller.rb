@@ -73,9 +73,8 @@ class KlassesController < ApplicationController
   # GET /klasses/new
   # GET /klasses/new.json
   def new
-    logger.info { "[#{current_user.name}] [klass new]" }
-
-    @klass = KlassFactory.new_klass(params)
+    program = Program.find params[:program_id]
+    @klass = KlassFactory.new_klass(program)
     authorize @klass
 
     respond_to do |format|
@@ -87,7 +86,6 @@ class KlassesController < ApplicationController
   # GET /klasses/1/edit
   def edit
     @klass = Klass.find(params[:id])
-    logger.info { "[#{current_user.name}] [klass edit] [klass_id: #{@klass.id}]" }
     authorize @klass
   end
 
@@ -138,7 +136,7 @@ class KlassesController < ApplicationController
 
   def klass_params
     params.require(:klass)
-      .permit(:program_id, :name, :credits, :description,
+      .permit(:program_id, :name, :credits, :description, :klass_category_id,
               :end_date, :start_date, :training_hours, :college_id,
               klass_schedules_attributes: [:id, :dayoftheweek, :scheduled,
                                            :start_ampm, :start_time_hr, :start_time_min,

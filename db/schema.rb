@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151004032526) do
+ActiveRecord::Schema.define(version: 20151015223149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -623,6 +623,18 @@ ActiveRecord::Schema.define(version: 20151004032526) do
 
   add_index "job_shares", ["account_id"], name: "index_job_shares_on_account_id", using: :btree
 
+  create_table "klass_categories", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "grant_id"
+    t.string   "code",        null: false
+    t.string   "description", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "klass_categories", ["account_id"], name: "index_klass_categories_on_account_id", using: :btree
+  add_index "klass_categories", ["grant_id"], name: "index_klass_categories_on_grant_id", using: :btree
+
   create_table "klass_certificates", force: :cascade do |t|
     t.integer  "account_id",              null: false
     t.integer  "klass_id"
@@ -730,21 +742,23 @@ ActiveRecord::Schema.define(version: 20151004032526) do
   add_index "klass_trainees", ["account_id", "trainee_id"], name: "index_klass_trainees_on_account_id_and_trainee_id", using: :btree
 
   create_table "klasses", force: :cascade do |t|
-    t.integer  "college_id",                 null: false
-    t.string   "name",           limit: 255, null: false
-    t.string   "description",    limit: 255
+    t.integer  "college_id",                    null: false
+    t.string   "name",              limit: 255, null: false
+    t.string   "description",       limit: 255
     t.integer  "training_hours"
     t.integer  "credits"
     t.date     "start_date"
     t.date     "end_date"
-    t.integer  "program_id",                 null: false
-    t.integer  "account_id",                 null: false
-    t.integer  "grant_id",                   null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "program_id",                    null: false
+    t.integer  "account_id",                    null: false
+    t.integer  "grant_id",                      null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "klass_category_id"
   end
 
   add_index "klasses", ["account_id", "grant_id", "program_id"], name: "klasses_index", using: :btree
+  add_index "klasses", ["klass_category_id"], name: "index_klasses_on_klass_category_id", using: :btree
 
   create_table "leads_queues", force: :cascade do |t|
     t.integer  "trainee_id"
@@ -788,17 +802,19 @@ ActiveRecord::Schema.define(version: 20151004032526) do
   add_index "polygons", ["mappable_id", "mappable_type"], name: "index_polygons_on_mappable_id_and_mappable_type", using: :btree
 
   create_table "programs", force: :cascade do |t|
-    t.string   "name",        limit: 255, null: false
-    t.string   "description", limit: 255, null: false
+    t.string   "name",              limit: 255, null: false
+    t.string   "description",       limit: 255, null: false
     t.integer  "hours"
     t.integer  "sector_id"
-    t.integer  "grant_id",                null: false
-    t.integer  "account_id",              null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "grant_id",                      null: false
+    t.integer  "account_id",                    null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "klass_category_id"
   end
 
   add_index "programs", ["account_id", "grant_id"], name: "index_programs_on_account_id_and_grant_id", using: :btree
+  add_index "programs", ["klass_category_id"], name: "index_programs_on_klass_category_id", using: :btree
 
   create_table "races", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -1108,7 +1124,11 @@ ActiveRecord::Schema.define(version: 20151004032526) do
   add_foreign_key "hot_jobs", "accounts"
   add_foreign_key "hot_jobs", "employers"
   add_foreign_key "hot_jobs", "users"
+  add_foreign_key "klass_categories", "accounts"
+  add_foreign_key "klass_categories", "grants"
+  add_foreign_key "klasses", "klass_categories"
   add_foreign_key "leads_queues", "trainees"
+  add_foreign_key "programs", "klass_categories"
   add_foreign_key "trainee_auto_lead_statuses", "accounts"
   add_foreign_key "trainee_auto_lead_statuses", "grants"
   add_foreign_key "trainee_auto_lead_statuses", "trainees"

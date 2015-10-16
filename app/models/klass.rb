@@ -17,6 +17,8 @@ class Klass < ActiveRecord::Base
   belongs_to :grant
   belongs_to :program
   belongs_to :college
+  belongs_to :klass_category
+
   delegate :line1, :city, :county, :state, :zip, to: :college
   delegate :address, to: :college
 
@@ -49,6 +51,7 @@ class Klass < ActiveRecord::Base
   delegate :name,     to: :program, prefix: true
   delegate :name,     to: :college, prefix: true
   delegate :location, to: :college
+  delegate :name,     to: :klass_category, prefix: true, allow_nil: true
 
   def college_name_location
     "#{college_name} (#{location})"

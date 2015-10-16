@@ -65,6 +65,7 @@ WTracker::Application.routes.draw do
   resources :applicant_sources,      only: [:new, :create, :destroy, :index]
   resources :employment_statuses
   resources :funding_sources,        only: [:new, :create, :destroy, :index]
+  resources :klass_categories,       only: [:new, :create, :destroy, :index]
   resources :special_services,       only: [:new, :create, :destroy, :index]
   resources :grant_trainee_statuses, only: [:new, :create, :destroy, :index]
   resources :unemployment_proofs,    only: [:new, :create, :destroy, :index]

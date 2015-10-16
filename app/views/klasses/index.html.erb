@@ -16,6 +16,7 @@
     <tr>
       <th>Name          </th>
       <th>College       </th>
+      <th>Category      </th>
       <th>Enrolled      </th>
       <th>Placed        </th>
       <th>Training hours</th>
@@ -28,6 +29,7 @@
       <tr>
         <td><%= name_and_link(klass) %> </td>
         <td><%= klass.college_name %>   </td>
+        <td><%= klass.klass_category_name %>  </td>
         <td><%= enrolled_count %> </td>
         <td><%= placed_count %> </td>
         <td><%= klass.training_hours %> </td>
