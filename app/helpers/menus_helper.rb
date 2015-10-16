@@ -75,6 +75,7 @@ module MenusHelper
     return unless settings_menu?
     items = [applicant_sources_menu,
              assessments_menu,
+             certificate_categories_menu,
              klass_categories_menu,
              employment_statuses_menu,
              funding_sources_menu,
@@ -101,6 +102,10 @@ module MenusHelper
 
   def funding_sources_menu
     settings_menu? ? menu_link('Funding Sources', funding_sources_path) : ''
+  end
+
+  def certificate_categories_menu
+    settings_menu? ? menu_link('Certificate Categories', certificate_categories_path) : ''
   end
 
   def klass_categories_menu

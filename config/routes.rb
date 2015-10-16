@@ -63,6 +63,7 @@ WTracker::Application.routes.draw do
   end
 
   resources :applicant_sources,      only: [:new, :create, :destroy, :index]
+  resources :certificate_categories, only: [:new, :create, :destroy, :index]
   resources :employment_statuses
   resources :funding_sources,        only: [:new, :create, :destroy, :index]
   resources :klass_categories,       only: [:new, :create, :destroy, :index]

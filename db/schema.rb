@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151015223149) do
+ActiveRecord::Schema.define(version: 20151016035640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,6 +257,18 @@ ActiveRecord::Schema.define(version: 20151015223149) do
   end
 
   add_index "auto_shared_jobs", ["trainee_id"], name: "index_auto_shared_jobs_on_trainee_id", using: :btree
+
+  create_table "certificate_categories", force: :cascade do |t|
+    t.string   "code",       null: false
+    t.string   "name",       null: false
+    t.integer  "account_id"
+    t.integer  "grant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "certificate_categories", ["account_id"], name: "index_certificate_categories_on_account_id", using: :btree
+  add_index "certificate_categories", ["grant_id"], name: "index_certificate_categories_on_grant_id", using: :btree
 
   create_table "cities", force: :cascade do |t|
     t.integer  "state_id",               null: false
@@ -636,15 +648,17 @@ ActiveRecord::Schema.define(version: 20151015223149) do
   add_index "klass_categories", ["grant_id"], name: "index_klass_categories_on_grant_id", using: :btree
 
   create_table "klass_certificates", force: :cascade do |t|
-    t.integer  "account_id",              null: false
+    t.integer  "account_id",                          null: false
     t.integer  "klass_id"
-    t.string   "name",        limit: 255
-    t.string   "description", limit: 255
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.string   "name",                    limit: 255
+    t.string   "description",             limit: 255
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "certificate_category_id"
   end
 
   add_index "klass_certificates", ["account_id", "klass_id"], name: "index_klass_certificates_on_account_id_and_klass_id", using: :btree
+  add_index "klass_certificates", ["certificate_category_id"], name: "index_klass_certificates_on_certificate_category_id", using: :btree
 
   create_table "klass_events", force: :cascade do |t|
     t.integer  "account_id",                 null: false
@@ -1119,6 +1133,8 @@ ActiveRecord::Schema.define(version: 20151015223149) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "certificate_categories", "accounts"
+  add_foreign_key "certificate_categories", "grants"
   add_foreign_key "grant_job_lead_counts", "accounts"
   add_foreign_key "grant_job_lead_counts", "grants"
   add_foreign_key "hot_jobs", "accounts"
@@ -1126,6 +1142,7 @@ ActiveRecord::Schema.define(version: 20151015223149) do
   add_foreign_key "hot_jobs", "users"
   add_foreign_key "klass_categories", "accounts"
   add_foreign_key "klass_categories", "grants"
+  add_foreign_key "klass_certificates", "certificate_categories"
   add_foreign_key "klasses", "klass_categories"
   add_foreign_key "leads_queues", "trainees"
   add_foreign_key "programs", "klass_categories"

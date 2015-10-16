@@ -5,7 +5,7 @@ class KlassCertificatesController < ApplicationController
   # GET /klass_certificates/new.json
   def new
     klass = Klass.find(params[:klass_id])
-    @klass_certificate = klass.klass_certificates.build
+    @klass_certificate = klass.klass_certificates.new
     authorize @klass_certificate
 
     respond_to do |format|
@@ -34,6 +34,6 @@ class KlassCertificatesController < ApplicationController
 
   def klass_certificate_params
     params.require(:klass_certificate)
-      .permit(:description, :name, :klass_id)
+      .permit(:description, :name, :klass_id, :certificate_category_id)
   end
 end

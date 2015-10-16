@@ -1,0 +1,9 @@
+<% if @certificate_category.errors.any? %>
+  $('#error_text').text('<%= @certificate_category.errors.first[1] %>');
+<% else %>
+  $('#error_text').text('');
+  $("#flash_notice").html('<%= j render partial: "shared/notice_banner" %>');
+  $('#new_certificate_category').remove();
+  $('#certificate_categories').html('<%= j render @certificate_categories %>');
+  $('#new_certificate_category_link').show();
+<% end %>

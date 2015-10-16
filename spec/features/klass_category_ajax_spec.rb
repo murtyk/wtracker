@@ -5,10 +5,10 @@ describe 'klass category' do
     signin_applicants_director
   end
   after :each do
-    # signout
+    signout
   end
 
-  it 'adds and deletes employment status', js: true do
+  it 'adds and deletes klass category', js: true do
     maximize_window
 
     click_on 'Settings'

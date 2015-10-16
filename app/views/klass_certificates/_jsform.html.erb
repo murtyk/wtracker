@@ -8,6 +8,7 @@
     <%= f.hidden_field :klass_id %>
     <%= f.input :name %>
     <%= f.input :description %>
+    <%= f.association :certificate_category, include_blank: false %>
     <div class="form-actions">
       <%= ajax_cancel_and_submit_buttons(f) %>
     </div>
