@@ -165,7 +165,7 @@ class HubH1bViewBuilder
   end
 
   def data_300s(t)
-    [f_date(t.applicant.created_at),
+    [registered_date(t),
      exit_date(t),
      '',
      program_completion_date(t),
@@ -181,6 +181,16 @@ class HubH1bViewBuilder
      0]
   end
 
+  # Take earliest date of registration, classes, assessments and edp
+  def registered_date(t)
+    dates = [t.applicant.created_at.to_date]
+    dates += t.klasses.map(&:start_date)
+    dates += t.trainee_assessments.map(&:date)
+    dates << t.edp_date if t.edp_date
+
+    f_date(dates.min)
+  end
+
   def exit_date(t)
     dt = t.completion_date if t.ojt_completed?
     dt ||= t.start_date if t.hired?
@@ -189,10 +199,28 @@ class HubH1bViewBuilder
     dt ? f_date(dt) : ''
   end
 
+  # latest of OJT completion date and Non WS classes end date
   def program_completion_date(t)
+    dates = []
     hi = t.hired_employer_interaction
-    return '' unless hi
-    hi.status == 6 ? f_date(hi.updated_at) : ''
+    dates = [f_date(hi.updated_at)] if hi.try(:status) == 6
+    dates += t.klasses
+              .where(klass_category_id: non_ws_category_ids)
+              .pluck(:end_date)
+    dates.max
+  end
+
+  def ws_category
+    @ws_cat ||= KlassCategory.where(code: 'WS').first
+  end
+
+  # Latest of edp, WS class end dates
+  def recent_service_date(t)
+    ws_cat = KlassCategory.where(code: 'WS').first
+    ws_klasses = t.klasses.where(klass_category_id: ws_category.id)
+    dates = ws_klasses.map(&:end_date)
+    dates << t.edp_date if t.edp_date
+    dates.max
   end
 
   def klasses_end_date(t)
@@ -254,28 +282,56 @@ class HubH1bViewBuilder
     #   'Date Completed, or Withdrew from, Training #3',
     #   'Training Completed #3'
     # ]
-    headers['200s'].values
+    headers['400s'].values
   end
 
   def header_400s_numbers
     # [400, 401, 402, 403, 404, 405, 406, 410, 411, 412, 413, 414, 415,
     #  416, 420, 421, 422, 423, 424, 425, 426]
-    headers['200s'].keys
+    headers['400s'].keys
   end
 
   def data_400s(t)
-    [ojt_start_date(t),
+    training_dates = date_receiving_class_or_job_training(t)
+    end_dates = training_end_dates(t)
+
+    [training_dates[0], #400
      "'00000000",
      ojt?(t),
      '',
      '',
-     ojt_completed_date(t),
+     end_dates[0], #405
      ojt_completed?(t),
-     '',
+     training_dates[1],
      "'00000000", # 411
-     '', '', '', '', '', '',
+     '', '', '',
+     end_dates[1], # 415
+     '',
+     training_dates[2],
      "'00000000", # 421
-     '', '', '',  '', '']
+     '', '', '',
+     end_dates[2],
+     '']
+  end
+
+  # take Non WS class start dates and ojt enrolled date.
+  # 400: first one, 410: second one 420: third one. Blank when no date available
+  def date_receiving_class_or_job_training(t)
+    dates = [ojt_start_date(t)]
+    dates += t.klasses.where(klass_category_id: non_ws_category_ids).pluck(:start_date)
+    dates.compact
+  end
+
+  # take Non WS class end dates and ojt completion date.
+  # 405: first one, 415: second one 425: third one. Blank when no date
+  def training_end_dates(t)
+    dates = [ojt_completed_date(t)]
+    dates += t.klasses.where(klass_category_id: non_ws_category_ids).pluck(:end_date)
+    dates.compact
+  end
+
+  def non_ws_category_ids
+    @non_ws_cat_ids ||= KlassCategory.where.not(code: 'WS').pluck(:id)
   end
 
   def ojt_interaction(t)
@@ -333,7 +389,7 @@ class HubH1bViewBuilder
 
   def header_500s_numbers
     # [501, 502, 503, 504, 505, 514, 515, 524, 525]
-    headers['200s'].keys
+    headers['500s'].keys
   end
 
   def data_500s(t)
@@ -364,8 +420,23 @@ class HubH1bViewBuilder
     headers['600s'].keys
   end
 
-  def data_600s(_t)
-    ['', '', '', '', '', "'"]
+  def data_600s(t)
+    certs = certificates(t)
+
+    [
+     certs[0] && certs[0][0],
+     certs[0] && f_date(certs[0][1]),
+     certs[1] && certs[1][0],
+     certs[1] && f_date(certs[1][1]),
+     certs[2] && certs[2][0],
+     certs[2] && f_date(certs[2][1])
+    ]
+  end
+
+  def certificates(t)
+    completed_klass_ids = t.completed_klasses.pluck :id
+    certs = KlassCertificate.where(klass_id: completed_klass_ids)
+    certs.map{|c| [c.certificate_category_code, c.klass.end_date] }
   end
 
   # common to all parts

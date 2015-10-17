@@ -85,6 +85,10 @@ class Trainee < ActiveRecord::Base
 
   has_many :klass_trainees, dependent: :destroy
   has_many :klasses, through: :klass_trainees
+  has_many :completed_klass_trainees, -> { where(status: [2, 4, 5]) },
+           class_name: 'KlassTrainee'
+  has_many :completed_klasses, through: :completed_klass_trainees,
+           source: :klass
 
   has_many :trainee_submits, dependent: :destroy
   has_many :trainee_files, dependent: :destroy
