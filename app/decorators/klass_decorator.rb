@@ -59,6 +59,10 @@ class KlassDecorator < Draper::Decorator
     @kes.select { |ke| !NOT_OTHER_EVENTS.index(ke.name.downcase) }
   end
 
+  def certificate_names
+    klass_certificates.map(&:name).join('<br>').html_safe
+  end
+
   # below are for dashboard
   # [1 => "Enrolled", 2 => "Completed",3 => "Dropped",
   #  4 => "Placed", 5 => "Continuing Education"]

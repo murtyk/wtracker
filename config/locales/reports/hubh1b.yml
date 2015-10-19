@@ -99,3 +99,8 @@ educations:
   Bachelor Degree: 16
   Graduate Degree or above: 99
 
+employment_status_codes:
+  Unemployed - 6 Months or more: 0
+  Part-time Employed (Underemployed for 6 months or more): 1
+  Underemployed (Full-time employed in unrelated field for 6 months or more): 1
+  Unemployed - 6 Months or Less: 0

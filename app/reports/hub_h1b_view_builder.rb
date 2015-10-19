@@ -8,13 +8,6 @@ class HubH1bViewBuilder
     @end_date = ed
   end
 
-  EMPLOYMENT_STATUSES = Hash[
-    'Unemployed - 6 Months or more', 0,
-    'Part-time Employed (Underemployed for 6 months or more)', 1,
-    'Underemployed (Full-time employed in unrelated field for 6 months or more)', 1,
-    'Unemployed - 6 Months or Less', 0
-   ]
-
   def th
     cols = header.map { |h| "<th>#{h}</th>" }.join('')
     cols_numbers = header_numbers.map { |h| "<th>#{h}</th>" }.join('')
@@ -73,37 +66,10 @@ class HubH1bViewBuilder
      9,
      f_date(t.dob),
      gender(t),
-     9,            # Disability
+     9,            # 105 Disability
      race(1, t), race(2, t), race(3, t), race(4, t), race(5, t), race(6, t),
-     veteran(t),
+     veteran(t), # 113
      education(t)]
-  end
-
-  def trainee_id(t)
-    return '999999999' if t.trainee_id.blank?
-    "'" + t.trainee_id.gsub(/\D/, '')
-  end
-
-  def gender(t)
-    t.gender || '9'
-  end
-
-  def race(n, t)
-    race_n = ethnicities[n]
-    race_id = race_ids[race_n]
-    t.race_id == race_id ? 1 : 0
-  end
-
-  def race_ids
-    @race_ids ||= Hash[Race.pluck(:name, :id).to_a]
-  end
-
-  def veteran(t)
-    t.veteran ? 2 : 0
-  end
-
-  def education(t)
-    educations[t.education]
   end
 
   # part 200
@@ -126,18 +92,6 @@ class HubH1bViewBuilder
      0,
      under_employed(ap),
      longterm_unemployed(ap)]
-  end
-
-  def employment_status(ap)
-    EMPLOYMENT_STATUSES[ap.current_employment_status]
-  end
-
-  def under_employed(ap)
-    ap.current_employment_status.index('Underemployed') ? 1 : 0
-  end
-
-  def longterm_unemployed(ap)
-    ap.current_employment_status == 'Unemployed - 6 Months or more' ? 1 : 2
   end
 
   # part 3
@@ -171,90 +125,14 @@ class HubH1bViewBuilder
      program_completion_date(t),
      '',
      0,
-     assessment_date(t),
+     assessment_date(t),  # 320
      0,
      '',
      0,
-     klasses_end_date(t),
+     recent_service_date(t),
      0,
      recent_work_exp_data(t),
      0]
-  end
-
-  # Take earliest date of registration, classes, assessments and edp
-  def registered_date(t)
-    dates = [t.applicant.created_at.to_date]
-    dates += t.klasses.map(&:start_date)
-    dates += t.trainee_assessments.map(&:date)
-    dates << t.edp_date if t.edp_date
-
-    f_date(dates.min)
-  end
-
-  def exit_date(t)
-    dt = t.completion_date if t.ojt_completed?
-    dt ||= t.start_date if t.hired?
-    dt ||= t.disabled_date
-
-    dt ? f_date(dt) : ''
-  end
-
-  # latest of OJT completion date and Non WS classes end date
-  def program_completion_date(t)
-    dates = []
-    hi = t.hired_employer_interaction
-    dates = [f_date(hi.updated_at)] if hi.try(:status) == 6
-    dates += t.klasses
-              .where(klass_category_id: non_ws_category_ids)
-              .pluck(:end_date)
-    dates.max
-  end
-
-  def ws_category
-    @ws_cat ||= KlassCategory.where(code: 'WS').first
-  end
-
-  # Latest of edp, WS class end dates
-  def recent_service_date(t)
-    ws_cat = KlassCategory.where(code: 'WS').first
-    ws_klasses = t.klasses.where(klass_category_id: ws_category.id)
-    dates = ws_klasses.map(&:end_date)
-    dates << t.edp_date if t.edp_date
-    dates.max
-  end
-
-  def klasses_end_date(t)
-    return '' unless t.klasses.any?
-    f_date t.klasses.map(&:end_date).compact.max
-  end
-
-  def recent_work_exp_data(t)
-    return f_date(t.completion_date) if t.ojt_completed?
-    return '' unless t.ojt_enrolled?
-    quarter_end_date
-  end
-
-  def quarter_end_date
-    m = Date.today.strftime('%m').to_i
-
-    return '12/31' if [1, 2, 3].include? m
-    return '1/31' if [4, 5, 6].include? m
-    return '6/30' if [7, 8, 9].include? m
-
-    '9/30'
-  end
-
-  def recent_ojt_enrolled_date(t)
-    hi = t.hired_employer_interaction
-    return '' unless hi
-    hi.status == 5 ? f_date(end_date) : ''
-  end
-
-  def assessment_date(t)
-    dates = t.trainee_assessments.map do |ta|
-      ta.date if ta.date && ta.date >= start_date && ta.date <= end_date
-    end.compact
-    f_date(dates.max)
   end
 
   # part 4
@@ -295,13 +173,13 @@ class HubH1bViewBuilder
     training_dates = date_receiving_class_or_job_training(t)
     end_dates = training_end_dates(t)
 
-    [training_dates[0], #400
+    [training_dates[0], # 400
      "'00000000",
      ojt?(t),
      '',
      '',
-     end_dates[0], #405
-     ojt_completed?(t),
+     end_dates[0], # 405
+     ojt_completed?(t) || '',
      training_dates[1],
      "'00000000", # 411
      '', '', '',
@@ -312,62 +190,6 @@ class HubH1bViewBuilder
      '', '', '',
      end_dates[2],
      '']
-  end
-
-  # take Non WS class start dates and ojt enrolled date.
-  # 400: first one, 410: second one 420: third one. Blank when no date available
-  def date_receiving_class_or_job_training(t)
-    dates = [ojt_start_date(t)]
-    dates += t.klasses.where(klass_category_id: non_ws_category_ids).pluck(:start_date)
-    dates.compact
-  end
-
-  # take Non WS class end dates and ojt completion date.
-  # 405: first one, 415: second one 425: third one. Blank when no date
-  def training_end_dates(t)
-    dates = [ojt_completed_date(t)]
-    dates += t.klasses.where(klass_category_id: non_ws_category_ids).pluck(:end_date)
-    dates.compact
-  end
-
-  def non_ws_category_ids
-    @non_ws_cat_ids ||= KlassCategory.where.not(code: 'WS').pluck(:id)
-  end
-
-  def ojt_interaction(t)
-    t.trainee_interactions
-      .where(status: [5, 6])
-      .where('start_date >= ?', start_date)
-      .where('start_date <= ?', end_date)
-      .last
-  end
-
-  def ojt_start_date(t)
-    hi = ojt_interaction(t)
-    hi && f_date(hi.start_date)
-  end
-
-  def ojt?(t)
-    hi = ojt_interaction(t)
-    hi && 1
-  end
-
-  def ojt_completed_date(t)
-    hi = ojt_interaction(t)
-    return '' unless hi
-    hi.status == 6 ? f_date(hi.updated_at) : ''
-  end
-
-  def ojt_completed_start_date(t)
-    hi = ojt_interaction(t)
-    return '' unless hi
-    hi.status == 6 ? f_date(hi.start_date) : ''
-  end
-
-  def ojt_completed?(t)
-    hi = ojt_interaction(t)
-    return '' unless hi
-    hi.status == 6 ? 1 : ''
   end
 
   # part 5
@@ -399,12 +221,6 @@ class HubH1bViewBuilder
      '', '', '', '', '', '']
   end
 
-  def hired_or_ojt_completed_data(t)
-    return f_date(t.completion_date) if t.ojt_completed?
-    return '' unless t.hired?
-    f_date(t.start_date)
-  end
-
   def header_600s
     # 'Type of Recognized Credential #1',
     # 'Date Attained Recognized Credential #1',
@@ -422,21 +238,201 @@ class HubH1bViewBuilder
 
   def data_600s(t)
     certs = certificates(t)
-
     [
-     certs[0] && certs[0][0],
-     certs[0] && f_date(certs[0][1]),
-     certs[1] && certs[1][0],
-     certs[1] && f_date(certs[1][1]),
-     certs[2] && certs[2][0],
-     certs[2] && f_date(certs[2][1])
+      certs.try(:[], 0).try(:[], 0),
+      certs.try(:[], 0).try(:[], 1),
+      certs.try(:[], 1).try(:[], 0),
+      certs.try(:[], 1).try(:[], 1),
+      certs.try(:[], 2).try(:[], 0),
+      certs.try(:[], 2).try(:[], 1)
     ]
   end
 
+  # 101
+  def trainee_id(t)
+    return '999999999' if t.trainee_id.blank?
+    "'" + t.trainee_id.gsub(/\D/, '')
+  end
+
+  # 104
+  def gender(t)
+    t.gender || '9'
+  end
+
+  # 106 to 111
+  def race(n, t)
+    @ethnicities ||= config['ethnicities'].values
+
+    race_n = @ethnicities[n]
+    race_id = race_ids[race_n]
+    t.race_id == race_id ? 1 : 0
+  end
+
+  def race_ids
+    @race_ids ||= Hash[Race.pluck(:name, :id).to_a]
+  end
+
+  # 113
+  def veteran(t)
+    t.veteran ? 2 : 0
+  end
+
+  # 114
+  def education(t)
+    @educations ||= config['educations']
+    @educations[t.education]
+  end
+
+  # 200
+  def employment_status(ap)
+    @employment_status_codes ||= config['employment_status_codes']
+    @employment_status_codes[ap.current_employment_status]
+  end
+
+  # 202
+  def under_employed(ap)
+    ap.current_employment_status.index('Underemployed') ? 1 : 0
+  end
+
+  # 204
+  def longterm_unemployed(ap)
+    ap.current_employment_status == 'Unemployed - 6 Months or more' ? 1 : 2
+  end
+
+  # 301 Take earliest date of registration, classes, assessments and edp
+  def registered_date(t)
+    dates = [t.applicant.created_at.to_date]
+    dates += t.klasses.map(&:start_date)
+    dates += t.trainee_assessments.map(&:date)
+    dates << t.edp_date if t.edp_date
+
+    f_date(dates.min)
+  end
+
+  # 302
+  def exit_date(t)
+    dt = ojt_completed_date(t) || hired_start_date(t) || t.disabled_date
+    dt ? f_date(dt) : ''
+  end
+
+  # 304 latest of OJT completion date and Non WS classes end date
+  def program_completion_date(t)
+    dates = [ojt_completed_date(t)]
+    dates += non_ws_klasses(t).pluck(:end_date)
+    dates.max
+  end
+
+  # 320
+  def assessment_date(t)
+    dates = t.trainee_assessments.map do |ta|
+      ta.date if ta.date && ta.date >= start_date && ta.date <= end_date
+    end.compact
+    f_date(dates.max)
+  end
+
+  # 340 Latest of edp, WS class end dates
+  def recent_service_date(t)
+    dates = ws_klasses(t).map(&:end_date)
+    dates << t.edp_date if t.edp_date
+    dates.max
+  end
+
+  # 350
+  def recent_work_exp_data(t)
+    return f_date(ojt_completed_date(t)) if ojt_completed?(t)
+    t.ojt_enrolled? ? quarter_end_date : ''
+  end
+
+  def quarter_end_date
+    f_date(end_date)
+  end
+
+  # take Non WS class start dates and ojt enrolled date.
+  # 400: first one, 410: second one 420: third one. Blank when no date available
+  def date_receiving_class_or_job_training(t)
+    dates = [ojt_start_date(t)]
+    dates += non_ws_klasses(t).pluck(:start_date)
+    dates.compact
+  end
+
+  # 402
+  def ojt?(t)
+    hi = ojt_interaction(t)
+    hi && 1
+  end
+
+  # take Non WS class end dates and ojt completion date.
+  # 405: first one, 415: second one 425: third one. Blank when no date
+  def training_end_dates(t)
+    dates = [ojt_completed_date(t)]
+    dates += non_ws_klasses(t).pluck(:end_date)
+    dates.compact
+  end
+
+  # 501
+  def hired_or_ojt_completed_data(t)
+    return f_date(t.completion_date) if t.ojt_completed?
+    t.hired? ? f_date(t.start_date) : ''
+  end
+
+  # 503
+  def ojt_completed_start_date(t)
+    hi = ojt_interaction(t)
+    return '' unless hi
+    hi.status == 6 ? f_date(hi.start_date) : ''
+  end
+
+  # 600s
   def certificates(t)
     completed_klass_ids = t.completed_klasses.pluck :id
     certs = KlassCertificate.where(klass_id: completed_klass_ids)
-    certs.map{|c| [c.certificate_category_code, c.klass.end_date] }
+    certs.map { |c| [c.certificate_category_code, c.klass.end_date] }
+  end
+
+  def ws_category_ids
+    @ws_category_ids ||= KlassCategory.where(code: 'WS').pluck(:id)
+  end
+
+  def ws_klasses(t)
+    t.klasses.where(klass_category_id: ws_category_ids)
+  end
+
+  def non_ws_category_ids
+    @non_ws_cat_ids ||= (Klass.pluck(:id) - ws_category_ids)
+  end
+
+  def non_ws_klasses(t)
+    t.klasses.where(klass_category_id: non_ws_category_ids)
+  end
+
+  def ojt_interaction(t)
+    t.trainee_interactions
+      .where(status: [5, 6], termination_date: nil)
+      .where('start_date >= ?', start_date)
+      .where('start_date <= ?', end_date)
+      .last
+  end
+
+  # for 400, 410, 420
+  def ojt_start_date(t)
+    hi = ojt_interaction(t)
+    hi && f_date(hi.start_date)
+  end
+
+  def ojt_completed_date(t)
+    hi = ojt_interaction(t)
+    hi.try(:status) == 6 ? f_date(hi.completion_date) : nil
+  end
+
+  def ojt_completed?(t)
+    hi = ojt_interaction(t)
+    hi.try(:status) == 6 ? 1 : nil
+  end
+
+  def hired_start_date(t)
+    return nil unless t.hired?
+    return nil unless (start_date..end_date).include?(t.start_date)
+    f_date(t.start_date)
   end
 
   # common to all parts
@@ -446,31 +442,6 @@ class HubH1bViewBuilder
 
   def headers
     @headers ||= config['headers']
-  end
-
-  # RACES = ['Do not wish to disclose',
-  #          'Hispanic/Latino',
-  #          'American Indian/Alaska Native',
-  #          'Asian',
-  #          'Black or African American',
-  #          'Hawaiian Native or Other Pacific Islander',
-  #          'White/Caucasian']
-  def ethnicities
-    @ethnicities ||= config['ethnicities'].values
-  end
-
-  # EDUCATIONS = Hash[
-  #   'Below High School', 10,
-  #   'GED', 88,
-  #   'High School Diploma', 87,
-  #   'Some college', 90,
-  #   'Post Secondary Credential or Certificate', 92,
-  #   'Associate Degree', 91,
-  #   'Bachelor Degree', 16,
-  #   'Graduate Degree or above', 99
-  #  ]
-  def educations
-    @educations ||= config['educations']
   end
 
   def config

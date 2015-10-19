@@ -15,14 +15,23 @@ class ProgramDecorator < Draper::Decorator
   end
 
   def user_klasses(user)
-    return klasses.includes(:college)
+    return program_klasses if user.admin_access? || user.grants.include?(grant)
+    assigned_klasses(user)
+  end
+
+  def program_klasses
+    klasses
+      .includes(:college, :klass_certificates)
       .order(klasses_order)
-      .decorate if user.admin_access? || user.grants.include?(grant)
-    assigned_klasses(user).decorate
+      .decorate
   end
 
   def assigned_klasses(user)
-    user.klasses.includes(:college).where(program_id: id).order(klasses_order)
+    user.klasses
+      .includes(:college, :klass_certificates)
+      .where(program_id: id)
+      .order(klasses_order)
+      .decorate
   end
 
   # below are for dashboard
