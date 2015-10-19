@@ -27,7 +27,6 @@ describe 'EmployerFile', js: true do
     it 'allows attachments' do
       click_link 'new_employer_file_link'
 
-      puts 'new_employer_file_link 1'
       page.attach_file 'employer_file_file', @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Resume'
@@ -39,7 +38,6 @@ describe 'EmployerFile', js: true do
       allow(Amazon).to receive(:original_file_name).and_return('COVER LETTER.pdf')
 
       click_link 'new_employer_file_link'
-      puts 'new_employer_file_link 2'
       @filepath = cover_letter
 
       page.attach_file 'employer_file_file', @filepath
@@ -61,13 +59,12 @@ describe 'EmployerFile', js: true do
       destroy_all_created
     end
 
-    it 'opens and deletes file attachment', noheadless: true  do
+    it 'opens and deletes file attachment' do
       VCR.configure do |config|
         config.allow_http_connections_when_no_cassette = true
       end
 
       click_link 'new_employer_file_link'
-      puts 'new_employer_file_link 3'
 
       filepath = cover_letter
       # puts filepath
