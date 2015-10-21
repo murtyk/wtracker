@@ -7,4 +7,8 @@ class KlassCertificate < ActiveRecord::Base
   validates :name, presence: true, length: { minimum: 3, maximum: 80 }
 
   delegate :code, to: :certificate_category, prefix: true, allow_nil: true
+
+  def code
+    certificate_category_code
+  end
 end

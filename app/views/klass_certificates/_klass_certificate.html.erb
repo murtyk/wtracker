@@ -1,1 +1,7 @@
-<p><%="#{klass_certificate.name}: #{klass_certificate.description}"%></p>
+<div id = '<%=div_id_for(klass_certificate)%>'>
+  <p>
+    <%= button_edit_association(klass_certificate, title: 'Edit Certificate') %>
+    <%= button_destroy_association(klass_certificate, title: 'Delete Certificate') %>
+    <%= "#{klass_certificate.code}: #{klass_certificate.name}" %><br>
+  </p>
+</div>

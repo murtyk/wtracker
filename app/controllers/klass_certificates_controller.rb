@@ -14,6 +14,18 @@ class KlassCertificatesController < ApplicationController
     end
   end
 
+  def edit
+    @klass_certificate = KlassCertificate.find(params[:id])
+    authorize @klass_certificate
+  end
+
+  def update
+    @klass_certificate = KlassCertificate.find(params[:id])
+    authorize @klass_certificate
+
+    @klass_certificate.update_attributes(klass_certificate_params)
+  end
+
   # POST /klass_certificates
   # POST /klass_certificates.json
   def create
@@ -28,6 +40,13 @@ class KlassCertificatesController < ApplicationController
         format.js
       end
     end
+  end
+
+  def destroy
+    @klass_certificate = KlassCertificate.find(params[:id])
+    authorize @klass_certificate
+
+    @klass_certificate.destroy
   end
 
   private

@@ -1,0 +1,1 @@
+$("#klass_certificate_<%=@klass_certificate.id%>").remove();

@@ -1,0 +1,7 @@
+$('#edit_klass_certificate_<%=@klass_certificate.id%>').remove();
+<% if @klass_certificate.errors.any? %>
+  $('#<%=div_id_for(@klass_certificate)%>').hide().after('<%= j render("jsform", klass_certificate: @klass_certificate) %>');
+<% else %>
+  $('#<%=div_id_for(@klass_certificate)%>').replaceWith('<%= j render(@klass_certificate) %>');
+  $('#<%=div_id_for(@klass_certificate)%>').show();
+<% end %>

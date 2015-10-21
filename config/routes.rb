@@ -53,7 +53,7 @@ WTracker::Application.routes.draw do
 
   resources :assessments,         only: [:new, :create, :destroy, :index]
 
-  resources :klass_certificates,  only: [:new, :create]
+  resources :klass_certificates,  except: [:index, :show]
   resources :klass_navigators,    only: [:new, :create, :destroy]
   resources :klass_instructors,   only: [:new, :create, :destroy]
   resources :klass_titles,        only: [:new, :create, :destroy] do
