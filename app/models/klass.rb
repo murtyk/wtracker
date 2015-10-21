@@ -90,7 +90,8 @@ class Klass < ActiveRecord::Base
   end
 
   def trainees_for_selection
-    Trainee.not_disabled - trainees
+    t_ids = Trainee.not_disabled.pluck(:id) - Trainee.placed.pluck(:id) - trainees.pluck(:id)
+    Trainee.where(id: t_ids).order(:first, :last)
   end
 
   def klass_instructors_sorted

@@ -9,7 +9,7 @@
   <%= if klass_trainee.klass
         f.association(:trainee, collection: klass_trainee.klass.trainees_for_selection,
                                 label: 'Select Trainees To Add',
-                                input_html: {multiple: true})
+                                input_html: { multiple: true, style: 'height: 200px' })
      else
         f.association(:klass, collection: klass_trainee.trainee.klasses_for_selection,
                               label: 'Select A Class',
