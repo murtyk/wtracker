@@ -11,9 +11,9 @@ describe 'shared job' do
       allow_any_instance_of(AccountPolicy).to receive(:update?)
        .and_return(true)
 
-      signin_admin
     end
     it 'set trainee communication options' do
+      signin_admin
       visit '/accounts/trainee_options'
       expect(page).to have_text('Set Trainee Options')
 
@@ -21,9 +21,13 @@ describe 'shared job' do
 
       click_on 'Update'
       expect(page).to have_text 'Status (of shared jobs) is tracked'
+
+      signout
     end
 
     it 'share jobs with status tracking' do
+      signin_admin
+
       if ENV['JOB_BOARD'] == 'Indeed'
         cassette = 'indeed_shared_job_status'
         count    = 2
@@ -82,6 +86,7 @@ describe 'shared job' do
           expect(shared_job_status.need_status_feedback?).to eq(true)
         end
       end
+      signout
     end
 
     it 'simulate trainee click on job lead link to change state to viewed' do
@@ -138,6 +143,8 @@ describe 'shared job' do
     end
 
     it 'status on trainee page' do
+      signin_admin
+
       Account.current_id = 1
       Grant.current_id = 1
       job_share = JobShare.last
@@ -150,9 +157,13 @@ describe 'shared job' do
 
       maximize_window
       expect(page).to have_selector('td', text: 'Applied')
+
+      signout
     end
 
     it 'status on job statuses page' do
+      signin_admin
+
       Account.current_id = 1
       Grant.current_id = 1
       klass = Klass.find(1)
@@ -162,6 +173,8 @@ describe 'shared job' do
       click_on 'Find'
 
       expect(page).to have_text 'Applied'
+
+      signout
     end
   end
 end

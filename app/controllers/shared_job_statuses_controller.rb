@@ -1,5 +1,6 @@
 class SharedJobStatusesController < ApplicationController
   before_filter :authenticate_user!, only: [:index, :enquire]
+  before_filter :init_current_grant, only: [:show, :clicked, :update]
 
   def index
     @shared_job_statuses = SharedJobStatus.search(params[:filters])
@@ -73,5 +74,11 @@ class SharedJobStatusesController < ApplicationController
   def shared_job_status_params
     params.require(:shared_job_status)
       .permit(:feedback, :status)
+  end
+
+  def init_current_grant
+    sjs = SharedJobStatus.find(params[:id])
+    trainee = Trainee.unscoped.find(sjs.trainee_id)
+    Grant.current_id = trainee.grant_id
   end
 end
