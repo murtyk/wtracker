@@ -51,7 +51,7 @@ class Klass < ActiveRecord::Base
   delegate :name,     to: :program, prefix: true
   delegate :name,     to: :college, prefix: true
   delegate :location, to: :college
-  delegate :name,     to: :klass_category, prefix: true, allow_nil: true
+  delegate :name, :code, to: :klass_category, prefix: true, allow_nil: true
 
   def college_name_location
     "#{college_name} (#{location})"

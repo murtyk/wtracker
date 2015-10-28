@@ -64,7 +64,7 @@ class HubH1bViewBuilder
      t.id,
      trainee_id(t),
      9,
-     f_date(t.dob),
+     trainee_dob(t),
      gender(t),
      9,            # 105 Disability
      race(1, t), race(2, t), race(3, t), race(4, t), race(5, t), race(6, t),
@@ -175,16 +175,17 @@ class HubH1bViewBuilder
 
     [training_dates[0], # 400
      "'00000000",
-     ojt?(t),
+     type_of_training_service_1(t), # 402
      '',
      '',
      end_dates[0], # 405
-     ojt_completed?(t) || '',
+     training_completed_1(t),  # 406
      training_dates[1],
      "'00000000", # 411
-     '', '', '',
+     type_of_training_service_2(t),  # 412
+     '', '',
      end_dates[1], # 415
-     '',
+     training_completed_2(t), # 416
      training_dates[2],
      "'00000000", # 421
      '', '', '',
@@ -252,6 +253,11 @@ class HubH1bViewBuilder
   def trainee_id(t)
     return '999999999' if t.trainee_id.blank?
     "'" + t.trainee_id.gsub(/\D/, '')
+  end
+
+  def trainee_dob(t)
+    return '19900101' unless t.dob
+    f_date(t.dob)
   end
 
   # 104
@@ -340,6 +346,9 @@ class HubH1bViewBuilder
   # 350
   def recent_work_exp_data(t)
     return f_date(ojt_completed_date(t)) if ojt_completed?(t)
+    if t.ojt_enrolled? && t.terminated?
+      return f_date(t.termination_date)
+    end
     t.ojt_enrolled? ? quarter_end_date : ''
   end
 
@@ -350,23 +359,79 @@ class HubH1bViewBuilder
   # take Non WS class start dates and ojt enrolled date.
   # 400: first one, 410: second one 420: third one. Blank when no date available
   def date_receiving_class_or_job_training(t)
-    dates = [ojt_start_date(t)]
-    dates += non_ws_klasses(t).pluck(:start_date)
+    dates = non_ws_klasses(t).pluck(:start_date)
+    dates << ojt_start_date(t)
     dates.compact
   end
 
   # 402
-  def ojt?(t)
-    hi = ojt_interaction(t)
+  def type_of_training_service_1(t)
+    klasses = non_ws_klasses(t)
+    if klasses.any?
+     return klasses.first.klass_category_code
+    end
+
+    hi = any_ojt_interaction(t)
     hi && 1
   end
 
   # take Non WS class end dates and ojt completion date.
   # 405: first one, 415: second one 425: third one. Blank when no date
   def training_end_dates(t)
-    dates = [ojt_completed_date(t)]
-    dates += non_ws_klasses(t).pluck(:end_date)
+    dates = non_ws_klasses(t).pluck(:end_date)
+    dates << any_ojt_completed_date(t)
     dates.compact
+  end
+
+  # 406 and 416
+    # For 406 and 416.   426 is blank.
+
+    # Related to 400
+
+    # Use Case 1:
+
+    #     Class completed and OJT completed
+    #     406:  1
+    #     416: 1
+
+    # Use Case 2:
+
+    #     Class dropped and OJT completed
+    #     406:  0
+    #     416: 1
+
+    # Use Case 3:
+
+    #     Class completed and OJT terminated
+    #     406: 1
+    #     416: 0
+
+    # Use Case 4:
+
+    #     Has one of A Class Or OJT (not both)
+    #     406: 1 completed 0 dropped/term
+    #     416: blank
+  def training_completed_1(t)
+    return 1 if non_ws_completed_klasses(t).any?
+    return 0 if non_ws_dropped_klasses(t).any?
+    return 1 if any_ojt_completed_date(t)
+    return 0 if any_ojt_terminated?(t)
+  end
+
+  # 416  PENDING
+  def training_completed_2(t)
+    if non_ws_completed_klasses(t).any? || non_ws_dropped_klasses(t).any?
+      return 1 if any_ojt_completed_date(t)
+      return 0 if any_ojt_terminated?(t)
+    end
+  end
+
+  # 412: 402 takes klass code or ojt(1).
+  def type_of_training_service_2(t)
+    return unless non_ws_klasses(t).any?
+
+    hi = any_ojt_interaction(t)
+    hi && 1
   end
 
   # 501
@@ -405,6 +470,20 @@ class HubH1bViewBuilder
     t.klasses.where(klass_category_id: non_ws_category_ids)
   end
 
+  def non_ws_klasses_by_status(t, status)
+    Klass.joins(:klass_trainees)
+         .where(klass_category_id: non_ws_category_ids)
+         .where(trainee_id: t.id, status: status)
+  end
+
+  def non_ws_completed_klasses(t)
+    non_ws_klasses_by_status(t, [2, 4, 5])
+  end
+
+  def non_ws_dropped_klasses(t)
+    non_ws_klasses_by_status(t, 3)
+  end
+
   def ojt_interaction(t)
     t.trainee_interactions
       .where(status: [5, 6], termination_date: nil)
@@ -413,14 +492,35 @@ class HubH1bViewBuilder
       .last
   end
 
+  def any_ojt_interaction(t)
+    t.trainee_interactions
+      .where(status: [5, 6])
+      .where('start_date >= ?', start_date)
+      .where('start_date <= ?', end_date)
+      .last
+  end
+
+  def any_ojt_terminated?(t)
+    t.trainee_interactions
+      .where(termination_date: nil)
+      .where('start_date >= ?', start_date)
+      .where('start_date <= ?', end_date)
+      .last
+  end
+
   # for 400, 410, 420
   def ojt_start_date(t)
-    hi = ojt_interaction(t)
+    hi = any_ojt_interaction(t)
     hi && f_date(hi.start_date)
   end
 
   def ojt_completed_date(t)
     hi = ojt_interaction(t)
+    hi.try(:status) == 6 ? f_date(hi.completion_date) : nil
+  end
+
+  def any_ojt_completed_date(t)
+    hi = any_ojt_interaction(t)
     hi.try(:status) == 6 ? f_date(hi.completion_date) : nil
   end
 

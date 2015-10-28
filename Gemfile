@@ -92,7 +92,7 @@ group :test do
   gem 'rspec-rails', '~> 3.1'
   gem 'rspec-retry'
   gem 'factory_girl_rails'
-  gem 'selenium-webdriver', '2.43.0'
+  gem 'selenium-webdriver', '2.48.1'
   gem 'headless', '1.0.2'
   gem 'capybara', '~> 2.4.1'
   gem 'capybara-screenshot'

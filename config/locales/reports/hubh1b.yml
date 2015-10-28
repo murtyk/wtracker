@@ -93,11 +93,11 @@ educations:
   Below High School: 10
   GED: 88
   High School Diploma: 87
-  Some college: 90
+  Some college: 13
   Post Secondary Credential or Certificate: 92
   Associate Degree: 91
   Bachelor Degree: 16
-  Graduate Degree or above: 99
+  Graduate Degree or above: 90
 
 employment_status_codes:
   Unemployed - 6 Months or more: 0
