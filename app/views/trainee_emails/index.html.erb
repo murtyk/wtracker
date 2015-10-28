@@ -36,7 +36,12 @@
         <td>
           <%= show_button(trainee_email) %>
 
-          <%= link_to trainee_email, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-flat btn-mini btn-danger", rel:"tooltip", remote: true, title:"Delete"  do %>
+          <%= link_to trainee_email,
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' },
+                      class: "btn btn-flat btn-mini btn-danger",
+                      remote: true,
+                      title:"Delete"  do %>
             <i class="icon-trash"></i>
           <% end %>
 

@@ -13,8 +13,19 @@
         <div id = <%= "klass_event_#{ke.id}"%>>
           <%= ke.date %> <%= ke.time %>
           <span class='pull-right'%>
-            <%= link_to 'Edit', edit_klass_event_path(ke), class: "btn btn-flat btn-mini btn-warning", id: ke.edit_link_id,  rel:"tooltip", title:"Edit Event"%>
-            <%= link_to 'Delete', ke, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-flat btn-mini btn-danger", id: ke.delete_link_id,  rel:"tooltip", title:"Delete Event", remote: true%>
+            <%= link_to 'Edit',
+                        edit_klass_event_path(ke),
+                        class: "btn btn-flat btn-mini btn-warning",
+                        id: ke.edit_link_id,
+                        title:"Edit Event"%>
+            <%= link_to 'Delete',
+                        ke,
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: "btn btn-flat btn-mini btn-danger",
+                        id: ke.delete_link_id,
+                        title:"Delete Event",
+                        remote: true%>
           </span>
           <br>
           <%= ke.other_name %>

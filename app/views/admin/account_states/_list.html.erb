@@ -1,6 +1,12 @@
 <% account.account_states.each do |s|%>
   <div id = "account_state_<%=s.id%>">
-    <%= link_to [:admin, s], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-flat btn-mini btn-danger", id: "destroy_admin_account_state_link#{s.id}", remote: true, rel:"tooltip", title:"Remove State" do %>
+    <%= link_to [:admin, s],
+                method: :delete,
+                data: { confirm: 'Are you sure?' },
+                class: "btn btn-flat btn-mini btn-danger",
+                id: "destroy_admin_account_state_link#{s.id}",
+                remote: true,
+                title:"Remove State" do %>
       <i class="icon-trash white"></i>
     <% end %>
     <%= s.name %>

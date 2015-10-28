@@ -19,7 +19,10 @@
           <strong><%=job.date_posted.to_date.to_s%></strong><br>
       </div>
       <div class = 'span1'>
-        <%= link_to new_job_share_path(job_info: job.jobinfo_for_share), class: 'btn btn-flat btn-mini btn-info', rel:"tooltip", title:"Forward", target: "_blank" do%>
+        <%= link_to new_job_share_path(job_info: job.jobinfo_for_share),
+                    class: 'btn btn-flat btn-mini btn-info',
+                    title:"Forward",
+                    target: "_blank" do%>
                 <i class="icon-share-alt icon-white"></i>
         <% end %>
       </div>

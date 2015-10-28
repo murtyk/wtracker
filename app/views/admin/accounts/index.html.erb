@@ -18,10 +18,15 @@
     <td><%= account.type %></td>
     <td><%= account.status_text %></td>
     <td>
-        <%= link_to admin_account_path(account), class: "btn btn-flat btn-mini btn-info", rel:"tooltip", title:"Show"  do %>
+        <%= link_to admin_account_path(account),
+                    class: "btn btn-flat btn-mini btn-info",
+                    title:"Show"  do %>
           <i class="icon-eye-open"></i>
         <% end %>
-        <%= link_to edit_admin_account_path(account), id: "edit_account_#{account.id}_link", class: "btn btn-flat btn-mini btn-warning", rel:"tooltip", title:"Edit"  do %>
+        <%= link_to edit_admin_account_path(account),
+                    id: "edit_account_#{account.id}_link",
+                    class: "btn btn-flat btn-mini btn-warning",
+                    title:"Edit"  do %>
           <i class="icon-edit"></i>
         <% end %>
         <% confirm_message = "Delete #{account.name}. Are you sure?".html_safe %>
@@ -29,7 +34,6 @@
                                                  data: { confirm: confirm_message },
                                                  id: "destroy_account_#{account.id}_link",
                                                  class: "btn btn-flat btn-mini btn-danger",
-                                                 rel:"tooltip",
                                                  remote: true, title:"Delete"  do %>
           <i class="icon-trash"></i>
         <% end %>

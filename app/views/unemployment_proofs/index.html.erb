@@ -6,7 +6,11 @@
       <div id='unemployment_proofs'>
         <%= render @unemployment_proofs %>
       </div>
-        <%= link_to new_unemployment_proof_path, class: "btn btn-flat btn-small btn-primary", id: 'new_unemployment_proof_link', remote: true, rel:"tooltip", title:"Add Funding Source" do%>
+        <%= link_to new_unemployment_proof_path,
+                    class: "btn btn-flat btn-small btn-primary",
+                    id: 'new_unemployment_proof_link',
+                    remote: true,
+                    title:"Add Funding Source" do%>
           <i class="icon-plus"></i> New
       <% end %>
     <% end %>

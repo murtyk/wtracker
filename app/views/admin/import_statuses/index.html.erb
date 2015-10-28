@@ -21,10 +21,15 @@
         <td><%= import_status.params %></td>
 
         <td>
-        <%= link_to admin_import_status_path(import_status),class: "btn btn-flat btn-mini btn-primary" do %>
+        <%= link_to admin_import_status_path(import_status),
+                   class: "btn btn-flat btn-mini btn-primary" do %>
           <i class="icon-eye-open"></i>
         <% end %>
-        <%= link_to admin_import_status_path(import_status), method: :delete,  class: "btn btn-flat btn-mini btn-danger", rel:"tooltip", remote: true, title:"Delete"  do %>
+        <%= link_to admin_import_status_path(import_status),
+                    method: :delete,
+                    class: "btn btn-flat btn-mini btn-danger",
+                    remote: true,
+                    title:"Delete"  do %>
           <i class="icon-trash"></i>
         <% end %>
         </td>

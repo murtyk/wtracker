@@ -5,7 +5,6 @@ module ButtonsHelper
     link_to(polymorphic_path(resource),
             id: button_id(resource),
             class: 'btn btn-flat btn-mini btn-info',
-            rel: 'tooltip',
             title: 'Show') do
       '<i class="icon-eye-open"></i>'.html_safe
     end
@@ -21,7 +20,6 @@ module ButtonsHelper
     link_to(new_polymorphic_path(resource, params),
             id: build_add_button_id(resource),
             class: btn_class,
-            rel: 'tooltip',
             title: title) do
       "<i class='icon-plus'>#{name}</i>".html_safe
     end
@@ -47,7 +45,6 @@ module ButtonsHelper
     link_to(edit_polymorphic_path(resource),
             id: id,
             class: 'btn btn-flat btn-mini btn-warning',
-            rel: 'tooltip',
             title: 'Edit') do
       '<i class="icon-edit"></i>'.html_safe
     end
@@ -64,7 +61,6 @@ module ButtonsHelper
     para ||= {}
     link_to(url_for(params.merge(para).merge(format: 'xls')),
             class: 'btn btn-flat btn-small btn-primary btn-download pull-right',
-            rel: 'tooltip',
             title: 'Download') do
       "<i class='icon-cloud-download'>#{name}</i>".html_safe
     end
@@ -74,7 +70,6 @@ module ButtonsHelper
     link_to(url_for(params.merge(para)),
             remote: true,
             class: 'btn btn-flat btn-small btn-primary btn-email-download pull-right',
-            rel: 'tooltip',
             title: 'Send Data by Email') do
       "<i class='icon-envelope'>#{name}</i>".html_safe
     end
