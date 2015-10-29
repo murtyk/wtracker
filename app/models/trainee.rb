@@ -162,6 +162,17 @@ class Trainee < ActiveRecord::Base
            :employer_name, :hire_title, :hire_salary,
            to: :hired_employer_interaction, allow_nil: true
 
+  def termination_interaction
+    return nil if hired_employer_interaction
+    trainee_interactions.where.not(termination_date: nil).last
+  end
+
+  def terminated?
+    !termination_interaction.nil?
+  end
+
+  delegate :termination_date, to: :termination_interaction, allow_nil: true
+
   # placed with No OJT or OJT Completed
   def hired?
     status == 4

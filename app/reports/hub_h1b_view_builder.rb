@@ -312,7 +312,7 @@ class HubH1bViewBuilder
     dates += t.trainee_assessments.map(&:date)
     dates << t.edp_date if t.edp_date
 
-    f_date(dates.min)
+    f_date(dates.compact.min)
   end
 
   # 302
@@ -325,7 +325,7 @@ class HubH1bViewBuilder
   def program_completion_date(t)
     dates = [ojt_completed_date(t)]
     dates += non_ws_klasses(t).pluck(:end_date)
-    dates.max
+    dates.compact.max
   end
 
   # 320
@@ -346,7 +346,7 @@ class HubH1bViewBuilder
   # 350
   def recent_work_exp_data(t)
     return f_date(ojt_completed_date(t)) if ojt_completed?(t)
-    if t.ojt_enrolled? && t.terminated?
+    if t.terminated? && t.termination_interaction.ojt_enrolled?
       return f_date(t.termination_date)
     end
     t.ojt_enrolled? ? quarter_end_date : ''
@@ -463,7 +463,7 @@ class HubH1bViewBuilder
   end
 
   def non_ws_category_ids
-    @non_ws_cat_ids ||= (Klass.pluck(:id) - ws_category_ids)
+    @non_ws_cat_ids ||= (KlassCategory.pluck(:id) - ws_category_ids)
   end
 
   def non_ws_klasses(t)
@@ -473,7 +473,7 @@ class HubH1bViewBuilder
   def non_ws_klasses_by_status(t, status)
     Klass.joins(:klass_trainees)
          .where(klass_category_id: non_ws_category_ids)
-         .where(trainee_id: t.id, status: status)
+         .where(klass_trainees: { trainee_id: t.id, status: status } )
   end
 
   def non_ws_completed_klasses(t)
