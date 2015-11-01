@@ -163,7 +163,6 @@ class Trainee < ActiveRecord::Base
            to: :hired_employer_interaction, allow_nil: true
 
   def termination_interaction
-    return nil if hired_employer_interaction
     trainee_interactions.where.not(termination_date: nil).last
   end
 

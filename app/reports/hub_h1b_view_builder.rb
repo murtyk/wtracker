@@ -121,7 +121,7 @@ class HubH1bViewBuilder
   def data_300s(t)
     [registered_date(t),
      exit_date(t),
-     '',
+     other_reasons_for_exit(t),
      program_completion_date(t),
      '',
      0,
@@ -311,7 +311,7 @@ class HubH1bViewBuilder
     dates += t.klasses.map(&:start_date)
     dates += t.trainee_assessments.map(&:date)
     dates << t.edp_date if t.edp_date
-
+    dates << ojt_start_date(t) if ojt_start_date(t)
     f_date(dates.compact.min)
   end
 
@@ -321,11 +321,18 @@ class HubH1bViewBuilder
     dt ? f_date(dt) : ''
   end
 
+  # 303
+  def other_reasons_for_exit(t)
+    t.disabled? ? '0' : ''
+  end
+
   # 304 latest of OJT completion date and Non WS classes end date
+  # should be blank OJT terminated or did not complete a class
   def program_completion_date(t)
     dates = [ojt_completed_date(t)]
-    dates += non_ws_klasses(t).pluck(:end_date)
-    dates.compact.max
+    dates += non_ws_completed_klasses(t).pluck(:end_date)
+    max_date = dates.compact.select{ |d| d <= end_date }.max
+    max_date && f_date(max_date)
   end
 
   # 320
@@ -340,7 +347,8 @@ class HubH1bViewBuilder
   def recent_service_date(t)
     dates = ws_klasses(t).map(&:end_date)
     dates << t.edp_date if t.edp_date
-    dates.max
+    max_date = dates.compact.select{ |d| d <= end_date }.max
+    max_date && f_date(max_date)
   end
 
   # 350
@@ -361,7 +369,7 @@ class HubH1bViewBuilder
   def date_receiving_class_or_job_training(t)
     dates = non_ws_klasses(t).pluck(:start_date)
     dates << ojt_start_date(t)
-    dates.compact
+    dates.compact.map{|d| f_date(d)}
   end
 
   # 402
@@ -380,7 +388,7 @@ class HubH1bViewBuilder
   def training_end_dates(t)
     dates = non_ws_klasses(t).pluck(:end_date)
     dates << any_ojt_completed_date(t)
-    dates.compact
+    dates.compact.select{ |d| d <= end_date }.map{|d| f_date(d)}
   end
 
   # 406 and 416
@@ -442,16 +450,15 @@ class HubH1bViewBuilder
 
   # 503
   def ojt_completed_start_date(t)
-    hi = ojt_interaction(t)
-    return '' unless hi
-    hi.status == 6 ? f_date(hi.start_date) : ''
+    return 1 if ojt_completed?(t) || non_ws_completed_klasses(t).any?
+    ''
   end
 
   # 600s
   def certificates(t)
-    completed_klass_ids = t.completed_klasses.pluck :id
+    completed_klass_ids = non_ws_completed_klasses(t).pluck :id
     certs = KlassCertificate.where(klass_id: completed_klass_ids)
-    certs.map { |c| [c.certificate_category_code, c.klass.end_date] }
+    certs.map { |c| [c.certificate_category_code, f_date(c.klass.end_date)] }
   end
 
   def ws_category_ids
@@ -477,7 +484,7 @@ class HubH1bViewBuilder
   end
 
   def non_ws_completed_klasses(t)
-    non_ws_klasses_by_status(t, [2, 4, 5])
+    non_ws_klasses_by_status(t, [2, 4, 5]).where('end_date <= ?', end_date)
   end
 
   def non_ws_dropped_klasses(t)
@@ -511,7 +518,7 @@ class HubH1bViewBuilder
   # for 400, 410, 420
   def ojt_start_date(t)
     hi = any_ojt_interaction(t)
-    hi && f_date(hi.start_date)
+    hi.try(:start_date)
   end
 
   def ojt_completed_date(t)
