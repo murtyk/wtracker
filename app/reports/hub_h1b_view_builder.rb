@@ -313,6 +313,9 @@ class HubH1bViewBuilder
     dates << t.edp_date if t.edp_date
     dates << ojt_start_date(t) if ojt_start_date(t)
     f_date(dates.compact.min)
+  rescue StandardError => error
+    Rails.logger.error("registered_date: trainee_id: #{t.id} error: #{error}")
+    error.to_s
   end
 
   # 302
@@ -333,6 +336,9 @@ class HubH1bViewBuilder
     dates += non_ws_completed_klasses(t).pluck(:end_date)
     max_date = dates.compact.select{ |d| d <= end_date }.max
     max_date && f_date(max_date)
+  rescue StandardError => error
+    Rails.logger.error("program_completion_date: trainee_id: #{t.id} error: #{error}")
+    error.to_s
   end
 
   # 320
@@ -341,6 +347,9 @@ class HubH1bViewBuilder
       ta.date if ta.date && ta.date >= start_date && ta.date <= end_date
     end.compact
     f_date(dates.max)
+  rescue StandardError => error
+    Rails.logger.error("assessment_date: trainee_id: #{t.id} error: #{error}")
+    error.to_s
   end
 
   # 340 Latest of edp, WS class end dates
@@ -349,6 +358,9 @@ class HubH1bViewBuilder
     dates << t.edp_date if t.edp_date
     max_date = dates.compact.select{ |d| d <= end_date }.max
     max_date && f_date(max_date)
+  rescue StandardError => error
+    Rails.logger.error("recent_service_date: trainee_id: #{t.id} error: #{error}")
+    error.to_s
   end
 
   # 350
