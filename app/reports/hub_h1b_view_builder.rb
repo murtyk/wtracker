@@ -494,7 +494,6 @@ class HubH1bViewBuilder
   def ojt_interaction(t)
     t.trainee_interactions
       .where(status: [5, 6], termination_date: nil)
-      .where('start_date >= ?', start_date)
       .where('start_date <= ?', end_date)
       .last
   end
@@ -502,7 +501,6 @@ class HubH1bViewBuilder
   def any_ojt_interaction(t)
     t.trainee_interactions
       .where(status: [5, 6])
-      .where('start_date >= ?', start_date)
       .where('start_date <= ?', end_date)
       .last
   end
@@ -510,7 +508,6 @@ class HubH1bViewBuilder
   def any_ojt_terminated?(t)
     t.trainee_interactions
       .where(termination_date: nil)
-      .where('start_date >= ?', start_date)
       .where('start_date <= ?', end_date)
       .last
   end
