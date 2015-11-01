@@ -532,7 +532,7 @@ class HubH1bViewBuilder
 
   def ojt_completed_date(t)
     hi = ojt_interaction(t)
-    hi.try(:status) == 6 ? f_date(hi.completion_date) : nil
+    hi.try(:status) == 6 ? hi.completion_date : nil
   end
 
   def any_ojt_completed_date(t)
