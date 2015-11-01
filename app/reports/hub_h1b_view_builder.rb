@@ -401,6 +401,9 @@ class HubH1bViewBuilder
     dates = non_ws_klasses(t).pluck(:end_date)
     dates << any_ojt_completed_date(t)
     dates.compact.select{ |d| d <= end_date }.map{|d| f_date(d)}
+  rescue StandardError => error
+    Rails.logger.error("training_end_dates: trainee_id: #{t.id} error: #{error}")
+    error.to_s
   end
 
   # 406 and 416
@@ -537,7 +540,7 @@ class HubH1bViewBuilder
 
   def any_ojt_completed_date(t)
     hi = any_ojt_interaction(t)
-    hi.try(:status) == 6 ? f_date(hi.completion_date) : nil
+    hi.try(:status) == 6 ? hi.completion_date : nil
   end
 
   def ojt_completed?(t)
