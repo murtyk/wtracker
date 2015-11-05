@@ -53,6 +53,8 @@ class HubH1bReport < Report
                                  :applicant,
                                  tact_three: :education)
                 .where(funding_source_id: funding_source_id)
+                .where('applicants.applied_on <= ?', end_date)
+                .references(:applicants)
   end
 
   # def placed_ids

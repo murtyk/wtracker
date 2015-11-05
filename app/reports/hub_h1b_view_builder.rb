@@ -174,20 +174,20 @@ class HubH1bViewBuilder
     end_dates = training_end_dates(t)
 
     [training_dates[0], # 400
-     "'00000000",
+     '',
      type_of_training_service_1(t), # 402
      '',
      '',
      end_dates[0], # 405
      training_completed_1(t),  # 406
      training_dates[1],
-     "'00000000", # 411
+     '', # 411
      type_of_training_service_2(t),  # 412
      '', '',
      end_dates[1], # 415
      training_completed_2(t), # 416
      training_dates[2],
-     "'00000000", # 421
+     '', # 421
      '', '', '',
      end_dates[2],
      '']
