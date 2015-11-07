@@ -559,7 +559,7 @@ class HubH1bViewBuilder
   def hired_start_date(t)
     return nil unless t.hired?
     return nil unless (start_date..end_date).include?(t.start_date)
-    f_date(t.start_date)
+    t.start_date
   end
 
   # common to all parts
