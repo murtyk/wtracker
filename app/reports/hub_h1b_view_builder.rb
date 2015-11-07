@@ -322,8 +322,8 @@ class HubH1bViewBuilder
   def exit_date(t)
     dt = ojt_completed_date(t) || hired_start_date(t) || t.disabled_date
     return if dt.blank?
-    dt += 90.days
-    dt && dt <= end_date ? f_date(dt) : ''
+    report_dt = dt + 90.days
+    report_dt <= end_date ? f_date(dt) : ''
   end
 
   # 303
@@ -469,8 +469,10 @@ class HubH1bViewBuilder
 
   # 503
   def ojt_completed_start_date(t)
-    return 1 if ojt_completed?(t) || non_ws_completed_klasses(t).any?
-    ''
+    return '' unless t.hired?
+    return 1 if ojt_completed?(t)
+    return 0 if non_ws_completed_klasses(t).any?
+    9
   end
 
   # 600s
