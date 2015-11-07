@@ -321,12 +321,14 @@ class HubH1bViewBuilder
   # 302
   def exit_date(t)
     dt = ojt_completed_date(t) || hired_start_date(t) || t.disabled_date
+    return if dt.blank?
+    dt += 90.days
     dt && dt <= end_date ? f_date(dt) : ''
   end
 
   # 303
   def other_reasons_for_exit(t)
-    return '' unless exit_date(t)
+    return '' if exit_date(t).blank?
     t.disabled? ? '0' : ''
   end
 
@@ -359,7 +361,7 @@ class HubH1bViewBuilder
     dates << t.edp_date if t.edp_date
     max_date = dates.compact.select{ |d| d <= end_date }.max
     return f_date(max_date) if max_date
-    quarter_end_date
+    active?(t) ? quarter_end_date : ''
   rescue StandardError => error
     Rails.logger.error("recent_service_date: trainee_id: #{t.id} error: #{error}")
     error.to_s
@@ -476,6 +478,10 @@ class HubH1bViewBuilder
     completed_klass_ids = non_ws_completed_klasses(t).pluck :id
     certs = KlassCertificate.where(klass_id: completed_klass_ids)
     certs.map { |c| [c.certificate_category_code, f_date(c.klass.end_date)] }
+  end
+
+  def active?(t)
+    !(t.disabled? || t.hired?)
   end
 
   def ws_category_ids
