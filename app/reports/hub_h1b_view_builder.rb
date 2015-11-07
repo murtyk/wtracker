@@ -461,7 +461,7 @@ class HubH1bViewBuilder
 
   # 501
   def hired_or_ojt_completed_data(t)
-    return f_date(t.completion_date) if t.ojt_completed? && t.completion_date <= end_date
+    return f_date(t.completion_date) if t.ojt_completed? && t.completion_date.try('<=', end_date)
     t.hired? && t.start_date && t.start_date <= end_date ? f_date(t.start_date) : ''
   end
 
@@ -540,19 +540,19 @@ class HubH1bViewBuilder
 
   def ojt_completed_date(t)
     hi = ojt_interaction(t)
-    return unless hi && hi.status == 6 && hi.completion_date <= end_date
+    return unless hi && hi.status == 6 && hi.completion_date.try('<=', end_date)
     hi.completion_date
   end
 
   def any_ojt_completed_date(t)
     hi = any_ojt_interaction(t)
-    return unless hi && hi.status == 6 && hi.completion_date <= end_date
+    return unless hi && hi.status == 6 && hi.completion_date.try('<=', end_date)
     hi.completion_date.blank? ? nil : hi.completion_date
   end
 
   def ojt_completed?(t)
     hi = ojt_interaction(t)
-    return unless hi && hi.status == 6 && hi.completion_date <= end_date
+    return unless hi && hi.status == 6 && hi.completion_date.try('<=', end_date)
     1
   end
 
