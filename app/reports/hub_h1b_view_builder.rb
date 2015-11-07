@@ -240,19 +240,19 @@ class HubH1bViewBuilder
   def data_600s(t)
     certs = certificates(t)
     [
-      certs.try(:[], 0).try(:[], 0),
-      certs.try(:[], 0).try(:[], 1),
-      certs.try(:[], 1).try(:[], 0),
+      certs.try(:[], 0).try(:[], 0), # 601
+      certs.try(:[], 0).try(:[], 1), # 602
+      certs.try(:[], 1).try(:[], 0), # 611
       certs.try(:[], 1).try(:[], 1),
       certs.try(:[], 2).try(:[], 0),
-      certs.try(:[], 2).try(:[], 1)
+      "'" + certs.try(:[], 2).try(:[], 1).to_s # special ' for 622
     ]
   end
 
   # 101
   def trainee_id(t)
     return '999999999' if t.trainee_id.blank?
-    "'" + t.trainee_id.gsub(/\D/, '')
+    t.trainee_id.gsub(/\D/, '')
   end
 
   def trainee_dob(t)
@@ -321,11 +321,12 @@ class HubH1bViewBuilder
   # 302
   def exit_date(t)
     dt = ojt_completed_date(t) || hired_start_date(t) || t.disabled_date
-    dt ? f_date(dt) : ''
+    dt && dt <= end_date ? f_date(dt) : ''
   end
 
   # 303
   def other_reasons_for_exit(t)
+    return '' unless exit_date(t)
     t.disabled? ? '0' : ''
   end
 
@@ -357,7 +358,8 @@ class HubH1bViewBuilder
     dates = ws_klasses(t).map(&:end_date)
     dates << t.edp_date if t.edp_date
     max_date = dates.compact.select{ |d| d <= end_date }.max
-    max_date && f_date(max_date)
+    return f_date(max_date) if max_date
+    quarter_end_date
   rescue StandardError => error
     Rails.logger.error("recent_service_date: trainee_id: #{t.id} error: #{error}")
     error.to_s
@@ -365,10 +367,10 @@ class HubH1bViewBuilder
 
   # 350
   def recent_work_exp_data(t)
-    return f_date(ojt_completed_date(t)) if ojt_completed?(t)
-    if t.terminated? && t.termination_interaction.ojt_enrolled?
-      return f_date(t.termination_date)
-    end
+    dt = ojt_completed_date(t)
+    dt ||= t.termination_date if t.terminated? && t.termination_interaction.ojt_enrolled?
+
+    return f_date(dt) if dt && dt <= end_date
     t.ojt_enrolled? ? quarter_end_date : ''
   end
 
@@ -459,8 +461,8 @@ class HubH1bViewBuilder
 
   # 501
   def hired_or_ojt_completed_data(t)
-    return f_date(t.completion_date) if t.ojt_completed?
-    t.hired? ? f_date(t.start_date) : ''
+    return f_date(t.completion_date) if t.ojt_completed? && t.completion_date <= end_date
+    t.hired? && t.start_date && t.start_date <= end_date ? f_date(t.start_date) : ''
   end
 
   # 503
@@ -489,13 +491,16 @@ class HubH1bViewBuilder
   end
 
   def non_ws_klasses(t)
-    t.klasses.where(klass_category_id: non_ws_category_ids)
+    t.klasses
+     .where(klass_category_id: non_ws_category_ids)
+     .where('start_date <= ?', end_date)
   end
 
   def non_ws_klasses_by_status(t, status)
     Klass.joins(:klass_trainees)
          .where(klass_category_id: non_ws_category_ids)
          .where(klass_trainees: { trainee_id: t.id, status: status } )
+         .where('klasses.start_date <= ?', end_date)
   end
 
   def non_ws_completed_klasses(t)
@@ -535,17 +540,20 @@ class HubH1bViewBuilder
 
   def ojt_completed_date(t)
     hi = ojt_interaction(t)
-    hi.try(:status) == 6 ? hi.completion_date : nil
+    return unless hi && hi.status == 6 && hi.completion_date <= end_date
+    hi.completion_date
   end
 
   def any_ojt_completed_date(t)
     hi = any_ojt_interaction(t)
-    hi.try(:status) == 6 ? hi.completion_date : nil
+    return unless hi && hi.status == 6 && hi.completion_date <= end_date
+    hi.completion_date
   end
 
   def ojt_completed?(t)
     hi = ojt_interaction(t)
-    hi.try(:status) == 6 ? 1 : nil
+    return unless hi && hi.status == 6 && hi.completion_date <= end_date
+    1
   end
 
   def hired_start_date(t)
