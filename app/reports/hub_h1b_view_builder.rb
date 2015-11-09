@@ -217,7 +217,7 @@ class HubH1bViewBuilder
 
   def data_500s(t)
     [hired_or_ojt_completed_data(t),
-     "'00000000",
+     '',
      ojt_completed_start_date(t),
      '', '', '', '', '', '']
   end
@@ -373,7 +373,7 @@ class HubH1bViewBuilder
     dt ||= t.termination_date if t.terminated? && t.termination_interaction.ojt_enrolled?
 
     return f_date(dt) if dt && dt <= end_date
-    t.ojt_enrolled? ? quarter_end_date : ''
+    (dt || t.ojt_enrolled?) ? quarter_end_date : ''
   end
 
   def quarter_end_date
@@ -443,14 +443,16 @@ class HubH1bViewBuilder
     return 0 if non_ws_dropped_klasses(t).any?
     return 1 if any_ojt_completed_date(t)
     return 0 if any_ojt_terminated?(t)
+    ''
   end
 
-  # 416  PENDING
+  # 416
   def training_completed_2(t)
     if non_ws_completed_klasses(t).any? || non_ws_dropped_klasses(t).any?
       return 1 if any_ojt_completed_date(t)
       return 0 if any_ojt_terminated?(t)
     end
+    ''
   end
 
   # 412: 402 takes klass code or ojt(1).
@@ -467,11 +469,11 @@ class HubH1bViewBuilder
     t.hired? && t.start_date && t.start_date <= end_date ? f_date(t.start_date) : ''
   end
 
-  # 503
+  # 503 User will manually update
   def ojt_completed_start_date(t)
-    return '' unless t.hired?
-    return 1 if ojt_completed?(t)
-    return 0 if non_ws_completed_klasses(t).any?
+    # return '' unless t.hired?
+    # return 1 if ojt_completed?(t)
+    # return 0 if non_ws_completed_klasses(t).any?
     9
   end
 
