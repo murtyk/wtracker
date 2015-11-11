@@ -537,7 +537,7 @@ class HubH1bViewBuilder
 
   def any_ojt_terminated?(t)
     t.trainee_interactions
-      .where(termination_date: nil)
+      .where.not(termination_date: nil)
       .where('start_date <= ?', end_date)
       .last
   end
@@ -550,7 +550,7 @@ class HubH1bViewBuilder
 
   def ojt_completed_date(t)
     hi = ojt_interaction(t)
-    return unless hi && hi.status == 6 && hi.completion_date.try('<=', end_date)
+    return unless hi && hi.status == 6
     hi.completion_date
   end
 
