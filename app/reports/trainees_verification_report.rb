@@ -1,12 +1,7 @@
 # trainees verification for unemployment
 class TraineesVerificationReport < Report
-  attr_reader :trainees, :funding_source_id, :trainees_count
+  attr_reader :trainees, :trainees_count
   def post_initialize(params)
-    @trainees = []
-
-    return unless params && params[:action] != 'new'
-
-    @funding_source_id = params[:funding_source_id]
     build_trainees
   end
 
@@ -17,9 +12,7 @@ class TraineesVerificationReport < Report
   end
 
   def find_trainees
-    ts = Trainee.includes(:home_address, :applicant)
-    return ts if funding_source_id.blank?
-    ts.where(funding_source_id: funding_source_id)
+    Trainee.includes(:home_address, :applicant)
   end
 
   def build_excel
@@ -55,7 +48,6 @@ class TraineesVerificationReport < Report
     report_name = report_name.join('_')
     { report_name: report_name,
       action: :show,
-      funding_source_id: funding_source_id,
       id: 1 }
   end
 end

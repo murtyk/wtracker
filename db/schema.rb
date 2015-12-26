@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20151016035640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "fuzzystrmatch"
   enable_extension "hstore"
 
   create_table "account_states", force: :cascade do |t|
@@ -105,6 +106,17 @@ ActiveRecord::Schema.define(version: 20151016035640) do
   add_index "applicant_reapplies", ["account_id"], name: "index_applicant_reapplies_on_account_id", using: :btree
   add_index "applicant_reapplies", ["applicant_id"], name: "index_applicant_reapplies_on_applicant_id", using: :btree
   add_index "applicant_reapplies", ["grant_id"], name: "index_applicant_reapplies_on_grant_id", using: :btree
+
+  create_table "applicant_references", force: :cascade do |t|
+    t.string   "reference",  limit: 255
+    t.integer  "account_id"
+    t.integer  "grant_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "applicant_references", ["account_id"], name: "index_applicant_references_on_account_id", using: :btree
+  add_index "applicant_references", ["grant_id"], name: "index_applicant_references_on_grant_id", using: :btree
 
   create_table "applicant_sources", force: :cascade do |t|
     t.string   "source",     limit: 255
@@ -471,9 +483,9 @@ ActiveRecord::Schema.define(version: 20151016035640) do
     t.datetime "updated_at"
   end
 
-  add_index "grant_admins", ["account_id"], name: "index_klass_admins_on_account_id", using: :btree
-  add_index "grant_admins", ["grant_id"], name: "index_klass_admins_on_grant_id", using: :btree
-  add_index "grant_admins", ["user_id"], name: "index_klass_admins_on_user_id", using: :btree
+  add_index "grant_admins", ["account_id"], name: "index_grant_admins_on_account_id", using: :btree
+  add_index "grant_admins", ["grant_id"], name: "index_grant_admins_on_grant_id", using: :btree
+  add_index "grant_admins", ["user_id"], name: "index_grant_admins_on_user_id", using: :btree
 
   create_table "grant_job_lead_counts", force: :cascade do |t|
     t.integer  "account_id"
@@ -849,8 +861,8 @@ ActiveRecord::Schema.define(version: 20151016035640) do
     t.integer  "status"
     t.string   "feedback",      limit: 255
     t.string   "key",           limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "shared_job_statuses", ["account_id"], name: "index_shared_job_statuses_on_account_id", using: :btree

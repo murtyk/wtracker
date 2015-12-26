@@ -31,10 +31,7 @@ describe 'Reports' do
 
       visit_report Report::TRAINEES_VERIFICATION
 
-      select 'FS1', from: 'report_funding_source_id'
-
-      click_on 'Find'
-
+      expect(page).to have_text(applicants[0].trainee.name)
       expect(page).to have_text('FS1')
     end
   end
