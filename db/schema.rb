@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016035640) do
+ActiveRecord::Schema.define(version: 20151226200106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1074,6 +1074,7 @@ ActiveRecord::Schema.define(version: 20151016035640) do
     t.date     "edp_date"
     t.date     "disabled_date"
     t.string   "disabled_notes"
+    t.date     "ui_claim_verified_on"
   end
 
   add_index "trainees", ["account_id", "grant_id"], name: "index_trainees_on_account_id_and_grant_id", using: :btree

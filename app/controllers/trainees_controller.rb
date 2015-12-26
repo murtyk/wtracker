@@ -142,7 +142,7 @@ class TraineesController < ApplicationController
               :disability, :dob, :education, :email, :first, :last,
               :gender, :land_no, :middle, :mobile_no, :trainee_id,
               :status, :veteran, :race_id, :edp_date,
-              :legal_status, :funding_source_id,
+              :legal_status, :funding_source_id, :ui_claim_verified_on,
               :disabled_date, :disabled_notes,
               klass_ids: [],
               tact_three_attributes: [:certifications, :education_level,

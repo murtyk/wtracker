@@ -43,6 +43,11 @@
                                             value: trainee.dob.to_s },
                               as: :string %>
 
+            <%= f.input :ui_claim_verified_on,
+                        input_html: { data: { behaviour: "datepicker" },
+                                      value: trainee.ui_claim_verified_on.to_s },
+                        as: :string %>
+
             <%= f.input :race_id, label: 'Ethnicity', collection: Race.all %>
             <%= f.input :veteran%>
             <%= f.input :legal_status, collection: trainee_legal_statues %>

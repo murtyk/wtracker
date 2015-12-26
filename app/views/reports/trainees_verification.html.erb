@@ -38,6 +38,7 @@
     <th>Funding Source</th>
     <th>Navigator</th>
     <th>Placement Status</th>
+    <th>UI Claim Verified On</th>
   </tr>
 
   <% @report.trainees.each do |trainee| %>
@@ -53,6 +54,7 @@
       <td><%= trainee.funding_source_name %></td>
       <td><%= trainee.navigator_name %></td>
       <td><%= trainee.placement_status %></td>
+      <td><%= trainee.ui_claim_verified_on %></td>
     </tr>
   <% end %>
 </table>

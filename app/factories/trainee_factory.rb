@@ -6,6 +6,9 @@ class TraineeFactory
 
     params = trainee_params.clone
     params[:dob] = opero_str_to_date(params[:dob]) unless params[:dob].blank?
+    unless params[:ui_claim_verified_on].blank?
+      params[:ui_claim_verified_on] = opero_str_to_date(params[:ui_claim_verified_on])
+    end
     unless params[:edp_date].blank?
       params[:edp_date] = opero_str_to_date(params[:edp_date])
     end
@@ -31,6 +34,7 @@ class TraineeFactory
     clean_addresses(params)
 
     params[:dob] = opero_str_to_date(params[:dob])
+    params[:ui_claim_verified_on] = opero_str_to_date(params[:ui_claim_verified_on])
     params[:edp_date] = opero_str_to_date(params[:edp_date])
     params[:disabled_date] = opero_str_to_date(params[:disabled_date])
 
