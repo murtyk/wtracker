@@ -2,9 +2,7 @@ class ImportStatusesController < ApplicationController
   before_filter :authenticate_user!
 
   def new
-    resource = params[:resource]
-    render "new_#{resource}" unless params[:updates]
-    render "update_#{resource}" if params[:updates]
+    render new_template
   end
 
   def create
@@ -35,5 +33,15 @@ class ImportStatusesController < ApplicationController
   def retry
     @import_fail = ImportFail.find(params[:import_fail_id])
     @import_fail.retry
+  end
+
+  private
+
+  def new_template
+    resource = params[:resource]
+    return "new_#{resource}" unless resource == 'trainees'
+    return "update_#{resource}" if params[:updates]
+    return "ui_claim_verification_#{resource}" if params[:ui_claim_verification]
+    "new_#{resource}"
   end
 end

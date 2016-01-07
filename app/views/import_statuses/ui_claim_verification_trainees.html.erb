@@ -1,0 +1,29 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Update UI Claim Verifications</h1>
+</div>
+<div class = 'row-fluid'>
+  <div class = 'span4'>
+    <%= form_tag import_statuses_path(resource: 'trainees', ui_claim_verification: true), id: 'form-import', multipart: true do %>
+      <p><strong>Find A File To Upload:</strong></p>
+        <%= file_field_tag :file %>
+        <br><br>
+      <div class='form-actions'>
+        <%= import_button %>
+      </div>
+    <% end %>
+  </div>
+  <div class = 'span8'>
+    <hr>
+    <% template = "/documents/trainee_ui_claim_verification_template.xlsx" %>
+    <b style='color: blue'><%= link_to "Click here to download the file template", template %></b>
+
+    <h4>Guide Lines</h4>
+    <ol>
+      <li>Download and open the excel file from the link above</li>
+      <li>Take a look at the header that describes the required column names</li>
+      <li>Trainee ID(TAPO ID) is mandatory</li>
+      <li>After loading data into the file, save the file in excel format and import</li>
+      <li>Important: Delete the example trainee rows from the file before import</li>
+    </ol>
+  </div>
+</div>

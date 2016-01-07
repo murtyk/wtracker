@@ -18,11 +18,16 @@ class Importer
     return KlassesImporter.new(params, current_user)   if resource == 'klasses'
     return EmployersImporter.new(params, current_user) if resource == 'employers'
     return CitiesImporter.new(params, current_user)    if resource == 'cities'
-    if resource == 'trainees'
-      return TraineesImporter.new(params, current_user) unless params[:updates]
-      return TraineeUpdatesImporter.new(params, current_user)
-    end
+    return new_trainee_importer(params, current_user) if resource == 'trainees'
     nil
+  end
+
+  def self.new_trainee_importer(params, current_user)
+    if params[:ui_claim_verification]
+      return TraineeUiClaimVerifiedOnImporter.new(params, current_user)
+    end
+    return TraineesImporter.new(params, current_user) unless params[:updates]
+    TraineeUpdatesImporter.new(params, current_user)
   end
 
   def errors?
@@ -37,7 +42,12 @@ class Importer
     Account.current_id = @account_id
     Grant.current_id = @grant_id
     init_import_status
-    return false unless open_reader
+
+    @reader = open_reader
+    return false unless @reader
+
+    @count_success = 0
+    @count_fails = 0
 
     import_data_rows
 
@@ -84,7 +94,8 @@ class Importer
   end
 
   def validate_header
-    return unless open_reader
+    @reader = open_reader
+    return unless @reader
     valid_header = (@reader.header & header_fields).size == header_fields.size
     create_import_fail_for_invalid_header unless valid_header
     close_reader
@@ -107,16 +118,13 @@ class Importer
   def open_reader
     file_url = Amazon.file_url @aws_file_name
     return false unless @import_status
-    begin
-      @reader = ImportFileReader.new(file_url, @original_filename)
-    rescue StandardError => e
-      import_status.import_fails.create(row_no: 0, can_retry: false,
+
+    ImportFileReader.new(file_url, @original_filename)
+  rescue StandardError => e
+    import_status.import_fails.create(row_no: 0, can_retry: false,
                                         error_message: e.to_s,
                                         geocoder_fail: false)
-      return false
-    end
-    @count_success = 0
-    @count_fails = 0
+    false
   end
 
   def import_row(_row, _skip_fail_entry = false)

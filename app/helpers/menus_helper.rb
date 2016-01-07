@@ -73,23 +73,27 @@ module MenusHelper
 
   def settings_menu
     return unless settings_menu?
-    items = [applicant_sources_menu,
-             assessments_menu,
-             certificate_categories_menu,
-             klass_categories_menu,
-             employment_statuses_menu,
-             funding_sources_menu,
-             notify_hot_jobs_message_menu,
-             trainee_password_message_menu,
-             reapply_message_menu,
-             special_services_menu,
-             trainee_options_menu,
-             unemployment_proofs_menu].join
-    build_dropdown_menu('Settings', items)
+    build_dropdown_menu('Settings', settings_menu_items)
+  end
+
+  def settings_menu_items
+    [applicant_sources_menu,
+     assessments_menu,
+     certificate_categories_menu,
+     klass_categories_menu,
+     employment_statuses_menu,
+     funding_sources_menu,
+     notify_hot_jobs_message_menu,
+     trainee_password_message_menu,
+     reapply_message_menu,
+     special_services_menu,
+     trainee_options_menu,
+     unemployment_proofs_menu].join
   end
 
   def applicant_sources_menu
-    ta_settings_menu? ? menu_link('Applicant Source', applicant_sources_path) : ''
+    return '' unless ta_settings_menu?
+    menu_link('Applicant Source', applicant_sources_path)
   end
 
   def assessments_menu
@@ -113,7 +117,8 @@ module MenusHelper
   end
 
   def trainee_password_message_menu
-    ta_settings_menu? ? menu_link('Trainee Password Email Messages', password_message_grants_path) : ''
+    return '' unless ta_settings_menu?
+    menu_link('Trainee Password Email Messages', password_message_grants_path)
   end
 
   def reapply_message_menu
@@ -198,8 +203,9 @@ module MenusHelper
       menu = divider_menu + trainees_add_menu + trainees_import_menu
     end
     return menu unless policy(Trainee).import_updates?
-    return trainee_import_updates_menu if menu.blank?
-    menu + trainee_import_updates_menu
+    menu.html_safe +
+      trainee_import_updates_menu +
+      trainee_import_ui_claim_verified_on_menu
   end
 
   def trainees_mapview_menu_items
@@ -244,6 +250,11 @@ module MenusHelper
   def trainee_import_updates_menu
     menu_link('Import Updates',
               new_import_status_path(resource: 'trainees', updates: true))
+  end
+
+  def trainee_import_ui_claim_verified_on_menu
+    menu_link('Import UI Claim Verifications',
+              new_import_status_path(resource: 'trainees', ui_claim_verification: true))
   end
 
   def trainees_map_view_menu

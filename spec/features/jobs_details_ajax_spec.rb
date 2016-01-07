@@ -22,7 +22,7 @@ describe 'Job Search' do
         cassette = 'sh_job_details'
         count    = 16
         title1   = 'Business Systems Analyst with Strong Java background'
-        details  = 'IRIS Software, Inc'
+        details  = 'IRIS Software'
       end
 
       VCR.use_cassette(cassette) do

@@ -24,6 +24,7 @@ SimpleCov.start do
   add_group 'Factories', '/app/factories/'
   add_group 'Services', '/app/services/'
   add_group 'Reports', '/app/reports/'
+  add_group 'Imports', '/app/imports/'
   add_group 'Helpers', '/app/helpers/'
   add_group 'Policies', '/app/policies/'
   add_group 'Views', '/app/views/'
@@ -77,6 +78,7 @@ RSpec.configure do |config|
   config.include(AutoLeadsHelper)
   config.include(ApplicantsHelper)
   config.include(ReportsHelper)
+  config.include(ImportsHelper)
   config.include Request::JsonHelpers,    type: :controller
   config.include Request::HeadersHelpers, type: :controller
 

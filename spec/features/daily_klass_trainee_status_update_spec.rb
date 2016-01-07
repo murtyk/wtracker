@@ -20,7 +20,10 @@ describe 'Daily Job to update Klass Trainee Status' do
     expect(page).to have_text 'Continuing Education - 1'
     expect(page).to_not have_text 'Completed - 2'
 
-    klass.update(end_date: Date.yesterday)
+    yd = Date.yesterday
+    yd -= 1.day if Date.today == Date.yesterday
+
+    klass.update(end_date: yd)
     DailyKlassTraineeStatus.new.perform
 
     visit "/klasses/#{klass.id}"

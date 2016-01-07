@@ -1,0 +1,25 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Updated UI Claim Verfied On</h1>
+</div>
+
+<%= render 'shared/import_fails', import_status: @import_status %>
+
+<h4>Following <%= @import_status.trainees.count %> Trainees were updated successfully</h4>
+
+<table id="table_trainee" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>UI Claim Verified On</th>
+    <th>Disabled?</th>
+  </tr>
+
+  <% @import_status.trainees.each do |trainee| %>
+    <tr id='tr_<%=trainee.id%>'>
+      <td><%= link_to trainee.id, trainee_path(trainee)%></td>
+      <td><%= link_to trainee.name, trainee_path(trainee)%></td>
+      <td><%= trainee.ui_claim_verified_on %></td>
+      <td><%= trainee.disabled? %></td>
+    </tr>
+  <% end %>
+</table>
