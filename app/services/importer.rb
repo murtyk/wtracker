@@ -97,6 +97,11 @@ class Importer
     @reader = open_reader
     return unless @reader
     valid_header = (@reader.header & header_fields).size == header_fields.size
+# debugger
+    unless valid_header
+      Rails.logger.info "file header: #{@reader.header.join("---")}"
+      Rails.logger.info "header fields: #{header_fields.join("---")}"
+    end
     create_import_fail_for_invalid_header unless valid_header
     close_reader
   end
