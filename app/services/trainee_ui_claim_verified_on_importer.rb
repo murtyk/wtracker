@@ -1,7 +1,5 @@
 include UtilitiesHelper
 
-TRAINEE_FIELDS = %w(tapo_id ui_claim_verified_on)
-
 # imports trainee updates from a file
 class TraineeUiClaimVerifiedOnImporter < Importer
   def initialize(all_params = nil, current_user = nil)
@@ -18,7 +16,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
   end
 
   def header_fields
-    TRAINEE_FIELDS
+    %w(tapo_id ui_claim_verified_on)
   end
 
   def template_name

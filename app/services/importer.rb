@@ -23,14 +23,7 @@ class Importer
   end
 
   def self.new_trainee_importer(params, current_user)
-    Rails.logger.info "-----------------------------------------------"
-    Rails.logger.info "--------------IMPORTER-------------------------"
-    Rails.logger.info params
-    Rails.logger.info "-----------------------------------------------"
-    Rails.logger.info "-----------------------------------------------"
     if params[:ui_claim_verification]
-      Rails.logger.info "-----TraineeUiClaimVerifiedOnImport----------"
-
       return TraineeUiClaimVerifiedOnImporter.new(params, current_user)
     end
     return TraineesImporter.new(params, current_user) unless params[:updates]
