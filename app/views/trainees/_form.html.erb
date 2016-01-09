@@ -14,6 +14,13 @@
             <%= f.input :trainee_id, label: 'Trainee ID' %>
 
             <%= f.association :funding_source %>
+
+            <%= f.input :ui_claim_verified_on,
+                        label: 'UI Claim Verified On',
+                        input_html: { data: { behaviour: "datepicker" },
+                                      value: trainee.ui_claim_verified_on.to_s },
+                        as: :string %>
+
             <% if current_grant.trainee_applications? %>
               <%= f.input :edp_date,
                           label: 'EDP Date',
@@ -42,11 +49,6 @@
             <%= f.input :dob, input_html: { data: { behaviour: "datepicker" },
                                             value: trainee.dob.to_s },
                               as: :string %>
-
-            <%= f.input :ui_claim_verified_on,
-                        input_html: { data: { behaviour: "datepicker" },
-                                      value: trainee.ui_claim_verified_on.to_s },
-                        as: :string %>
 
             <%= f.input :race_id, label: 'Ethnicity', collection: Race.all %>
             <%= f.input :veteran%>

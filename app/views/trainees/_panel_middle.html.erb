@@ -1,3 +1,7 @@
+<h2>
+  Trainee UI Verified?
+  <%= trainee.ui_claim_verified_on ? "Yes, on #{trainee.ui_claim_verified_on}" : 'No'%>
+</h2>
 <%= trainee.assessments_header %>
 <div id="<%=div_id_for_collection(TraineeAssessment)%>">
   <%= render trainee.trainee_assessments %>
