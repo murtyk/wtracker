@@ -16,7 +16,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
   end
 
   def header_fields
-    %w(tapo_id ui_claim_verified_on)
+    %w(tapo_id ui_claim_verified_on funding_source)
   end
 
   def template_name
@@ -36,8 +36,16 @@ class TraineeUiClaimVerifiedOnImporter < Importer
       trainee.disabled_date = Date.today
     end
 
+    fs_id = funding_source_id(row[:funding_source])
+    trainee.funding_source_id = fs_id if fs_id
+
     trainee.save!
 
     trainee
+  end
+
+  def funding_source_id(fs_name)
+    return nil if fs_name.blank?
+    FundingSource.find_by(name: fs_name).try(:id)
   end
 end

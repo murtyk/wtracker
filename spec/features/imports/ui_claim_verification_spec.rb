@@ -3,10 +3,11 @@ require 'rails_helper'
 describe 'trainees' do
   describe 'import' do
     def stub_reader(trainees)
-      header = %w(tapo_id ui_claim_verified_on)
-      values = [nil, '3/23/2014', 'NC']
+      header = %w(tapo_id ui_claim_verified_on funding_source)
+      claim_dates = [nil, '3/23/2014', 'NC']
+      fs = [nil, nil, 'NC']
       rows = (0..2).map do |i|
-                [trainees[i].id, values[i]]
+                [trainees[i].id, claim_dates[i], fs[i]]
              end
       stub_importer_file_reader(header, rows)
     end
@@ -24,6 +25,7 @@ describe 'trainees' do
       applicants = generate_applicants(6)
 
       fs = FundingSource.create(name: 'RTW')
+      @nc = FundingSource.create(name: 'NC')
 
       trainees = applicants.map(&:trainee)
 
@@ -42,6 +44,7 @@ describe 'trainees' do
     it 'imports ui claim verifications' do
       expect(Trainee.where.not(disabled_date: nil).count).to eql(2)
       expect(Trainee.where(ui_claim_verified_on: '3/23/2014').count).to eql(1)
+      expect(Trainee.where(funding_source_id: @nc.id).count).to eql(1)
     end
   end
 end
