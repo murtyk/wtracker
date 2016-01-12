@@ -7,7 +7,7 @@ class FundingSource < ActiveRecord::Base
 
   validates :name,
             presence: { message: 'name can not be blank.' },
-            length: { minimum: 3, maximum: 50 }
+            length: { minimum: 2, maximum: 50 }
 
   has_many :trainees
 end
