@@ -128,7 +128,7 @@ class Applicant < ActiveRecord::Base
   belongs_to :navigator, class_name: 'User', foreign_key: 'navigator_id'
 
   def navigator_name
-    navigator && navigator.name
+    (navigator && navigator.name).to_s
   end
 
   def last_employer_address
