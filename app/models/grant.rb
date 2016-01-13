@@ -159,7 +159,12 @@ class Grant < ActiveRecord::Base
                User.joins(:grant_admins)
                .where(grant_admins: { grant_id: id })
                .where(users: { role: 3, status: 1 }).pluck(:id)
-    User.where(id: user_ids).order(:first, :last)
+    nav_ids = navs_assigned_to_trainees
+    User.where(id: user_ids + nav_ids).order(:first, :last)
+  end
+
+  def navs_assigned_to_trainees
+    Applicant.pluck(:navigator_id).uniq
   end
 
   def assessments_include_score?

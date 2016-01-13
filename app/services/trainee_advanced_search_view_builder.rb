@@ -19,7 +19,7 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def h_applied_on
-    applicant? ? ['Applied On'] : []
+    applicant? ? ['Applied On', 'UI Claim Verified On'] : []
   end
 
   def header_part_1
@@ -47,7 +47,7 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def applied_on(t)
-    applicant? ? [t.applied_on] : []
+    applicant? ? [t.applied_on, t.ui_claim_verified_on] : []
   end
 
   def details_1(t)

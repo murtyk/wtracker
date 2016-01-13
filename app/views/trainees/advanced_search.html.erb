@@ -103,6 +103,7 @@
       <% if current_grant.trainee_applications? %>
         <th>Applied On</th>
         <th>Status</th>
+        <th>UI Claim Verified On</th>
       <% end %>
       <th><%= sort_link(@q, :email, "Email") %></th>
       <th>Mobile No</th>
@@ -131,6 +132,7 @@
       <% if current_grant.trainee_applications? %>
         <td><%= t.applied_on %></td>
         <td><%= t.placement_status %></td>
+        <td><%= t.ui_claim_verified_on %></td>
       <% end %>
       <td><%= t.email %></td>
       <td><%= t.mobile_no %></td>
