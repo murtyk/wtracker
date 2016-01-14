@@ -104,6 +104,8 @@
         <th>Applied On</th>
         <th>Status</th>
         <th>UI Claim Verified On</th>
+        <th>Disabled On</th>
+        <th>Disabled Notes</th>
       <% end %>
       <th><%= sort_link(@q, :email, "Email") %></th>
       <th>Mobile No</th>
@@ -133,6 +135,8 @@
         <td><%= t.applied_on %></td>
         <td><%= t.placement_status %></td>
         <td><%= t.ui_claim_verified_on %></td>
+        <td><%= t.disabled_date %></td>
+        <td><%= t.disabled_notes %></td>
       <% end %>
       <td><%= t.email %></td>
       <td><%= t.mobile_no %></td>
