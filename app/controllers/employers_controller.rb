@@ -143,7 +143,8 @@ class EmployersController < ApplicationController
 
   def employer_params
     params.require(:employer)
-      .permit(:name, :phone_no, :website, :sector_ids, :trainee_ids, :employer_source_id,
+      .permit(:name, :phone_no, :website, :trainee_ids, :employer_source_id,
+              sector_ids: [],
               address_attributes: [:id, :line1, :line2, :city, :state, :zip])
   end
 end
