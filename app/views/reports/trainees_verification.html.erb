@@ -39,6 +39,8 @@
     <th>Navigator</th>
     <th>Placement Status</th>
     <th>UI Claim Verified On</th>
+    <th>Disabled On</th>
+    <th>Disabled Notes</th>
   </tr>
 
   <% @report.trainees.each do |trainee| %>
@@ -55,6 +57,8 @@
       <td><%= trainee.navigator_name %></td>
       <td><%= trainee.placement_status %></td>
       <td><%= trainee.ui_claim_verified_on %></td>
+      <td><%= trainee.disabled_date %></td>
+      <td><%= trainee.disabled_notes %></td>
     </tr>
   <% end %>
 </table>
