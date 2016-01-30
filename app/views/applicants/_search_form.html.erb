@@ -2,6 +2,9 @@
                               html: { class: 'form-vertical',
                                       style: 'margin-bottom: 0px' } do |f| %>
 
+  Name<br>
+  <%= f.input_field :name, label: false, value: @filter_info[:name]%>
+
   Navigator<br>
   <%= f.input_field :navigator_id, collection: current_grant.navigators,
                                    selected: @filter_info[:navigator_id],

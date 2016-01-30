@@ -65,7 +65,7 @@ class ApplicantSearch
     apply_edp
     apply_assessments
     apply_in_klass
-
+    apply_name
     applicants
   end
 
@@ -88,6 +88,12 @@ class ApplicantSearch
   def apply_in_klass
     return unless in_klass
     filter_on_trainee_ids Trainee.in_klass.pluck(:id)
+  end
+
+  def apply_name
+    return unless name.size > 0
+    qry = 'applicants.first_name ilike ? or applicants.last_name ilike ?'
+    @applicants = applicants.where(qry, "#{name}%", "#{name}%")
   end
 
   def filter_on_trainee_ids(ids)
@@ -116,6 +122,10 @@ class ApplicantSearch
 
   def in_klass
     filters[:in_klass].to_i > 0
+  end
+
+  def name
+    filters[:name].to_s
   end
 
   def header

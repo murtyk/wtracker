@@ -172,7 +172,8 @@ class ApplicantsController < ApplicationController
       return @filter_info
     end
     @filter_info ||= params.require(:filters)
-                     .permit(:navigator_id,
+                     .permit(:name,
+                             :navigator_id,
                              :status,
                              :funding_source_id,
                              :edp,
