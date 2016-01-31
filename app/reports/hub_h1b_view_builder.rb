@@ -62,7 +62,7 @@ class HubH1bViewBuilder
   def data_100s(t)
     [t.name,
      t.id,
-     trainee_id(t),
+     "'" + trainee_id(t),
      9,
      trainee_dob(t),
      gender(t),
@@ -126,13 +126,13 @@ class HubH1bViewBuilder
      '',
      0,
      assessment_date(t),  # 320
+     assessment_date(t).blank? ? 0 : 1,
+     '',  # 330
      0,
-     '',
-     0,
-     recent_service_date(t),
-     0,
-     recent_work_exp_data(t),
-     0]
+     recent_service_date(t), # 340
+     recent_service_date(t).blank? ? 0 : 1,
+     recent_work_exp_data(t), # 350
+     recent_work_exp_data(t).blank? ? 0 : 1]
   end
 
   # part 4
@@ -472,9 +472,9 @@ class HubH1bViewBuilder
   # 503 User will manually update
   def ojt_completed_start_date(t)
     # return '' unless t.hired?
-    # return 1 if ojt_completed?(t)
-    # return 0 if non_ws_completed_klasses(t).any?
-    9
+    return 1 if ojt_completed?(t)
+    return 9 if non_ws_completed_klasses(t).any? && t.hired?
+    ''
   end
 
   # 600s
