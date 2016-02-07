@@ -1,11 +1,14 @@
 # for grants where applicants can register
 # Federal govt specifies the report format
 class HubH1bViewBuilder
-  attr_reader :start_date, :end_date
+  attr_reader :start_date, :end_date, :prev_quarter_start_date, :prev_quarter_end_date
 
   def initialize(sd, ed)
     @start_date = sd
     @end_date = ed
+
+    @prev_quarter_end_date = end_date - 3.months
+    @prev_quarter_start_date = end_date - 6.months + 1.day
   end
 
   def th
@@ -126,13 +129,13 @@ class HubH1bViewBuilder
      '',
      0,
      assessment_date(t),  # 320
-     assessment_date(t).blank? ? 0 : 1,
+     assessement_in_prev_quarter(t),
      '',  # 330
      0,
      recent_service_date(t), # 340
-     recent_service_date(t).blank? ? 0 : 1,
+     received_service_in_prev_quarter(t), # 341
      recent_work_exp_data(t), # 350
-     recent_work_exp_data(t).blank? ? 0 : 1]
+     work_exp_in_prev_quarter(t)]
   end
 
   # part 4
@@ -355,6 +358,16 @@ class HubH1bViewBuilder
     error.to_s
   end
 
+  # 321     1 (Yes)  or    0 (No)
+  def assessement_in_prev_quarter(t)
+    trainee_assessments.each do |ta|
+      return 1 if ta.date &&
+                  ta.date >= prev_quarter_start_date &&
+                  ta.date <= prev_quarter_end_date
+    end
+    0
+  end
+
   # 340 Latest of edp, WS class end dates
   def recent_service_date(t)
     dates = ws_klasses(t).map(&:end_date)
@@ -367,6 +380,17 @@ class HubH1bViewBuilder
     error.to_s
   end
 
+  # 341 1 or 0
+  def received_service_in_prev_quarter(t)
+    dates = ws_klasses(t).map(&:end_date)
+    dates << t.edp_date if t.edp_date
+    dates.compact.each do |d|
+      return 1 if d >= prev_quarter_start_date &&
+                  d <= prev_quarter_end_date
+    end
+    0
+  end
+
   # 350
   def recent_work_exp_data(t)
     dt = ojt_completed_date(t)
@@ -374,6 +398,18 @@ class HubH1bViewBuilder
 
     return f_date(dt) if dt && dt <= end_date
     (dt || t.ojt_enrolled?) ? quarter_end_date : ''
+  end
+
+  # 351   1 or  0
+  def work_exp_in_prev_quarter(t)
+    dt = ojt_completed_date(t)
+    dt ||= t.termination_date if t.terminated? &&
+                                 t.termination_interaction.ojt_enrolled?
+
+    return 1 if dt &&
+                dt >= prev_quarter_start_date
+                dt <= prev_quarter_end_date
+    0
   end
 
   def quarter_end_date
