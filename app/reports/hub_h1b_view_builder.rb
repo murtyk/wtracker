@@ -360,7 +360,7 @@ class HubH1bViewBuilder
 
   # 321     1 (Yes)  or    0 (No)
   def assessement_in_prev_quarter(t)
-    trainee_assessments.each do |ta|
+    t.trainee_assessments.each do |ta|
       return 1 if ta.date &&
                   ta.date >= prev_quarter_start_date &&
                   ta.date <= prev_quarter_end_date
