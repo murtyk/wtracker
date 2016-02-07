@@ -407,7 +407,7 @@ class HubH1bViewBuilder
                                  t.termination_interaction.ojt_enrolled?
 
     return 1 if dt &&
-                dt >= prev_quarter_start_date
+                dt >= prev_quarter_start_date &&
                 dt <= prev_quarter_end_date
     0
   end
