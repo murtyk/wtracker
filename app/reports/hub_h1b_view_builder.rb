@@ -474,11 +474,13 @@ class HubH1bViewBuilder
     #     Has one of A Class Or OJT (not both)
     #     406: 1 completed 0 dropped/term
     #     416: blank
+
+  # 406
   def training_completed_1(t)
-    return 1 if non_ws_completed_klasses(t).any?
     return 0 if non_ws_dropped_klasses(t).any?
-    return 1 if any_ojt_completed_date(t)
     return 0 if any_ojt_terminated?(t)
+    return 1 if non_ws_completed_klasses(t).any?
+    return 1 if any_ojt_completed_date(t)
     ''
   end
 
@@ -574,6 +576,7 @@ class HubH1bViewBuilder
   def any_ojt_terminated?(t)
     t.trainee_interactions
       .where.not(termination_date: nil)
+      .where(status: [5, 6])
       .where('start_date <= ?', end_date)
       .last
   end
