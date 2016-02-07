@@ -49,6 +49,7 @@ class TraineeEmailsController < ApplicationController
                         :subject, :content, :use_job_leads_email,
                         trainee_ids: [])
     te_params[:trainee_ids] ||= params[:trainee_ids]
+    te_params[:trainee_ids] ||= params[:trainee_email][:trainee_ids]
     te_params
   end
 
