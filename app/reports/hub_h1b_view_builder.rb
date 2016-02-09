@@ -92,7 +92,7 @@ class HubH1bViewBuilder
   def data_200s(t)
     ap = t.applicant
     [employment_status(ap),
-     0,
+     incumbent_worker(t), #201
      under_employed(ap),
      longterm_unemployed(ap)]
   end
@@ -298,6 +298,11 @@ class HubH1bViewBuilder
     @employment_status_codes[ap.current_employment_status]
   end
 
+  # 201
+  def incumbent_worker(t)
+    t.applicant.employment_status_pre_selected? ? 1 : 0
+  end
+
   # 202
   def under_employed(ap)
     ap.current_employment_status.index('Underemployed') ? 1 : 0
@@ -426,6 +431,7 @@ class HubH1bViewBuilder
 
   # 402
   def type_of_training_service_1(t)
+    return 6 if t.applicant.employment_status_pre_selected?
     klasses = non_ws_klasses(t)
     if klasses.any?
      return klasses.first.klass_category_code
