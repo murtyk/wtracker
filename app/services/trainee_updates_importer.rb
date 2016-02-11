@@ -1,6 +1,6 @@
 include UtilitiesHelper
 
-TRAINEE_FIELDS = %w(id dob_date edp_date assessment_name assessment_date)
+TRAINEE_FIELDS = %w(id dob_date edp_date assessment_name assessment_date trainee_id)
 
 # imports trainee updates from a file
 class TraineeUpdatesImporter < Importer
@@ -32,6 +32,8 @@ class TraineeUpdatesImporter < Importer
 
     trainee.edp_date = clean_date(row[:edp_date]) if row[:edp_date]
     trainee.dob = clean_date(row[:dob_date]) if row[:dob_date]
+
+    trainee.trainee_id = row[:trainee_id] if row[:trainee_id]
 
     if row[:assessment_name] && row[:assessment_date]
       init_assessement(trainee, row)
