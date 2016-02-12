@@ -173,27 +173,33 @@ class HubH1bViewBuilder
   end
 
   def data_400s(t)
-    training_dates = date_receiving_class_or_job_training(t)
-    end_dates = training_end_dates(t)
+    # training_dates = date_receiving_class_or_job_training(t)
+    # end_dates = training_end_dates(t)
 
-    [training_dates[0], # 400
+    tds = training_dates_and_status(t)
+    codes = training_service_codes(t)
+
+    [tds[0].try(:start_date), # 400
      '',
-     type_of_training_service_1(t), # 402
+     codes[0], # 402
      '',
      '',
-     end_dates[0], # 405
-     training_completed_1(t),  # 406
-     training_dates[1],
+     tds[0].try(:end_date), # 405
+     tds[0].try(:status),  # 406
+     tds[1].try(:start_date), # 410
      '', # 411
-     type_of_training_service_2(t),  # 412
-     '', '',
-     end_dates[1], # 415
-     training_completed_2(t), # 416
-     training_dates[2],
+     codes[1],  # 412
+     '',
+     '',
+     tds[1].try(:end_date), # 415
+     tds[1].try(:status), # 416
+     tds[2].try(:start_date), # 420
      '', # 421
-     '', '', '',
-     end_dates[2],
-     '']
+     codes[2], # 422
+     '',
+     '',
+     tds[2].try(:end_date), # 425
+     tds[2].try(:status)]
   end
 
   # part 5
@@ -421,36 +427,87 @@ class HubH1bViewBuilder
     f_date(end_date)
   end
 
-  # take Non WS class start dates and ojt enrolled date.
-  # 400: first one, 410: second one 420: third one. Blank when no date available
-  def date_receiving_class_or_job_training(t)
-    dates = non_ws_klasses(t).pluck(:start_date)
-    dates << ojt_start_date(t)
-    dates.compact.map{|d| f_date(d)}
-  end
-
-  # 402
-  def type_of_training_service_1(t)
-    return 6 if t.applicant.employment_status_pre_selected?
-    klasses = non_ws_klasses(t)
-    if klasses.any?
-     return klasses.first.klass_category_code
+  # 400, 405, 406
+  # 410, 415, 416
+  # 420, 425, 426
+  # 400: training start date
+  # 405: training end date
+  # 406: 1 if training completed 0-otherwise
+  def training_dates_and_status(t)
+    trainings = non_ws_klasses(t).map do |k|
+      k_status = t.klass_trainees.where(klass_id: k.id).first.status
+      status = (k_status == 2) ? 1 : (k_status == 3 ? 0 : '')
+      k_end_date = (k.end_date <= end_date && status == 2) ? k.end_date : ''
+      OpenStruct.new(start_date: k.start_date,
+        end_date: k_end_date,
+        status: status)
     end
 
     hi = any_ojt_interaction(t)
-    hi && 1
+
+    return trainings unless hi
+
+    os = OpenStruct.new(start_date: hi.start_date)
+    if hi.terminated?
+      os.end_date = hi.termination_date
+      os.status = 0
+    elsif hi.completion_date.blank?
+      os.end_date = ''
+      os.status = ''
+    elsif hi.completion_date <= end_date
+      os.end_date = hi/completion_date
+      os.status = 1
+    else
+      os.end_date = ''
+      os.status = ''
+    end
+
+    return trainings if os.end_date > end_date
+
+    trainings + [os]
   end
+
+  # 402, 412, 422
+  def training_service_codes(t)
+    return [6, 6, 6] if t.applicant.employment_status_pre_selected?
+
+    codes = non_ws_klasses(t).map do |k|
+      k.klass_category_code
+    end
+
+    codes << 1 if any_ojt_interaction(t)
+    codes + ['', '', '']
+  end
+  # take Non WS class start dates and ojt enrolled date.
+  # 400: first one, 410: second one 420: third one. Blank when no date available
+  # def date_receiving_class_or_job_training(t)
+  #   dates = non_ws_klasses(t).pluck(:start_date)
+  #   dates << ojt_start_date(t)
+  #   dates.compact.map{|d| f_date(d)}.sort
+  # end
+
+  # 402
+  # def type_of_training_service_1(t)
+  #   return 6 if t.applicant.employment_status_pre_selected?
+  #   klasses = non_ws_klasses(t)
+  #   if klasses.any?
+  #    return klasses.first.klass_category_code
+  #   end
+
+  #   hi = any_ojt_interaction(t)
+  #   hi && 1
+  # end
 
   # take Non WS class end dates and ojt completion date.
   # 405: first one, 415: second one 425: third one. Blank when no date
-  def training_end_dates(t)
-    dates = non_ws_klasses(t).pluck(:end_date)
-    dates << any_ojt_completed_date(t)
-    dates.compact.select{ |d| d <= end_date }.map{|d| f_date(d)}
-  rescue StandardError => error
-    Rails.logger.error("training_end_dates: trainee_id: #{t.id} error: #{error}")
-    error.to_s
-  end
+  # def training_end_dates(t)
+  #   dates = non_ws_klasses(t).pluck(:end_date)
+  #   dates << any_ojt_completed_date(t)
+  #   dates.compact.select{ |d| d <= end_date }.map{|d| f_date(d)}.sort
+  # rescue StandardError => error
+  #   Rails.logger.error("training_end_dates: trainee_id: #{t.id} error: #{error}")
+  #   error.to_s
+  # end
 
   # 406 and 416
     # For 406 and 416.   426 is blank.
@@ -482,30 +539,30 @@ class HubH1bViewBuilder
     #     416: blank
 
   # 406
-  def training_completed_1(t)
-    return 0 if non_ws_dropped_klasses(t).any?
-    return 0 if any_ojt_terminated?(t)
-    return 1 if non_ws_completed_klasses(t).any?
-    return 1 if any_ojt_completed_date(t)
-    ''
-  end
+  # def training_completed_1(t)
+  #   return 0 if non_ws_dropped_klasses(t).any?
+  #   return 0 if any_ojt_terminated?(t)
+  #   return 1 if non_ws_completed_klasses(t).any?
+  #   return 1 if any_ojt_completed_date(t)
+  #   ''
+  # end
 
   # 416
-  def training_completed_2(t)
-    if non_ws_completed_klasses(t).any? || non_ws_dropped_klasses(t).any?
-      return 1 if any_ojt_completed_date(t)
-      return 0 if any_ojt_terminated?(t)
-    end
-    ''
-  end
+  # def training_completed_2(t)
+  #   if non_ws_completed_klasses(t).any? || non_ws_dropped_klasses(t).any?
+  #     return 1 if any_ojt_completed_date(t)
+  #     return 0 if any_ojt_terminated?(t)
+  #   end
+  #   ''
+  # end
 
   # 412: 402 takes klass code or ojt(1).
-  def type_of_training_service_2(t)
-    return unless non_ws_klasses(t).any?
+  # def type_of_training_service_2(t)
+  #   return unless non_ws_klasses(t).any?
 
-    hi = any_ojt_interaction(t)
-    hi && 1
-  end
+  #   hi = any_ojt_interaction(t)
+  #   hi && 1
+  # end
 
   # 501
   def hired_or_ojt_completed_data(t)
@@ -548,6 +605,7 @@ class HubH1bViewBuilder
     t.klasses
      .where(klass_category_id: non_ws_category_ids)
      .where('start_date <= ?', end_date)
+     .order(:start_date)
   end
 
   def non_ws_klasses_by_status(t, status)
