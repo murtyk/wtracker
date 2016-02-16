@@ -320,6 +320,7 @@ class HubH1bViewBuilder
   end
 
   # 301 Take earliest date of registration, classes, assessments and edp
+  # TODO also include hired date
   def registered_date(t)
     dates = [t.applicant.created_at.to_date]
     dates += t.klasses.map(&:start_date)
@@ -455,7 +456,7 @@ class HubH1bViewBuilder
       os.end_date = ''
       os.status = ''
     elsif hi.completion_date <= end_date
-      os.end_date = hi/completion_date
+      os.end_date = hi.completion_date
       os.status = 1
     else
       os.end_date = ''
