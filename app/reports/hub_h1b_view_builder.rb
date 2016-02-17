@@ -327,6 +327,7 @@ class HubH1bViewBuilder
     dates += t.trainee_assessments.map(&:date)
     dates << t.edp_date if t.edp_date
     dates << ojt_start_date(t) if ojt_start_date(t)
+    dates << hired_start_date(t) if hired_start_date(t) && (!ojt_start_date(t))
     f_date(dates.compact.min)
   rescue StandardError => error
     Rails.logger.error("registered_date: trainee_id: #{t.id} error: #{error}")
