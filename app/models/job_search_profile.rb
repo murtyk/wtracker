@@ -138,6 +138,8 @@ class JobSearchProfile < ActiveRecord::Base
   end
 
   def validate_zip(zip)
+    return false unless zip
+    return false unless zip.to_s.delete('^0-9').size > 4
     city = City.find_by(zip: zip) || GeoServices.findcity('', zip)
     errors.add(:zip, 'location not found for this zip code') unless city
     !city.blank?
