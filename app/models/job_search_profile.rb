@@ -192,6 +192,10 @@ class JobSearchProfile < ActiveRecord::Base
   def cb_before_save
     return true if zip.blank? && location.blank?
     city = find_city
+    unless city
+      errors.add(:zip, "city not found for zip:#{zip} location: #{location} trainee_id: #{trainee_id}")
+      return false
+    end
     self.location = "#{city.name},#{city.state_code}"
   end
 
