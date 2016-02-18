@@ -89,6 +89,7 @@ class GeoServices
     results.each do |result|
       city_name = result.city || (result.postal_code && result.neighborhood)
       next unless city_name
+      next unless result.state_code
 
       state_code = result.state_code.upcase
       state = State.check_and_get(state_code)
