@@ -3,12 +3,13 @@ require 'rails_helper'
 describe 'trainees' do
   describe 'import' do
     def stub_reader(trainees)
-      header = %w(tapo_id ui_claim_verified_on funding_source)
-      claim_dates = [nil, '3/23/2014', 'NC']
+      header = %w(tapo_id ui_claim_verified_on funding_source disable)
+      claim_dates = [nil, '3/23/2014', '10/22/2014']
       fs = [nil, nil, 'NC']
+      disable = %w(Yes No No)
       rows = (0..2).map do |i|
-                [trainees[i].id, claim_dates[i], fs[i]]
-             end
+        [trainees[i].id, claim_dates[i], fs[i], disable[i]]
+      end
       stub_importer_file_reader(header, rows)
     end
 
@@ -29,11 +30,9 @@ describe 'trainees' do
 
       trainees = applicants.map(&:trainee)
 
-      trainees.each{ |t| t.update(funding_source: fs) }
+      trainees.each { |t| t.update(funding_source: fs) }
 
       stub_reader(trainees)
-
-      user = User.first
 
       params = build_importer_params('trainees', 'ui_claim_verification')
       importer = Importer.new_importer(params, User.first)
@@ -42,7 +41,7 @@ describe 'trainees' do
     end
 
     it 'imports ui claim verifications' do
-      expect(Trainee.where.not(disabled_date: nil).count).to eql(2)
+      expect(Trainee.where.not(disabled_date: nil).count).to eql(1)
       expect(Trainee.where(ui_claim_verified_on: '3/23/2014').count).to eql(1)
       expect(Trainee.where(funding_source_id: @nc.id).count).to eql(1)
     end

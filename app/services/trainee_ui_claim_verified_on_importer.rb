@@ -16,7 +16,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
   end
 
   def header_fields
-    %w(tapo_id ui_claim_verified_on funding_source)
+    %w(tapo_id ui_claim_verified_on funding_source disable)
   end
 
   def template_name
@@ -29,12 +29,9 @@ class TraineeUiClaimVerifiedOnImporter < Importer
     trainee = Trainee.find(row[:tapo_id])
 
     dt = row[:ui_claim_verified_on] && clean_date(row[:ui_claim_verified_on])
+    trainee.ui_claim_verified_on = dt if dt
 
-    if dt
-      trainee.ui_claim_verified_on = dt
-    else
-      trainee.disabled_date = Date.today
-    end
+    trainee.disabled_date = disabled_on(row)
 
     fs_id = funding_source_id(row[:funding_source])
     trainee.funding_source_id = fs_id if fs_id
@@ -42,6 +39,12 @@ class TraineeUiClaimVerifiedOnImporter < Importer
     trainee.save!
 
     trainee
+  end
+
+  def disabled_on(row)
+    disabled = row[:disable].downcase == 'yes'
+
+    disabled ? Date.today : nil
   end
 
   def funding_source_id(fs_name)
