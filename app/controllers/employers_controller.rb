@@ -81,7 +81,7 @@ class EmployersController < ApplicationController
   end
 
   def show
-    @employer = current_user.employers.find(params[:id]).decorate
+    @employer = Employer.find(params[:id]).decorate
     authorize @employer
   end
 

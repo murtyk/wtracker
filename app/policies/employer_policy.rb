@@ -26,7 +26,7 @@ class EmployerPolicy < Struct.new(:user, :employer)
   end
 
   def show?
-    edit?
+    true
   end
 
   def destroy?

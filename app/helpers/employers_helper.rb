@@ -7,8 +7,12 @@ module EmployersHelper
       by_sectors:   employer_sector_analysis,
       by_source:    employer_source_analysis,
       address_less: address_less_analysis,
-      total:        current_user.employers.count
+      total:        employers_count
       )
+  end
+
+  def employers_count
+    Employer.where(id: employer_ids).count
   end
 
   def address_less_analysis
@@ -58,8 +62,6 @@ module EmployersHelper
   end
 
   def employer_source_analysis
-    return [] if current_grant.scoped_employers
-
     employer_source_counts.map do |(id, name), count|
       OpenStruct.new(id: id, name: name, count: count)
     end
@@ -73,7 +75,7 @@ module EmployersHelper
 
   def employer_source_counts
     Employer.joins(:employer_source)
-      .where(employer_source_id: employer_source_ids)
+      .where(employers: { id: employer_ids })
       .order('employer_sources.name')
       .group(['employer_source_id', 'employer_sources.name'])
       .count
@@ -89,7 +91,13 @@ module EmployersHelper
   end
 
   def employer_ids
-    current_user.employers.pluck(:id)
+    emps = Employer.joins(:employer_source)
+    if current_grant.scoped_employers
+      emps = emps.where(employer_sources: { grant_id: current_grant.id } )
+    else
+      emps = emps.where(employer_sources: { grant_id: nil } )
+    end
+    emps.pluck(:id)
   end
 
   def address_less_employers

@@ -52,9 +52,29 @@ class EmployerServices
 
   private
 
+  def current_grant
+    Grant.current_id && Grant.find(Grant.current_id)
+  end
+
+  def grant_scoped?
+    current_grant.try(:scoped_employers)
+  end
+
+  def grant_employers
+    Employer
+    .joins(:employer_source)
+    .where(employer_sources: { grant_id: Grant.current_id })
+  end
+
+  def grant_not_scoped_employers
+    Employer.joins(:employer_source).where(employer_source: { grant_id: nil })
+  end
+
   def all_employers(no_includes = false)
-    return user.employers.order_by_name if no_includes
-    user.employers.includes(:address, :sectors, :employer_notes, :contacts).order_by_name
+    employers = grant_scoped? ? grant_employers : grant_not_scoped_employers
+
+    return employers.order_by_name if no_includes
+    employers.includes(:address, :sectors, :employer_notes, :contacts).order_by_name
   end
 
   def search_by_name
