@@ -39,6 +39,7 @@ class EmployerServices
   def search_contacts
     return [] unless search_parameters?
     employer_ids = search(true).pluck(:id)
+
     user.employers.joins(:contacts)
       .select("contacts.id as id,
                     first || ' ' || last || '(' || employers.name || ')' as name,
@@ -57,7 +58,7 @@ class EmployerServices
   end
 
   def search_by_name
-    user.employers.includes(:address).where('name ilike ?', name + '%') unless name.blank?
+    all_employers.includes(:address).where('employers.name ilike ?', name + '%')
   end
 
   def employers_currently_interested_in_trainee

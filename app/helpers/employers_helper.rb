@@ -58,6 +58,8 @@ module EmployersHelper
   end
 
   def employer_source_analysis
+    return [] if current_grant.scoped_employers
+
     employer_source_counts.map do |(id, name), count|
       OpenStruct.new(id: id, name: name, count: count)
     end

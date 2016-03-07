@@ -20,9 +20,10 @@ class Grant < ActiveRecord::Base
                  :default_trainee_status_id,
                  :hot_jobs_notification_subject, :hot_jobs_notification_body,
                  :unemployment_proof_text,
-                 :email_password_subject, :email_password_body
+                 :email_password_subject, :email_password_body,
+                 :scoped_employers
 
-  validates :name, presence: true, length: { minimum: 4, maximum: 40 }
+  validates :name, presence: true, length: { minimum: 3, maximum: 40 }
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :status, presence: true

@@ -23,7 +23,7 @@ class EmployerFactory
   def self.parse_js_params(current_user, params)
     sector_ids = params[:sector_ids].split(',').map(&:to_i)
     current_user.last_sectors_selected = sector_ids
-    employer_source_id = current_user.default_employer_source_id
+    employer_source_id = current_user.employer_source_id
     opero_company_id = params[:info][:opero_company_id].to_i
 
     [sector_ids, employer_source_id, opero_company_id]

@@ -69,8 +69,14 @@ module CollectionsHelper
   end
 
   def employer_sources_collection
+    return grant_scoped_employers_sources if current_grant.scoped_employers
     return EmployerSource.order(:name) if current_user.admin_access?
     current_user.employer_sources.order(:name)
+  end
+
+  def grant_scoped_employers_sources
+    name = "#{current_user.name}_#{current_grant.name}"
+    EmployerSource.where(name: name)
   end
 
   def klass_interaction_statuses

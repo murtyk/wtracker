@@ -5,4 +5,10 @@ class GrantAdmin < ActiveRecord::Base
   belongs_to :account
   belongs_to :grant
   belongs_to :user
+
+  after_create :cb_after_create
+
+  def cb_after_create
+    EmployerSourceFactory.find_or_create_employer_source(user, grant)
+  end
 end

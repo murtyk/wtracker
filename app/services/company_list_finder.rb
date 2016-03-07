@@ -63,7 +63,7 @@ class CompanyListFinder
     cc.merge(search_company_details(row, zip))
 
   rescue StandardError => error
-    cc[:error] = error
+    cc[:error] = error.to_s
     cc
   end
 
@@ -248,7 +248,7 @@ class CompanyListFinder
 
   def self.add_employer_from_data(company, user, params)
     sector_ids = params[:sector_ids]
-    source_id  = user.default_employer_source_id
+    source_id  = user.employer_source_id
     if company[:oc_id]
       EmployerFactory.create_from_opero(company[:oc_id], source_id, sector_ids)
     elsif company[:google_info]

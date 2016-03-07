@@ -76,14 +76,14 @@ namespace :testprep do
     create_college('Northampton Community College', '3835 Green Pond Rd',
                    'Bethlehem', 'PA', '18020', 40.673, -75.323)
 
+    grant = create_grant('Big Grant', 'Jan 1, 2012', 'Dec 31, 2015', 2, 1000, 50_000_000)
+
     create_user('Sher',    'Khan',    'Philly',  1, 1, 'sher@mail.com')
     create_user('Ballu',   'Bear',    'Philly',  1, 2, 'ballu@mail.com')
     create_user('Melinda', 'Peters',  'Camden',  1, 3, 'melinda@mail.com')
     create_user('Jeffrey', 'Archer',  'Camden',  1, 3, 'jeffrey@mail.com')
     create_user('Ryan',    'Bates',   'Camden',  1, 4, 'ryan@mail.com')
     create_user('Eric',    'Clapton', 'Trenton', 1, 4, 'eric@mail.com')
-
-    grant = create_grant('Big Grant', 'Jan 1, 2012', 'Dec 31, 2015', 2, 1000, 50_000_000)
 
     grant.assessments_include_score = '1'
     grant.assessments_include_pass = '1'
@@ -126,10 +126,10 @@ namespace :testprep do
     college = create_college('Brookdale Lincroft', '765 Newman Springs Rd',
                              'Middletown', 'NJ', '07738', 40.3279, -74.1334)
 
+    create_grant('No Grant', 'Jan 1, 2012', 'Dec 31, 2015', 2, 0, 0)
     create_user('Marie',   'Lucier-Woodruff', 'Middletown', 1, 1, 'marie@mail.com')
     create_user('Michele', 'Risley',          'Middletown', 1, 2, 'michele@mail.com')
 
-    create_grant('No Grant', 'Jan 1, 2012', 'Dec 31, 2015', 2, 0, 0)
     create_assessments
 
     p11  = create_program('Program 1', 'description of program 1', manufacturing.id, 400)
@@ -145,9 +145,10 @@ namespace :testprep do
                 zip: '07738', latitude: 40.3279, longitude: -74.1334 }
     college = College.create!(name: 'Newark Campus', address_attributes: address)
 
-    create_user('Marie', 'Lucier-Woodruff', 'Middletown', 1, 1, 'njit@mail.com')
     grant = create_grant('AutoGrant', 'Jan 1, 2012', 'Dec 31, 2015', 2, 0, 0,
                          auto_job_leads: true)
+
+    create_user('Marie', 'Lucier-Woodruff', 'Middletown', 1, 1, 'njit@mail.com')
 
     create_assessments
 

@@ -74,6 +74,14 @@ class User < ActiveRecord::Base
 
   has_many :hot_jobs, dependent: :destroy
 
+  def employer_source_id
+    employer_source.try(:id)
+  end
+
+  def employer_source
+    EmployerSourceService.find_employer_source(self)
+  end
+
   def copy_job_shares?
     return true unless options[:copy_job_shares]
     options[:copy_job_shares] > 0 # 0 means do not forward
@@ -147,12 +155,11 @@ class User < ActiveRecord::Base
   end
 
   def employer_sources_for_selection
-    EmployerSource.all - employer_sources
+    EmployerSourceService.employer_sources_for_selection(self)
   end
 
   def employers
-    return Employer if admin_access?
-    Employer.where(employer_source_id: employer_sources.pluck(:id))
+    EmployerSourceService.employers(self)
   end
 
   private
@@ -177,10 +184,6 @@ class User < ActiveRecord::Base
   end
 
   def cb_after_create
-    es = EmployerSource.where(name: name).first
-    es ||= account.employer_sources.create(name: name)
-    UserEmployerSource.create(user_id: id, employer_source_id: es.id)
-    self.default_employer_source_id = es.id
-    save
+    EmployerSourceFactory.find_or_create_employer_source(self)
   end
 end
