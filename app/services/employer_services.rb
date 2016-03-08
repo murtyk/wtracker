@@ -67,7 +67,7 @@ class EmployerServices
   end
 
   def grant_not_scoped_employers
-    Employer.joins(:employer_source).where(employer_source: { grant_id: nil })
+    Employer.joins(:employer_source).where(employer_sources: { grant_id: nil })
   end
 
   def all_employers(no_includes = false)
