@@ -144,6 +144,7 @@ class TraineesController < ApplicationController
               :status, :veteran, :race_id, :edp_date,
               :legal_status, :funding_source_id, :ui_claim_verified_on,
               :disabled_date, :disabled_notes,
+              :employment_status,
               klass_ids: [],
               tact_three_attributes: [:certifications, :education_level,
                                       :job_title, :recent_employer, :years],

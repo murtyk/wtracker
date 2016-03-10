@@ -21,7 +21,8 @@ class Grant < ActiveRecord::Base
                  :hot_jobs_notification_subject, :hot_jobs_notification_body,
                  :unemployment_proof_text,
                  :email_password_subject, :email_password_body,
-                 :scoped_employers
+                 :scoped_employers, # TDC grant
+                 :trainee_employment_statuses # TDC grant
 
   validates :name, presence: true, length: { minimum: 3, maximum: 40 }
   validates :start_date, presence: true
@@ -94,6 +95,14 @@ class Grant < ActiveRecord::Base
 
   def trainee_applications?
     trainee_applications
+  end
+
+  def has_trainee_employment_statuses?
+    trainee_employment_statuses && trainee_employment_statuses.size > 0
+  end
+
+  def trainee_employment_statuses_collection
+    JSON.parse trainee_employment_statuses
   end
 
   def applicant_logo

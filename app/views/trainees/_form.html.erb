@@ -13,6 +13,12 @@
             <%= f.input :last, label: 'Last Name' %>
             <%= f.input :trainee_id, label: 'Trainee ID' %>
 
+            <% if current_grant.has_trainee_employment_statuses? %>
+              <%= f.input :employment_status,
+                          collection: current_grant.trainee_employment_statuses_collection,
+                          include_blank: false %>
+            <% end %>
+
             <%= f.association :funding_source %>
 
             <%= f.input :ui_claim_verified_on,
