@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308014956) do
+ActiveRecord::Schema.define(version: 20160313150651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -905,15 +905,18 @@ ActiveRecord::Schema.define(version: 20160308014956) do
   add_index "states", ["code"], name: "index_states_on_code", unique: true, using: :btree
 
   create_table "tact_threes", force: :cascade do |t|
-    t.integer  "account_id",                  null: false
-    t.integer  "trainee_id",                  null: false
+    t.integer  "account_id",                            null: false
+    t.integer  "trainee_id",                            null: false
     t.integer  "education_level"
-    t.string   "recent_employer", limit: 255
-    t.string   "job_title",       limit: 255
+    t.string   "recent_employer",           limit: 255
+    t.string   "job_title",                 limit: 255
     t.integer  "years"
     t.text     "certifications"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "current_employment_status"
+    t.string   "last_wages"
+    t.date     "last_employed_on"
   end
 
   add_index "tact_threes", ["account_id", "trainee_id"], name: "index_tact_threes_on_account_id_and_trainee_id", using: :btree

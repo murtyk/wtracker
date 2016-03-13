@@ -1,13 +1,22 @@
 include UtilitiesHelper
-
-TRAINEE_FIELDS1 = %w(first_name last_name middle_name dob gender veteran land_no
-                     mobile_no email trainee_id education ethnicity home_address:line1
-                     home_address:city home_address:state home_address:zip
-                     mail_address:line1 mail_address:city
-                     mail_address:state mail_address:zip
-                     recent_employer job_title years certifications)
 # imports trainees from a file
 class TraineesImporter < Importer
+  REQUIRED_FIELDS  = %w(first_name last_name) # these are the minimum required fields
+
+  COMMON_FIELDS    = %w(dob gender veteran mobile_no email education ethnicity home_address:line1
+                       home_address:city home_address:state home_address:zip recent_employer job_title)
+
+  # FIELDS REQUIRED FOR MFG GRANT
+  TRAINEE_FIELDS1 = %w(middle_name land_no
+                       trainee_id
+                       mail_address:line1 mail_address:city
+                       mail_address:state mail_address:zip
+                       years certifications)
+
+  # ADDITIONAL FIELDS RQUIRED FOR TDC GRANT
+  TRAINEE_FIELDS2 = %w(legal_status current_employment_status
+                       last_salary last_employed_on)
+
   def initialize(all_params = nil, current_user = nil)
     return unless current_user && all_params
 
@@ -24,7 +33,7 @@ class TraineesImporter < Importer
   end
 
   def header_fields
-    TRAINEE_FIELDS1
+    REQUIRED_FIELDS
   end
 
   def retry_import_row(import_fail)
@@ -58,24 +67,9 @@ class TraineesImporter < Importer
     trainee = grant.trainees.new
     copy_attributes(trainee, row)
 
-    assign_addresses(trainee, row)
-
-    trainee.race_id = find_race_id(row)
-
-    # now get tact_three attributes
-    tact_three = trainee.build_tact_three
-    init_tact_three(tact_three, row)
-
-    trainee.klass_trainees.new(klass_id: @klass_id, status: 1)
-
     trainee.save!
 
     trainee
-  end
-
-  def assign_addresses(trainee, row)
-    trainee.home_address    = map_home_address(row)
-    trainee.mailing_address = map_mailing_address(row)
   end
 
   def copy_attributes(trainee, row)
@@ -84,6 +78,14 @@ class TraineesImporter < Importer
 
     trainee.funding_source_id = funding_source_id(clean_field(row['funding_source']))
     assign_other_attributes(trainee, row)
+
+    assign_addresses(trainee, row)
+
+    # now get tact_three attributes
+    tact_three = trainee.build_tact_three
+    init_tact_three(tact_three, row)
+
+    trainee.klass_trainees.new(klass_id: @klass_id, status: 1)
   end
 
   def assign_name_attributes(trainee, row)
@@ -98,11 +100,19 @@ class TraineesImporter < Importer
     trainee.email      = clean_field(row['email'])
   end
 
+  def assign_addresses(trainee, row)
+    trainee.home_address    = map_home_address(row)
+    trainee.mailing_address = map_mailing_address(row)
+  end
+
   def assign_other_attributes(trainee, row)
     trainee.dob        = clean_date(row['dob'])
     trainee.gender     = map_gender(row['gender'])
     trainee.veteran    = map_veteran(row['veteran'])
     trainee.trainee_id = clean_field(row['trainee_id'])
+    trainee.race_id    = find_race_id(row)
+
+    legal_status = Trainee::LEGAL_STATUSES.select{|k,v| v == row['legal_status']}.keys[0]
   end
 
   def find_race_id(row)
@@ -116,6 +126,10 @@ class TraineesImporter < Importer
     t3.job_title       = clean_field(row['job_title'])
     t3.years           = clean_years(row)
     t3.certifications  = clean_field(row['certifications'])
+
+    t3.last_wages                = row['last_wages']
+    t3.last_employed_on          = row['last_employed_on']
+    t3.current_employment_status = row['current_employment_status']
   end
 
   def clean_years(row)
