@@ -16,9 +16,9 @@
 /public/tmp
 /ssl
 
-
 /config/aws.yml
 /config/operoaws.yml
+/config/local_env.yml
 
 rakeroutes
 rails_best_practices_output.html
