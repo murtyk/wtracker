@@ -96,11 +96,11 @@ describe 'Reports' do
 
         expect(page).to have_css('.btn-email-download')
 
-        first('.btn-email-download').click
+        AlertConfirmer.accept_confirm_from do
+          first('.btn-email-download').click
+          sleep 5
+        end
 
-        sleep 5
-
-        page.driver.browser.switch_to.alert.accept
         mail = ActionMailer::Base.deliveries.last
 
         Account.current_id = 1

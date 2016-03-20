@@ -24,7 +24,10 @@ describe 'Klass page' do
       wait_for_ajax
       click_on 'Prescreening'
       wait_for_ajax
-      fill_in 'klass_event_event_date', with: '12/28/2013'
+
+      event_date = (Date.today + 7.days).strftime("%m/%d/%Y")
+
+      fill_in 'klass_event_event_date', with: event_date
       fill_in 'klass_event_notes', with: 'notes from rspec'
       fill_in 'klass_event_start_time_hr', with: '9'
       fill_in 'klass_event_end_time_hr', with: '1'
@@ -32,8 +35,15 @@ describe 'Klass page' do
       # now search for employer wawa
       fill_in 'name', with: 'w'
       click_on 'Find'
+
       wait_for_ajax
-      expect(page).to have_text 'Wawa'
+# screenshot_and_save_page
+# debugger
+
+      # expect(page).to have_text 'Wawa'
+
+      expect(page.html.index("Wawa").to_i > 0).to be_truthy
+
       select('Wawa', from: 'select_employers')
       click_button 'add-selected-employers'
 
@@ -59,9 +69,11 @@ describe 'Klass page' do
       expect(page).to have_text klass_event_name
 
       # save_screenshot('c:/temp/klasseventdelete')
-      click_link "destroy_klass_event_link#{klass_event.id}"
-      sleep 0.1
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link "destroy_klass_event_link#{klass_event.id}"
+        sleep 0.1
+
+      end
       wait_for_ajax
       visit("/klasses/#{klass_ids[0]}")
       click_on 'Expand All'

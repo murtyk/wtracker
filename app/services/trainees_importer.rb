@@ -15,7 +15,7 @@ class TraineesImporter < Importer
 
   # ADDITIONAL FIELDS RQUIRED FOR TDC GRANT
   TRAINEE_FIELDS2 = %w(legal_status current_employment_status
-                       last_salary last_employed_on)
+                       last_wages last_employed_on)
 
   def initialize(all_params = nil, current_user = nil)
     return unless current_user && all_params

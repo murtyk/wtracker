@@ -48,8 +48,10 @@ module EmployersHelper
   end
 
   def destroy_one_employer
-    find('a.btn-danger', match: :first).click
-    page.driver.browser.switch_to.alert.accept
+    AlertConfirmer.accept_confirm_from do
+      find('a.btn-danger', match: :first).click
+
+    end
     wait_for_ajax
   end
 

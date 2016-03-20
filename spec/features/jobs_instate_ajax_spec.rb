@@ -10,7 +10,7 @@ describe 'Job Search' do
       signout
     end
 
-    it 'searches for in state jobs and shares them', js: true, retry: 2, retry_wait: 3 do
+    it 'searches for in state jobs and shares them', js: true do
       visit('/job_searches/new')
       sleep 1
       maximize_window
@@ -54,6 +54,7 @@ describe 'Job Search' do
         expect(page).to have_text company2
 
         select('health', from: 'sector_ids')
+        sleep 1
         first(:link, 'Add').click
         wait_for_ajax
         expect(page).to have_text 'Saved'

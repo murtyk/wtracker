@@ -33,14 +33,10 @@ describe 'Job Search' do
         expect(page).to have_text "Found: #{count}"
 
         click_on title1
-        prev_window = page.driver.browser.window_handles.first
 
-        new_window = page.driver.browser.window_handles.last
-        page.driver.browser.switch_to.window(new_window)
-
-        expect(page).to have_text details
-
-        page.driver.browser.switch_to.window(prev_window)
+        within_window(windows.last) do
+          expect(page).to have_text details
+        end
       end
     end
   end

@@ -29,3 +29,7 @@ rails_best_practices_output.html
 clean_rspec.sh
 
 C:\\nppdf32Log\\debuglog.txt
+
+.vagrant/
+.DS_Store
+

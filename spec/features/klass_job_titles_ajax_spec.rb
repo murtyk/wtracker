@@ -26,8 +26,10 @@ describe 'Klasses' do
       Grant.current_id = 1
       title = KlassTitle.where(title: 'Title 1').first
       id = "destroy_klass_title_#{title.id}_link"
-      click_link id
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link id
+      end
+
       wait_for_ajax
       expect(page).to_not have_text 'Title 1'
     end

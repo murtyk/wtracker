@@ -17,8 +17,10 @@ describe 'Funding Sources' do
 
       funding_source = FundingSource.unscoped.where(name: 'FundingSource1').first
       id = "destroy_funding_source_#{funding_source.id}_link"
-      click_link id
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link id
+
+      end
       wait_for_ajax
       expect(page).to_not have_text 'FundingSource1'
     end

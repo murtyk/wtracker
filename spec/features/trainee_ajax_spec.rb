@@ -45,14 +45,18 @@ describe 'Trainee' do
       id1 = "destroy_trainee_assessment_#{ta1.id}_link"
       id2 = "destroy_trainee_assessment_#{ta2.id}_link"
 
-      click_link id1
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link id1
+
+      end
       wait_for_ajax
       expect(page).to_not have_text 'Bennett Mechanical Comprehension'
       expect(page).to have_text 'KeyTrain'
 
-      click_link id2
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link id2
+
+      end
       wait_for_ajax
       expect(page).to_not have_text 'KeyTrain'
     end

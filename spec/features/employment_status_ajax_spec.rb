@@ -42,8 +42,10 @@ describe 'employment status' do
 
     es = EmploymentStatus.unscoped.where(status: 'Some Status').first
     id = "destroy_employment_status_#{es.id}_link"
-    click_link id
-    page.driver.browser.switch_to.alert.accept
+    AlertConfirmer.accept_confirm_from do
+      click_link id
+
+    end
     wait_for_ajax
     expect(page).to_not have_text('Some Status')
   end

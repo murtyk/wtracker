@@ -75,19 +75,25 @@ describe 'EmployerFile', js: true do
       wait_for_ajax
 
       expect(page).to have_text 'COVER LETTER'
-      click_on 'COVER LETTER'
-      sleep 0.1
+      # click_on 'COVER LETTER'
+      # sleep 0.1
 
-      new_window = windows.last
-      page.within_window new_window do
-        expect(page).to have_text 'MY COVER LETTER REALLY COVERS ME'
-      end
+      # new_window = windows.last
+      # page.within_window new_window do
+      #   expect(page).to have_text 'MY COVER LETTER REALLY COVERS ME'
+      # end
 
       delete_btn_id = first(:xpath, "//*[contains(@id, 'destroy_employer_file')]")[:id]
-      click_on delete_btn_id
 
-      page.driver.browser.switch_to.alert.accept
-      wait_for_ajax
+      AlertConfirmer.accept_confirm_from do
+        click_on delete_btn_id
+      end
+
+      10.times do
+        break if page.html.index("COVER LETTER").to_i == 0
+        sleep 1
+      end
+
       expect(page).to_not have_text 'COVER LETTER'
     end
   end

@@ -26,9 +26,12 @@ module KlassesHelper
 
     sleep 0.2
 
+
     get_klasses_ids.each do |klass_id|
-      click_link "destroy_klass_#{klass_id}_link"
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link "destroy_klass_#{klass_id}_link"
+
+      end
       wait_for_ajax
     end
   end

@@ -104,7 +104,7 @@ describe 'shared job' do
       id = shared_job_status.id
       key = shared_job_status.key
       port = Capybara.server_port
-      url = "http://www.localhost.com:#{port}/sjs/#{id}?key=#{key}"
+      url = "/sjs/#{id}?key=#{key}"
       visit url
       expect(page).to have_text 'Please click on the job link below, review and '\
                                 'provide your feedback on this job lead.'
@@ -127,7 +127,7 @@ describe 'shared job' do
 
       id = shared_job_status.id
       key = shared_job_status.key
-      url = "http://www.localhost.com:7171/sjs/#{id}?key=#{key}"
+      url = "/sjs/#{id}?key=#{key}"
       visit url
 
       page.choose 'Applied'

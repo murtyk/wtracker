@@ -25,23 +25,9 @@ describe 'TraineeFile', js: true do
     end
 
     it 'allows attachments' do
-      # VCR.configure do |config|
-      #   config.allow_http_connections_when_no_cassette = true
-      # end
-
-      click_link 'new_trainee_file_link'
-      # puts filepath
-      page.attach_file 'trainee_file_file', @filepath
-      wait_for_ajax
-      fill_in 'Notes', with: 'Resume'
-      click_on 'Add File'
-      wait_for_ajax
-
-      expect(page).to have_text 'Resume'
-
       click_link 'new_trainee_file_link'
       @filepath = cover_letter
-      # puts filepath
+
       page.attach_file 'trainee_file_file', @filepath
       wait_for_ajax
       fill_in 'Notes', with: 'Cover Letter'
@@ -49,45 +35,18 @@ describe 'TraineeFile', js: true do
       wait_for_ajax
 
       expect(page).to have_text 'Cover Letter'
-    end
-  end
-  describe 'can open and delete attachments' do
-    before :each do
-      signin_admin
-      create_trainees(1)
-    end
-
-    after :each do
-      destroy_all_created
-    end
-
-    it 'opens and deletes file attachment'  do
-      VCR.configure do |config|
-        config.allow_http_connections_when_no_cassette = true
-      end
-
-      click_link 'new_trainee_file_link'
-      filepath = cover_letter
-      # puts filepath
-      page.attach_file 'trainee_file_file', filepath
-      wait_for_ajax
-      fill_in 'Notes', with: 'Cover Letter'
-      click_on 'Add File'
-      wait_for_ajax
-
-      expect(page).to have_text 'Cover Letter'
-      click_on 'Cover Letter'
-
-      new_window = windows.last
-      page.within_window new_window do
-        expect(page).to have_text 'MY COVER LETTER REALLY COVERS ME'
-      end
 
       delete_btn_id = first(:xpath, "//*[contains(@id, 'destroy_trainee_file')]")[:id]
-      click_on delete_btn_id
 
-      page.driver.browser.switch_to.alert.accept
-      wait_for_ajax
+      AlertConfirmer.accept_confirm_from do
+        click_on delete_btn_id
+      end
+
+      15.times do
+        break if page.html.index("Cover Letter").to_i == 0
+        sleep 1
+      end
+
       expect(page).to_not have_text 'Cover Letter'
     end
   end

@@ -15,7 +15,7 @@ describe 'signin page' do
     expect(page).to have_text 'Remember Me'
   end
   it 'full url with js', js: true do
-    visit 'http://www.localhost.com:7171/login'
+    visit "#{Capybara.app_host}:#{Capybara.server_port}/login"
     expect(page).to have_text 'Remember Me'
   end
 end

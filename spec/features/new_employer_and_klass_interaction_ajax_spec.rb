@@ -4,16 +4,22 @@ describe 'Employer and Class Interaction' do
   before :each do
     signin_admin
     destroy_employers
+    Account.current_id = 1
+    Grant.current_id = 1
+    @klass = Klass.first
+    @event = @klass.klass_events.find_by(name: "Information Session")
+    @event_label = @event.selection_name
   end
   after :each do
     destroy_employers
   end
-  it 'can create and update', js: true, noheadless: true do
+  it 'can create and update', js: true do
     visit '/klass_interactions/new'
     wait_for_ajax
     fill_in 'Name', with: 'Company Abc Inc.'
 
     select('banking', from: 'Sectors')
+    select(@event_label, from: 'Event')
 
     click_on 'Save'
     expect(page).to have_text 'Class Interaction successfully created.'
@@ -29,9 +35,9 @@ describe 'Employer and Class Interaction' do
     click_on 'Update'
 
     wait_for_ajax
-    sleep 1
 
     expect(page).to have_text 'Confirmed'
+
     expect(page).to_not have_text 'Interested'
 
     klass_href = page.find('#klass_interactions')
@@ -39,13 +45,20 @@ describe 'Employer and Class Interaction' do
     visit klass_href
     click_on 'Expand All'
 
+    sleep 0.2
     events = page.find('#Information_Session_events')
+
     expect(events).to have_text 'Confirmed'
     myid = events.first(:xpath, "//*[contains(@id, 'destroy_klass_interaction')]")[:id]
-    click_link myid
 
-    page.driver.browser.switch_to.alert.accept
-    wait_for_ajax
+    AlertConfirmer.accept_confirm_from do
+      click_link myid
+    end
+
+    10.times do
+      break if page.html.index("Confirmed").to_i == 0
+      sleep 1
+    end
     expect(page).to_not have_text 'Confirmed'
   end
 end

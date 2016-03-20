@@ -47,15 +47,24 @@ describe 'email to employer' do
 
       select('Engineering1', from: 'select_klass_id')
 
-      # wait_for_ajax
-      # check 'RESUME.docx'
+      doc_check_box = find(:css, "[value='RESUME.docx']")
 
-      find(:css, "[value='RESUME.docx']").set(true)
+      trainee = get_trainees.first
+      trainee_file = trainee.trainee_files.first
+      page.check("tf_#{trainee_file.id}")
+      doc_check_box.set(true)
+
+      # unless doc_check_box.checked?
+      #   puts "*********************************"
+      #   puts "MURTY!"
+      #   puts "check box is not checked!!!!!"
+      # end
+
       click_button 'Send'
 
       visit trainee_path(get_trainees.first)
       sleep 2
-      expect(page).to have_text 'reference101'
+      expect(page).to have_text 'Company'
     end
   end
 end

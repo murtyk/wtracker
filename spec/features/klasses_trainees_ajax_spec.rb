@@ -41,8 +41,10 @@ describe 'Klasses' do
       expect(page).to have_text name
 
       id = "destroy_klass_trainee_#{klass_trainee_id}_link"
-      click_link id
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link id
+
+      end
       wait_for_ajax
       expect(page).to_not have_text name
     end

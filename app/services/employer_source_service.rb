@@ -8,7 +8,7 @@ class EmployerSourceService
         name = "#{user.name}_#{grant.name}"
         es = EmployerSource.where(name: name, grant_id: grant.id).first
         return es unless user.admin_or_director?
-        return es || EmployerSourceFactory.create_scoped_employer_source(user, grant)
+        return es || EmployerSourceFactory.create_employer_source(user, grant)
       end
 
       if user.default_employer_source_id

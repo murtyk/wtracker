@@ -21,7 +21,13 @@ describe 'Trainees' do
         klass = Klass.where(name: 'CNC 101').first
         address_count = 0
         klass.trainees.each { |t| address_count += 1 if t.home_address }
-        result = page.evaluate_script('Gmaps.map.markers.length')
+
+        result = 0
+        5.times do
+          result = page.evaluate_script('Gmaps.map.markers.length')
+          break if result > 0
+          sleep 0.5
+        end
         expect(result).to eq address_count
       end
     end

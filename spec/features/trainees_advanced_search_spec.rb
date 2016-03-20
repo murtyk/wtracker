@@ -97,10 +97,12 @@ describe 'Trainees' do
 
       # Delayed::Worker.new.work_off
       # Delayed::Worker.new(quiet: false).work_off
-      first('.btn-email-download').click
 
-      sleep 2
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        first('.btn-email-download').click
+
+        sleep 2
+      end
 
       mail = ActionMailer::Base.deliveries.last
 

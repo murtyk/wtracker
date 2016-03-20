@@ -35,8 +35,11 @@ describe 'Trainee Interaction' do
 
       Account.current_id = 1
       ti = TraineeInteraction.where(trainee_id: get_trainee_ids[0]).first
-      find("#destroy_trainee_interaction_#{ti.id}_link").click
-      page.driver.browser.switch_to.alert.accept
+
+      AlertConfirmer.accept_confirm_from do
+        find("#destroy_trainee_interaction_#{ti.id}_link").click
+
+      end
       wait_for_ajax
 
       expect(page).to_not have_text 'No OJT'
@@ -87,8 +90,6 @@ describe 'Trainee Interaction' do
     end
 
     it 'new employer', js: true do
-      page.driver.browser.manage.window.maximize
-
       click_link 'new_trainee_interaction_link'
       wait_for_ajax
 
