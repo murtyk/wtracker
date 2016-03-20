@@ -34,8 +34,8 @@ before_script:
   - psql -c 'create database wtracker_test;' -U postgres
   - RAILS_ENV=test rake db:migrate
   - RAILS_ENV=test rake testprep:load_data
-  - "export DISPLAY=:99.0"
-  - "/etc/init.d/xvfb start"
+  # - "export DISPLAY=:99.0"
+  # - "/etc/init.d/xvfb start"
 # write the rspec tests to the output dir
 script:
   # - rspec -f JUnit -o shippable/testresults/results.xml
