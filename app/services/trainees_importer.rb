@@ -15,6 +15,7 @@ class TraineesImporter < Importer
 
   # ADDITIONAL FIELDS RQUIRED FOR TDC GRANT
   TRAINEE_FIELDS2 = %w(legal_status current_employment_status
+                       funding_source registration_date
                        last_salary last_employed_on)
 
   def initialize(all_params = nil, current_user = nil)
@@ -130,6 +131,7 @@ class TraineesImporter < Importer
     t3.last_wages                = row['last_wages']
     t3.last_employed_on          = row['last_employed_on']
     t3.current_employment_status = row['current_employment_status']
+    t3.registration_date         = clean_date(row['registration_date'])
   end
 
   def clean_years(row)
