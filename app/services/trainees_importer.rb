@@ -128,8 +128,8 @@ class TraineesImporter < Importer
     t3.years           = clean_years(row)
     t3.certifications  = clean_field(row['certifications'])
 
-    t3.last_wages                = row['last_wages']
-    t3.last_employed_on          = row['last_employed_on']
+    t3.last_wages                = clean_text(row['last_wages'])
+    t3.last_employed_on          = clean_date(row['last_employed_on'])
     t3.current_employment_status = row['current_employment_status']
     t3.registration_date         = clean_date(row['registration_date'])
   end
