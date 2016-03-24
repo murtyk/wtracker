@@ -14,8 +14,8 @@
 ActiveRecord::Schema.define(version: 20160323233912) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
   enable_extension "plpgsql"
+  enable_extension "hstore"
   enable_extension "fuzzystrmatch"
 
   create_table "account_states", force: :cascade do |t|
