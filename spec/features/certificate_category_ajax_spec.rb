@@ -28,9 +28,16 @@ describe 'certificate category' do
 
     kc = CertificateCategory.unscoped.where(code: '777').first
     id = "destroy_certificate_category_#{kc.id}_link"
-    click_link id
-    page.driver.browser.switch_to.alert.accept
-    wait_for_ajax
+
+    AlertConfirmer.accept_confirm_from do
+      click_link id
+    end
+
+    5.times do
+      break if page.html.index("777").to_i == 0
+      sleep 0.5
+    end
+
     expect(page).to_not have_text('777')
   end
 end

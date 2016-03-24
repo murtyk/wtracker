@@ -8,9 +8,14 @@ require 'capybara/rspec'
 require 'support/subdomains.rb'
 require 'capybara-screenshot'
 require 'capybara-screenshot/rspec'
+
+require 'capybara'
+require 'capybara/poltergeist'
+
+
 require 'simplecov'
 require 'simplecov-csv'
-require 'headless'
+# require 'headless'
 require 'rspec/retry'
 # require 'webmock/rspec'
 # WebMock.allow_net_connect!
@@ -33,6 +38,21 @@ end
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+require 'phantomjs'
+Capybara.register_driver(:poltergeist) do |app|
+  options = {
+    # debug: true,
+    js_errors: false,
+    window_size: [1200, 1000],
+    inspector: true,
+    phantomjs: Phantomjs.path,
+    phantomjs_logger: File.open("#{Rails.root}/log/test_phantomjs.log", "a")
+    # phantomjs_options: ['--web-security=no']
+  }
+  Capybara::Poltergeist::Driver.new(app, options)
+end
+Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -102,20 +122,20 @@ RSpec.configure do |config|
 
   config.verbose_retry = true # show retry status in spec process
 
-  puts ENV['TEST_ENV_NUMBER']
-  display =  100 + ENV['TEST_ENV_NUMBER'].to_i
-  headless = Headless.new(display: display)
+  # puts ENV['TEST_ENV_NUMBER']
+  # display =  100 + ENV['TEST_ENV_NUMBER'].to_i
+  # headless = Headless.new(display: display)
 
-  config.before(:each, js: true) do |ex|
-    headless.start unless ex.metadata[:noheadless]
-  end
+  # config.before(:each, js: true) do |ex|
+  #   headless.start unless ex.metadata[:noheadless]
+  # end
 
-  config.after(:each, js: true) do |ex|
-   headless.stop unless ex.metadata[:noheadless]
-  end
+  # config.after(:each, js: true) do |ex|
+  #  headless.stop unless ex.metadata[:noheadless]
+  # end
 
-  at_exit do
-    headless.destroy unless ENV['TEST_ENV_NUMBER'].to_i > 0
-  end
+  # at_exit do
+  #   headless.destroy unless ENV['TEST_ENV_NUMBER'].to_i > 0
+  # end
 
 end

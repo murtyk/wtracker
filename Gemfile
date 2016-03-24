@@ -23,7 +23,8 @@ end
 gem 'pg'
 gem 'mongo'
 gem 'bson_ext'
-gem 'mongoid', github: 'mongoid/mongoid'
+# gem 'mongoid', github: 'mongoid/mongoid'
+gem 'mongoid'
 
 gem 'attr_encrypted', '1.3.3'
 gem 'draper'
@@ -52,7 +53,8 @@ gem 'memcachier', '0.0.2'
 gem 'dalli', '2.6.4'
 gem 'icalendar', '1.4.3'
 gem 'humanizer'
-gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
+# gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
+gem 'ransack'
 
 gem 'delayed_job_active_record'
 gem 'clockwork'
@@ -92,6 +94,9 @@ group :test do
   gem 'rspec-rails', '~> 3.1'
   gem 'rspec-retry'
   gem 'factory_girl_rails'
+  gem 'poltergeist'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+
   gem 'selenium-webdriver', '2.48.1'
   gem 'headless', '1.0.2'
   gem 'capybara', '~> 2.4.1'
@@ -117,7 +122,8 @@ gem 'jquery-rails', '4.0.3'
 gem "jquery.fileupload-rails", '1.11.0'
 
 gem 'platform-api'
-gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers.git', branch: '0-8-stable'
+# gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers.git', branch: '0-8-stable'
+gem 'active_model_serializers'
 gem 'axlsx'
 
 # To use ActiveModel has_secure_password

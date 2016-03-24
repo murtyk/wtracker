@@ -52,8 +52,10 @@ describe 'EmployerNote', js: true do
     sleep 0.1
     expect(page).to have_text note.truncate(40)
 
-    click_link "destroy_employer_note_#{get_employer_notes_ids[0]}_link"
-    page.driver.browser.switch_to.alert.accept
+    AlertConfirmer.accept_confirm_from do
+      click_link "destroy_employer_note_#{get_employer_notes_ids[0]}_link"
+    end
+
     wait_for_ajax
     expect(page).to_not have_text 'This is an updated note'
   end

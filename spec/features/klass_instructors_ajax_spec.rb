@@ -22,8 +22,10 @@ describe 'Klasses' do
       klass = get_klasses.first
       klass_instructor = klass.klass_instructors.first
       id = "destroy_klass_instructor_#{klass_instructor.id}_link"
-      click_link id
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link id
+      end
+
       wait_for_ajax
       expect(page).to_not have_text name
     end

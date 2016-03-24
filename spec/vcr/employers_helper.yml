@@ -1,0 +1,167 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://managee2e-test.s3.amazonaws.com/?versioning=
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - ''
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby/1.33.0 ruby/2.2.0 x86_64-linux
+      Date:
+      - Sat, 19 Mar 2016 02:26:59 GMT
+      Authorization:
+      - AWS AKIAI3XLI3GOWMKN65RA:wSw/JsJCdTxe+0nhY4trP0lKoV0=
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Amz-Id-2:
+      - g6efcl5aa/c+NsMIpcQnkdwPJVFsPBRYB9xhXWmBULCqYUNGr0Vqif6RSTZXwpky+0LRDKFXrYc=
+      X-Amz-Request-Id:
+      - 495220DB56D5C7AB
+      Date:
+      - Sat, 19 Mar 2016 02:27:05 GMT
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <VersioningConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"/>
+    http_version: 
+  recorded_at: Sat, 19 Mar 2016 02:27:04 GMT
+- request:
+    method: head
+    uri: https://managee2e-test.s3.amazonaws.com/thisisawsfilename
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - ''
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby/1.33.0 ruby/2.2.0 x86_64-linux
+      Date:
+      - Sat, 19 Mar 2016 02:27:05 GMT
+      Authorization:
+      - AWS AKIAI3XLI3GOWMKN65RA:ZsonnchJ0V7BwZtgMipDqoEd0Z4=
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      X-Amz-Request-Id:
+      - C154D12193BFFBE4
+      X-Amz-Id-2:
+      - qVpnIRKqirjx01ov9hVMJS4DGtj/KnZgnilIxJF8hgtAN6Prpw4wupipxqRMW1HKCdDPNbKfu4A=
+      Content-Type:
+      - application/xml
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Sat, 19 Mar 2016 02:27:05 GMT
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 19 Mar 2016 02:27:05 GMT
+- request:
+    method: get
+    uri: https://managee2e-test.s3.amazonaws.com/?versioning=
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - ''
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby/1.33.0 ruby/2.2.0 x86_64-linux
+      Date:
+      - Sat, 19 Mar 2016 02:27:05 GMT
+      Authorization:
+      - AWS AKIAI3XLI3GOWMKN65RA:ZPx1wvavQEMfki6RFmPK+kYPVcg=
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Amz-Id-2:
+      - "/PB2xKiKJvLYkVwc5pvYGtVdf9Z57Um1t+pWNbNNSYW0OIiDpi5uBDSf1AJQ6T8nCkSb7nFytHA="
+      X-Amz-Request-Id:
+      - 9263AD8241A03F13
+      Date:
+      - Sat, 19 Mar 2016 02:27:09 GMT
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <VersioningConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"/>
+    http_version: 
+  recorded_at: Sat, 19 Mar 2016 02:27:08 GMT
+- request:
+    method: head
+    uri: https://managee2e-test.s3.amazonaws.com/thisisawsfilename
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - ''
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby/1.33.0 ruby/2.2.0 x86_64-linux
+      Date:
+      - Sat, 19 Mar 2016 02:27:08 GMT
+      Authorization:
+      - AWS AKIAI3XLI3GOWMKN65RA:XJ6RnS9vMf/6VGfUVxCL9Yad1iA=
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      X-Amz-Request-Id:
+      - E97A8AC33792B5B1
+      X-Amz-Id-2:
+      - TpRJUxJGAMo/Nxdo1kQu2fxx+J4jiEURKk+i14QeKFWiwz3KD3dGPQpVTe62taMVWkL/dxhTZmw=
+      Content-Type:
+      - application/xml
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Sat, 19 Mar 2016 02:27:08 GMT
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 19 Mar 2016 02:27:08 GMT
+recorded_with: VCR 2.9.2

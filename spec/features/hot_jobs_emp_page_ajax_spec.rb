@@ -28,8 +28,10 @@ describe 'Hot Jobs on Employer Page' do
       page.find_by_id(desc_id).click
       expect(page).to have_text 'Edison, NJ'
 
-      page.find_by_id(destroy_link_id(hot_job)).click
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        page.find_by_id(destroy_link_id(hot_job)).click
+
+      end
       wait_for_ajax
       expect(page).to_not have_text 'Good Title'
     end

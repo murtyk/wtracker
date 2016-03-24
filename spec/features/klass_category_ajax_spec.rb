@@ -28,8 +28,9 @@ describe 'klass category' do
 
     kc = KlassCategory.unscoped.where(code: 'WS').first
     id = "destroy_klass_category_#{kc.id}_link"
-    click_link id
-    page.driver.browser.switch_to.alert.accept
+    AlertConfirmer.accept_confirm_from do
+      click_link id
+    end
     wait_for_ajax
     expect(page).to_not have_text('WS')
   end

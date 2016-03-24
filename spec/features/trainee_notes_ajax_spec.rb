@@ -27,8 +27,10 @@ describe 'TraineeNote', js: true do
       wait_for_ajax
       expect(page).to have_text 'This is an updated note'
 
-      click_link "destroy_trainee_note_#{get_trainee_notes_ids[0]}_link"
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_link "destroy_trainee_note_#{get_trainee_notes_ids[0]}_link"
+
+      end
       wait_for_ajax
       expect(page).to_not have_text 'This is an updated note'
     end

@@ -55,8 +55,10 @@ module TraineesHelper
     sleep 0.2
 
     trainees_count.times do
-      find('a.btn-danger', match: :first).click
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        find('a.btn-danger', match: :first).click
+
+      end
       wait_for_ajax
     end
   end

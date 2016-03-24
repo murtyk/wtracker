@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
     @invalid_attributes = FactoryGirl.attributes_for(:user, email: '')
 
     Account.current_id = 1
+    Grant.current_id = nil
     @account = Account.find 1
     @user = @account.users.build(@user_attributes)
   end

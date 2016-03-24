@@ -54,7 +54,7 @@ describe 'Trainees' do
 end
 describe 'Trainees' do
   before :each do
-    signin_admin
+    signin_director
     allow_any_instance_of(TraineePolicy).to receive('destroy?')
       .and_return(true)
   end
@@ -66,8 +66,10 @@ describe 'Trainees' do
     click_button 'Find'
     (1..2).each { |n| expect(page).to have_text "First#{3000 + n} Last#{3000 + n}" }
     get_trainees.each do |trainee|
-      click_on "destroy_trainee_#{trainee.id}_link"
-      page.driver.browser.switch_to.alert.accept
+      AlertConfirmer.accept_confirm_from do
+        click_on "destroy_trainee_#{trainee.id}_link"
+
+      end
       wait_for_ajax
     end
     (1..2).each { |n| expect(page).to_not have_text "First#{3000 + n} Last#{3000 + n}" }

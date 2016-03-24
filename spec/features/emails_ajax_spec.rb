@@ -13,9 +13,7 @@ describe 'emails' do
 
       fill_in 'name', with: 'w'
       click_on 'Find'
-      wait_for_ajax
 
-      expect(page).to have_text 'Wawa'
       select('Johnny Darko(Wawa)', from: 'select_contacts')
       click_button 'add-selected-contacts'
 
@@ -23,8 +21,7 @@ describe 'emails' do
       select 'manufacturing', from: 'sector_id'
       select 'NJ - Middlesex', from: 'county_id'
       click_on 'Find'
-      wait_for_ajax
-      expect(page).to have_text 'Trigyn'
+
       select('Mason Saari(Trigyn)', from: 'select_contacts')
       click_button 'add-selected-contacts'
 
@@ -38,9 +35,10 @@ describe 'emails' do
       Account.current_id = 1
 
       Email.all.each do |email|
-        click_link destroy_link_id(email)
-        page.driver.browser.switch_to.alert.accept
-        wait_for_ajax
+        AlertConfirmer.accept_confirm_from do
+          click_link destroy_link_id(email)
+        end
+        sleep 1
       end
 
       expect(page).to_not have_text 'Hello, how are you?'

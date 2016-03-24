@@ -28,9 +28,15 @@ describe 'Administration' do
 
       account_id = Account.last.id
       destroy_link_id = "destroy_account_#{account_id}_link"
-      click_link destroy_link_id
-      page.driver.browser.switch_to.alert.accept
-      wait_for_ajax
+
+      AlertConfirmer.accept_confirm_from do
+        click_link destroy_link_id
+      end
+
+      5.times do
+        break if page.html.index("Test Client").to_i == 0
+        sleep 0.5
+      end
       expect(page).to_not have_text 'Test Client'
     end
   end
