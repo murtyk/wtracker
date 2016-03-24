@@ -30,6 +30,6 @@ clean_rspec.sh
 
 C:\\nppdf32Log\\debuglog.txt
 
-.vagrant/
 .DS_Store
-
+.vagrant/
+public/.DS_Store

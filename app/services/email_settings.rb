@@ -4,7 +4,7 @@ class EmailSettings
     enable_starttls_auto: false,
     ssl: true,
     tls: false,
-    address: 'server108.web-hosting.com',
+    address: 'server201.web-hosting.com',
     port: 465,
     domain: 'operoinc.com',
     authentication: :login,

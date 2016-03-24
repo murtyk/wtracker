@@ -160,6 +160,10 @@ class Importer
     s.blank? ? nil : s
   end
 
+  def clean_text(s)
+    s.is_a?(Float) ? s.to_i.to_s : s.to_s
+  end
+
   def clean_phone_no(phone_no = '')
     phone_no.is_a?(Float) ? phone_no.to_i.to_s : phone_no.to_s
   end
