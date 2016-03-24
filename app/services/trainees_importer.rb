@@ -18,6 +18,7 @@ class TraineesImporter < Importer
                        funding_source registration_date
                        last_wages last_employed_on)
 
+
   def initialize(all_params = nil, current_user = nil)
     return unless current_user && all_params
 
