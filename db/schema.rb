@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160313150651) do
+ActiveRecord::Schema.define(version: 20160323233912) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
   enable_extension "fuzzystrmatch"
-  enable_extension "hstore"
 
   create_table "account_states", force: :cascade do |t|
     t.integer  "account_id"
@@ -501,15 +501,15 @@ ActiveRecord::Schema.define(version: 20160313150651) do
   add_index "grant_job_lead_counts", ["grant_id"], name: "index_grant_job_lead_counts_on_grant_id", using: :btree
 
   create_table "grants", force: :cascade do |t|
-    t.string   "name",          limit: 255, null: false
-    t.date     "start_date",                null: false
-    t.date     "end_date",                  null: false
-    t.integer  "status",                    null: false
+    t.string   "name",          null: false
+    t.date     "start_date",    null: false
+    t.date     "end_date",      null: false
+    t.integer  "status",        null: false
     t.integer  "spots"
     t.integer  "amount"
-    t.integer  "account_id",                null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "account_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "options"
     t.hstore   "specific_data"
   end
@@ -917,6 +917,7 @@ ActiveRecord::Schema.define(version: 20160313150651) do
     t.string   "current_employment_status"
     t.string   "last_wages"
     t.date     "last_employed_on"
+    t.date     "registration_date"
   end
 
   add_index "tact_threes", ["account_id", "trainee_id"], name: "index_tact_threes_on_account_id_and_trainee_id", using: :btree
@@ -1043,37 +1044,37 @@ ActiveRecord::Schema.define(version: 20160313150651) do
   add_index "trainee_submits", ["email_id"], name: "index_trainee_submits_on_email_id", using: :btree
 
   create_table "trainees", force: :cascade do |t|
-    t.string   "first",                  limit: 255
-    t.string   "middle",                 limit: 255
-    t.string   "last",                   limit: 255
+    t.string   "first"
+    t.string   "middle"
+    t.string   "last"
     t.integer  "status"
-    t.string   "trainee_id",             limit: 255
+    t.string   "trainee_id"
     t.date     "dob"
-    t.string   "gender",                 limit: 255
-    t.string   "disability",             limit: 255
+    t.string   "gender"
+    t.string   "disability"
     t.boolean  "veteran"
-    t.string   "education",              limit: 255
-    t.string   "land_no",                limit: 255
-    t.string   "mobile_no",              limit: 255
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "skills_experience",      limit: 255
-    t.integer  "account_id",                                      null: false
-    t.integer  "grant_id",                                        null: false
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.string   "education"
+    t.string   "land_no"
+    t.string   "mobile_no"
+    t.string   "email",                  default: "", null: false
+    t.string   "skills_experience"
+    t.integer  "account_id",                          null: false
+    t.integer  "grant_id",                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "legal_status"
     t.integer  "funding_source_id"
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0
+    t.integer  "sign_in_count",          default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
-    t.string   "encrypted_trainee_id",   limit: 255
-    t.string   "login_id",               limit: 255
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "encrypted_trainee_id"
+    t.string   "login_id"
     t.integer  "race_id"
     t.date     "edp_date"
     t.date     "disabled_date"
@@ -1121,28 +1122,28 @@ ActiveRecord::Schema.define(version: 20160313150651) do
   add_index "user_employer_sources", ["user_id"], name: "index_user_employer_sources_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0
+    t.integer  "sign_in_count",          default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
-    t.string   "first",                  limit: 255,              null: false
-    t.string   "last",                   limit: 255,              null: false
-    t.string   "location",               limit: 255,              null: false
-    t.integer  "role",                                            null: false
-    t.integer  "status",                                          null: false
-    t.string   "land_no",                limit: 255
-    t.string   "ext",                    limit: 255
-    t.string   "mobile_no",              limit: 255
-    t.string   "comments",               limit: 255
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "first",                               null: false
+    t.string   "last",                                null: false
+    t.string   "location",                            null: false
+    t.integer  "role",                                null: false
+    t.integer  "status",                              null: false
+    t.string   "land_no"
+    t.string   "ext"
+    t.string   "mobile_no"
+    t.string   "comments"
     t.integer  "account_id"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "last_activity_at"
     t.text     "options"
     t.hstore   "data"
