@@ -30,10 +30,11 @@ describe 'Employers' do
       select('Confirmed', from: 'klass_interaction_status')
       click_button 'Save'
 
-      10.times do
+      20.times do
         break if page.html.index(klass_name)
         sleep 0.5
       end
+
       expect(page).to have_text klass_name
 
       click_button 'Expand'
