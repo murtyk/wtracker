@@ -12,6 +12,7 @@ class Grant < ActiveRecord::Base
   serialize :options
 
   store_accessor :specific_data,
+                 :type,
                  :assessments_include_score, :assessments_include_pass,
                  :reply_to_email, :reapply_subject, :reapply_body,
                  :reapply_instructions, :reapply_email_not_found_message,
