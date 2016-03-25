@@ -15,7 +15,12 @@ describe 'companies finder' do
       visit '/companies_finder/new'
       attach_file 'file', @filepath
       click_button 'Process'
-      wait_for_ajax
+
+      20.times do
+        break if page.html.index('Not Found')
+        sleep 0.5
+      end
+
       expect(page).to have_text 'Not Found'
       expect(page).to have_text '(609) 465-1368'
 
