@@ -7,7 +7,10 @@ describe 'EmployerNote', js: true do
     create_employers(1)
   end
   after :each do
+    puts "==============================================================="
+    puts "destroy_employers"
     destroy_employers
+    puts "==============================================================="
     signout
   end
 
@@ -36,10 +39,19 @@ describe 'EmployerNote', js: true do
     expect(page).to have_text note.truncate(40)
     employer_note = get_employer_notes.first
     employer_note_id = employer_note.id
-    click_button "employer_note_show_more_#{employer_note_id}"
 
-    sleep 0.1
+    puts "==============================================================="
+    puts "before click_button employer_note_show_more_#{employer_note_id}"
+    click_button "employer_note_show_more_#{employer_note_id}"
+    puts "after click_button"
+    puts "================================================================"
+
     wait_for_ajax
+    10.times do
+      break if page.html.index(note)
+      sleep 0.5
+    end
+
     expect(page).to have_text note
 
     click_button "employer_note_show_more_#{employer_note_id}"
