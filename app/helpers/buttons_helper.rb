@@ -75,12 +75,24 @@ module ButtonsHelper
     end
   end
 
+  def cancel_button(f, label = nil)
+    label ||= 'Cancel'
+
+    btn_id = "cancel_" + f.object.class.name.downcase
+
+    "<button id='#{btn_id}' class='btn btn-flat btn-small btn-danger'>
+    #{label}
+    </button>".html_safe
+  end
+
   def submit_button(f, label = nil)
     label ||= f.object.new_record? ? 'Add' : 'Update'
     # f.button :submit, label, class: 'btn btn-flat btn-medium btn-primary'
     icon_class = label == 'Find' ? 'icon-search' : 'icon-ok'
 
-    "<button class='btn btn-flat btn-small btn-primary' type='submit'>
+    btn_id = "submit_" + f.object.class.name.downcase
+
+    "<button id='#{btn_id}' class='btn btn-flat btn-small btn-primary' type='submit'>
     <i class='#{icon_class}'></i> #{label}
     </button>".html_safe
   end

@@ -12,7 +12,7 @@ class AssessmentPolicy < Struct.new(:user, :assessment)
   end
 
   def destroy?
-    new?
+    new? && assessment.trainees.empty?
   end
 
   def index?
