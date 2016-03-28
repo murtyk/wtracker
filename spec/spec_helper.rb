@@ -42,7 +42,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 require 'phantomjs'
 Capybara.register_driver(:poltergeist) do |app|
   options = {
-    # debug: true,
+    debug: ENV["JS_DEBUG"],
     js_errors: false,
     window_size: [1200, 1000],
     inspector: true,

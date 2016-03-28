@@ -37,18 +37,23 @@ describe 'EmployerNote', js: true do
     employer_note = get_employer_notes.first
     employer_note_id = employer_note.id
     click_button "employer_note_show_more_#{employer_note_id}"
+
     sleep 0.1
+    wait_for_ajax
     expect(page).to have_text note
 
     click_button "employer_note_show_more_#{employer_note_id}"
     sleep 0.1
+    wait_for_ajax
     expect(page).to have_text note.truncate(40)
 
     click_button 'employers_more_info_show'
     sleep 0.1
+    wait_for_ajax
     expect(page).to have_text note
 
     click_button 'employers_more_info_show'
+    wait_for_ajax
     sleep 0.1
     expect(page).to have_text note.truncate(40)
 
