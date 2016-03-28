@@ -19,14 +19,27 @@
     <div id='assessments'>
       <%= render @assessments %>
     </div>
-    <%=
-      if policy(Assessment).new?
-        link_to('New Assessment', new_assessment_path,
-                                  class: "btn btn-flat btn-primary",
-                                  id: 'new_assessment_link',
-                                  remote: true,
-                                  title:"Add Assessment")
-      end
-    %>
+
+    <% if policy(Assessment).new? %>
+      <button class="btn btn-flat btn-primary" id="new_assessment_link">
+        New Assessment
+      </button>
+
+      <div id="assessment_form" style="display: none;">
+        <%= render "jsform", assessment: Assessment.new %>
+      </div>
+
+      <div id="assessment_id" style="display: none;">
+        <p>
+          <button class="btn btn-flat btn-mini btn-danger btn-delete-assessment"
+             id="destroy_assessment_id_link"
+             href=""
+             rel="tooltip nofollow"
+             title="Delete">
+            <i class="icon-trash red"></i>
+          </button>
+        </p>
+      </div>
+    <% end %>
   </div>
 </div>
