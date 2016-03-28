@@ -2,9 +2,10 @@
 # includes columns based on grant type
 # returns row as an array
 class TraineeAdvancedSearchViewBuilder
-  attr_accessor :grant, :for_xml
-  def initialize(grant, for_excel = true)
+  attr_accessor :grant, :tas, :for_xml
+  def initialize(grant, tas, for_excel = true)
     @grant = grant
+    @tas = tas
     @for_excel = for_excel
   end
 
@@ -15,7 +16,8 @@ class TraineeAdvancedSearchViewBuilder
       header_part_1 +
       ['Funding Source', 'Education', 'Veteran'] +
       header_part_2 +
-      %w(Classes Assessment)
+      %w(Classes Assessment) +
+      tas.grant_specific_headers
   end
 
   def h_applied_on
@@ -39,7 +41,8 @@ class TraineeAdvancedSearchViewBuilder
       details_2(t) +
       details_3(t) +
       details_4(t) +
-      [klasses(t), assessments(t)]
+      [klasses(t), assessments(t)] +
+      tas.grant_specific_values(t)
   end
 
   def names(t)

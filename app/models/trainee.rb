@@ -282,6 +282,10 @@ class Trainee < ActiveRecord::Base
     [[4, 'Placed'], [5, 'OJT Enrolled'], [0, 'Not Placed']]
   end
 
+  def class_categories
+    klasses.map(&:klass_category_code).compact.join(",")
+  end
+
   private
 
   def cb_before_save
