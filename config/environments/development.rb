@@ -34,7 +34,7 @@ WTracker::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+  # config.assets.debug = true
   config.log_tags = [:subdomain, :uuid, lambda { |req| Time.now }]
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 

@@ -1,6 +1,14 @@
 <div id = '<%=div_id_for(assessment)%>'>
   <p>
-    <%= button_destroy_association(assessment) unless assessment.trainees.any? %>
+    <% if policy(assessment).destroy? %>
+      <button class="btn btn-flat btn-mini btn-danger btn-delete-assessment"
+         id="destroy_assessment_32_link"
+         rel="tooltip nofollow"
+         title="Delete"
+         data-assessment-id="<%= assessment.id %>">
+        <i class="icon-trash red"></i>
+      </button>
+    <% end %>
     <%= assessment.name %>
   </p>
 </div>
