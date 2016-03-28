@@ -4,7 +4,7 @@ class TraineeAdvancedSearch
   attr_accessor :account_id, :grant_id, :user_id, :q
 
   GRANT_TYPES = ["RTW"]
-  GRANT_ATTRIBUTES = { "RTW" => ["EDP_Date", "Class Category"] }
+  GRANT_ATTRIBUTES = { "RTW" => ["EDP_Date", "Class Categories"] }
 
   def initialize(user)
     @account_id = Account.current_id
@@ -59,7 +59,7 @@ class TraineeAdvancedSearch
   end
 
   def view_builder
-    @builder ||= TraineeAdvancedSearchViewBuilder.new(grant)
+    @builder ||= TraineeAdvancedSearchViewBuilder.new(grant, self)
   end
 
   def file_name
@@ -95,6 +95,6 @@ class TraineeAdvancedSearch
   def grant_specific_values(trainee)
     return [] unless has_grant_attributes?
 
-    GRANT_ATTRIBUTES[grant.type].map{ |attribute| trainee.send(attribute.downcase) }
+    GRANT_ATTRIBUTES[grant.type].map{ |attribute| trainee.send(attribute.downcase.gsub(" ", "_")) }
   end
 end
