@@ -197,6 +197,7 @@ class Grant < ActiveRecord::Base
 
   private
 
+
   def save_options
     auto_job_leads_setting
     trainee_applications_setting
