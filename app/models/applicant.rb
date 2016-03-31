@@ -8,7 +8,8 @@ class Applicant < ActiveRecord::Base
   store_accessor :data, :skills,
                  :unemployment_proof_initial,
                  :unemployment_proof_date,
-                 :skip_resume
+                 :skip_resume,
+                 :unique_id
 
   attr_accessor :salt, :bypass_humanizer, :email_confirmation
   attr_accessor :latitude, :longitude
