@@ -100,6 +100,7 @@ class ApplicantRegistration
   def trainee_attrs
     { first: applicant.first_name,
       last: applicant.last_name,
+      trainee_id: applicant.unique_id,
       email: applicant.email,
       mobile_no: applicant.mobile_phone_no,
       legal_status: applicant.legal_status,

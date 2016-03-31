@@ -95,7 +95,7 @@ class ApplicantsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def applicant_params
     params.require(:applicant)
-      .permit(:salt, :reapply_key, :first_name, :last_name,
+      .permit(:salt, :reapply_key, :first_name, :last_name, :unique_id,
               :address_line1, :address_line2, :address_city, :address_state,
               :address_zip, :county_id, :email,
               :mobile_phone_no, :last_employed_on, :current_employment_status,
