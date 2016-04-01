@@ -102,7 +102,7 @@ group :test do
   gem 'capybara', '~> 2.4.1'
   gem 'capybara-screenshot'
   # gem "capybara-webkit"
-  gem 'faker', '1.0.1'
+  gem 'faker', '1.2.0'
   gem 'guard-rspec', '~> 4.2.10'
   gem 'shoulda'
   gem 'launchy'
