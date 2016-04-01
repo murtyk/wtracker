@@ -61,6 +61,10 @@ class Applicant < ActiveRecord::Base
   validates_uniqueness_of :email, scope: :grant_id, case_sensitive: false
   validate :validate_applicant_data
 
+  validates_format_of :unique_id,
+                      with: /\d{9}/,
+                      message: 'is invalid, should be 9 digits'
+
   after_initialize :init
 
   def init

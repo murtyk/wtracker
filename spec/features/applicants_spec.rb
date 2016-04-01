@@ -6,13 +6,6 @@ def visit_new_applicant_page
   grant = Grant.first
   Grant.current_id = grant.id
 
-  grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
-
-  grant.email_password_subject = "Here is your password"
-  grant.email_password_body = "Hello $FIRST_NAME$, password is $PASSWORD$"
-
-  grant.save
-
   salt = "salted#{grant.id}andpeppered"
   visit "/applicants/new?salt=#{salt}"
 end
@@ -138,17 +131,6 @@ describe 'applicants' do
       fill_in 'password',  with: 'Ada00000'
       click_button 'Sign in'
 
-      expect(page).to have_text('Social Security Number')
-      fill_in 'trainee_trainee_id', with: '123456789'
-      click_on 'Next'
-
-      # expect(page).to have_text('Please enter your preferences for job leads')
-
-      # fill_in 'job_search_profile_skills',    with: 'java, ajax, xml'
-      # fill_in 'job_search_profile_location',  with: 'Edison,NJ'
-      # fill_in 'job_search_profile_distance',  with: '20'
-
-      # click_on 'Update'
       expect(page).to have_text 'resume'
 
       attach_file 'trainee_file_file', @resume

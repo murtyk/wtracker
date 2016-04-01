@@ -3,6 +3,7 @@ module ApplicantsHelper
     os = OpenStruct.new
     os.first_name    = 'Adaline'
     os.last_name     = 'Schuster'
+    os.unique_id     = '333224444'
     os.dob           = '01/14/1991'
     os.email         = 'adaline_schuster@shields.biz'
 
@@ -52,6 +53,8 @@ module ApplicantsHelper
 
   def fill_applicant_form(a, re_apply = false)
     fill_in_name(a)
+
+    fill_in 'applicant_unique_id', with: a.unique_id
 
     fill_in_contact_details(a, re_apply)
 
