@@ -26,7 +26,24 @@
       </button>
 
       <div id="assessment_form" style="display: none;">
-        <%= render "jsform", assessment: Assessment.new %>
+        <div class="control-group string required assessment_name">
+          <label class="string required control-label" for="assessment_name">
+            <abbr title="required">*</abbr> Name
+          </label>
+          <div class="controls">
+            <input class="string required" name="assessment[name]" id="assessment_name" type="text">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button id="cancel_assessment" class="btn btn-flat btn-small btn-danger">
+            Cancel
+          </button>
+          <button id="submit_assessment" class="btn btn-flat btn-small btn-primary">
+            <i class="icon-ok"></i> Add
+          </button>
+        </div>
+
+        <%#= render "jsform", assessment: Assessment.new %>
       </div>
 
       <div id="assessment_id" style="display: none;">

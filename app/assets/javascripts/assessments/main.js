@@ -1,17 +1,16 @@
-$('#new_assessment_link').click(function() {
+$(document).on('click', '#new_assessment_link', function(event) {
   $("#assessment_form").show();
   $('#new_assessment_link').hide();
 });
 
-$('#cancel_assessment').click(function(event){
+$(document).on('click', '#cancel_assessment', function(event){
   closeAssessmentForm();
   event.preventDefault();
 });
 
-$('#submit_assessment').click(function(event){
-  addAssessment();
-
+$(document).on('click', '#submit_assessment', function(event){
   event.preventDefault();
+  addAssessment();
 });
 
 $(document).on('click', '.btn-delete-assessment', function(event){
@@ -42,21 +41,19 @@ function cancelNewAssessment(){
 }
 
 function addAssessment(){
-  var name = $("#assessment_name").val();
+  var name   = $("#assessment_name").val();
+  var url    = '/assessments';
+  var params = { assessment: { name: name } };
 
-  $.ajax({
-      url: '/assessments',
-      data: { assessment: { name: name } },
-      type: 'POST',
-      cache: false,
-      success: function(data) {
-        appendAssessment(data);
-        closeAssessmentForm();
-      },
-      error: function(data) {
-        errorfy_assessment_fields($.parseJSON(data.responseText));
-      }
+  $.post(url, params, function(data){
+    appendAssessment(data);
+    closeAssessmentForm();
+  }, "json")
+  .fail(function(jqXHR, textStatus, errorThrown){
+    errorfy_assessment_fields(jqXHR.responseJSON);
   });
+
+  return false;
 }
 
 function closeAssessmentForm(){

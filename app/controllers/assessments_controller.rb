@@ -7,11 +7,14 @@ class AssessmentsController < ApplicationController
 
   def create
     assessment = Assessment.new(assessment_params)
+
     if assessment.save
       render json: assessment
     else
       render json: assessment.errors, status: 422
     end
+
+    return
   end
 
   def index
