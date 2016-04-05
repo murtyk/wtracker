@@ -10,5 +10,7 @@ rm -rf ./tmp
 echo "deleting public/tmp folder"
 rm -rf ./public/tmp
 
-sudo -u postgres psql postgres -c "DROP DATABASE IF EXISTS wtracker_test;"
-sudo -u postgres psql postgres -c "CREATE DATABASE wtracker_test WITH ENCODING 'UTF8' TEMPLATE wtracker_test3"
+RAILS_ENV=test rake db:drop
+RAILS_ENV=test rake db:create
+RAILS_ENV=test rake db:migrate
+RAILS_ENV=test rake testprep:load_data
