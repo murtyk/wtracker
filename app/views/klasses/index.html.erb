@@ -20,13 +20,17 @@
       <th>Certificates  </th>
       <th>Enrolled      </th>
       <th>Placed        </th>
+      <th>Dropped       </th>
+      <% @klasses_service.funding_sources_names.each do |fs_name| %>
+      <th> <%= fs_name %> </th>
+      <% end %>
       <th>Training hours</th>
       <th>Credits       </th>
       <th>Start date    </th>
       <th>End date      </th>
       <th></th>
     </tr>
-    <% program_data[2].each do |klass, enrolled_count, placed_count| %>
+    <% program_data[2].each do |klass, enrolled_count, placed_count, dropped_count, fs_counts| %>
       <tr>
         <td><%= name_and_link(klass) %> </td>
         <td><%= klass.college_name %>   </td>
@@ -34,6 +38,10 @@
         <td><%= klass.certificate_names %></td>
         <td><%= enrolled_count %> </td>
         <td><%= placed_count %> </td>
+        <td><%= dropped_count %></td>
+        <% fs_counts.each do |count| %>
+        <td> <%= count %> </td>
+        <% end %>
         <td><%= klass.training_hours %> </td>
         <td><%= klass.credits %>        </td>
         <td><%= klass.start_date %>     </td>
