@@ -69,6 +69,7 @@ class TraineesDetailsReport < Report
 
   def trainee_base_data(trainee, status)
     [
+      trainee.id,
       trainee_link(trainee),
       trainee.funding_source_name,
       status,
@@ -76,7 +77,7 @@ class TraineesDetailsReport < Report
       trainee.formatted_address,
       trainee.dob.to_s,
       trainee.gender.to_i == 1 ? 'M' : 'F',
-      trainee.veteran && 'x',
+      trainee.veteran ? 'x' : "",
       trainee.education_name,
       land_no(trainee),
       mobile_no(trainee),
