@@ -7,6 +7,7 @@
     <th>Employer</th>
     <th>Location</th>
     <th>Trainee</th>
+    <th>TAPO ID</th>
     <th>Funding Source</th>
     <th>Class</th>
     <th>College</th>
@@ -23,6 +24,7 @@
       <td><%= employer_link_or_name(ti.employer)%></td>
       <td><%= ti.employer_location%></td>
       <td><%= link_to(ti.trainee_name, trainee_path(ti.trainee)) %></td>
+      <td><%= ti.trainee.id %></td>
       <td><%= ti.trainee.funding_source_name %></td>
       <td><%=
           if ti.klass && policy(ti.klass).show?
