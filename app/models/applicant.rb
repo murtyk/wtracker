@@ -8,7 +8,8 @@ class Applicant < ActiveRecord::Base
   store_accessor :data, :skills,
                  :unemployment_proof_initial,
                  :unemployment_proof_date,
-                 :skip_resume
+                 :skip_resume,
+                 :unique_id
 
   attr_accessor :salt, :bypass_humanizer, :email_confirmation
   attr_accessor :latitude, :longitude
@@ -59,6 +60,10 @@ class Applicant < ActiveRecord::Base
   validates :grant,  presence: true
   validates_uniqueness_of :email, scope: :grant_id, case_sensitive: false
   validate :validate_applicant_data
+
+  validates_format_of :unique_id,
+                      with: /\d{9}/,
+                      message: 'is invalid, should be 9 digits'
 
   after_initialize :init
 

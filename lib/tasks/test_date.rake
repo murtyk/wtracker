@@ -203,6 +203,13 @@ namespace :testprep do
     grant = create_grant('Right To Work', 'Jan 1, 2014', 'Dec 31, 2016',
                          2, 0, 0, trainee_applications: true)
 
+    grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
+
+    grant.email_password_subject = "Here is your password"
+    grant.email_password_body = "Hello $FIRST_NAME$, password is $PASSWORD$"
+
+    grant.save
+
     aid = { account_id: grant.account_id }
 
     jl = grant.build_job_leads_subject(aid)

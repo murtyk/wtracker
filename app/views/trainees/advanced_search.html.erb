@@ -126,6 +126,9 @@
       <% end %>
       <th>Classes</th>
       <th>Assessment</th>
+      <% @tas.grant_specific_headers.each do |field| %>
+        <th><%= field %></th>
+      <% end %>
     </tr>
     <% @trainees.each do |t| %>
     <tr>
@@ -154,8 +157,11 @@
         <td><%= t.source %></td>
         <td><%= t.navigator_name %></td>
       <% end %>
-      <td><%= t.klasses.map{ |k| link_to(k.to_label, k) }.join('<br>').html_safe %></td>
+      <td><%= t.klasses.map{ |k| link_to(k.to_label, k) }.join(',').html_safe %></td>
       <td><%= t.assessments.map{ |a| a.name }.join('<br>').html_safe %></td>
+      <% @tas.grant_specific_values(t).each do |field| %>
+        <th><%= field %></th>
+      <% end %>
     </tr>
     <% end %>
     </table>

@@ -50,7 +50,8 @@ class KlassesController < ApplicationController
   # GET /klasses
   # GET /klasses.json
   def index
-    @programs_data = KlassesService.new.metrics(current_user)
+    @klasses_service = KlassesService.new
+    @programs_data = @klasses_service.metrics(current_user)
   end
 
   # GET /klasses/1

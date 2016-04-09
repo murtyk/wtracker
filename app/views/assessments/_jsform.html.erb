@@ -1,13 +1,10 @@
-<%= simple_form_for(assessment, remote: true) do |f| %>
+<%= simple_form_for(assessment) do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
     <%= f.input :name %>
   </div>
   <div class="form-actions">
-    <%= ajax_cancel_and_submit_buttons(f) %>
+    <%= cancel_button(f) %>
+    <%= submit_button(f) %>
   </div>
-
-  <%= ajax_form_cancel_script(assessment) %>
 <% end %>
-<%= javascript_include_tag "#{controller_name}/#{action_name}" if js_asset_exists?("#{controller_name}/#{action_name}.js") %>
-

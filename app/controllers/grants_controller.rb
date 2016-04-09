@@ -56,7 +56,8 @@ class GrantsController < ApplicationController
               :reapply_already_accepted_message, :reapply_confirmation_message,
               :hot_jobs_notification_subject, :hot_jobs_notification_body,
               :unemployment_proof_text,
-              :email_password_subject, :email_password_body)
+              :email_password_subject, :email_password_body,
+              :assessments_include_score, :assessments_include_pass)
   end
 
   def update_notice

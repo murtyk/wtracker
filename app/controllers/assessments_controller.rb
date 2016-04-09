@@ -7,8 +7,14 @@ class AssessmentsController < ApplicationController
 
   def create
     assessment = Assessment.new(assessment_params)
-    assessment.save
-    @assessments = Assessment.all
+
+    if assessment.save
+      render json: assessment
+    else
+      render json: assessment.errors, status: 422
+    end
+
+    return
   end
 
   def index
@@ -18,6 +24,8 @@ class AssessmentsController < ApplicationController
   def destroy
     @assessment = Assessment.find(params[:id])
     @assessment.destroy
+
+    render json: {}, status: 200
   end
 
   private
