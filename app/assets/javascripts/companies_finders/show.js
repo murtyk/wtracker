@@ -1,49 +1,59 @@
-var companies, process_id;
-$(document).ready(function() {
-  companies  = $('.page_data').data('companies');
-  process_id = $('.page_data').data('process-id');
-});
-
-$("#selectAll").click(function() {
+$(document).on("click", "#selectAll", function() {
   $('.forAdd').prop('checked', true);
 });
 
-$("#addSelected").click(function() {
+$(document).on("click", "#addSelected", function() {
+
+  console.log("clicked #addSelected");
+
   if ($('#sector_ids :selected').length == 0){
     alert("Please select at least one sector");
     return false;
   }
-  sector_ids = $('#sector_ids').val();
-  results = {};
+
+  var sector_ids = $('#sector_ids').val();
+  var results = {};
+  var companies  = $('.page_data').data('companies');
+  var process_id = $('.page_data').data('process-id');
   var add_success = 0;
   var add_fail    = 0;
-  jQuery.ajaxSetup({async:false});
+  var id, url, params;
+
+  jQuery.ajaxSetup({async: false});
+
   $("#pleaseWaitDialog").modal();
+
   $.each(companies, function( index, value ){
     id = '#' + index;
+
     if($(id).prop('checked')) {
+
       url = '/companies_finder/add_employer';
       params = {process_id: process_id, index: index, sector_ids: sector_ids};
+
       $.post(url, params, function(data){
-        save_add_results(index, data);
+        save_add_results(index, data, results);
         ++add_success;
         $('#ADD_SUCCESSFUL').html(add_success);
+        console.log('#ADD_SUCCESSFUL');
       }, "json")
       .fail(function(jqXHR, textStatus, errorThrown){
         ++add_fail;
         $('#ADD_FAILED').html(add_fail);
+        console.log('#ADD_FAILED');
         // alert("error in addSelected js");
       });
     }
   });
-  jQuery.ajaxSetup({async:true});
+
+  jQuery.ajaxSetup({async: true});
   $("#pleaseWaitDialog").modal('hide');
 
   // alert(JSON.stringify(results));
-  process_add_results();
+  process_add_results(results);
 });
 
-function save_add_results(index, data){
+function save_add_results(index, data, results){
   var result = { added: false };
   if(data['employer_id']){
     result['added'] = true;
@@ -55,9 +65,16 @@ function save_add_results(index, data){
   results[index] = result;
 }
 
-function process_add_results(){
+function process_add_results(results){
+  var td_status_id, html, error_html, td_checkbox_id;
+
+  console.log("process_add_results");
+  console.log(results);
+
   $.each(results, function(key, value ){
+
     td_status_id = '#td_status_' + key;
+
     if(value['added']){
       $(td_status_id).html('<b style="color:green">added</b>');
     }
@@ -70,6 +87,7 @@ function process_add_results(){
       error_html = html.replace("error_message", value['error']);
       $(td_status_id).html(error_html);
     }
+
     td_checkbox_id = '#td_checkbox_' + key;
     $(td_checkbox_id).html('');
   });
@@ -79,11 +97,11 @@ function process_add_results(){
 $('[data-toggle="popover"]').popover();
 
 $('body').on('click', function (e) {
-    $('[data-toggle="popover"]').each(function () {
-        //the 'is' for buttons that trigger popups
-        //the 'has' for icons within a button that triggers a popup
-        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-            $(this).popover('hide');
-        }
-    });
+  $('[data-toggle="popover"]').each(function () {
+    //the 'is' for buttons that trigger popups
+    //the 'has' for icons within a button that triggers a popup
+    if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+      $(this).popover('hide');
+    }
+  });
 });
