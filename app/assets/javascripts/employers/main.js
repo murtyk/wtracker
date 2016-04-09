@@ -1,4 +1,4 @@
-$('.klass_events_expand').click(function () {
+$(document).on('click', '.klass_events_expand', function() {
   var id, ind, klass_id, div_id;
 
   id = $(this).attr('id');
@@ -17,7 +17,7 @@ $('.klass_events_expand').click(function () {
   }
 });
 
-$('#employers_more_info_show').click(function () {
+$(document).on('click', '#employers_more_info_show', function () {
   var ind, div_id, employer_note_id, button_id, div_short_notes_id, div_full_notes_id;
 
   ind = $(this).text().search('Show More');
@@ -50,7 +50,7 @@ $('#employers_more_info_show').click(function () {
   });
 });
 
-$('#employer_notes').on('click', '.employer-note-show-more-or-less', function() {
+$(document).on('click', '.employer-note-show-more-or-less', function() {
   var f_show, employer_note_id, button_id, div_short_notes_id, div_full_notes_id;
   button_id = $(this).attr('id');
   employer_note_id = button_id.split('_')[4];
@@ -71,7 +71,7 @@ $('#employer_notes').on('click', '.employer-note-show-more-or-less', function() 
   }
 });
 
-$('#hot_jobs').on('click', '.hot-job-show-description', function() {
+$(document).on('click', '.hot-job-show-description', function() {
   var f_show, hot_job_id, button_id, hot_job_description_id;
   button_id = $(this).attr('id');
   hot_job_id = button_id.split('_')[4];

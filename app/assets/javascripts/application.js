@@ -17,3 +17,4 @@
 //= require_tree ./gmaps4rails
 //= require bootstrap-datepicker
 //= require ./assessments/main.js
+//= require ./employers/main.js
