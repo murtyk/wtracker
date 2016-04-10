@@ -121,7 +121,7 @@ WTracker::Application.routes.draw do
       get :search
       get :contacts_search
       get :get_google_company
-      get :add_google_company
+      post :add_google_company
     end
   end
 

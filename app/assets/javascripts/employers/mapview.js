@@ -23,12 +23,6 @@ $('#clear-button').click(function() {
 
 $('.btn-spinner').button();
 
-$('#btnCustomExport').click(function(e){
-  // window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#dvData').html()));
-  CustomMethodToExport("companies-table");
-  e.preventDefault();
-});
-
 function attachPolygonInfoWindow(polygon, html)
 {
   polygon.infoWindow = new google.maps.InfoWindow({

@@ -91,17 +91,17 @@ function process_add_results(results){
     td_checkbox_id = '#td_checkbox_' + key;
     $(td_checkbox_id).html('');
   });
-  $('.popover-error-info').popover({placement: 'top', html: true});
+  // $('.popover-error-info').popover({placement: 'top', html: true});
 }
 
-$('[data-toggle="popover"]').popover();
+// $('[data-toggle="popover"]').popover();
 
-$('body').on('click', function (e) {
-  $('[data-toggle="popover"]').each(function () {
-    //the 'is' for buttons that trigger popups
-    //the 'has' for icons within a button that triggers a popup
-    if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-      $(this).popover('hide');
-    }
-  });
-});
+// $('body').on('click', function (e) {
+//   $('[data-toggle="popover"]').each(function () {
+//     //the 'is' for buttons that trigger popups
+//     //the 'has' for icons within a button that triggers a popup
+//     if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+//       $(this).popover('hide');
+//     }
+//   });
+// });

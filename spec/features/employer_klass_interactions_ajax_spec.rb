@@ -7,7 +7,7 @@ describe 'Employers' do
     end
 
     after :each do
-      signout
+      # signout
     end
 
     it 'can add class interactions' do
@@ -19,8 +19,11 @@ describe 'Employers' do
       click_on 'new_klass_interaction_link'
       wait_for_ajax
       expect(page).to have_text 'New Class Interaction'
-      klass = get_klasses.first
+      klass = get_klasses.last
       klass_name = "#{klass.college.name} - #{klass.name}"
+
+      puts klass.id
+      puts klass_name
 
       select(klass_name, from: 'klass_interaction_klass_id')
       klass_event = klass.klass_events.find_by(name: "Information Session")
@@ -30,7 +33,7 @@ describe 'Employers' do
       select('Confirmed', from: 'klass_interaction_status')
       click_button 'Save'
 
-      20.times do
+      30.times do
         break if page.html.index(klass_name)
         sleep 0.5
       end
@@ -80,8 +83,8 @@ describe 'Employers' do
 
       wait_for_ajax
 
-      10.times do
-        break if page.html.index(employer_name).to_i == 0
+      20.times do
+        break unless page.html.index(employer_name)
         sleep 0.5
       end
 

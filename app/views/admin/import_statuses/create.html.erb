@@ -15,6 +15,7 @@
 
   <%= content_tag "div", id: "page_data",
                          data: { import_status_id: @importer.import_status_id,
+                                 window_load_function: "perform_import_status",
                                  admin: 1 } do %>
   <% end %>
 <% end %>

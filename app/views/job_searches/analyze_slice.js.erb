@@ -1,7 +1,7 @@
 $('#slices_analyzed').append($('<option></option>').val(<%=@slice%>).html(<%=@slice%>));
 analyzed_slices_count = $('#slices_analyzed option').size();
 console.log("analyzed_slices_count = ", analyzed_slices_count);
-// total_slices_count = $('#slices_count').val();
+var total_slices_count = $('#page_data').data('slices');
 $('.bar').width((80 * analyzed_slices_count /total_slices_count) + "%");
 if (analyzed_slices_count == total_slices_count){
 	complete_analysis();

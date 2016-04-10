@@ -1,2 +1,5 @@
 <%= render 'form', klass_interaction: @klass_interaction, klass_event: @klass_event, employer: @employer %>
 
+<%= content_tag :div, id: "page_data",
+                      data: { window_load_function: "trigger_klass_interaction_klass_change" } do %>
+<% end %>

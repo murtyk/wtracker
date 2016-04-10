@@ -1,8 +1,9 @@
-$(window).load(function() {
+function companies_finder_processing(){
   var process_id = $('#page_data').data('process-id');
   if (process_id == null){
     return;
   }
+
   var processing = true;
   console.log("fetching companies finder status");
   $("#pleaseWaitDialog").modal();
@@ -25,5 +26,4 @@ $(window).load(function() {
       location.href = '/companies_finder?process_id=' + process_id;
     }
   }, 1000);
-
-});
+};

@@ -34,7 +34,7 @@ describe 'Administration' do
       end
 
       5.times do
-        break if page.html.index("Test Client").to_i == 0
+        break unless page.html.index("Test Client")
         sleep 0.5
       end
       expect(page).to_not have_text 'Test Client'

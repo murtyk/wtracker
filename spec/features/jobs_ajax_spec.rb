@@ -73,7 +73,10 @@ describe 'Job Search' do
           sleep 1
           click_on 'Send'
           wait_for_ajax
-          sleep 1
+          10.times do
+            break if page.html.index('Shared Job Information')
+            sleep 0.5
+          end
           expect(page).to have_text 'Shared Job Information'
         end
       end

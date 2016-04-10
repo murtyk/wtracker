@@ -27,6 +27,7 @@
 <% end %>
 
 <%= render 'status_modal' %>
-<%= content_tag :div, class: "page_data",
-                      data: { job_info: @job_share.to_json } do %>
+<%= content_tag :div, id: "page_data",
+                      data: { job_info: @job_share.to_json,
+                              window_load_function: "trigger_klass_change" } do %>
 <% end %>

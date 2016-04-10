@@ -1,3 +1,1 @@
-name_locations = <%= raw @analyzer.name_locations %>;
-companies_count = <%= @analyzer.name_locations.count %>;
-get_all_google_companies();
+get_all_google_companies(<%= raw @analyzer.name_locations %>);
