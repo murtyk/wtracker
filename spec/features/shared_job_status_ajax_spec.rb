@@ -4,7 +4,7 @@ RSpec.configure do |config|
 end
 
 describe 'shared job' do
-  describe 'update status', js: true, noheadless: true do
+  describe 'update status', js: true do
     before(:each) do
       allow_any_instance_of(AccountPolicy).to receive(:edit?)
        .and_return(true)

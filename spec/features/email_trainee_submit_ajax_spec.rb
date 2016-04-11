@@ -1,6 +1,6 @@
 require 'rails_helper'
 describe 'email to employer' do
-  describe 'attach trainee document', js: true, noheadless: true do
+  describe 'attach trainee document', js: true do
     before :each do
       allow_any_instance_of(AccountPolicy).to receive(:edit?)
        .and_return(true)
@@ -41,7 +41,13 @@ describe 'email to employer' do
 
       fill_in 'name', with: 'Company'
       click_on 'Find'
+
       wait_for_ajax
+      5.times do
+        break if page.html.index('Client1 Client1(Company1)')
+        sleep 1
+      end
+
       select('Client1 Client1(Company1)', from: 'select_contacts')
       click_button 'add-selected-contacts'
 
