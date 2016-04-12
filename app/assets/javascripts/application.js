@@ -22,3 +22,4 @@
 //= require ./job_searches/main.js
 //= require ./klass_interactions/main.js
 //= require ./emails/main.js
+//= require ./reports/main.js

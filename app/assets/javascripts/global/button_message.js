@@ -6,3 +6,7 @@ $(function() {
     e.preventDefault();
   });
 })
+
+$(document).ready(function () {
+  $('.btn-spinner').button();
+});
