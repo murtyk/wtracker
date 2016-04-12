@@ -21,8 +21,6 @@ $('#clear-button').click(function() {
   $("#filters_county_ids").val([]);
 });
 
-$('.btn-spinner').button();
-
 function attachPolygonInfoWindow(polygon, html)
 {
   polygon.infoWindow = new google.maps.InfoWindow({

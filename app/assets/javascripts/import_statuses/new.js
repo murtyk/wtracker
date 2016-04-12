@@ -15,4 +15,3 @@ $('#form-import').submit(function() {
   }
   $('#submit-button').button('loading');
 });
-$('.btn-spinner').button();

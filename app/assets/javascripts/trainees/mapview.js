@@ -20,8 +20,6 @@ $('.form-search').submit(function() {
   $('#submit-button').button('loading');
 });
 
-$('.btn-spinner').button();
-
 $('#filters_klass_id').change(function(e) {
   var klass_id;
   klass_id = $('#filters_klass_id :selected').val();

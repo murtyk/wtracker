@@ -4,7 +4,7 @@ describe 'Reports' do
   describe 'Trainee' do
     before :each do
       Delayed::Worker.delay_jobs = false
-      ENV['SHOW_MAX_ROWS'] = '3'
+      ENV['SHOW_MAX_ROWS'] = '10'
 
       switch_to_applicants_domain
 

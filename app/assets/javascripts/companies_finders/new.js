@@ -1,1 +1,0 @@
-$('.btn-spinner').button();

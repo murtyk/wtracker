@@ -10,7 +10,6 @@ $('.form-search').submit(function() {
   }
   $('#submit-button').button('loading');
 });
-$('.btn-spinner').button();
 $('#help-button').click(function() {
   $('#helpModal').modal();
 });

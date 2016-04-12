@@ -33,8 +33,6 @@ $('#new_job_search').submit(function() {
   }
 });
 
-$('.btn-spinner').button();
-
 $('.btn-spinner').click(function() {
     $(this).button('loading');
 });
