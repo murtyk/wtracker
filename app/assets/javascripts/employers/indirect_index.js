@@ -1,4 +1,4 @@
-$('.form-search').submit(function() {
+$('#form_employers_search').submit(function() {
   var sector_id, county_ids, source, name;
   sector_id  = $('#filters_sector_id :selected').text();
   county_ids = $('#filters_county_ids :selected').text();

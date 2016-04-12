@@ -1,6 +1,9 @@
 <h1>Employers</h1>
 <div class = 'row-fluid filters-div'>
-  <%= simple_form_for :filters, method: :get, url: :employers, html: { class: 'form-search'} do |f| %>
+  <%= simple_form_for :filters,
+            method: :get,
+            url: :employers,
+            html: { class: 'form-search', id: 'form_employers_search'} do |f| %>
     <div class='row-fluid'>
       <div class='span3'>
         Counties<%= f.input_field :county_ids, label: 'County', collection: employer_counties_for_selection, class: "search-query input-block-level", multiple: true%>

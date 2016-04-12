@@ -1,7 +1,10 @@
 <h1><%= "Employers - Locations" %></h1>
 <div class = 'row-fluid filters-div' >
 
-  <%= simple_form_for :filters, method: :get, url: [:mapview, :employers], html: {class: 'form-search' } do |f| %>
+  <%= simple_form_for :filters,
+                      method: :get,
+                      url: [:mapview, :employers],
+                      html: {class: 'form-search', id: 'form_employers_mapview' } do |f| %>
 
     <div class='span3'>
       Counties<br>

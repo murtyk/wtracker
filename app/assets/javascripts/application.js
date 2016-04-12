@@ -23,3 +23,4 @@
 //= require ./klass_interactions/main.js
 //= require ./emails/main.js
 //= require ./reports/main.js
+//= require ./google_companies/main.js

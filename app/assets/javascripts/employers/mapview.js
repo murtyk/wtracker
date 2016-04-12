@@ -1,4 +1,4 @@
-$('.form-search').submit(function() {
+$('#form_employers_mapview').submit(function() {
   var counties_count, sector_id, name;
   counties_count = $('#filters_county_ids option:selected').length;
   sector_id = $('#filters_sector_id :selected').text();
