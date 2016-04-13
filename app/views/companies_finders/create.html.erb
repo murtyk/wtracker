@@ -18,6 +18,7 @@
   </div>
 
   <%= content_tag "div", id: "page_data",
-                         data: { process_id: @companies_finder.process_id } do %>
+                         data: { process_id: @companies_finder.process_id,
+                                 window_load_function: "companies_finder_processing"  } do %>
   <% end %>
 <% end %>

@@ -31,7 +31,6 @@ jQuery(function($){
   $("#applicant_dob").mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
 });
 
-$('.btn-spinner').button();
 $('.new_applicant').submit(function() {
   $('#submit-button').button('loading');
 });

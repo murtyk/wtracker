@@ -1,6 +1,7 @@
 //= require ./new_common.js
 var employer_marker, markers_array;
 $('#select_klass').change(function() {
+  console.log("new multiple select klass change");
   var klass_id;
   if (Gmaps.map) {
     if (!employer_marker){

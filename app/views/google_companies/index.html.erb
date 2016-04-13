@@ -2,7 +2,7 @@
 <div class = 'row-fluid filters-div' >
   <%= simple_form_for :filters, method: :get,
                                 url: :google_companies,
-                                html: {class: 'form-search'} do |f| %>
+                                html: {class: 'form-search', id: 'form_google_companies'} do |f| %>
 
     Name <%= f.input_field :name, value: params[:filters] && params[:filters][:name] %>
     Location(City,State) <%= f.input_field :location, value: params[:filters] &&

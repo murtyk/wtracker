@@ -1,4 +1,4 @@
-$('.form-search').submit(function() {
+$('#form_employers_mapview').submit(function() {
   var counties_count, sector_id, name;
   counties_count = $('#filters_county_ids option:selected').length;
   sector_id = $('#filters_sector_id :selected').text();
@@ -19,14 +19,6 @@ $('#clear-button').click(function() {
   $('#filters_sector_id').val('');
   $('#filters_klass_id').val('');
   $("#filters_county_ids").val([]);
-});
-
-$('.btn-spinner').button();
-
-$('#btnCustomExport').click(function(e){
-  // window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#dvData').html()));
-  CustomMethodToExport("companies-table");
-  e.preventDefault();
 });
 
 function attachPolygonInfoWindow(polygon, html)

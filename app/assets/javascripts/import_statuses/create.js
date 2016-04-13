@@ -1,4 +1,4 @@
-$(window).load(function() {
+function perform_import_status(){
   var import_status_id = $('#page_data').data('import-status-id');
   if (import_status_id == null){
     return;
@@ -35,4 +35,4 @@ $(window).load(function() {
       location.href = href;
     }
   }, 1000);
-});
+}

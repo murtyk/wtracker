@@ -8,8 +8,6 @@ class EmployersController < ApplicationController
 
   # ajax request job search analyze page
   def add_google_company
-    # debugger
-
     @employer,
     @employer_exists,
     @error = EmployerFactory.create_from_job_search(current_user, params)

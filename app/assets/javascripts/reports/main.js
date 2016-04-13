@@ -1,6 +1,7 @@
-$('.btn-spinner').button();
-$('.form-search').submit(function() {
-  $('#submit-button').button('loading');
+$(document).ready(function () {
+  $('#new_report').submit(function() {
+    $('#submit-button').button('loading');
+  });
 });
 
 function send_process_requests(trainees_count, request_url, show_url){

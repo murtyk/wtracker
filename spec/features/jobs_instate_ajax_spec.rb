@@ -47,8 +47,12 @@ describe 'Job Search' do
 
         click_on 'Analyze'
 
-        sleep 4
         wait_for_ajax
+
+        20.times do
+          break if page.html.index("Total Jobs Found")
+          sleep 0.5
+        end
 
         expect(page).to have_text "Total Jobs Found: #{count}"
         expect(page).to have_text company2

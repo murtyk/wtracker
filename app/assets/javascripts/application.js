@@ -17,3 +17,10 @@
 //= require_tree ./gmaps4rails
 //= require bootstrap-datepicker
 //= require ./assessments/main.js
+//= require ./employers/main.js
+//= require ./companies_finders/main.js
+//= require ./job_searches/main.js
+//= require ./klass_interactions/main.js
+//= require ./emails/main.js
+//= require ./reports/main.js
+//= require ./google_companies/main.js
