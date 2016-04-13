@@ -10,7 +10,8 @@ class DashboardRtw < DashboardMetrics
     @metrics = OpenStruct.new
     @metrics.header = ['ALL', '# Trainees', '# Assessed', 'EDP'] +
       fs_names +
-      ['Placed', 'OJT Enrolled']
+      ['Placed', 'OJT Enrolled'] +
+      ['WS', 'OCC']
 
     init_metrics_for_funding_sources
   end
@@ -22,9 +23,10 @@ class DashboardRtw < DashboardMetrics
       os = OpenStruct.new
       os.id = id
       os.header = [name, '# Trainees', '# Assessed',
-                   'EDP', 'Placed',  'OJT Enrolled']
+                   'EDP', 'Placed',  'OJT Enrolled',
+                   'WS', 'OCC']
 
-      # [nav name, # trainees, fs1 count..., placed, ojt enrolled]
+      # [nav name, # trainees, fs1 count..., placed, ojt enrolled, attended WS, attended OCC]
       os.rows = []
       os
     end
@@ -37,9 +39,11 @@ class DashboardRtw < DashboardMetrics
     e_matrix = build_edp_counts_matrix
     p_matrix = build_placements_counts_matrix
     oe_matrix = build_ojt_enrolled_counts_matrix
+    ws_matrix = build_ws_counts_matrix
+    occ_matrix = build_occ_counts_matrix
 
-    build_fs_matrices(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix)
-    build_summary_matrix(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix)
+    build_fs_matrices(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix, ws_matrix, occ_matrix)
+    build_summary_matrix(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix, ws_matrix, occ_matrix)
 
     self
   end
@@ -47,7 +51,7 @@ class DashboardRtw < DashboardMetrics
   private
 
   # builds all data values except totals row
-  def build_summary_matrix(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix)
+  def build_summary_matrix(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix, ws_matrix, occ_matrix)
     # column 0 has assessment totals by nav
     a_column = a_matrix.column(0)
     e_column = e_matrix.column(0)
@@ -58,12 +62,18 @@ class DashboardRtw < DashboardMetrics
     # column 0 has ojt enrollment totals by trainee
     oe_column = oe_matrix.column(0)
 
+    ws_column = ws_matrix.column(0)
+    occ_column = occ_matrix.column(0)
+
     # now add a, e, p and oe columns and build a new matrix
     t_matrix.insert_column(a_column, 1, nil)
     t_matrix.insert_column(e_column, 2, nil)
 
     t_matrix.append_column(p_column)
     t_matrix.append_column(oe_column)
+
+    t_matrix.append_column(ws_column)
+    t_matrix.append_column(occ_column)
 
     t_matrix.prepend_column(column_headers)
 
@@ -73,21 +83,23 @@ class DashboardRtw < DashboardMetrics
   # each of the input array matrice will have sum row and sum columns
   # the element data starts from 1,1
   # for each fs, take the corresponding columns from each of the input matrix
-  def build_fs_matrices(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix)
+  def build_fs_matrices(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix, ws_matrix, occ_matrix)
     (0..funding_sources.count - 1).each do |i|
       trainees     = t_matrix.column(i + 1)
       assessed     = a_matrix.column(i + 1)
       edp          = e_matrix.column(i + 1)
       placed       = p_matrix.column(i + 1)
       ojt_enrolled = oe_matrix.column(i + 1)
+      ws_attended   = ws_matrix.column(i + 1)
+      occ_attended  = occ_matrix.column(i + 1)
       @metrics
         .fs_data[i]
-        .rows = build_fs_rows(trainees, assessed, edp, placed, ojt_enrolled)
+        .rows = build_fs_rows(trainees, assessed, edp, placed, ojt_enrolled, ws_attended, occ_attended)
     end
   end
 
-  def build_fs_rows(trainees, assessed, edp, placed, ojt_enrolled)
-    columns = [column_headers, trainees, assessed, edp, placed, ojt_enrolled]
+  def build_fs_rows(trainees, assessed, edp, placed, ojt_enrolled, ws_attended, occ_attended)
+    columns = [column_headers, trainees, assessed, edp, placed, ojt_enrolled, ws_attended, occ_attended]
     columns.transpose
   end
 
@@ -137,6 +149,25 @@ class DashboardRtw < DashboardMetrics
   def build_ojt_enrolled_counts_matrix
     enrolled_counts = ojt_enrolled_counts_group_by_nav_fs
     build_nav_fs_matrix(enrolled_counts, method(:ojt_enrolled_link))
+  end
+
+  def build_ws_counts_matrix
+    counts = KlassTrainee
+              .joins(trainee: :applicant, klass: :klass_category)
+              .where(klass_categories: { code: "WS" })
+              .group('applicants.navigator_id', 'trainees.funding_source_id')
+              .count
+
+    build_nav_fs_matrix(counts)
+  end
+
+  def build_occ_counts_matrix
+    counts = KlassTrainee
+              .joins(trainee: :applicant, klass: :klass_category)
+              .where.not(klass_categories: { code: "WS" })
+              .group('applicants.navigator_id', 'trainees.funding_source_id')
+              .count
+    build_nav_fs_matrix(counts)
   end
 
   def navigator_ids
