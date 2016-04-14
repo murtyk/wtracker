@@ -152,6 +152,7 @@ class Grant < ActiveRecord::Base
     sources = (applicant_sources.pluck(:source) + [applicant.source])
               .compact
               .uniq
+              .sort
 
     shift_other_to_end(sources)
   end
