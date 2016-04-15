@@ -190,7 +190,7 @@ WTracker::Application.routes.draw do
     end
   end
 
-  resources :users, except: [:destroy] do
+  resources :users do
     collection do
       get :online
       get :edit_password

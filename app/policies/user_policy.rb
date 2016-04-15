@@ -27,7 +27,7 @@ class UserPolicy < Struct.new(:user, :otheruser)
   end
 
   def destroy?
-    new?
+    user.director? && otheruser.deletable?
   end
 
   private
