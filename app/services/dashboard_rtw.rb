@@ -5,11 +5,6 @@ class DashboardRtw < DashboardMetrics
   include ActionView::Helpers::UrlHelper
   attr_reader :metrics
 
-# Trainees Placed OJT Enrolled WS OCC Assessed EDP
-
-#  RTW LWD Pending NC FS NA
-
-
   def initialize
     @template = 'applicants_metrics/index'
     @metrics = OpenStruct.new
@@ -27,9 +22,8 @@ class DashboardRtw < DashboardMetrics
     @metrics.fs_data = funding_sources.map do |id, name|
       os = OpenStruct.new
       os.id = id
-      os.header = [name, '# Trainees', '# Assessed',
-                   'EDP', 'Placed',  'OJT Enrolled',
-                   'WS', 'OCC']
+      os.header = [name, '# Trainees'] +
+                  ['Placed', 'OJT Enrolled', 'WS', 'OCC', '# Assessed', 'EDP'] +
 
       # [nav name, # trainees, fs1 count..., placed, ojt enrolled, attended WS, attended OCC]
       os.rows = []
@@ -70,7 +64,7 @@ class DashboardRtw < DashboardMetrics
     ws_column = ws_matrix.column(0)
     occ_column = occ_matrix.column(0)
 
-# Trainees Placed OJT Enrolled WS OCC Assessed EDP
+    # Trainees Placed OJT Enrolled WS OCC Assessed EDP
 
     # now add a, e, p and oe columns and build a new matrix
     t_matrix.insert_column(p_column, 1, nil)
@@ -106,7 +100,9 @@ class DashboardRtw < DashboardMetrics
   end
 
   def build_fs_rows(trainees, assessed, edp, placed, ojt_enrolled, ws_attended, occ_attended)
-    columns = [column_headers, trainees, assessed, edp, placed, ojt_enrolled, ws_attended, occ_attended]
+    # [headers, trainees, 'Placed', 'OJT Enrolled', 'WS', 'OCC', '# Assessed', 'EDP'] +
+
+    columns = [column_headers, trainees, placed, ojt_enrolled, ws_attended, occ_attended, assessed, edp]
     columns.transpose
   end
 
