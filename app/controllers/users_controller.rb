@@ -81,6 +81,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    authorize @user
+    @user.destroy
+
+    respond_to do |format|
+      format.html { redirect_to users_url }
+      format.js
+      format.json { head :no_content }
+    end
+  end
+
   private
 
   def valid_password

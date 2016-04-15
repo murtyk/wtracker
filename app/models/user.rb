@@ -162,6 +162,12 @@ class User < ActiveRecord::Base
     EmployerSourceService.employers(self)
   end
 
+  def deletable?
+    KlassNavigator.unscoped.where(user_id: id).count == 0 &&
+    GrantAdmin.unscoped.where(user_id: id).count == 0 &&
+    Applicant.unscoped.where(navigator_id: id).count == 0
+  end
+
   private
 
   def active_grants_of_navigator

@@ -26,7 +26,7 @@
 
 <tbody>
   <% @users.each do |user| %>
-    <tr>
+    <tr id='tr_<%=user.id%>'>
       <td>  <%= user.name %>     </td>
       <td>  <%= user.email %>    </td>
       <td>  <%= user.location %> </td>
@@ -41,6 +41,7 @@
       <td>
         <%= show_button(user) %>
         <%= edit_button(user) %>
+        <%= button_destroy_association(user) %>
       </td>
     </tr>
   <% end %>
