@@ -5,13 +5,18 @@ class DashboardRtw < DashboardMetrics
   include ActionView::Helpers::UrlHelper
   attr_reader :metrics
 
+# Trainees Placed OJT Enrolled WS OCC Assessed EDP
+
+#  RTW LWD Pending NC FS NA
+
+
   def initialize
     @template = 'applicants_metrics/index'
     @metrics = OpenStruct.new
-    @metrics.header = ['ALL', '# Trainees', '# Assessed', 'EDP'] +
-      fs_names +
-      ['Placed', 'OJT Enrolled'] +
-      ['WS', 'OCC']
+    @metrics.header =
+      ['ALL', '# Trainees'] +
+      ['Placed', 'OJT Enrolled', 'WS', 'OCC', '# Assessed', 'EDP'] +
+      fs_names
 
     init_metrics_for_funding_sources
   end
@@ -65,15 +70,17 @@ class DashboardRtw < DashboardMetrics
     ws_column = ws_matrix.column(0)
     occ_column = occ_matrix.column(0)
 
+# Trainees Placed OJT Enrolled WS OCC Assessed EDP
+
     # now add a, e, p and oe columns and build a new matrix
-    t_matrix.insert_column(a_column, 1, nil)
-    t_matrix.insert_column(e_column, 2, nil)
+    t_matrix.insert_column(p_column, 1, nil)
+    t_matrix.insert_column(oe_column,2, nil)
 
-    t_matrix.append_column(p_column)
-    t_matrix.append_column(oe_column)
+    t_matrix.insert_column(ws_column, 3, nil)
+    t_matrix.insert_column(occ_column, 4, nil)
 
-    t_matrix.append_column(ws_column)
-    t_matrix.append_column(occ_column)
+    t_matrix.insert_column(a_column, 5, nil)
+    t_matrix.insert_column(e_column, 6, nil)
 
     t_matrix.prepend_column(column_headers)
 
