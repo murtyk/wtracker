@@ -9,7 +9,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  $('.form-search').submit(function() {
+  $('#trainees-map-search').submit(function() {
     var klass_id, trainee_id, sector_id;
     klass_id = $('#filters_klass_id :selected').text();
     if (klass_id == 0 ){

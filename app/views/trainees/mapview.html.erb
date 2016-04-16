@@ -1,6 +1,11 @@
 <h1><%= "Trainees - Locations" %></h1>
 <div class = 'row-fluid filters-div'>
-  <%= simple_form_for :filters, method: :get, url: [:mapview, :trainees], html: { class: 'form-search', style: 'margin-bottom: 0px' } do |f| %>
+  <%= simple_form_for :filters,
+                      method: :get,
+                      url: [:mapview, :trainees],
+                      html: { class: 'form-search',
+                              id: 'trainees-map-search',
+                              style: 'margin-bottom: 0px' } do |f| %>
 
     Class
     <%= f.input_field :klass_id, collection: current_user.klasses_for_selection,
