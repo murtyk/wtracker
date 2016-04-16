@@ -63,6 +63,8 @@ function process_submit() {
   return false;
 }
 
+var job_info, job_ids;
+
 function trigger_klass_change(){
   console.log("in trigger_klass_change");
   job_info = $('#page_data').data('job-info');
@@ -75,6 +77,9 @@ function trigger_klass_change(){
 }
 
 function trigger_klass_map_change(){
+  job_info = $('#page_data').data('job-info');
+  job_ids = $('#page_data').data('job-ids');
+
   var klass_id = $('#select_klass_gmap :selected').val();
   if (klass_id > 0){
     $('#select_klass_gmap').change();

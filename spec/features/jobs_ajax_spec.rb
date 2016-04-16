@@ -67,7 +67,8 @@ describe 'Job Search' do
 
         page.within_window new_window do
           # save_and_open_page
-          select(klass_label, from: 'select_klass')
+
+          select(klass_label, from: 'select_klass_gmap')
           wait_for_ajax
           select('All', from: 'select_trainees')
           sleep 1
