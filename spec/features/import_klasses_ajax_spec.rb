@@ -19,6 +19,7 @@ describe 'Importer' do
       select('Bucks county community college', from: 'college_id')
       click_button 'Import'
       wait_for_ajax
+      visit '/import_statuses/' + ImportStatus.unscoped.last.id.to_s
       expect(page).to have_text 'Class A1'
       expect(page).to have_text 'Class B1'
     end
