@@ -21,6 +21,7 @@
 //= require ./companies_finders/main.js
 //= require ./job_searches/main.js
 //= require ./job_shares/main.js
+//= require ./klasses/main.js
 //= require ./klass_interactions/main.js
 //= require ./emails/main.js
 //= require ./reports/main.js

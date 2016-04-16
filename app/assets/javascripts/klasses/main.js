@@ -1,4 +1,4 @@
-$('#expandcollapse').click(function () {
+$(document).on('click', '#expandcollapse', function () {
   ind = $(this).text().search('Expand');
   if (ind > -1) {
     $('#accordion2').find('.collapse:not(.in)').each(function (index) {
@@ -14,7 +14,7 @@ $('#expandcollapse').click(function () {
   }
 });
 
-$('#trainees_more_info_show').click(function () {
+$(document).on('click', '#trainees_more_info_show', function () {
   var ind, div_id, klass_trainee_id, button_id;
   ind = $(this).text().search('Show More');
   if (ind > -1){
@@ -39,7 +39,7 @@ $('#trainees_more_info_show').click(function () {
   });
 });
 
-$('#klass_trainees').on('click', '.klass-trainee-info', function() {
+$(document).on('click', '#klass_trainees .klass-trainee-info', function() {
   var div_id, button_id, klass_trainee_id;
   button_id = $(this).attr('id');
   klass_trainee_id = button_id.split('_')[4];
@@ -54,7 +54,7 @@ $('#klass_trainees').on('click', '.klass-trainee-info', function() {
   }
 });
 
-$("#brief_calendar_table tr td").click(function(event) {
+$(document).on('click', "#brief_calendar_table tr td", function(event) {
   var event_id = $(this).attr('id');
   if (event_id != undefined){
     event_id = event_id.split('_')[2];
