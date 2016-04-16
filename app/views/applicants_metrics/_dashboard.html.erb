@@ -17,7 +17,7 @@
   <% fs_count = @data.metrics.fs_data.count %>
   <% columns_count = 8 + fs_count %>
   <tr style='border-left: none; border-right: none; border-bottom: none'>
-    <td colspan="<%= columns_count %>"></td>
+    <td style="background-color: lightBlue" colspan="<%= columns_count %>"></td>
   </tr>
   <% @data.metrics.fs_data.each do |fs_data| %>
     <tr>
@@ -35,7 +35,7 @@
       </tr>
     <% end %>
     <tr style='border-left: none; border-right: none; border-bottom: none'>
-      <td colspan="<%= columns_count %>"></td>
+      <td style="background-color: lightBlue" colspan="<%= columns_count %>"></td>
     </tr>
   <% end %>
 </table>

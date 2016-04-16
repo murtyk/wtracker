@@ -25,3 +25,4 @@
 //= require ./emails/main.js
 //= require ./reports/main.js
 //= require ./google_companies/main.js
+//= require ./trainees/main.js
