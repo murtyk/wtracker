@@ -74,7 +74,7 @@ describe 'Job Search' do
           sleep 1
           click_on 'Send'
           wait_for_ajax
-          10.times do
+          20.times do
             break if page.html.index('Shared Job Information')
             sleep 0.5
           end

@@ -34,7 +34,7 @@ describe 'Job Search' do
 
         click_on title1
 
-        within_window(windows.last) do
+        page.within_window(windows.last) do
           expect(page).to have_text details
         end
       end
