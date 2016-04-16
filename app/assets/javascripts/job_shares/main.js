@@ -34,6 +34,7 @@ function send_to_trainees(job_share_id, trainee_ids) {
     }
   }, 300);
 }
+
 function process_submit() {
   var count = $('#select_trainees option:selected').length;
   if (count == 0){
@@ -62,12 +63,6 @@ function process_submit() {
   return false;
 }
 
-$('#new_job_share').submit(function(e){
-  e.preventDefault();
-  process_submit();
-  return false;
-});
-
 function trigger_klass_change(){
   console.log("in trigger_klass_change");
   job_info = $('#page_data').data('job-info');
@@ -78,3 +73,75 @@ function trigger_klass_change(){
     $('#select_klass').change();
   }
 }
+
+function trigger_klass_map_change(){
+  var klass_id = $('#select_klass_gmap :selected').val();
+  if (klass_id > 0){
+    $('#select_klass_gmap').change();
+  }
+}
+
+var employer_marker, markers_array;
+function replaceMarkers(){
+  if (Gmaps.map) {
+    if (!employer_marker){
+      employer_marker = Gmaps.map.markers[0];
+    }
+    else{
+      markers_array = [];
+      markers_array[0] = employer_marker;
+      Gmaps.map.replaceMarkers(markers_array);
+      Gmaps.map.replaceMarkers([{"lat": employer_marker.lat, "lng": employer_marker.lng, "name": employer_marker.name, "title": employer_marker.title}]);
+    }
+  }
+}
+
+$(document).on('change', '#select_klass_gmap', function() {
+  console.log("new multiple select klass change");
+  var klass_id;
+
+  replaceMarkers();
+
+  klass_id = $('#select_klass_gmap :selected').val();
+  $.ajax({
+        url: "/klasses/" + klass_id + "/trainees?markers=true",
+        beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader('accept', "text/javascript");
+          }
+        });
+});
+
+$(document).on('change', '#select_klass', function() {
+  var klass_id = $('#select_klass :selected').val();
+  if (klass_id == ""){
+    $('#select_trainees').html('<option value=""></option>');
+  }
+  else{
+    jQuery.ajaxSetup({async:false});
+    $.ajax({
+          url: "/klasses/" + klass_id + "/trainees",
+          beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader('accept', "text/javascript");
+            }
+          });
+    jQuery.ajaxSetup({async:true});
+  }
+});
+
+$(document).ready(function() {
+  var trainee_id = $('.page_data').data('trainee-id');
+  $('#select_klass').change();
+  $('#select_klass_map').change();
+  if (trainee_id > 0){
+    $('#select_trainees').val(trainee_id);
+  }
+});
+
+$(document).ready(function () {
+  $('#new_job_share').submit(function(e){
+    e.preventDefault();
+    process_submit();
+    return false;
+  });
+});
+
