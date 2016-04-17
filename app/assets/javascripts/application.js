@@ -27,3 +27,4 @@
 //= require ./reports/main.js
 //= require ./google_companies/main.js
 //= require ./trainees/main.js
+//= require ./trainee_interactions/main.js
