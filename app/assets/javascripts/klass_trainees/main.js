@@ -1,5 +1,5 @@
 bind_datepicker();
-$('#klass_trainee_status').change(function(e) {
+$(document).on('change', '#klass_trainee_status', function(e) {
   var kt_id, ojt_enrolled;
   var status_id = $('#klass_trainee_status :selected').val();
   if (status_id == 4) {
@@ -20,7 +20,7 @@ $('#klass_trainee_status').change(function(e) {
   };
 });
 
-$("#button-getemployers").click(function(e){
+$(document).on('click', "#button-kt-getemployers", function(e){
   var name = $("#klass_trainee_employer_name").val();
   if (name.length < 1){
     alert("please enter at least 1 character");
@@ -34,16 +34,33 @@ $("#button-getemployers").click(function(e){
   e.preventDefault();
 });
 
-$("form.edit_klass_trainee").on('submit', function(e){
-  var status_id, employer_id;
-  status_id = $('#klass_trainee_status :selected').val();
-  if (status_id == 4) {
-    employer_id = $('#klass_trainee_employer_id :selected').val();
-    if (employer_id == 0) {
-      alert('Please select an employer.');
-      return false;
+$(document).ready(function(){
+  $("form.new_klass_trainee").on('submit', function(e){
+    var t_ids;
+    var klass_page = $('#page_data').data('klass-page');
+    console.log(klass_page);
+    if(klass_page != null){
+      t_ids = $('#klass_trainee_trainee_id :selected').text();
+      if (t_ids == ""){
+        alert("Please select trainees");
+        return false;
+      }
     }
-  }
+  });
+});
+
+$(document).ready(function(){
+  $("form.edit_klass_trainee").on('submit', function(e){
+    var status_id, employer_id;
+    status_id = $('#klass_trainee_status :selected').val();
+    if (status_id == 4) {
+      employer_id = $('#klass_trainee_employer_id :selected').val();
+      if (employer_id == 0) {
+        alert('Please select an employer.');
+        return false;
+      }
+    }
+  });
 });
 
 function has_open_placement(kt_id){
