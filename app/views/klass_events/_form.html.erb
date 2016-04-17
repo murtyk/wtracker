@@ -43,7 +43,8 @@
     </div>
   </div>
   <div class="span4">
-    <%= simple_form_for(klass_event) do |f| %>
+
+    <%= simple_form_for(klass_event, html: { class: "klass_event_form" }) do |f| %>
         <%= f.error_notification %>
         <div class="form-inputs">
           <%= f.hidden_field :klass_id %>
