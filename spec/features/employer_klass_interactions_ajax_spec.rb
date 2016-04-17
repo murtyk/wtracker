@@ -45,8 +45,8 @@ describe 'Employers' do
       expect(page).to have_text 'Confirmed'
 
       # can update
-      # employer = get_employers.first
-      # visit "/employers/#{employer.id}"
+      employer = get_employers.first
+      visit "/employers/#{employer.id}"
 
       employer = get_employers.first
       klass_interaction = employer.klass_interactions.first
