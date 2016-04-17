@@ -45,8 +45,8 @@ describe 'Employers' do
       expect(page).to have_text 'Confirmed'
 
       # can update
-      employer = get_employers.first
-      visit "/employers/#{employer.id}"
+      # employer = get_employers.first
+      # visit "/employers/#{employer.id}"
 
       employer = get_employers.first
       klass_interaction = employer.klass_interactions.first
@@ -88,7 +88,7 @@ describe 'Employers' do
         sleep 0.5
       end
 
-      expect(page).to_not have_text employer_name
+      expect(page.html.index(employer_name).nil?).to be_truthy
 
       destroy_klasses
       destroy_employers

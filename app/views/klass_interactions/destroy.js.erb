@@ -1,3 +1,2 @@
 $("#klass_interaction_<%=@klass_interaction.id%>").remove();
 $('#accordion2').html('<%= j render("klasses/klass_events", klass: @klass_interaction.klass.decorate)%>');
-$('#klass_interaction_<%=@klass_interaction.id%>').show();
