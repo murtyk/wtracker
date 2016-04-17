@@ -26,6 +26,8 @@ services:
 
 # ensure the test output and coverage dirs are created
 before_script:
+  - export PHANTOMJS_VERSION="2.1.1"
+  - \curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/phantomjs.sh | bash -s
   - mkdir -p shippable/testresults
   - mkdir -p shippable/codecoverage
   - mkdir -p shippable/capybara
