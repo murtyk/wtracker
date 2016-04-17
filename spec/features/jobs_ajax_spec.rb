@@ -78,7 +78,8 @@ describe 'Job Search' do
             break if page.html.index('Shared Job Information')
             sleep 0.5
           end
-          expect(page).to have_text 'Shared Job Information'
+
+          expect(!page.html.index('Shared Job Information').nil?).to be_truthy
         end
       end
     end
