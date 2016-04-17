@@ -5,7 +5,7 @@ $(document).ready(function(){
   });
 });
 
-$(document).on('click', "#button-getemployers", function(e){
+$(document).on('click', "#button-ke-getemployers", function(e){
 
   var sector_id = $('#sector_id :selected').val();
   var county_id = $('#county_id :selected').val();
