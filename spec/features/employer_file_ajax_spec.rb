@@ -49,10 +49,17 @@ describe 'EmployerFile', js: true do
       expect(page).to have_text 'COVER LETTER'
     end
   end
+
   describe 'can open and delete attachments' do
     before :each do
       signin_admin
       create_employers(1)
+
+      @filepath = cover_letter
+      allow(Amazon).to receive(:store_file).and_return('thisisawsfilename')
+      allow(Amazon).to receive(:file_url).and_return(@filepath)
+      allow(Amazon).to receive(:original_file_name).and_return('COVER LETTER.pdf')
+      allow(Amazon).to receive(:delete_file).and_return(nil)
     end
 
     after :each do
@@ -60,10 +67,6 @@ describe 'EmployerFile', js: true do
     end
 
     it 'opens and deletes file attachment' do
-      VCR.configure do |config|
-        config.allow_http_connections_when_no_cassette = true
-      end
-
       click_link 'new_employer_file_link'
 
       filepath = cover_letter

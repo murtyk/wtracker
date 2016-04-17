@@ -35,7 +35,7 @@ describe 'Job Search' do
         click_on title1
 
         page.within_window(windows.last) do
-          expect(page).to have_text details
+          expect(page.html.index(details) != nil).to be_truthy
         end
       end
     end
