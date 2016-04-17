@@ -38,7 +38,7 @@ $(document).on('click', "#add-selected-employers", function(){
 });
 
 $(document).on('click', "#remove-selected-employers", function(){
-   $("#klass_event_employer_ids option:selected").remove();
+  $("#klass_event_employer_ids option:selected").remove();
 });
 
 $(document).ready(function(){
