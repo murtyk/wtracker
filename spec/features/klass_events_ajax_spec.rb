@@ -93,6 +93,11 @@ describe 'Klass page' do
       click_link "edit_klass_event_link#{event.id}"
       wait_for_ajax
 
+      10.times do
+        break if page.first('.combobox-clear')
+        sleep 0.5
+      end
+
       page.first('.combobox-clear').click
       page.first('.add-on').click
       click_on 'Graduation'
