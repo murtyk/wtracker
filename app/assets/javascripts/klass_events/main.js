@@ -1,9 +1,11 @@
-$(".simple_form").submit(function(e){
-  $('#klass_event_employer_ids option').prop('selected', true);
-  return validateNewEvent();
+$(document).ready(function(){
+  $(".klass_event_form").submit(function(e){
+    $('#klass_event_employer_ids option').prop('selected', true);
+    return validateNewEvent();
+  });
 });
 
-$("#button-getemployers").click(function(e){
+$(document).on('click', "#button-ke-getemployers", function(e){
 
   var sector_id = $('#sector_id :selected').val();
   var county_id = $('#county_id :selected').val();
@@ -22,7 +24,7 @@ $("#button-getemployers").click(function(e){
 
 });
 
-$("#add-selected-employers").click(function(){
+$(document).on('click', "#add-selected-employers", function(){
   var str = '';
   var e_option;
    $( "#select_employers option:selected" ).each(function() {
@@ -35,8 +37,8 @@ $("#add-selected-employers").click(function(){
    // alert(str);
 });
 
-$("#remove-selected-employers").click(function(){
-   $("#klass_event_employer_ids option:selected").remove();
+$(document).on('click', "#remove-selected-employers", function(){
+  $("#klass_event_employer_ids option:selected").remove();
 });
 
 $(document).ready(function(){

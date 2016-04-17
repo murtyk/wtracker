@@ -10,6 +10,7 @@ $('#form_employers_search').submit(function() {
   }
   $('#submit-button').button('loading');
 });
+
 $('#help-button').click(function() {
   $('#helpModal').modal();
 });

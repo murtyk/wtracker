@@ -23,7 +23,12 @@ describe 'Report' do
       click_link "edit_klass_trainee_#{klass_trainee_ids[0]}_link"
       sleep 0.2
       select KlassTrainee::STATUSES[4], from: 'klass_trainee_status'
-      wait_for_ajax
+
+      10.times do
+        break if page.html.index("Employer Name")
+        sleep 1
+      end
+
       fill_in 'klass_trainee_employer_name', with: 'W'
       click_on 'Find'
       wait_for_ajax

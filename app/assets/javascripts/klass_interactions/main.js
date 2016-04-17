@@ -2,6 +2,16 @@ $(document).on('change', '#klass_interaction_klass_id', function(e){
   klass_interaction_klass_id_changed(e);
 });
 
+$(document).on('click', '#add_event', function(){
+  $('#new_klass_event').show();
+  $('#add_event').hide();
+});
+
+$(document).on('click', '#cancel_event', function(){
+  $('#new_klass_event').hide();
+  $('#add_event').show();
+});
+
 $(document).on('submit','form.new_klass_interaction',function(e){
   var valid_event = true,
       count = 0;

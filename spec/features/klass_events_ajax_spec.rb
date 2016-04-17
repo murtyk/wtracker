@@ -71,10 +71,10 @@ describe 'Klass page' do
       # save_screenshot('c:/temp/klasseventdelete')
       AlertConfirmer.accept_confirm_from do
         click_link "destroy_klass_event_link#{klass_event.id}"
-        sleep 0.1
-
       end
+
       wait_for_ajax
+
       visit("/klasses/#{klass_ids[0]}")
       click_on 'Expand All'
       expect(page).to_not have_text klass_event_name
@@ -92,6 +92,11 @@ describe 'Klass page' do
 
       click_link "edit_klass_event_link#{event.id}"
       wait_for_ajax
+
+      10.times do
+        break if page.first('.combobox-clear')
+        sleep 0.5
+      end
 
       page.first('.combobox-clear').click
       page.first('.add-on').click

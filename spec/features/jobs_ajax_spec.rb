@@ -67,13 +67,14 @@ describe 'Job Search' do
 
         page.within_window new_window do
           # save_and_open_page
-          select(klass_label, from: 'select_klass')
+
+          select(klass_label, from: 'select_klass_gmap')
           wait_for_ajax
           select('All', from: 'select_trainees')
           sleep 1
           click_on 'Send'
           wait_for_ajax
-          10.times do
+          20.times do
             break if page.html.index('Shared Job Information')
             sleep 0.5
           end

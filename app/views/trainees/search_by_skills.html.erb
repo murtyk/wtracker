@@ -1,6 +1,11 @@
 <h1><%= "Trainees - Search by Skills" %></h1>
 <div class = 'row-fluid filters-div'>
-  <%= simple_form_for :filters, method: :get, url: [:search_by_skills, :trainees], html: { class: 'form-search', style: 'margin-bottom: 0px' } do |f| %>
+  <%= simple_form_for :filters,
+                      method: :get,
+                      url: [:search_by_skills, :trainees],
+                      html: { class: 'form-search-skills',
+                              id: 'skills_search_form',
+                              style: 'margin-bottom: 0px' } do |f| %>
 
     Skills
     <%= f.input_field :skills, style: 'width: 350px', value: params[:filters] && params[:filters][:skills] %>
@@ -28,7 +33,8 @@
     </div>
     <div class='span4' style='background-color: #eee; padding:10px'>
       <b>Send Email(BCC) to:</b><br> <%= @trainee_email.trainee_names.join(';') %><hr>
-      <%= simple_form_for @trainee_email do |f| %>
+      <%= simple_form_for @trainee_email,
+                          html: { id: 'trainee_skills_email_form'} do |f| %>
         <%= f.hidden_field :use_job_leads_email, value: true %>
         <%= f.hidden_field :klass_id %>
         <%= f.hidden_field :trainee_ids %>

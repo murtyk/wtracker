@@ -20,7 +20,7 @@
         <%= f.hidden_field :from_id %>
         <%= f.input :klass_id, label: 'Select a Class',
                                collection: current_user.klasses_for_selection,
-                               input_html: { id: 'select_klass',
+                               input_html: { id: 'select_klass_gmap',
                                              style: 'width: 90%;' } %>
         <%= f.input :to_ids, label: "Select Trainees",
                              collection: [],
@@ -48,5 +48,5 @@
 <%= content_tag :div, id: "page_data",
                       data: { job_info: @job_share.to_json,
                               job_ids: @job_share.job_ids,
-                              window_load_function: "trigger_klass_change" } do %>
+                              window_load_function: "trigger_klass_map_change" } do %>
 <% end %>

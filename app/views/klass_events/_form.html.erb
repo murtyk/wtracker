@@ -18,7 +18,7 @@
   <strong>Name starting with</strong>
   <%= text_field_tag :name, nil, style: 'margin-top:10px; max-width: 75px;' %>
 
-  <button type = "button" id="button-getemployers"
+  <button type = "button" id="button-ke-getemployers"
                           class="btn btn-flat btn-primary"
                           style = 'margin-left: 0px'>
     <i class="icon-search icon-white"></i> Find
@@ -43,7 +43,8 @@
     </div>
   </div>
   <div class="span4">
-    <%= simple_form_for(klass_event) do |f| %>
+
+    <%= simple_form_for(klass_event, html: { class: "klass_event_form" }) do |f| %>
         <%= f.error_notification %>
         <div class="form-inputs">
           <%= f.hidden_field :klass_id %>
