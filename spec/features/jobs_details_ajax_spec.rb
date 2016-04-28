@@ -35,6 +35,12 @@ describe 'Job Search' do
         click_on title1
 
         page.within_window(windows.last) do
+
+          10.times do
+            break if page.html.index(details)
+            sleep 0.5
+          end
+
           expect(page.html.index(details) != nil).to be_truthy
         end
       end

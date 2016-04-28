@@ -10,7 +10,7 @@ describe 'Employers' do
       # signout
     end
 
-    it 'can add class interactions' do
+    xit 'can add class interactions' do
       destroy_klasses
       destroy_employers
       create_klasses(1)
@@ -85,10 +85,10 @@ describe 'Employers' do
 
       20.times do
         break unless page.html.index(employer_name)
-        sleep 0.5
+        sleep 0.1
       end
 
-      expect(page).to_not have_text employer_name
+      expect(page.html.index(employer_name).nil?).to be_truthy
 
       destroy_klasses
       destroy_employers
