@@ -20,6 +20,12 @@
     <%= f.input :ti_status, collection: trainee_interaction_statuses,
                             include_blank: false,
                             label: 'OJT Status' %>
+
+    <%= f.input :uses_trained_skills,
+                         label: "Uses skills learned in training",
+                         collection: ["Yes", "No", "Don't Know"],
+                         include_blank: false %>
+
     <%= f.input :start_date, as: :string,
                              input_html: { class: 'date',
                                            data: { behaviour: "datepicker" },
