@@ -55,6 +55,7 @@ class KlassTraineeFactory
     ei.hire_salary = params[:hire_salary]
     ei.comment     = params[:comment]
     ei.status      = params[:ti_status]
+    ei.uses_trained_skills = params[:uses_trained_skills]
   end
 
   def self.clear_ti_attrs_from_params(params)

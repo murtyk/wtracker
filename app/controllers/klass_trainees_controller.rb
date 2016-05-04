@@ -70,6 +70,6 @@ class KlassTraineesController < ApplicationController
       .permit(:status, :notes, :employer_id, :employer_id,
               :start_date, :completion_date,
               :hire_title, :hire_salary, :comment,
-              :ti_status)
+              :ti_status, :uses_trained_skills)
   end
 end
