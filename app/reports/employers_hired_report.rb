@@ -36,11 +36,11 @@ class EmployersHiredReport < Report
     if all_trainees
       return TraineeInteraction.joins(:trainee)
         .includes(employer: :address)
-        .where(status: status_ids, termination_date: nil).to_a
+        .where(status: status_ids).to_a
     end
     TraineeInteraction.joins(trainee: :klasses)
       .includes(employer: :address)
-      .where(status: status_ids, termination_date: nil, klasses: { id: klass_ids }).to_a
+      .where(status: status_ids, klasses: { id: klass_ids }).to_a
   end
 
   def status_collection
