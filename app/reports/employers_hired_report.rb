@@ -34,13 +34,20 @@ class EmployersHiredReport < Report
     status_ids = [4, 5, 6] if status == 1
     status_ids ||= [4, 6]
     if all_trainees
-      return TraineeInteraction.joins(:trainee)
+
+      ti_ids = TraineeInteraction.joins(:trainee)
         .includes(employer: :address)
-        .where(status: status_ids).to_a
+        .where(status: status_ids).pluck(:id)
+    else
+      ti_ids = TraineeInteraction.joins(trainee: :klasses)
+        .includes(employer: :address)
+        .where(status: status_ids, klasses: { id: klass_ids })
     end
-    TraineeInteraction.joins(trainee: :klasses)
+
+    TraineeInteraction
+      .includes(trainee: :klasses)
       .includes(employer: :address)
-      .where(status: status_ids, klasses: { id: klass_ids }).to_a
+      .where(id: ti_ids).to_a
   end
 
   def status_collection
