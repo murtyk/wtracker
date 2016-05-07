@@ -122,7 +122,15 @@ class Trainee < ActiveRecord::Base
   end
 
   def init
-    self.trainee_id  ||= ''
+    if Rails.env.development? || Rails.env.test?
+      begin
+        self.trainee_id  ||= ''
+      rescue => error
+        self.trainee_id = ''
+      end
+    else
+      self.trainee_id  ||= ''
+    end
     if new_record? && !(grant && grant.trainee_applications?)
       self.password              ||= 'password'
       self.password_confirmation ||= 'password'

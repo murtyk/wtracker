@@ -19,3 +19,11 @@ bundle exec rake testprep:load_data
 Deployment
 
 1. staging: merge into staging branch
+
+=====================================
+local db to heroku:
+
+1. dump:
+
+PGPASSWORD=railsdev pg_dump -Fc --no-acl --no-owner -h localhost -U railsdev wtracker_dev > wtracker_dev.dump
+

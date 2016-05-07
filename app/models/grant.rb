@@ -72,10 +72,14 @@ class Grant < ActiveRecord::Base
 
   has_many :applicants
   has_many :applicant_reapplies
-  has_many :employment_statuses
-  has_many :applicant_sources
+  has_many :employment_statuses, dependent: :destroy
+  has_many :applicant_sources, dependent: :destroy
 
-  has_many :grant_job_lead_counts
+  has_many :grant_admins, dependent: :destroy
+  has_many :klass_categories, dependent: :destroy
+  has_many :certificate_categories, dependent: :destroy
+
+  has_many :grant_job_lead_counts, dependent: :destroy
 
   before_save :save_options
 
