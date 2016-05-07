@@ -12,12 +12,24 @@ namespace :auto_shared_jobs do
     jobs = AutoSharedJob.where("created_at < ?", old_date)
     puts "Deleting #{jobs.count} leads that older than #{old_date.to_s}"
 
+    return unless jobs.any?
+
     batch = 1
 
-    jobs.find_in_batches do |group|
-      puts "Batch #{batch} - #{group.count}"
-      group.each(&:destroy)
+    last_id = jobs.order(:id).last.id
+    first_id = jobs.order(:id).first.id
+
+    pos = first_id + 10000
+
+    while true do
+      leads = jobs.where("id <= ?", pos)
+      puts "Batch #{batch} - #{leads.count}"
+      leads.destroy_all
       batch += 1
+
+      break pos > last_id
+
+      pos += 10000
     end
 
     puts "Current jobs count = #{AutoSharedJob.count}"
