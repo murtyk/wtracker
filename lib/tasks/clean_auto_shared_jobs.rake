@@ -27,7 +27,7 @@ namespace :auto_shared_jobs do
       leads.destroy_all
       batch += 1
 
-      break pos > last_id
+      break if pos > last_id
 
       pos += 10000
     end
