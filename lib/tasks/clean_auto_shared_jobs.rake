@@ -11,7 +11,14 @@ namespace :auto_shared_jobs do
     old_date = 2.months.ago
     jobs = AutoSharedJob.where("created_at < ?", old_date)
     puts "Deleting #{jobs.count} leads that older than #{old_date.to_s}"
-    jobs.destroy_all
+
+    batch = 1
+
+    jobs.find_in_batches do |group|
+      puts "Batch #{batch} - #{group.count}"
+      group.destroy_all
+      batch += 1
+    end
 
     puts "Current jobs count = #{AutoSharedJob.count}"
   end
