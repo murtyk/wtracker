@@ -8,7 +8,7 @@ namespace :auto_shared_jobs do
   end
 
   def destroy_old_auto_shared_jobs
-    old_date = 2.months.ago
+    old_date = 1.month.ago
     jobs = AutoSharedJob.where("created_at < ?", old_date)
     puts "Deleting #{jobs.count} leads that older than #{old_date.to_s}"
 
