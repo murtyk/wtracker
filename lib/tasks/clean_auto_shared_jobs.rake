@@ -16,7 +16,7 @@ namespace :auto_shared_jobs do
 
     jobs.find_in_batches do |group|
       puts "Batch #{batch} - #{group.count}"
-      group.destroy_all
+      group.each(&:destroy)
       batch += 1
     end
 
