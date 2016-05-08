@@ -94,10 +94,11 @@ class Amazon
     obj.exists?
   end
 
-    private
+  private
 
   def aws_bucket
-    'managee2e-' + Rails.env
+    prefix = ENV['AWS_BUCKET_PREFIX'] || 'managee2e'
+    prefix + "-" + Rails.env
   end
 
   def aws_bucket_deleted
