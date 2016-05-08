@@ -27,3 +27,12 @@ local db to heroku:
 
 PGPASSWORD=railsdev pg_dump -Fc --no-acl --no-owner -h localhost -U railsdev wtracker_dev > wtracker_dev.dump
 
+2. upload to dropbox
+
+  link: https://www.dropbox.com/s/64agii2hlscf41v/wtracker_dev.dump?dl=0
+
+3.
+
+heroku pg:backups restore 'https://www.dropbox.com/s/64agii2hlscf41v/wtracker_dev.dump?dl=0' DATABASE_URL -a localtalenusa
+
+* Last time I tried it gave an error
