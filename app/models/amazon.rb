@@ -19,6 +19,9 @@ class Amazon
     check_trash_bucket
     o = bucket.objects[aws_file]
     o.move_to(o.key, bucket_name: aws_bucket_deleted)
+
+  rescue
+    Rails.logger.error "AWD Delete failed for #{aws_bucket}/#{aws_file}"
   end
 
   def file_url(aws_file_name)
