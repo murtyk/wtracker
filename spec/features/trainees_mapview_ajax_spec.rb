@@ -23,7 +23,7 @@ describe 'Trainees' do
         klass.trainees.each { |t| address_count += 1 if t.home_address }
 
         result = 0
-        5.times do
+        10.times do
           result = page.evaluate_script('Gmaps.map.markers.length')
           break if result > 0
           sleep 0.5

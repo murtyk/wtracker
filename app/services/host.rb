@@ -28,8 +28,12 @@ class Host
       when 'development' then 'localhost.com:3000'
       when 'test'        then 'localhost.com:3000'
       when 'staging'     then 'herokuapp.com'
-      when 'production'  then 'managee2e.com'
+      when 'production'  then "#{domain}.com"
       end
+    end
+
+    def domain
+      ENV['DOMAIN']
     end
   end
 end
