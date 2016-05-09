@@ -1,6 +1,6 @@
 <div class = 'footer'>
   Powered By
-  <a href='http://www.operoinc.com'>Opero Technologies LLC</a>
+  <a href= "http://<%= ENV['COMPANY_WEB_ADDRESS'] %>"><%= ENV['COMPANY_NAME'] %></a>
   <current_year></current_year><sup>&copy;</sup>
 </div>
 <%= yield :scripts %>

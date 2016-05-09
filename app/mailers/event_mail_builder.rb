@@ -60,7 +60,7 @@ class EventMailBuilder
 
   def build_from_email
     @from_email = "#{@user.name}<#{@user.email}>" if @user
-    @from_email ||= 'Support<managee2e@operoinc.com>'
+    @from_email ||= "Support<#{ENV['SUPPORT_FROM_EMAIL']}>"
   end
 
   def build_ical_event
@@ -70,7 +70,7 @@ class EventMailBuilder
     assign_ical_event_description
 
     @ical_event.summary   = klass_event.name
-    @ical_event.organizer = 'donotreply@operoinc.com'
+    @ical_event.organizer = ENV['DO_NOT_REPLY_EMAIL']
     @ical_event.klass     = 'PRIVATE'
     @ical_event.uid       = klass_event.uid
     @ical_event.sequence  = klass_event.sequence

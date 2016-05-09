@@ -8,7 +8,7 @@
 
 Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each { |seed| load seed }
 
-Admin.create(email: 'managee2e@operoinc.com', password: 'helpjobseeker', password_confirmation: 'helpjobseeker')
+Admin.create(email: 'wtracker@wtracker.com', password: 'password', password_confirmation: 'password')
 Account.create(name: 'operotest', description: 'Application Account Reserved', client_type: 1, status: 1, subdomain: 'operotest', logo_file: "")
 account = Account.create(name: 'operostaging', description: 'Application Account Reserved', client_type: 1, status: 1, subdomain: 'operostaging', logo_file: "")
 grant1 = account.grants.create!(name: 'Grant 1', start_date: 'Jan 1, 2012', end_date: 'Dec 31, 2015', status: 2, spots: 100, amount: 5000000)

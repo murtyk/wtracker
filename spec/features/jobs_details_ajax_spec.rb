@@ -40,7 +40,7 @@ describe 'Job Search' do
             break if page.html.index(details)
             sleep 0.5
           end
-
+debugger
           expect(page.html.index(details) != nil).to be_truthy
         end
       end

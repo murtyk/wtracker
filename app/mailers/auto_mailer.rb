@@ -139,10 +139,10 @@ class AutoMailer < ActionMailer::Base
   end
 
   def from_job_leads
-    'JobLeads<jobleads@operoinc.com>'
+    "JobLeads<ENV['JOB_LEADS_EMAIL']>"
   end
 
   def support_email
-    'support@operoinc.com'
+    ENV['SUPPORT_FROM_EMAIL']
   end
 end

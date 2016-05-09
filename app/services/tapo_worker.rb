@@ -45,7 +45,7 @@ class TapoWorker
   end
 
   def credentials
-    email = 'admin@operoinc.com'
+    email = ENV['ADMIN_EMAIL_ADDRESS']
     password = ENV['OPERO_API_PASSWORD']
     "session[email]=#{email}&session[password]=#{password}"
   end

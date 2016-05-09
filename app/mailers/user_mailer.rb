@@ -102,7 +102,7 @@ class UserMailer < ActionMailer::Base
     docs.each { |k, v| attachments[k] = v } if docs
     mail(to: user.email,
          subject: subject,
-         from: 'OPERO<support@operoinc.com>') do |format|
+         from: "Support<ENV['SUPPORT_FROM_EMAIL']>") do |format|
            format.html { render inline: body }
          end
   end

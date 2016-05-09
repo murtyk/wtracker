@@ -6,7 +6,7 @@ class EmailSettings
     tls: false,
     address: 'server201.web-hosting.com',
     port: 465,
-    domain: 'operoinc.com',
+    domain: "#{ENV['DOMAIN']}.com",
     authentication: :login,
     user_name: ENV['AUTOLEAD_EMAIL_USERNAME'],
     password: ENV['AUTOLEAD_EMAIL_PASSWORD']
@@ -16,7 +16,7 @@ class EmailSettings
     enable_starttls_auto: true,
     address: 'smtp.gmail.com',
     port: 587,
-    domain: 'opero.com',
+    domain: 'wtracker.com',
     authentication: :login,
     user_name: ENV['GMAIL_USER_NAME'],
     password: ENV['GMAIL_PASSWORD']

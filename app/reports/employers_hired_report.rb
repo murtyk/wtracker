@@ -41,7 +41,7 @@ class EmployersHiredReport < Report
     else
       ti_ids = TraineeInteraction.joins(trainee: :klasses)
         .includes(employer: :address)
-        .where(status: status_ids, klasses: { id: klass_ids })
+        .where(status: status_ids, klasses: { id: klass_ids }).pluck(:id)
     end
 
     TraineeInteraction

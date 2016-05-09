@@ -97,7 +97,8 @@ class Amazon
   private
 
   def aws_bucket
-    prefix = ENV['AWS_BUCKET_PREFIX'] || 'managee2e'
+    prefix = ENV['AWS_BUCKET_PREFIX']
+    raise "AWS_BUCKET_PREFIX not defined" unless prefix
     prefix + "-" + Rails.env
   end
 

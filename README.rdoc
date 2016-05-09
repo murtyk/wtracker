@@ -36,3 +36,7 @@ PGPASSWORD=railsdev pg_dump -Fc --no-acl --no-owner -h localhost -U railsdev wtr
 heroku pg:backups restore 'https://www.dropbox.com/s/64agii2hlscf41v/wtracker_dev.dump?dl=0' DATABASE_URL -a localtalenusa
 
 * Last time I tried it gave an error
+
+
+
+========================================
