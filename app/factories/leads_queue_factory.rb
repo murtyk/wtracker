@@ -97,7 +97,7 @@ class LeadsQueueFactory
 
   def init_grant_data(grant)
     @email_attributes = {
-      email_from:     "JobLeads<ENV['JOB_LEADS_EMAIL']>",
+      email_from:     "JobLeads<#{ENV['JOB_LEADS_EMAIL']}>",
       email_reply_to: grant.reply_to_email || grant.account.director.email,
       email_subject:  grant.job_leads_subject.content
     }
