@@ -74,7 +74,7 @@ class ApplicantMailer < ActionMailer::Base
   end
 
   def from_job_leads
-    "JobLeads<ENV['JOB_LEADS_EMAIL']>"
+    "JobLeads<#{ENV['JOB_LEADS_EMAIL']}>"
   end
 
   def support_email
