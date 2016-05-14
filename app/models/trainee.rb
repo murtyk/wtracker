@@ -113,7 +113,7 @@ class Trainee < ActiveRecord::Base
   has_one :agent, as: :identifiable, dependent: :destroy
   has_one :leads_queue, dependent: :destroy
 
-  has_many :trainee_auto_lead_statuses, dependent: :destroy
+  has_one :trainee_auto_lead_status, dependent: :destroy
 
   after_initialize :init
 
