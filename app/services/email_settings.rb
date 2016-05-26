@@ -1,11 +1,9 @@
 # email settings from trainees and users
 class EmailSettings
   JOB_LEADS_SETTINGS = {
-    enable_starttls_auto: false,
-    ssl: true,
-    tls: false,
-    address: 'server201.web-hosting.com',
-    port: 465,
+    enable_starttls_auto: true,
+    address: 'smtp.gmail.com',
+    port: 587,
     domain: "#{ENV['DOMAIN']}.com",
     authentication: :login,
     user_name: ENV['AUTOLEAD_EMAIL_USERNAME'],
