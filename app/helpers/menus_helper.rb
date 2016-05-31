@@ -370,8 +370,8 @@ module MenusHelper
 
   def jobs_menu
     return unless policy(JobSearch).new?
-    items = search_jobs_menu + shared_jobs_list_menu + job_leads_status_menu +
-            divider_menu + hot_jobs_menu
+    items = search_jobs_menu + shared_jobs_list_menu + job_leads_status_menu
+            # + divider_menu + hot_jobs_menu
     build_dropdown_menu('Jobs', items)
   end
 
