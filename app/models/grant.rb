@@ -87,6 +87,10 @@ class Grant < ActiveRecord::Base
 
   delegate :name, to: :account, prefix: true
 
+  def self.current_grant
+    current_id && find(current_id)
+  end
+
   def initialize_option_accessors
     self.options ||= {}
     @auto_job_leads       = options[:auto_job_leads] || false

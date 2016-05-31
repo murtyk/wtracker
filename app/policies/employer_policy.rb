@@ -14,6 +14,7 @@ class EmployerPolicy < Struct.new(:user, :employer)
 
   def edit?
     return true if user.admin_access?
+    return true if Grant.current_grant.scoped_employers
     user.employer_sources.include? (employer.employer_source)
   end
 
