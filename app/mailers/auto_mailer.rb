@@ -18,7 +18,7 @@ class AutoMailer < ActionMailer::Base
     Rails.logger.info "sent job search profile request to #{trainee.name}"
   end
 
-  def send_job_leads(auto_shared_jobs)
+  def send_job_leads(auto_shared_jobs, lead_number)
     return if auto_shared_jobs.blank?
 
     trainee_id = auto_shared_jobs.first.trainee_id
@@ -28,7 +28,7 @@ class AutoMailer < ActionMailer::Base
                 TraineeEmailTextBuilder.new(trainee)
                 .job_leads_email_attrs(auto_shared_jobs)
 
-    inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
+    inline_email(from_job_leads, to_email, reply_to_email, subject, body_text, lead_number)
 
     log_entry "sent job leads email to #{to_email} : #{auto_shared_jobs.count}"
   end
@@ -91,8 +91,14 @@ class AutoMailer < ActionMailer::Base
       auto_leads_status_body(status)
   end
 
-  def inline_email(f_email, t_email, r_email, subject, body)
-    use_job_leads_email
+  def inline_email(f_email, t_email, r_email, subject, body, lead_number = 1)
+    if ENV['AUTOLEAD_EXTRA_FROM_EMAILS']
+      from_email_num = 1 + lead_number % (ENV['AUTOLEAD_EXTRA_FROM_EMAILS'].to_i + 1)
+    else
+      from_email_num = 1
+    end
+
+    use_job_leads_email(from_email_num)
     wait_a_bit
 
     atrs = { from: f_email, to: t_email, reply_to: r_email, subject: subject }
