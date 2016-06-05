@@ -7,9 +7,11 @@
 class AutoJobLeads
   include ActiveSupport
   attr_accessor :statuses
+  attr_reader :lead_number
 
   def initialize
     @statuses = []
+    @lead_number = 1
   end
 
   def perform
@@ -163,13 +165,19 @@ class AutoJobLeads
   def send_jobs(trainee, jobs)
     last_posted_date = trainee.auto_shared_jobs.maximum(:date_posted)
     leads_to_be_sent = []
+
     jobs.each do |job|
       if !last_posted_date || job.date_posted > last_posted_date
         new_lead = trainee.auto_shared_jobs.create_from_job(job, trainee)
         leads_to_be_sent << new_lead
       end
     end
-    AutoMailer.send_job_leads(leads_to_be_sent).deliver_now
+
+    if leads_to_be_sent.any?
+      AutoMailer.send_job_leads(leads_to_be_sent, lead_number).deliver_now
+      @lead_number += 1
+    end
+
     leads_to_be_sent.count
   end
 
