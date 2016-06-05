@@ -92,11 +92,7 @@ class AutoMailer < ActionMailer::Base
   end
 
   def inline_email(f_email, t_email, r_email, subject, body, lead_number = 1)
-    if ENV['AUTOLEAD_EXTRA_FROM_EMAILS']
-      from_email_num = 1 + lead_number % (ENV['AUTOLEAD_EXTRA_FROM_EMAILS'].to_i + 1)
-    else
-      from_email_num = 1
-    end
+    from_email_num = from_email_number(lead_number)
 
     use_job_leads_email(from_email_num)
     wait_a_bit
@@ -105,6 +101,14 @@ class AutoMailer < ActionMailer::Base
     mail(atrs) { |format| format.html { render inline: body } }
 
     use_standard_email
+  end
+
+  def from_email_number(lead_number)
+    extras = ENV['AUTOLEAD_EXTRA_FROM_EMAILS'].to_i
+
+    return 1 if extras == 0
+
+    1 + lead_number % (extras + 1)
   end
 
   def auto_leads_status_body(status)

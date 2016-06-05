@@ -23,13 +23,17 @@ class EmailSettings
   class << self
 
   def use_job_leads_email(num = 1)
-    if num < 2 || extra_leads_emails_count == 0
-      return ActionMailer::Base.smtp_settings = JOB_LEADS_SETTINGS
-    end
-
-    from_email = leads_extra_emails_list[num - 2] # extra emails start when num >= 2
+    from_email = job_leads_from_email(num)
 
     ActionMailer::Base.smtp_settings = JOB_LEADS_SETTINGS.merge(user_name: from_email)
+  end
+
+  def job_leads_from_email(num)
+    if num < 2 || extra_leads_emails_count == 0
+      return ENV['AUTOLEAD_EMAIL_USERNAME']
+    end
+
+    leads_extra_emails_list[num - 2] # extra emails start when num >= 2
   end
 
   def use_standard_email
