@@ -8,7 +8,8 @@ class KlassPolicy < Struct.new(:user, :klass)
   end
 
   def new?
-    user.admin_access?
+    user.admin_access? ||
+    (user.navigator? && Grant.current_grant.navigators_can_create_klasses)
   end
 
   def create?
