@@ -1,6 +1,7 @@
 class ProgramPolicy < Struct.new(:user, :program)
   def new?
-    user.admin_access?
+    user.admin_access? ||
+    (user.navigator? && Grant.current_grant.navigators_can_create_klasses)
   end
 
   def create?
