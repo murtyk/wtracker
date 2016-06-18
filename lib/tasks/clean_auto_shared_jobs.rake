@@ -1,13 +1,36 @@
 namespace :auto_shared_jobs do
   desc <<-DESC
     deletes auto shared jobs older than 2 months
+    uses delete_all (not destroy_all) since there no dependencies that need to be deleted
     Run using the command 'rake auto_shared_jobs:clean'
   DESC
   task clean: :environment do
-    destroy_old_auto_shared_jobs
+    delete_old_auto_shared_jobs
   end
 
-  def destroy_old_auto_shared_jobs
+  desc <<-DESC
+    deletes all auto shared jobs
+    uses delete_all (not destroy_all) since there no dependencies that need to be deleted
+    Run using the command 'rake auto_shared_jobs:clean_all'
+  DESC
+  task clean_all: :environment do
+    puts "Total Job Leads in DB: #{AutoSharedJob.count}"
+
+    while true
+      leads = AutoSharedJob.limit(5000)
+      if leads.count == 0
+        puts "done."
+        break;
+      end
+
+      puts "Deleting #{leads.count}..."
+      leads.each(&:delete)
+    end
+
+    puts "Current jobs count = #{AutoSharedJob.count}"
+  end
+
+  def delete_old_auto_shared_jobs
     old_date = 1.month.ago
     jobs = AutoSharedJob.where("created_at < ?", old_date)
     puts "Deleting #{jobs.count} leads that older than #{old_date.to_s}"
@@ -24,7 +47,7 @@ namespace :auto_shared_jobs do
     while true do
       leads = jobs.where("id <= ?", pos)
       puts "Batch #{batch} - #{leads.count}"
-      leads.destroy_all
+      leads.each(&:delete)
       batch += 1
 
       break if pos > last_id
