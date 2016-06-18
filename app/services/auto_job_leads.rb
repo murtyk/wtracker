@@ -109,7 +109,7 @@ class AutoJobLeads
     sleep((1 + rand * 10).round)
   rescue StandardError => error
     msg = "AutoJobLeads: Trainee #{trainee.name} " \
-          "ID: #{trainee.id} EXCEPTION: #{error}"
+          "ID: #{trainee.id} EXCEPTION: #{error}\n" +  error.backtrace.join("\n")
     Rails.logger.error msg
   end
 

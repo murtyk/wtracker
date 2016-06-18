@@ -18,7 +18,7 @@ class AutoMailer < ActionMailer::Base
     Rails.logger.info "sent job search profile request to #{trainee.name}"
   end
 
-  def send_job_leads(auto_shared_jobs, lead_number)
+  def send_job_leads(auto_shared_jobs, lead_number = 1)
     return if auto_shared_jobs.blank?
 
     trainee_id = auto_shared_jobs.first.trainee_id
@@ -104,6 +104,8 @@ class AutoMailer < ActionMailer::Base
   end
 
   def from_email_number(lead_number)
+    return 1 if lead_number.to_i < 2
+
     extras = ENV['AUTOLEAD_EXTRA_FROM_EMAILS'].to_i
 
     return 1 if extras == 0
