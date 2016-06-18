@@ -36,7 +36,7 @@ class JobSearchProfileJob
     attrs[:account_id] = trainee.account_id unless jsp
 
     jsp.update(attrs) if jsp
-    trainee.create_job_search_profile(attrs) unless jsp
+    jsp = trainee.create_job_search_profile(attrs) unless jsp
 
     Rails.logger.info "AutoJobLeads: created(updated) jsp for #{trainee.name}"
   end
@@ -55,9 +55,14 @@ class JobSearchProfileJob
     {
       skills:   a.skills,
       location: location,
-      zip:      trainee.home_address.zip,
+      zip:      cleaned_zip(trainee.home_address.zip),
       distance: 20
     }
+  end
+
+  def cleaned_zip(z)
+    return "" unless z.size > 4
+    z
   end
 
   def trainee_location(trainee)

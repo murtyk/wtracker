@@ -33,7 +33,7 @@ class County < ActiveRecord::Base
     return [] if name.blank? && !state
 
     counties = state ? state.counties : all
-    counties = counties.where('name ilike ?', name + '%') unless name.blank?
+    counties = counties.where("name ilike ?", name + '%') unless name.blank?
     counties.order(:name)
   end
 
