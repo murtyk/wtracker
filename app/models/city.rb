@@ -23,7 +23,7 @@ class City < ActiveRecord::Base
     return [] if state_id.to_i == 0 && name.blank?
     cities = City
     cities = cities.where(state_id: state_id) if state_id.to_i > 0
-    name.blank? ? cities : cities.where('name ilike ?', name + '%')
+    name.blank? ? cities : cities.where("name ilike ?", name + '%')
   end
 
   def self.find_by_citystate(city_comma_state)

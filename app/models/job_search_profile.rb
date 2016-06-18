@@ -28,7 +28,7 @@ class JobSearchProfile < ActiveRecord::Base
   delegate :name, to: :trainee
 
   def valid_profile?
-    !skills.blank? && !location.blank? && distance
+    !trimmed_skills.blank? && !location.blank? && distance
   end
 
   def valid_key?(param_key)
@@ -122,7 +122,10 @@ class JobSearchProfile < ActiveRecord::Base
       return false
     end
 
-    return validate_zip(zip) unless zip.blank?
+    unless zip.blank?
+      zip_valid = validate_zip(zip)
+      return true if zip_valid
+    end
 
     city = city_from_location
     !city.blank?
@@ -141,7 +144,7 @@ class JobSearchProfile < ActiveRecord::Base
     return false unless zip
     return false unless zip.to_s.delete('^0-9').size > 4
     city = City.find_by(zip: zip) || GeoServices.findcity('', zip)
-    errors.add(:zip, 'location not found for this zip code') unless city
+    # errors.add(:zip, 'location not found for this zip code') unless city
     !city.blank?
   end
 
@@ -159,9 +162,21 @@ class JobSearchProfile < ActiveRecord::Base
   def validate_skills
     size = skills.to_s.size
     return true if size > 0 && size < 421
-    errors.add(:skills, "can't be blank") if skills.blank?
+    errors.add(:skills, "can't be blank") if skills.blank? || trimmed_skills.blank?
     errors.add(:skills, "size(#{size}) exceeds 420 characters.") if size > 420
     false
+  end
+
+  def trimmed_skills
+    skills
+      .to_s
+      .downcase
+      .gsub(' and ', ',')
+      .gsub(/[^,0-9a-z ]/i, ',')
+      .split(',')
+      .map { |kw| kw.blank? ? nil : kw.squish }
+      .compact
+      .join(",")
   end
 
   def validate_distance
@@ -201,6 +216,8 @@ class JobSearchProfile < ActiveRecord::Base
 
   def find_city
     return GeoServices.findcity(location, '') if zip.blank?
-    City.find_by(zip: zip) || GeoServices.findcity('', zip)
+    City.find_by(zip: zip) ||
+    GeoServices.findcity('', zip) ||
+    GeoServices.findcity(location, '')
   end
 end

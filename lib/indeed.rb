@@ -37,22 +37,27 @@ class Indeed
     @current_page = args[:page] || 1
     @keywords     = args[:keywords].join('+OR+')
 
-    init_location
-
     @url = ''
     @jobs = nil
     search
   end
 
   def init_location
-    @location     = "#{city},#{state}"
+    @location = [city.to_s,state.to_s].join(",")
+    @location = zip if location.blank?
     @location.sub! ' ', '+'
   end
 
   def validate(args)
     @city  = args[:city]
     @state = args[:state]
-    fail 'indeed - search jobs - invalid args' unless city && state && args[:keywords]
+    @zip = args[:zip]
+    fail 'indeed - search jobs - missing keywords' if args[:keywords].blank?
+
+    init_location
+    location_present = !zip.blank? || !location.blank?
+
+    fail "Indeed location missing" unless location_present
   end
 
   def next
@@ -148,7 +153,7 @@ class Indeed
   end
 
   def q_query
-    "&q=#{@keywords}&l=#{@location}&radius=#{@distance}"
+    "&q=#{@keywords}&l=#{location}&radius=#{distance}"
   end
 
   def q_start
