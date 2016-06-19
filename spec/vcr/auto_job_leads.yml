@@ -571,4 +571,379 @@ http_interactions:
         amwvPjwvc2hycz4=
     http_version: 
   recorded_at: Thu, 11 Jun 2015 14:16:28 GMT
+- request:
+    method: get
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=30&l=Edison,NJ,&limit=25&publisher=5675970181406859&q=sdlc%20OR%20java%20OR%20project%20lead&radius=25&start=0&useragent=Mozilla//4.0(Firefox)&userip=74.102.50.66&v=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 19 Jun 2016 17:49:41 GMT
+      Server:
+      - Apache
+      Set-Cookie:
+      - BIGipServerjob=!8Ka5z7matJfIcTA/0rl98CFw+W0yBjyPT65NvkJ/7ECpjiwwIjDGMkhLDkvxgxL4EssZ6pX5YYY+SCc=;
+        path=/
+      - CTK=1alksghs519ve1vq; Domain=.indeed.com; Expires=Fri, 24-Jun-2033 12:38:12
+        GMT; Path=/
+      - JSESSIONID=A5CB1AB22FD59E719862A202717A676D.jasxB_ord-job9; Path=/; HttpOnly
+      - ctkgen=1; Expires=Sun, 19-Jun-2016 17:52:41 GMT; Path=/
+      X-Frame-Options:
+      - SAMEORIGIN
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store, no-cache, must-revalidate, private
+      Expires:
+      - Sun, 19 Jun 2016 17:48:41 GMT
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - User-Agent,Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/javascript;charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: "\n\n {\n\n    \"version\" : 2,\n    \"query\" : \"sdlc OR java OR project
+        lead\",\n    \"location\" : \"Edison,NJ,\",\n    \n    \"dupefilter\" : true,\n
+        \    \n    \"highlight\" : true,\n    \n    \"radius\" : 25,\n    \n    \"start\"
+        : 1,\n    \"end\" : 25,\n    \"totalResults\" : 5856,\n     \n    \"pageNumber\"
+        : 0,\n    \n\n    \"results\" : [\n        \n                {\n                    \"jobtitle\"
+        : \"Quality Assurance (QA) Lead\",\n                    \"company\" : \"xoriant\",\n
+        \                   \"city\" : \"Edison\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Edison, NJ\",\n                    \"source\" : \"Xoriant\",\n                    \"date\"
+        : \"Fri, 10 Jun 2016 08:59:06 GMT\",\n                    \"snippet\" : \"<b>Lead</b>
+        Production Defect Management for defects; With high level of independent decision
+        making authority, will be responsible for the following:....\",\n                    \"url\"
+        : \"http://www.indeed.com/viewjob?jk=2c29dfb85354a821&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"2c29dfb85354a821\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Edison, NJ\",\n                    \"formattedRelativeTime\" : \"9 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Software Engineer\",\n                    \"company\" : \"Security Benefit
+        Web\",\n                    \"city\" : \"Bridgewater\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Bridgewater, NJ\",\n                    \"source\" : \"Security Benefit
+        Web\",\n                    \"date\" : \"Tue, 07 Jun 2016 23:47:47 GMT\",\n
+        \                   \"snippet\" : \"<b>Lead</b> and coordinate efforts during
+        production outages. Other <b>projects</b> and responsibilities may be added
+        at the manager\\u2019s discretion....\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=2e8c85494dfdeaa3&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"2e8c85494dfdeaa3\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Bridgewater, NJ\",\n                    \"formattedRelativeTime\" : \"11
+        days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Senior Application Developer\",\n                    \"company\" : \"IBM\",\n
+        \                   \"city\" : \"Iselin\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Iselin, NJ\",\n                    \"source\" : \"IBM\",\n                    \"date\"
+        : \"Sat, 11 Jun 2016 03:06:25 GMT\",\n                    \"snippet\" : \"Experience
+        in Waterfall <b>projects</b> using <b>Java</b>/J2EE:. Should be able to code
+        using LLDs in Waterfall model <b>projects</b> and should have had at least
+        2 years experience...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=b35e421f21bb0197&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"b35e421f21bb0197\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Iselin, NJ\",\n                    \"formattedRelativeTime\" : \"8 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Java L3 Analyst /Lead\",\n                    \"company\" : \"Fours Consulting\",\n
+        \                   \"city\" : \"Edison\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Edison, NJ\",\n                    \"source\" : \"Indeed\",\n                    \"date\"
+        : \"Tue, 14 Jun 2016 13:30:39 GMT\",\n                    \"snippet\" : \"<b>Java</b>
+        L3 Analyst /<b>Lead</b>*. Work closely with global and regional development
+        teams to support <b>projects</b>. Able to work within tight <b>project</b>
+        timelines and milestones...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=9fdfcbfb7a9109db&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"9fdfcbfb7a9109db\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : true,\n                    \"formattedLocationFull\"
+        : \"Edison, NJ\",\n                    \"formattedRelativeTime\" : \"5 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Sr. Java Developer\",\n                    \"company\" : \"Fours Consulting\",\n
+        \                   \"city\" : \"Edison\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Edison, NJ\",\n                    \"source\" : \"Indeed\",\n                    \"date\"
+        : \"Fri, 10 Jun 2016 14:42:03 GMT\",\n                    \"snippet\" : \"Hands
+        on Technical <b>Lead</b> on the <b>Project</b> for workflow integration and
+        development. <b>Java</b>, Spring Batch, PL/SQL:....\",\n                    \"url\"
+        : \"http://www.indeed.com/viewjob?jk=3b0d1be53ecd2190&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"3b0d1be53ecd2190\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : true,\n                    \"formattedLocationFull\"
+        : \"Edison, NJ\",\n                    \"formattedRelativeTime\" : \"9 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"JAVA DEVELOPER\",\n                    \"company\" : \"Enterprise Solutions
+        Inc.\",\n                    \"city\" : \"Edison\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Edison, NJ\",\n                    \"source\" : \"Enterprise Solutions
+        Inc.\",\n                    \"date\" : \"Tue, 14 Jun 2016 03:19:49 GMT\",\n
+        \                   \"snippet\" : \"Minimum 5 years of experience in IT and
+        <b>Java</b>. Implement the solution in <b>Java</b> micro-services using frameworks
+        like Spring Cloud....\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=bc889d0d83fcaf07&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"bc889d0d83fcaf07\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Edison, NJ 08837\",\n                    \"formattedRelativeTime\" : \"5
+        days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Sr Java Developer\",\n                    \"company\" : \"Dealer.com\",\n
+        \                   \"city\" : \"Edison\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Edison, NJ\",\n                    \"source\" : \"Dealertrack\",\n                    \"date\"
+        : \"Thu, 09 Jun 2016 09:58:14 GMT\",\n                    \"snippet\" : \"As
+        a Senior <b>Java</b> Developer on the Advertising team you will work closely
+        with the Tech <b>Lead</b> and <b>Project</b> Architect to engineering elegant
+        solutions to complex...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=ae5cd5e3a3e6258e&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"ae5cd5e3a3e6258e\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Edison, NJ 08837\",\n                    \"formattedRelativeTime\" : \"10
+        days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Project Specialist\",\n                    \"company\" : \"American Standard\",\n
+        \                   \"city\" : \"Piscataway\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Piscataway, NJ\",\n                    \"source\" : \"American Standard\",\n
+        \                   \"date\" : \"Wed, 15 Jun 2016 22:01:43 GMT\",\n                    \"snippet\"
+        : \"Act as a point of contact for all <b>projects</b> related activities and
+        troubleshoot with relevant departments to ensure <b>projects</b> are delivered
+        on time and that...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=9456fdfc2a1df486&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"9456fdfc2a1df486\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Piscataway, NJ\",\n                    \"formattedRelativeTime\" : \"3
+        days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Sr. Java Technical Lead\",\n                    \"company\" : \"THEMESOFT\",\n
+        \                   \"city\" : \"Edison\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Edison, NJ\",\n                    \"source\" : \"Indeed\",\n                    \"date\"
+        : \"Wed, 01 Jun 2016 18:15:03 GMT\",\n                    \"snippet\" : \"<b>Java</b>
+        Technical <b>Lead</b>. Interface with <b>project</b> stakeholders to ensure
+        that the system objectives are balanced with overall <b>project</b> objectives....\",\n
+        \                   \"url\" : \"http://www.indeed.com/viewjob?jk=eca1bed471cb216b&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"eca1bed471cb216b\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : true,\n                    \"formattedLocationFull\"
+        : \"Edison, NJ\",\n                    \"formattedRelativeTime\" : \"17 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Application Developer\",\n                    \"company\" : \"IBM\",\n
+        \                   \"city\" : \"Iselin\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Iselin, NJ\",\n                    \"source\" : \"IBM\",\n                    \"date\"
+        : \"Fri, 10 Jun 2016 03:07:45 GMT\",\n                    \"snippet\" : \"Experience
+        in Waterfall <b>projects</b> using <b>Java</b>/J2EE. Should be able to code
+        using LLDs in Waterfall model <b>projects</b> and should have had at least
+        2 years experience...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=228cbd9418a6181e&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"228cbd9418a6181e\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Iselin, NJ\",\n                    \"formattedRelativeTime\" : \"9 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Junior Project Manager\",\n                    \"company\" : \"RBC\",\n
+        \                   \"city\" : \"Jersey City\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Jersey City, NJ\",\n                    \"source\" : \"RBC\",\n                    \"date\"
+        : \"Sun, 12 Jun 2016 00:04:29 GMT\",\n                    \"snippet\" : \"Familiarity
+        with <b>project</b> management methodologies. The Junior <b>Project</b> Manager
+        will provide support to the US Business Transformation Group office across
+        a broad...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=0d8cec92d9a0d5d6&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"0d8cec92d9a0d5d6\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Jersey City, NJ\",\n                    \"formattedRelativeTime\" : \"7
+        days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Marketing and Advertising Associate - Junior Level\",\n                    \"company\"
+        : \"DMC Results\",\n                    \"city\" : \"New Brunswick\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"New Brunswick, NJ\",\n                    \"source\" : \"DMC Results\",\n
+        \                   \"date\" : \"Thu, 16 Jun 2016 04:59:27 GMT\",\n                    \"snippet\"
+        : \"Develop, recommend and <b>lead</b> the execution of marketing plans for
+        assigned brands &amp; manage the effective deployment of the marketing budget....\",\n
+        \                   \"url\" : \"http://www.indeed.com/viewjob?jk=cc2dc44e6ae04744&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"cc2dc44e6ae04744\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"New Brunswick, NJ\",\n                    \"formattedRelativeTime\" :
+        \"3 days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Technical Lead\",\n                    \"company\" : \"Harman\",\n                    \"city\"
+        : \"Jersey City\",\n                    \"state\" : \"NJ\",\n                    \"country\"
+        : \"US\",\n                    \"formattedLocation\" : \"Jersey City, NJ\",\n
+        \                   \"source\" : \"Indeed\",\n                    \"date\"
+        : \"Fri, 03 Jun 2016 23:04:12 GMT\",\n                    \"snippet\" : \"<b>Projects</b>
+        in a <b>lead</b> profile. Executives, <b>project</b> stakeholders. 1 Provide
+        overarching Architecture and <b>Project</b> expertise to business....\",\n
+        \                   \"url\" : \"http://www.indeed.com/viewjob?jk=31ef27f88d85df90&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"31ef27f88d85df90\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : true,\n                    \"formattedLocationFull\"
+        : \"Jersey City, NJ\",\n                    \"formattedRelativeTime\" : \"15
+        days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Frontend Web Developer\",\n                    \"company\" : \"ResourceHunt
+        Group\",\n                    \"city\" : \"Raritan\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Raritan, NJ\",\n                    \"source\" : \"Indeed\",\n                    \"date\"
+        : \"Tue, 14 Jun 2016 20:52:56 GMT\",\n                    \"snippet\" : \"Key
+        responsibilities include <b>lead</b> roles in software design, architecture,
+        requirements analysis, investigation of new technologies and software development....\",\n
+        \                   \"url\" : \"http://www.indeed.com/viewjob?jk=d6dfc2240dfea706&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"d6dfc2240dfea706\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : true,\n                    \"formattedLocationFull\"
+        : \"Raritan, NJ\",\n                    \"formattedRelativeTime\" : \"4 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Software Engineer\",\n                    \"company\" : \"Zeta Interactive\",\n
+        \                   \"city\" : \"New York\",\n                    \"state\"
+        : \"NY\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"New York, NY\",\n                    \"source\" : \"Zeta Interactive\",\n
+        \                   \"date\" : \"Tue, 31 May 2016 05:32:00 GMT\",\n                    \"snippet\"
+        : \"We are seeking an experienced <b>Lead</b> Software Engineer to develop
+        a new and exciting solution for one of our email marketing business units....\",\n
+        \                   \"url\" : \"http://www.indeed.com/viewjob?jk=24f52f543300694a&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"24f52f543300694a\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"New York, NY 10004\",\n                    \"formattedRelativeTime\" :
+        \"19 days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Validation Engineer\",\n                    \"company\" : \"AlphaProTemps,
+        A.P.R., Inc.\",\n                    \"city\" : \"Somerset\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Somerset, NJ\",\n                    \"source\" : \"AlphaProTemps, A.P.R.,
+        Inc.\",\n                    \"date\" : \"Fri, 17 Jun 2016 23:23:21 GMT\",\n
+        \                   \"snippet\" : \"Ability to work effectively under pressure,
+        handle multiple <b>projects</b> and meet deadlines. Design, develop and <b>lead</b>
+        Equipment and Facility Validation protocols...\",\n                    \"url\"
+        : \"http://www.indeed.com/viewjob?jk=606879c8e27f8f40&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"606879c8e27f8f40\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Somerset, NJ\",\n                    \"formattedRelativeTime\" : \"1 day
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Senior Java ATG Programmer\",\n                    \"company\" : \"Verizon\",\n
+        \                   \"city\" : \"Piscataway\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Piscataway, NJ\",\n                    \"source\" : \"Verizon\",\n                    \"date\"
+        : \"Tue, 14 Jun 2016 15:35:03 GMT\",\n                    \"snippet\" : \"Teamwork
+        &amp; collaboration skills to work across organizations and <b>lead</b> cross-functional
+        teams. You will work fairly independently on more complex operational &amp;...\",\n
+        \                   \"url\" : \"http://www.indeed.com/viewjob?jk=9cdfd9b4ea8e15eb&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"9cdfd9b4ea8e15eb\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Piscataway, NJ 08854\",\n                    \"formattedRelativeTime\"
+        : \"5 days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Lead Mgr,Appl Development\",\n                    \"company\" : \"BNY
+        Mellon\",\n                    \"city\" : \"Jersey City\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Jersey City, NJ\",\n                    \"source\" : \"BNY Mellon\",\n
+        \                   \"date\" : \"Sat, 18 Jun 2016 04:17:52 GMT\",\n                    \"snippet\"
+        : \"Contributes to defining time tables and <b>project</b> plans. Takes <b>lead</b>
+        for establishing, implementing and monitoring 'best practices' for technical
+        development...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=4a734e0f023fe6f5&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"4a734e0f023fe6f5\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Jersey City, NJ 07306\",\n                    \"formattedRelativeTime\"
+        : \"1 day ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"QA Automation Engineer, Trading Solutions\",\n                    \"company\"
+        : \"Bloomberg\",\n                    \"city\" : \"Princeton\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Princeton, NJ\",\n                    \"source\" : \"Bloomberg\",\n                    \"date\"
+        : \"Thu, 16 Jun 2016 19:43:24 GMT\",\n                    \"snippet\" : \"Scripting-
+        C#, Python, or <b>JAVA</b>. Strong <b>project</b> management skills are a
+        must. Ability to manage multiple <b>projects</b> at the same time and shift
+        priorities quickly....\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=402d2c77e65f5410&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"402d2c77e65f5410\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Princeton, NJ\",\n                    \"formattedRelativeTime\" : \"2
+        days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Applications Development Team Lead\",\n                    \"company\"
+        : \"Princeton Plasma Physics Laboratory\",\n                    \"city\" :
+        \"Princeton\",\n                    \"state\" : \"NJ\",\n                    \"country\"
+        : \"US\",\n                    \"formattedLocation\" : \"Princeton, NJ\",\n
+        \                   \"source\" : \"Princeton Plasma Physics Laboratory\",\n
+        \                   \"date\" : \"Tue, 14 Jun 2016 03:34:41 GMT\",\n                    \"snippet\"
+        : \"<b>Leads</b> the Application Development team. Guide team development
+        efforts towards successful <b>project</b> delivery. Ability to create detailed
+        technical documentation,...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=24ea0b66ca03c55a&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"24ea0b66ca03c55a\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Princeton, NJ\",\n                    \"formattedRelativeTime\" : \"5
+        days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Senior Software Engineer\",\n                    \"company\" : \"xoriant\",\n
+        \                   \"city\" : \"Edison\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Edison, NJ\",\n                    \"source\" : \"Xoriant\",\n                    \"date\"
+        : \"Wed, 25 May 2016 05:45:26 GMT\",\n                    \"snippet\" : \"Employer
+        will accept experience in the job offered or as Programmer Analyst or Senior
+        Software Engineer or Team <b>Lead</b> or related field....\",\n                    \"url\"
+        : \"http://www.indeed.com/viewjob?jk=e0d83748c184b5d6&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"e0d83748c184b5d6\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Edison, NJ\",\n                    \"formattedRelativeTime\" : \"25 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Senior Java Developer\",\n                    \"company\" : \"Prudential\",\n
+        \                   \"city\" : \"Newark\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Newark, NJ\",\n                    \"source\" : \"Prudential\",\n                    \"date\"
+        : \"Tue, 31 May 2016 18:04:48 GMT\",\n                    \"snippet\" : \"May
+        <b>lead</b> teams or <b>projects</b>. Able to manage multiple tasks simultaneously
+        while meeting all <b>project</b> commitments....\",\n                    \"url\"
+        : \"http://www.indeed.com/viewjob?jk=27980bf46b051245&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"27980bf46b051245\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Newark, NJ\",\n                    \"formattedRelativeTime\" : \"18 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Front End Architect\",\n                    \"company\" : \"CavalierIT\",\n
+        \                   \"city\" : \"Somerset\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Somerset, NJ\",\n                    \"source\" : \"Indeed\",\n                    \"date\"
+        : \"Thu, 09 Jun 2016 20:09:52 GMT\",\n                    \"snippet\" : \"Help
+        ensure <b>projects</b> are delivered successfully, on-time, and within budget.
+        Serve as the <b>lead</b> resource responsible for the overall design and development
+        of...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=b3c64fb2664f36bb&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"b3c64fb2664f36bb\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : true,\n                    \"formattedLocationFull\"
+        : \"Somerset, NJ\",\n                    \"formattedRelativeTime\" : \"9 days
+        ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Senior Java Developer\",\n                    \"company\" : \"Verizon\",\n
+        \                   \"city\" : \"Township of Warren\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Township of Warren, NJ\",\n                    \"source\" : \"Verizon\",\n
+        \                   \"date\" : \"Tue, 14 Jun 2016 15:34:47 GMT\",\n                    \"snippet\"
+        : \"Teamwork &amp; collaboration skills to work across organizations and <b>lead</b>
+        cross-functional teams. You will work fairly independently on more complex
+        operational &amp;...\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=4e9c7a16e9fad63f&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"4e9c7a16e9fad63f\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Township of Warren, NJ 07059\",\n                    \"formattedRelativeTime\"
+        : \"5 days ago\"                \n}\n,\n                {\n                    \"jobtitle\"
+        : \"Application Development Lead\",\n                    \"company\" : \"JPMorgan
+        Chase\",\n                    \"city\" : \"Jersey City\",\n                    \"state\"
+        : \"NJ\",\n                    \"country\" : \"US\",\n                    \"formattedLocation\"
+        : \"Jersey City, NJ\",\n                    \"source\" : \"JPMorgan Chase\",\n
+        \                   \"date\" : \"Thu, 09 Jun 2016 18:52:45 GMT\",\n                    \"snippet\"
+        : \"Application Development <b>Lead</b>. The CTR Application Packaging Developer
+        <b>Lead</b> should have a good understanding of <b>SDLC</b> and Software engineering
+        discipline....\",\n                    \"url\" : \"http://www.indeed.com/viewjob?jk=db6725a82dcd4a1f&qd=dbiWh_LzHK6bTV-fOfIZZ0A7smBaA6jfoHJKa7S4TBHA6Ildle_JXItz0BYhqGHZcXTPgxiyfXvqt8cFczOn4mdAgbLYlaRbSevYqMyPNCULL3hQnPVPlkqAgYJYfn64Maxq8y-x3xnJK3Os83Us7Q&indpubnum=5675970181406859&atk=1alksghv419ve0a6\",\n
+        \                   \"onmousedown\" : \"indeed_clk(this, '1127');\",\n                    \"jobkey\"
+        : \"db6725a82dcd4a1f\",\n                    \"sponsored\" : false,\n                    \"expired\"
+        : false,\n                    \"indeedApply\" : false,\n                    \"formattedLocationFull\"
+        : \"Jersey City, NJ\",\n                    \"formattedRelativeTime\" : \"9
+        days ago\"                \n}\n\n    ]\n}\n"
+    http_version: 
+  recorded_at: Sun, 19 Jun 2016 17:49:41 GMT
 recorded_with: VCR 2.9.2

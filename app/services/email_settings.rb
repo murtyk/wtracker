@@ -1,61 +1,67 @@
 # email settings from trainees and users
 class EmailSettings
-  JOB_LEADS_SETTINGS = {
+  COMMON_SMTP_SETTINGS = {
     enable_starttls_auto: true,
     address: 'smtp.gmail.com',
     port: 587,
     domain: "#{ENV['DOMAIN']}.com",
     authentication: :login,
-    user_name: ENV['AUTOLEAD_EMAIL_USERNAME'],
+  }
+
+  AUTOLEADS_SETTINGS = {
     password: ENV['AUTOLEAD_EMAIL_PASSWORD']
   }
 
+  # JOB_LEADS_SETTINGS = {
+  #   user_name: ENV['AUTOLEAD_EMAIL_USERNAME'],
+  #   password: ENV['AUTOLEAD_EMAIL_PASSWORD']
+  # }
+
   STANDARD_SETTINGS = {
-    enable_starttls_auto: true,
-    address: 'smtp.gmail.com',
-    port: 587,
-    domain: 'wtracker.com',
-    authentication: :login,
     user_name: ENV['GMAIL_USER_NAME'],
     password: ENV['GMAIL_PASSWORD']
   }
 
+  SUPPORT_SETTINGS = {
+    user_name: ENV['SUPPORT_FROM_EMAIL'],
+    password: ENV['SUPPORT_EMAIL_PASSWORD']
+  }
+
   class << self
 
-  def use_job_leads_email(num = 1)
-    from_email = job_leads_from_email(num)
+  def use_auto_leads_email(lead_number = 0)
+    from_email = auto_leads_from_email(lead_number)
 
-    ActionMailer::Base.smtp_settings = JOB_LEADS_SETTINGS.merge(user_name: from_email)
+    change_smtp_settings(AUTOLEADS_SETTINGS.merge(user_name: from_email))
   end
 
-  def job_leads_from_email(num)
-    if num < 2 || extra_leads_emails_count == 0
-      return ENV['AUTOLEAD_EMAIL_USERNAME']
-    end
-
-    leads_extra_emails_list[num - 2] # extra emails start when num >= 2
+  def use_job_leads_email(num = 1)
+    use_auto_leads_email(num)
   end
 
   def use_standard_email
-    ActionMailer::Base.smtp_settings = STANDARD_SETTINGS
+    change_smtp_settings(STANDARD_SETTINGS)
   end
 
-  def extra_leads_emails_count
-    ENV['AUTOLEAD_EXTRA_FROM_EMAILS'].to_i
+  def use_support_email
+    change_smtp_settings(SUPPORT_SETTINGS)
   end
 
-  def leads_extra_emails_list
-    @leads_extra_emails_list ||= build_leads_extra_emails
+  def change_smtp_settings(settings)
+    ActionMailer::Base.smtp_settings = COMMON_SMTP_SETTINGS.merge(settings)
   end
 
-  def leads_email
-    @leads_email ||= ENV['AUTOLEAD_EMAIL_USERNAME']
+  def auto_leads_from_email(lead_number)
+    index = lead_number % auto_leads_emails_count
+    auto_leads_emails[index]
   end
 
-  # this should generate a list [support1@operoinc.com, support2@operoinc.com, ....]
-  def build_leads_extra_emails
-    prefix, domain = leads_email.split("@")
-    (1..extra_leads_emails_count).map{ |n| prefix + n.to_s + "@" + domain }
+  def auto_leads_emails
+    @auto_leads_emails ||= ENV['AUTOLEAD_FROM_EMAILS'].split(",")
+  end
+
+  def auto_leads_emails_count
+    @auto_leads_emails_count ||= auto_leads_emails.size
   end
 
   end
