@@ -78,6 +78,8 @@ class Indeed
   end
 
   def self.job_count(keywords, city, state, distance = 10, days = 30)
+    kws = keywords.split
+
     args = { keywords: kws,
              zip: '',
              city: city,
