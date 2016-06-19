@@ -77,9 +77,14 @@ class Indeed
     IndeedStore.new(job_search, ip)
   end
 
-  def self.job_count(args)
-    kws = args[:keywords].split
-    args[:keywords] = kws
+  def self.job_count(keywords, city, state, distance = 10, days = 30)
+    args = { keywords: kws,
+             zip: '',
+             city: city,
+             state: state,
+             distance: distance,
+             days: days
+            }
     indeed = Indeed.new
     indeed.search_jobs(args)
     indeed.count
