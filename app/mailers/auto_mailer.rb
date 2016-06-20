@@ -36,7 +36,7 @@ class AutoMailer < ActionMailer::Base
                 TraineeEmailTextBuilder.new(trainee)
                 .job_leads_email_attrs(auto_shared_jobs)
 
-    inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
+    inline_email(from_job_leads(true), to_email, reply_to_email, subject, body_text)
 
     log_entry "sent job leads email to #{to_email} : #{auto_shared_jobs.count}"
   end
@@ -153,8 +153,10 @@ class AutoMailer < ActionMailer::Base
     Rails.logger.info msg
   end
 
-  def from_job_leads
-    "JobLeads<#{ENV['JOB_LEADS_EMAIL']}>"
+  def from_job_leads(use_support_email = false)
+    email = ENV['JOB_LEADS_EMAIL']
+    email = ActionMailer::Base.smtp_settings[:user_name] if use_support_email
+    "JobLeads<#{email}>"
   end
 
   def support_email

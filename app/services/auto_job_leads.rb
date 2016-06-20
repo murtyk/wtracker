@@ -11,7 +11,6 @@ class AutoJobLeads
 
   def initialize
     @statuses = []
-    @lead_number = 1
   end
 
   def perform
@@ -21,6 +20,7 @@ class AutoJobLeads
     log_info 'AutoJobLeads: creating missing job search profiles'
     JobSearchProfileJob.new.perform
 
+    @lead_number = 1
     send_leads
     log_statuses
     notify
