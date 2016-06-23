@@ -1,14 +1,17 @@
 class KlassPolicy < Struct.new(:user, :klass)
   def trainees?
-    user.navigator? || user.admin_or_director?
+    user.navigator? ||
+    user.grant_admin? ||
+    user.admin_or_director?
   end
 
   def trainees_with_email?
-    user.navigator? || user.admin_or_director?
+    trainees?
   end
 
   def new?
     user.admin_access? ||
+    user.grant_admin? ||
     (user.navigator? && Grant.current_grant.navigators_can_create_klasses)
   end
 
