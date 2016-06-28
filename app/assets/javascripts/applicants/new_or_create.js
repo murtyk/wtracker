@@ -29,6 +29,7 @@ $('#applicant_current_employment_status').change(function() {
 jQuery(function($){
   $("#applicant_address_zip").mask("99999");
   $("#applicant_dob").mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
+  $("#applicant_last_employed_on").mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
 });
 
 $('.new_applicant').submit(function() {
