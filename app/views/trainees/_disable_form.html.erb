@@ -1,6 +1,8 @@
-<%= simple_form_for(trainee, html: { class: "form-horizontal",
-                                     style: "margin-bottom: 0px",
-                                     id: 'form_disable_trainee' },
+<%= simple_form_for(trainee, url: update_disable_trainee_path,
+                            html: { method: :post,
+                                    class: "form-horizontal",
+                                    style: "margin-bottom: 0px",
+                                    id: 'form_disable_trainee' },
                              remote: true) do |f| %>
   <%= f.error_notification %>
   <ul class="errors" style='color: red'></ul>

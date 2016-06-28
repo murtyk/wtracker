@@ -32,3 +32,5 @@ C:\\nppdf32Log\\debuglog.txt
 .DS_Store
 .vagrant/
 public/.DS_Store
+
+client_secret.json

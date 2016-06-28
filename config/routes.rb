@@ -187,6 +187,7 @@ WTracker::Application.routes.draw do
     end
     member do
       get :disable
+      post :update_disable
     end
   end
 

@@ -24,6 +24,10 @@ class TraineePolicy < Struct.new(:user, :trainee)
     edit?
   end
 
+  def update_disable?
+    update?
+  end
+
   def import_updates?
     grant.trainee_applications? && edit?
   end
