@@ -75,6 +75,12 @@ class TraineesController < ApplicationController
     @trainee.disabled_date ||= Date.today
   end
 
+  def update_disable
+    authorize Trainee.find(params[:id])
+
+    @trainee = TraineeFactory.update_disable(params[:id], disabled_params)
+  end
+
   def update
     authorize Trainee.find(params[:id])
     @trainee = TraineeFactory.update_trainee(params[:id], trainee_params)
@@ -143,12 +149,16 @@ class TraineesController < ApplicationController
               :gender, :land_no, :middle, :mobile_no, :trainee_id,
               :status, :veteran, :race_id, :edp_date,
               :legal_status, :funding_source_id, :ui_claim_verified_on,
-              :disabled_date, :disabled_notes,
               :employment_status,
               klass_ids: [],
               tact_three_attributes: [:certifications, :education_level,
                                       :job_title, :recent_employer, :years],
               home_address_attributes: [:id, :line1, :line2, :city, :state, :zip],
               mailing_address_attributes: [:id, :line1, :line2, :city, :state, :zip])
+  end
+
+  def disabled_params
+    params.require(:trainee)
+      .permit(:disabled_date, :disabled_notes)
   end
 end

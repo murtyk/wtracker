@@ -36,7 +36,15 @@ class TraineeFactory
     params[:dob] = opero_str_to_date(params[:dob])
     params[:ui_claim_verified_on] = opero_str_to_date(params[:ui_claim_verified_on])
     params[:edp_date] = opero_str_to_date(params[:edp_date])
-    params[:disabled_date] = opero_str_to_date(params[:disabled_date])
+
+    trainee = Trainee.find(id)
+    trainee.update_attributes(params)
+    trainee
+  end
+
+  def self.update_disable(id, disable_params)
+    params = disable_params.clone
+    params[:disabled_date] = opero_str_to_date(disable_params[:disabled_date])
 
     trainee = Trainee.find(id)
     trainee.update_attributes(params)
