@@ -95,8 +95,7 @@
       <div class='span4'>
         <%= f.input :last_employed_on, label: 'Last Date of Full-Time Employment MM/DD/YYYY',
                                        required: true,
-                                       input_html: { data: { behaviour: "datepicker" },
-                                       value: applicant.last_employed_on },
+                                       input_html: { value: applicant.last_employed_on.to_s },
                                        as: :string %>
       </div>
     </div>
