@@ -2,6 +2,22 @@
   <h1>Classes</h1>
 </div>
 
+<% if Klass.count > 0 %>
+  <div class = 'row-fluid'>
+    <div class = 'span3'>
+      Total Classes: <%= Klass.count %>
+    </div>
+    <div class='span1 pull-right'>
+      <% max_rows = (ENV['MAX_ROWS_FOR_DOWNLOAD'] || 6).to_i %>
+      <% if Klass.count > max_rows %>
+        <%= email_download_button %>
+      <% else %>
+        <%= download_button %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <% unless @programs_data.any? %>
   <h4>Please define a program and add classes</h4>
 <% end %>

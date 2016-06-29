@@ -1,8 +1,15 @@
 # for klasses index action
 class KlassesService
-  def metrics(user)
-    programs_data = []
+  attr_reader :programs_data, :user_id, :account_id, :grant_id
 
+  def initialize(user)
+    @programs_data = []
+    @user_id = user.id
+    @account_id = Account.current_id
+    @grant_id = Grant.current_id
+  end
+
+  def metrics
     Program.all.decorate.each do |program|
       init_counts(program, user)
       data = []
@@ -15,7 +22,7 @@ class KlassesService
                  klass_fs_counts(klass.id)]
       end
 
-      programs_data << [program.name, program.id, data]
+      @programs_data << [program.name, program.id, data]
     end
 
     programs_data
@@ -29,7 +36,55 @@ class KlassesService
     @funding_sources ||= FundingSource.order(:name)
   end
 
+  def build_document
+    metrics
+
+    excel_file.add_row header
+
+    programs_data.each do |program_name, program_id, klasses_data|
+      klasses_data.each do |klass_data|
+        excel_file.add_row view_builder.row(program_name, program_id, klass_data)
+      end
+    end
+
+    excel_file.save
+  end
+
+  def file_name
+    excel_file.file_name
+  end
+
+  def file_path
+    excel_file.file_path
+  end
+
+  def send_results
+    Account.current_id = account_id
+    Grant.current_id = grant_id
+
+    build_document
+
+    excel_file.send_to_user('Classes List')
+    Rails.logger.info "Klasses List file sent by email to #{user.name}"
+  end
+
   private
+
+  def user
+    @user ||= User.find(user_id)
+  end
+
+  def excel_file
+    @ef ||= ExcelFile.new(user, 'trainee_data')
+  end
+
+  def header
+    view_builder.header
+  end
+
+  def view_builder
+    @builder ||= KlassesListViewBuilder.new(self)
+  end
 
   def klass_link(name, id)
     "<a href='/klasses/#{id}'>#{name}</a>"
