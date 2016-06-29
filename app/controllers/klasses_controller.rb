@@ -50,8 +50,13 @@ class KlassesController < ApplicationController
   # GET /klasses
   # GET /klasses.json
   def index
-    @klasses_service = KlassesService.new
-    @programs_data = @klasses_service.metrics(current_user)
+    @klasses_service = KlassesService.new(current_user)
+
+    respond_to do |format|
+      format.html { @programs_data = @klasses_service.metrics }
+      format.js  { send_klasses_list_file_by_email }
+      format.xls { send_klasses_list_file }
+    end
   end
 
   # GET /klasses/1
@@ -142,5 +147,17 @@ class KlassesController < ApplicationController
               klass_schedules_attributes: [:id, :dayoftheweek, :scheduled,
                                            :start_ampm, :start_time_hr, :start_time_min,
                                            :end_ampm, :end_time_hr, :end_time_min])
+  end
+
+  def send_klasses_list_file
+    @klasses_service.build_document
+    send_file @klasses_service.file_path, type: 'application/vnd.ms-excel',
+                              filename: @klasses_service.file_name,
+                              stream: false
+  end
+
+  def send_klasses_list_file_by_email
+    @klasses_service.delay.send_results
+    Rails.logger.info "#{current_user.name} has requested Klasses List file by email"
   end
 end
