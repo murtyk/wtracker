@@ -1,7 +1,7 @@
-var current_role = $('#page_data').data('role');
+$(document).on('change', '#user_role', function() {
+  var current_role = $('#page_data').data('role');
+  var new_role = $('#user_role :selected').val();
 
-$('#user_role').change(function() {
-  new_role = $('#user_role :selected').val();
   if (current_role != new_role){
     if (current_role == 3){
       if (new_role == 4) {

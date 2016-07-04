@@ -22,12 +22,16 @@
 //= require ./emails/main.js
 //= require ./employers/main.js
 //= require ./google_companies/main.js
+//= require ./grants/main.js
+//= require ./import_statuses/main.js
 //= require ./job_searches/main.js
 //= require ./job_shares/main.js
 //= require ./klasses/main.js
+//= require ./klass_certificates/main.js
 //= require ./klass_events/main.js
 //= require ./klass_interactions/main.js
 //= require ./klass_trainees/main.js
 //= require ./reports/main.js
 //= require ./trainees/main.js
 //= require ./trainee_interactions/main.js
+//= require ./users/main.js

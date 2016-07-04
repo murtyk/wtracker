@@ -6,8 +6,13 @@ class CertificateCategory < ActiveRecord::Base
   belongs_to :account
   belongs_to :grant
 
-  validates_presence_of :code
-  validates_presence_of :name
+  validates :name,
+            presence: { message: 'name can not be blank.' },
+            length: { minimum: 2, maximum: 50 }
+
+  validates :code,
+            presence: { message: 'code can not be blank.' },
+            length: { minimum: 1, maximum: 50 }
 
   has_many :klass_certificates
   has_many :klasses, through: :klass_certificates

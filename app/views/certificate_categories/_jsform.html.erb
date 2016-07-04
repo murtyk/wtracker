@@ -4,6 +4,9 @@
     <%= f.input :code %>
     <%= f.input :name %>
   </div>
+  <div style='color: red'>
+    <span id='error_text'></span>
+  </div>
   <div class="form-actions">
     <%= ajax_cancel_and_submit_buttons(f) %>
   </div>
