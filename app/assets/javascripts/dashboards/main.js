@@ -1,4 +1,4 @@
-$('.klass_filter').click(function (){
+$(document).on('click', '.klass_filter', function(event){
   var button_id, klass_type, f_show_scheduled, f_show_ongoing, f_show_completed;
 
   button_id = $(this).attr('id');

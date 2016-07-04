@@ -18,6 +18,7 @@
 //= require bootstrap-datepicker
 //= require ./assessments/main.js
 //= require ./companies_finders/main.js
+//= require ./dashboards/main.js
 //= require ./emails/main.js
 //= require ./employers/main.js
 //= require ./google_companies/main.js
