@@ -20,11 +20,8 @@ describe 'Klass page' do
 
       click_link 'new_klass_event_link'
       wait_for_ajax
-      page.first('.add-on').click
-      wait_for_ajax
-      click_on 'Prescreening'
-      wait_for_ajax
 
+      select 'Prescreening', from: 'klass_event_name'
       event_date = (Date.today + 7.days).strftime("%m/%d/%Y")
 
       fill_in 'klass_event_event_date', with: event_date
@@ -93,14 +90,7 @@ describe 'Klass page' do
       click_link "edit_klass_event_link#{event.id}"
       wait_for_ajax
 
-      10.times do
-        break if page.first('.combobox-clear')
-        sleep 0.5
-      end
-
-      page.first('.combobox-clear').click
-      page.first('.add-on').click
-      click_on 'Graduation'
+      select 'Graduation', from: 'klass_event_name'
 
       click_on 'Save'
       wait_for_ajax
