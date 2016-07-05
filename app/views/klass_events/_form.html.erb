@@ -62,10 +62,10 @@
           <div class = 'row-fluid'>
             <div style='background-color: #ddd; padding: 10px'>
               <% event_name_collection = klass_default_events %>
-              <% event_name_collection.push([klass_event.name, klass_event.name]) unless Klass::DEFAULT_EVENTS.include?(klass_event.name)%>
+              <%# event_name_collection.push([klass_event.name, klass_event.name]) unless Klass::DEFAULT_EVENTS.include?(klass_event.name)%>
               <%= f.input :name, required: true,
                                  collection: event_name_collection,
-                                 input_html: {class: 'combobox'} %>
+                                 include_blank: 'Please Select' %>
 
               <% klass_event.event_date = klass_event.event_date.to_s %>
               <%= f.input :event_date, required: true,
