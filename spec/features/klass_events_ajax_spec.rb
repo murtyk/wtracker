@@ -77,7 +77,7 @@ describe 'Klass page' do
       expect(page).to_not have_text klass_event_name
     end
 
-    it 'can change event', js: true do
+    it 'can change event', js: true, retry: 2, retry_wait: 3 do
       click_on 'Expand All'
 
       Account.current_id = 1
