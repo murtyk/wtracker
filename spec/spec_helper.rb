@@ -44,7 +44,7 @@ Capybara.register_driver(:poltergeist) do |app|
   options = {
     debug: ENV["JS_DEBUG"],
     js_errors: false,
-    window_size: [1200, 1000],
+    window_size: [2400, 2000],
     inspector: true,
     phantomjs: Phantomjs.path,
     phantomjs_logger: File.open("#{Rails.root}/log/test_phantomjs.log", "a")
