@@ -47,16 +47,16 @@ describe 'Trainee' do
 
       AlertConfirmer.accept_confirm_from do
         click_link id1
-
       end
+
       wait_for_ajax
       expect(page).to_not have_text 'Bennett Mechanical Comprehension'
       expect(page).to have_text 'KeyTrain'
 
       AlertConfirmer.accept_confirm_from do
         click_link id2
-
       end
+
       wait_for_ajax
       expect(page).to_not have_text 'KeyTrain'
     end
@@ -75,6 +75,11 @@ describe 'Trainee' do
 
       click_on 'Add'
       wait_for_ajax
+      10.times do
+        break if page.html.index(employer_name)
+        sleep 0.2
+      end
+
       expect(page).to have_text employer_name
       expect(page).to have_text 'CNC Operator'
     end
