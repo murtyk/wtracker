@@ -51,7 +51,7 @@ describe 'Klass page' do
       expect(page).to have_text 'Prescreening'
     end
 
-    it 'can delete event', js: true do
+    it 'can delete event', js: true, retry: 2, retry_wait: 3 do
       # test edit an existing event
       click_on 'Expand All'
       expect(page).to have_text 'Graduation'

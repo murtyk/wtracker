@@ -139,3 +139,5 @@ RSpec.configure do |config|
   # end
 
 end
+
+Capybara::Screenshot.autosave_on_failure = false

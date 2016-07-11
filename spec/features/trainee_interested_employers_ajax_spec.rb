@@ -82,7 +82,7 @@ describe 'Trainee Interaction' do
       find("#edit_trainee_interaction_#{ti_id}_link").click
       fill_in 'trainee_interaction_termination_date', with: Date.tomorrow.to_s
 
-      click_on 'Update'
+      find_button('Update').trigger('click')
       wait_for_ajax
 
       # klass status should change
@@ -102,7 +102,7 @@ describe 'Trainee Interaction' do
       wait_for_ajax
       sleep 1
       fill_in 'trainee_interaction_comment', with: "#{employer_name} is interested"
-      click_on 'Add'
+      find_button('Add').trigger('click')
       wait_for_ajax
       expect(page).to have_text "#{employer_name} is interested"
     end
