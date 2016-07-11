@@ -89,7 +89,7 @@ describe 'Trainee Interaction' do
       expect(page).to have_text 'Completed'
     end
 
-    it 'new employer', js: true do
+    it 'new employer', js: true, retry: 2, retry_wait: 3  do
       click_link 'new_trainee_interaction_link'
       wait_for_ajax
 
@@ -98,9 +98,11 @@ describe 'Trainee Interaction' do
       fill_in 'Name', with: employer_name
       select 'banking', from: 'Sectors'
       click_on 'Save'
+
       sleep 0.2
       wait_for_ajax
       sleep 1
+
       fill_in 'trainee_interaction_comment', with: "#{employer_name} is interested"
       find_button('Add').trigger('click')
       wait_for_ajax
