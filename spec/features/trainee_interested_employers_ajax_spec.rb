@@ -102,7 +102,7 @@ describe 'Trainee Interaction' do
       wait_for_ajax
       sleep 1
       fill_in 'trainee_interaction_comment', with: "#{employer_name} is interested"
-      click_on 'Add'
+      find_button('Add').trigger('click')
       wait_for_ajax
       expect(page).to have_text "#{employer_name} is interested"
     end
