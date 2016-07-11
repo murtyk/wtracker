@@ -7,8 +7,11 @@ describe 'Trainee' do
       visit('/trainees/1')
     end
 
-    after :each do
-      signout
+    after :each do |example|
+      if example.exception
+        save_screenshot
+      end
+      # signout
     end
 
     it 'can add and delete assessments', js: true do
@@ -47,16 +50,16 @@ describe 'Trainee' do
 
       AlertConfirmer.accept_confirm_from do
         click_link id1
-
       end
+
       wait_for_ajax
       expect(page).to_not have_text 'Bennett Mechanical Comprehension'
       expect(page).to have_text 'KeyTrain'
 
       AlertConfirmer.accept_confirm_from do
         click_link id2
-
       end
+
       wait_for_ajax
       expect(page).to_not have_text 'KeyTrain'
     end
@@ -73,8 +76,13 @@ describe 'Trainee' do
       fill_in 'Title', with: 'CNC Operator'
       fill_in 'Applied on', with: '06/17/2013'
 
-      click_on 'Add'
+      find_button('Add').trigger("click")
       wait_for_ajax
+      10.times do
+        break if page.html.index(employer_name)
+        sleep 0.2
+      end
+
       expect(page).to have_text employer_name
       expect(page).to have_text 'CNC Operator'
     end

@@ -99,7 +99,7 @@ group :test do
 
   gem 'selenium-webdriver', '2.48.1'
   gem 'headless', '1.0.2'
-  gem 'capybara', '~> 2.4.1'
+  gem 'capybara', '2.7.1'
   gem 'capybara-screenshot'
   # gem "capybara-webkit"
   gem 'faker', '1.2.0'
