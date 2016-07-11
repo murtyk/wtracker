@@ -82,7 +82,7 @@ describe 'Trainee Interaction' do
       find("#edit_trainee_interaction_#{ti_id}_link").click
       fill_in 'trainee_interaction_termination_date', with: Date.tomorrow.to_s
 
-      click_on 'Update'
+      find_button('Update').trigger('click')
       wait_for_ajax
 
       # klass status should change
