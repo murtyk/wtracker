@@ -50,7 +50,7 @@ describe 'Employers' do
   end
 
   describe 'manage sectors- ajax' do
-    it 'can add and remove sectors', js: true do
+    it 'can add and remove sectors', js: true, retry: 2, retry_wait: 3 do
       click_link new_link_id('employer_sector')
       wait_for_ajax
       select('banking', from: 'employer_sector_sector_id')
