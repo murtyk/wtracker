@@ -3,6 +3,7 @@
     <th><%= report.title%></th>
     <%= ('<th></th>' * 14).html_safe %>
   </tr>
+  <thead>
   <tr>
     <th>Employer</th>
     <th>Location</th>
@@ -20,6 +21,7 @@
     <th>Pay</th>
     <th>Navigator</th>
   </tr>
+  </thead>
 
   <% report.hired_interactions.each do |ti| %>
     <tr>

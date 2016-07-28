@@ -12,6 +12,7 @@
   </div>
 </div>
 <table class="table table-bordered table-striped table-hover table-condensed">
+  <thead>
   <tr>
     <th>Date</th>
     <th>From</th>
@@ -20,7 +21,7 @@
     <th>Attachments</th>
     <th></th>
   </tr>
-
+  </thead>
     <% @emails.each do |email| %>
       <tr id ='tr_<%=email.id%>'>
         <td><%= email.created_at.to_date.to_s %></td>

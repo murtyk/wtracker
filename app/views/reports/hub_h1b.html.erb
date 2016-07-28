@@ -51,7 +51,9 @@
   <% para = params[:report].merge(action: :by_email) %>
   <%= email_download_button(para) %>
   <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
     <%= @report.th %>
+    </thead>
     <%= @report.trs %>
   </table>
 <% end %>

@@ -6,12 +6,15 @@
   <%= new_button(College)%>
 </div>
 <table id="table_report" class="table table-bordered table-striped table-hover table-condensed">
+  <thead>
   <tr>
     <th>Name</th>
     <th>Address</th>
     <th># of Classes</th>
     <th></th>
   </tr>
+  </thead>
+
   <% @colleges_map.colleges.each do |c| %>
     <tr id='tr_<%=c.id%>'>
       <td><%= name_and_link(c) %></td>

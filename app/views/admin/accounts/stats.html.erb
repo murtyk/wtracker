@@ -1,5 +1,27 @@
-<h1><%= @stats.name %></h1>
+<h1><%= @stats.header %></h1>
+<h2>Users: <%= @stats.users_count %></h2>
+<h2>Grants: <%= @stats.grants.count %></h2>
 
-<% %w(employers grants programs klasses trainees users).each do |m| %>
-  <p><b><%= m.capitalize + ':' %></b><%= @stats[m] %></p>
-<% end %>
+<div class="span6">
+    <table id="table_grant_stats" class="table table-condensed table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Grant</th>
+          <th>Programs</th>
+          <th>Classes</th>
+          <th>Trainees</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      <% @stats.grants.each do |grant| %>
+        <tr>
+          <td><%= grant.name %></td>
+          <td><%= grant.programs_count %></td>
+          <td><%= grant.classes_count %></td>
+          <td><%= grant.trainees_count %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+</div>

@@ -4,6 +4,7 @@
     <%= ('<th></th>' * 6).html_safe %>
   </tr>
 
+  <thead>
   <tr>
     <th>Name</th>
     <th>Location</th>
@@ -13,6 +14,7 @@
     <th>Trainees Hired</th>
     <th>Employer Notes</th>
   </tr>
+  </thead>
 
   <% report.employers_klasses.each do |employer, klass| %>
     <tr>

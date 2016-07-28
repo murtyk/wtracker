@@ -3,7 +3,7 @@
     <th><%= report.title%></th>
     <%= ('<th></th>' * 13).html_safe %>
   </tr>
-
+  <thead>
   <tr>
     <th>Name</th>
     <th>Student ID</th>
@@ -20,7 +20,7 @@
     <th>Start Date</th>
     <th>Pay</th>
   </tr>
-
+  </thead>
   <% report.trainee_statuses.each do |trainee_status| %>
     <tr>
       <% trainee_status.each do |d| %>

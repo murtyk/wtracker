@@ -16,7 +16,7 @@
 
 <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
   <% if report.klass_id %>
-
+  <thead>
   <tr style='display: none'>
     <th><%= report.klass.name + ' - ' + report.klass.college_name %> </th>
     <th></th>
@@ -25,6 +25,7 @@
     <th></th>
     <th></th>
   </tr>
+  </thead>
   <tr style='display: none'>
     <th>Class Dates</th>
     <th><%= report.klass.start_date.to_s + ' - ' + report.klass.end_date.to_s %> </th>
@@ -44,6 +45,7 @@
 
   <% end %>
 
+  <thead>
   <tr>
     <th>#</th>
     <th>Name</th>
@@ -52,6 +54,8 @@
     <th>Home Address</th>
     <th>Funding Source</th>
   </tr>
+  </thead>
+
   <% n = 0 %>
     <% report.trainees.each do |trainee| %>
       <% n += 1 %>
