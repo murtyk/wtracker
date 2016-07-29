@@ -1,11 +1,13 @@
 <h1>DASHBOARD</h1>
 
 <table class="table table-condensed table-bordered table-striped table-hover">
+  <thead>
   <tr>
     <% @data.metrics.header.each do |h| %>
       <th><%= h %></th>
     <% end %>
   </tr>
+  </thead>
   <% @data.metrics.rows.each do |row| %>
     <tr>
       <% row.each do |d| %>
@@ -17,15 +19,17 @@
   <% fs_count = @data.metrics.fs_data.count %>
   <% columns_count = 8 + fs_count %>
   <tr style='border-left: none; border-right: none; border-bottom: none'>
-    <td style="background-color: lightBlue" colspan="<%= columns_count %>"></td>
+    <td style="background-color:  white" colspan="<%= columns_count %>"></td>
   </tr>
   <% @data.metrics.fs_data.each do |fs_data| %>
+    <thead>
     <tr>
       <% fs_data.header.each do |h| %>
         <th><%= h %></th>
       <% end %>
-      <th colspan="3"></th>
+      <th colspan="5"></th>
     </tr>
+    </thead>
     <% fs_data.rows.each do |row| %>
       <tr>
         <% row.each do |d| %>
@@ -35,7 +39,7 @@
       </tr>
     <% end %>
     <tr style='border-left: none; border-right: none; border-bottom: none'>
-      <td style="background-color: lightBlue" colspan="<%= columns_count %>"></td>
+      <td style="background-color: white" colspan="<%= columns_count %>"></td>
     </tr>
   <% end %>
 </table>

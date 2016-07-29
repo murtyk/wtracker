@@ -3,14 +3,17 @@
   <% account = status[0] %>
   <h4><%= "#{account.name} - #{account.subdomain}" %></h4>
   <table id="table_report" class="table table-bordered table-striped table-hover">
-    <tr>
-      <th>Created At</th>
-      <th>User</th>
-      <th>Type</th>
-      <th>Success Count</th>
-      <th>Fail Count</th>
-      <th>Params</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>Created At</th>
+        <th>User</th>
+        <th>Type</th>
+        <th>Success Count</th>
+        <th>Fail Count</th>
+        <th>Params</th>
+        <th></th>
+      </tr>
+    </thead>
     <% status[1].each do |import_status| %>
       <tr id='tr_<%=import_status.id%>'>
         <td><%= import_status.created_at.to_s %></td>

@@ -121,14 +121,14 @@
 </div>
 
 <table class="table table-condensed table-bordered table-striped table-hover" id ='companies-table'>
-
+  <thead>
   <tr>
     <th>Employer</th>
     <th>Address</th>
     <th>County</th>
     <th>Contacts</th>
   </tr>
-
+  </thead>
   <% @employer_map.employers.each do |employer| %>
     <tr>
       <td><%= name_and_link(employer) %></td>

@@ -26,12 +26,14 @@
         </div>
       </div>
       <table class="table table-condensed table-bordered table-striped table-hover" >
+        <thead>
         <tr>
           <th>Name</th>
           <th>Classes</th>
           <th>Trainees</th>
           <th></th>
         </tr>
+        </thead>
         <% grant.grant_programs.each do |program| %>
         <tr>
           <td><%= current_grant == grant ? name_and_link(program) : program.name %></td>

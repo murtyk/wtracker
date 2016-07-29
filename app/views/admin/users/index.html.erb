@@ -20,16 +20,17 @@
 <% end %>
 
 <table id="table_user" class="table table-condensed table-bordered table-striped table-hover">
-  <tr>
-    <th>Name</th>
-    <th>email</th>
-    <th>Role</th>
-    <th>Account</th>
-    <th>online?</th>
-    <th>Last Signed</th>
-    <th></th>
-  </tr>
-
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>email</th>
+      <th>Role</th>
+      <th>Account</th>
+      <th>online?</th>
+      <th>Last Signed</th>
+      <th></th>
+    </tr>
+  </thead>
 <% @users.each do |user| %>
   <tr>
     <td><%= user.name %></td>

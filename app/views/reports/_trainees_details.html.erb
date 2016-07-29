@@ -4,6 +4,7 @@
     <%= ('<th></th>' * 16).html_safe %>
   </tr>
 
+  <thead>
   <tr>
     <th>TAPO ID</th>
     <th>Name</th>
@@ -26,6 +27,7 @@
     <th>Years with last employer</th>
     <th>Past Certifications</th>
   </tr>
+  </thead>
 
   <% report.klasses_data.each do |klass, klass_link, trainees_data| %>
     <% trainees_data.each do |trainee_data| %>

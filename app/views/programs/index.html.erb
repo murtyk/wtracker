@@ -7,12 +7,15 @@
 </div>
 
 <table id="table_report" class="table table-condensed table-bordered table-striped table-hover">
+  <thead>
   <tr>
     <th>Name</th>
     <th>Description</th>
     <th>Classes</th>
     <th></th>
   </tr>
+  </thead>
+  <tbody>
   <% @programs.each do |program| %>
     <tr>
       <td><%= name_and_link program %></td>
@@ -27,4 +30,5 @@
       </td>
     </tr>
   <% end %>
+  </tbody>
 </table>
