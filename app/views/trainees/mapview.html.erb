@@ -63,13 +63,14 @@
 <% if @trainees_map.show_near_by_employers? %>
 
   <table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
     <tr>
       <th>Name</th>
       <th>City</th>
       <th>County</th>
       <th>Notes</th>
     </tr>
-
+    </thead>
     <% @trainees_map.employers.each do |employer| %>
       <tr>
           <td><%= link_to employer.name, employer %></td>
@@ -93,11 +94,13 @@
   <h4>Trainees List</h4>
 
   <table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
     <tr>
       <th>Name</th>
       <th>Address</th>
       <th>County</th>
     </tr>
+    </thead>
     <% @trainees_map.trainees.each do |t| %>
     <tr>
       <td><%= link_to t.name, t %></td>

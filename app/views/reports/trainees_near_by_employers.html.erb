@@ -47,6 +47,8 @@
       <th><%= @report.title%></th>
       <%= (6 + @report.max_contacts).times.map{'<th></th>'}.join().html_safe %>
     </tr>
+
+    <thead>
     <tr>
       <th>Class</th>
       <th>Trainee</th>
@@ -61,6 +63,8 @@
         <th><%= "Contact #{n}" %></th>
       <% end %>
     </tr>
+    </thead>
+
     <% klass = @report.data.klass %>
     <% n = 1 %>
     <% (0..@report.count-1).each do |c| %>

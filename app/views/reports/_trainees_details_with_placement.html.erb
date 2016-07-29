@@ -3,7 +3,7 @@
     <th><%= report.title%></th>
     <%= ('<th></th>' * 18).html_safe %>
   </tr>
-
+  <thead>
   <tr>
     <th>TAPO ID</th>
     <th>Name</th>
@@ -26,7 +26,7 @@
     <th>Job Start Date</th>
     <th>Pay</th>
   </tr>
-
+  </thead>
   <% report.klasses_data.each do |klass, klass_link, trainees_data| %>
     <% trainees_data.each do |trainee_data| %>
       <tr>

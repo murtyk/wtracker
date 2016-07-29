@@ -26,6 +26,7 @@
     <%= ('<th></th>' * 10).html_safe %>
   </tr>
 
+  <thead>
   <tr>
     <th>Name</th>
     <th>TAPO ID</th>
@@ -42,6 +43,7 @@
     <th>Disabled On</th>
     <th>Disabled Notes</th>
   </tr>
+  </thead>
 
   <% @report.trainees.each do |trainee| %>
     <tr>

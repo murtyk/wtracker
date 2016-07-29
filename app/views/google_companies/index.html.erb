@@ -11,9 +11,11 @@
   <%= submit_button(f,'Find') %>
 <% end %>
 </div>
-
+<br>
+<div class = 'row-fluid'>
 <% if @companies.any? %>
   <table class="table table-bordered table-striped table-hover table-condensed" id='companies-table'>
+    <thead>
     <tr>
       <th></th>
       <th>Name</th>
@@ -22,6 +24,7 @@
       <th>Match Prob</th>
       <th>Action</th>
     </tr>
+    </thead>
   <% count = 0 %>
   <% @companies.each do |company| %>
     <tr>
@@ -35,3 +38,4 @@
   <% end %>
   </table>
 <% end %>
+</div>

@@ -1,15 +1,16 @@
 <h1>Accounts</h1>
 
 <table id="table_report" class="table table-bordered table-striped table-hover">
-  <tr>
-    <th>Name</th>
-    <th>Domain</th>
-    <th>Description</th>
-    <th>Type</th>
-    <th>Status</th>
-    <th></th>
-  </tr>
-
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Domain</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
 <% @accounts.each do |account| %>
   <tr id = 'account_<%=account.id%>'>
     <td><%= link_to account.name, admin_account_path(account) %></td>

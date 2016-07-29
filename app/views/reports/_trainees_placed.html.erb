@@ -4,6 +4,7 @@
     <%= ('<th></th>' * 11).html_safe %>
   </tr>
 
+  <thead>
   <tr>
     <th>TAPO ID</th>
     <th>Name</th>
@@ -19,6 +20,7 @@
     <th>Start Date</th>
     <th>Pay</th>
   </tr>
+  </thead>
 
   <% report.trainees_placed_no_employer.each do |kt| %>
     <% trainee = kt.trainee %>

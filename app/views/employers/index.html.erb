@@ -45,6 +45,7 @@
 </div>
 
 <table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
+  <thead>
   <tr>
     <th>Name</th>
     <th>City</th>
@@ -54,7 +55,7 @@
     <th>Source</th>
     <th></th>
   </tr>
-
+  </thead>
 <% @employers.each do |emp| %>
   <% employer = emp.decorate %>
   <tr id='tr_<%=employer.id%>'>

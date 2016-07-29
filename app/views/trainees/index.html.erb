@@ -33,6 +33,7 @@
 </div>
 
 <table id="table_trainee" class="table table-condensed table-bordered table-striped table-hover">
+  <thead>
   <tr>
     <th>Name</th>
     <th>email</th>
@@ -41,7 +42,7 @@
     <th>Location</th>
     <th></th>
   </tr>
-
+  </thead>
   <% @trainees.each do |trainee| %>
     <tr id='tr_<%=trainee.id%>'>
       <td><%= name_and_link trainee %></td>
@@ -49,9 +50,6 @@
       <td><%= format_phone_no(trainee.land_no)%></td>
       <td><%= format_phone_no(trainee.mobile_no)%></td>
       <td><%= trainee.county_name %> </td>
-      <td>
-      </td>
-
       <td>
         <%= render('shared/show_edit_destroy_buttons',
                     resource: trainee,

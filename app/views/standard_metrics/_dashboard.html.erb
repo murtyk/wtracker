@@ -28,7 +28,7 @@
     <% else %>
       <table class="table table-condensed table-bordered table-striped table-hover">
     <% end %>
-
+      <thead>
       <tr class='info'>
         <th>College</th>
         <th>Class</th>
@@ -42,6 +42,7 @@
         <th>Placed</th>
         <th>Placement Rate</th>
       </tr>
+      </thead>
       <% program.classes_by_status.each do |klass_state, klasses| %>
         <% klasses.each do |klass| %>
           <tr class = '<%= klass_state%>'>

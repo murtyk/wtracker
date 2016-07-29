@@ -80,7 +80,7 @@ class Admin
     end
 
     def stats
-      @stats = AccountStats.generate(params[:id])
+      @stats = AccountStats.new(params[:id])
     end
 
     private

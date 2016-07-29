@@ -53,6 +53,22 @@ input[type="color"]
     line-height: 24px !important;
 }
 
+
+thead {
+  background-color: #2471a3;
+  color: white;
+}
+
+tbody {
+  background-color: #ebf5fb ;
+}
+
+.table-hover tbody tr:hover,
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th{
+  background: #FFEBCD !important;
+}
+
 @import "bootstrap";
 @import "bootstrap-responsive";
 @import "font-awesome";
