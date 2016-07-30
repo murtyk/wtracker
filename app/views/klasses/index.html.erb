@@ -29,6 +29,7 @@
     <%= new_button(Klass, {program_id: program_data[1]}, "New Class for #{program_data[0]}")%>
   </h4>
   <table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
     <tr>
       <th>Name          </th>
       <th>College       </th>
@@ -46,6 +47,7 @@
       <th>End date      </th>
       <th></th>
     </tr>
+    </thead>
     <% program_data[2].each do |klass, enrolled_count, placed_count, dropped_count, fs_counts| %>
       <tr>
         <td><%= name_and_link(klass) %> </td>

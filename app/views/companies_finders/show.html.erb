@@ -26,6 +26,7 @@ Select All
 </button><br><br>
 
 <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <thead>
   <tr>
     <th></th>
     <th>Status</th>
@@ -34,6 +35,7 @@ Select All
     <th>County</th>
     <th>Match Prob</th>
   </tr>
+  </thead>
   <% row_no = -1 %>
   <% @companies.each do |company| %>
     <% row_no += 1 %>
