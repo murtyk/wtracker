@@ -1,0 +1,7 @@
+<%=
+  if ENV['JOB_BOARD'] == "Indeed"
+    render "shared/indeed_attribution"
+  elsif ENV['JOB_BOARD'] == "SimplyHired"
+    render "shared/sh_attribution"
+  end
+%>
