@@ -64,7 +64,8 @@
     <td><%= employer.county_state %></td>
     <td>
       <p><%= employer.phone_no %></p>
-      <% employer.contacts.each do |contact| %>
+      <% emp.contacts.each do |contact_object| %>
+        <% contact = contact_object.decorate %>
         <p>
         <%= contact.name %>
         <%= contact.land_no %>
