@@ -74,7 +74,7 @@ class EmployerServices
     employers = grant_scoped? ? grant_employers : grant_not_scoped_employers
 
     return employers.order_by_name if no_includes
-    employers.includes(:address, :sectors, :employer_notes, :contacts).order_by_name
+    employers.includes(:address, :sectors, :employer_notes, :contacts, :employer_source).order_by_name
   end
 
   def search_by_name
