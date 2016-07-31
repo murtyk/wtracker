@@ -28,6 +28,7 @@
             <%= f.fields_for :address do |address_fields| %>
               <%= render 'shared/address_fields', address_fields: address_fields, required: false %>
             <% end %>
+            <%= f.input :website %>
           </div>
         </div>
       </div>

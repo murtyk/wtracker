@@ -62,7 +62,7 @@ module ButtonsHelper
     link_to(url_for(params.merge(para).merge(format: 'xls')),
             class: 'btn btn-flat btn-small btn-primary btn-download pull-right',
             title: 'Download') do
-      "<i class='icon-cloud-download'>#{name}</i>".html_safe
+      "<i class='icon-cloud-download icon-2x'></i>&nbsp #{name}".html_safe
     end
   end
 

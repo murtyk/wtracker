@@ -2,6 +2,7 @@
 <div id='<%=div_id_for_collection(HotJob)%>'>
   <%= render employer.hot_jobs %>
 </div>
+<%= '<hr>'.html_safe if employer.hot_jobs_header %>
 
 <%= employer.job_openings_header %>
 <div id='<%=div_id_for_collection(JobOpening)%>'>
@@ -13,7 +14,6 @@
               class: 'btn btn-flat btn-primary' do %>
     <i class="icon-search"> Near By Trainees</i>
   <% end %>
-  <hr>
 <% end %>
 <hr>
 
