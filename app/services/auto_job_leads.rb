@@ -220,12 +220,12 @@ class AutoJobLeads
   def find_jobs(jsp, keywords, days)
     sp_by_city, sp_by_zip = build_search_params(jsp, keywords, days)
 
-    search_till_found(sp_by_city, sp_by_zip)
+    search_till_found(sp_by_city, sp_by_zip, jsp)
 
     job_board.jobs
   end
 
-  def search_till_found(sp_by_city, sp_by_zip)
+  def search_till_found(sp_by_city, sp_by_zip, jsp)
     attempts = 1
     3.times do
       count = search_by_city_zip(sp_by_city, sp_by_zip)

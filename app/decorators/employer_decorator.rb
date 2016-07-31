@@ -152,8 +152,7 @@ class EmployerDecorator < Draper::Decorator
   def files_header
     return nil unless EmployerFilePolicy.new.index?
 
-    html = '<hr>'  \
-           '<h4>'  \
+    html = '<h4>'  \
            'Files ' +
            h.button_new_association(EmployerFile, employer_id: object.id,
                                                   title: 'Add Document',
