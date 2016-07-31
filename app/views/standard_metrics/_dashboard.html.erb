@@ -45,32 +45,36 @@
       </thead>
       <% program.classes_by_status.each do |klass_state, klasses| %>
         <% klasses.each do |klass| %>
+          <% klass_counts = @data.klass_counts(klass.id) %>
           <tr class = '<%= klass_state%>'>
             <td><%= klass.college_name %></td>
             <td><%= request.format.xls? ? klass.name : link_to(klass.name, klass) %></td>
             <td><%= klass.start_date%></td>
             <td><%= klass.end_date%></td>
-            <td><%= klass.enrolled_count%></td>
-            <td><%= klass.dropped_count%></td>
-            <td><%= klass.completed_count %></td>
-            <td><%= klass.continuing_education_count%></td>
-            <td><%= klass.not_placed_count%></td>
-            <td><%= klass.placed_count %></td>
-            <td><%= klass.placement_rate%></td>
+            <td><%= klass_counts[:enrolled] %></td>
+            <td><%= klass_counts[:dropped] %></td>
+            <td><%= klass_counts[:completed] %></td>
+            <td><%= klass_counts[:continuing_education] %></td>
+            <td><%= klass_counts[:not_placed] %></td>
+            <td><%= klass_counts[:placed] %></td>
+            <td><%= klass_counts[:placement_rate] %></td>
           </tr>
         <% end %>
+
+        <% program_counts = @data.program_counts(program, klass_state) %>
+
         <tr class = '<%= klass_state%> info'>
           <td><b>Totals for <%= klass_state.humanize.titleize%></b></td>
           <td></td>
           <td></td>
           <td></td>
-          <td><%= program.enrolled_count(klass_state)%></td>
-          <td><%= program.dropped_count(klass_state)%></td>
-          <td><%= program.completed_count(klass_state) %></td>
-          <td><%= program.continuing_education_count(klass_state)%></td>
-          <td><%= program.not_placed_count(klass_state)%></td>
-          <td><%= program.placed_count(klass_state) %></td>
-          <td><%= program.placement_rate(klass_state)%></td>
+          <td><%= program_counts[:enrolled] %></td>
+          <td><%= program_counts[:dropped] %></td>
+          <td><%= program_counts[:completed] %></td>
+          <td><%= program_counts[:continuing_education] %></td>
+          <td><%= program_counts[:not_placed] %></td>
+          <td><%= program_counts[:placed] %></td>
+          <td><%= program_counts[:placement_rate] %></td>
         </tr>
       <% end %>
     </table>
