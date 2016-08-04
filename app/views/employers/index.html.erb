@@ -83,9 +83,16 @@
     </td>
     <td><%= employer.employer_source_name %></td>
     <td>
-      <% confirm_msg = "Are your sure you want to delete employer #{employer.name}?" %>
-      <%= render('shared/show_edit_destroy_buttons', resource: employer,
-                                                     confirm_message: confirm_msg) %>
+      <% resource = employer %>
+      <% confirm_message = "Are your sure you want to delete employer #{employer.name}?" %>
+
+      <%= show_button(resource) %>
+      <% if policy(resource).edit? %>
+        <%= edit_button(resource) %>
+      <% end %>
+      <% if policy(resource).destroy? %>
+        <%= button_destroy_association(resource, confirm_message: confirm_message)%>
+      <% end %>
     </td>
   </tr>
 <% end %>

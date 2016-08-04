@@ -64,7 +64,18 @@
         <td><%= klass.credits %>        </td>
         <td><%= klass.start_date %>     </td>
         <td><%= klass.end_date %>       </td>
-        <td><%= render('shared/show_edit_destroy_buttons', resource: klass, confirm_message: "Are your sure you want to delete the class #{klass.name}?") %></td>
+        <td>
+          <% resource = klass %>
+          <% confirm_message = "Are your sure you want to delete the class #{klass.name}?" %>
+
+          <%= show_button(resource) %>
+          <% if policy(resource).edit? %>
+            <%= edit_button(resource) %>
+          <% end %>
+          <% if policy(resource).destroy? %>
+            <%= button_destroy_association(resource, confirm_message: confirm_message)%>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </table>

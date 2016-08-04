@@ -51,9 +51,16 @@
       <td><%= format_phone_no(trainee.mobile_no)%></td>
       <td><%= trainee.county_name %> </td>
       <td>
-        <%= render('shared/show_edit_destroy_buttons',
-                    resource: trainee,
-                    confirm_message: "Are your sure you want to delete trainee #{trainee.name}?") %>
+        <% resource = trainee %>
+        <% confirm_message = "Are your sure you want to delete trainee #{trainee.name}?" %>
+
+        <%= show_button(resource) %>
+        <% if policy(resource).edit? %>
+          <%= edit_button(resource) %>
+        <% end %>
+        <% if policy(resource).destroy? %>
+          <%= button_destroy_association(resource, confirm_message: confirm_message)%>
+        <% end %>
       </td>
 
     </tr>
