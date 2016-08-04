@@ -21,7 +21,7 @@ class ProgramDecorator < Draper::Decorator
 
   def program_klasses
     klasses
-      .includes(:college, :klass_certificates)
+      .includes(:college, :klass_certificates, :klass_category)
       .order(klasses_order)
       .decorate
   end

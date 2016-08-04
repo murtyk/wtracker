@@ -24,7 +24,7 @@ class TraineeSearchService
 
       return search_by_name(user, name) unless name.blank?
 
-      Klass.find(klass_id).trainees.order(:first, :last)
+      Klass.find(klass_id).trainees.includes(:home_address).order(:first, :last)
     end
 
     private
