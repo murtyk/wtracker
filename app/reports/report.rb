@@ -143,6 +143,10 @@ class Report
     </button><br><br>".html_safe
   end
 
+  def additional_attachments
+    []
+  end
+
   private
 
   def self.report_class(r_name)

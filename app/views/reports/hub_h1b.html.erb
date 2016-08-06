@@ -50,6 +50,15 @@
   <% end %>
   <% para = params[:report].merge(action: :by_email) %>
   <%= email_download_button(para) %>
+
+  <% if Rails.env.development? %>
+  <div class='row'>
+        <%= download_button(params[:params]) %>
+        <%= @report.download_button %>
+      </div>
+
+  <% end %>
+
   <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
     <thead>
     <%= @report.th %>

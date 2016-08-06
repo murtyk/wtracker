@@ -34,6 +34,20 @@ class HubH1bReport < Report
     excel_file
   end
 
+  def build_csv
+    csv_data = CSV.generate do |csv|
+      csv << builder.header
+      csv << builder.header_numbers
+      trainees.each{ |trainee| csv << builder.build_row(trainee) }
+    end
+
+    file_path = "tmp/hub_h1b_#{Time.now.nsec}.csv"
+
+    File.open(file_path, "wb") do |file|
+      file.write(csv_data)
+    end
+  end
+
   def builder
     @builder ||= HubH1bViewBuilder.new(start_date, end_date)
   end

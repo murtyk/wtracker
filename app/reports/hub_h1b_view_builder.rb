@@ -65,7 +65,7 @@ class HubH1bViewBuilder
   def data_100s(t)
     [t.name,
      t.id,
-     "'" + trainee_id(t),
+     trainee_id(t),
      9,
      trainee_dob(t),
      gender(t),
