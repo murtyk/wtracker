@@ -9,5 +9,4 @@ $(function() {
 
 $(document).ready(function () {
   $('.btn-spinner').button();
-  $('.header-fixed').fixedHeader();
 });
