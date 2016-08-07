@@ -28,7 +28,7 @@
     <%= program_data[0]%>
     <%= new_button(Klass, {program_id: program_data[1]}, "New Class for #{program_data[0]}")%>
   </h4>
-  <table class="table table-condensed table-bordered table-striped table-hover">
+  <table id="klasses_<%=program_data[1]%>" class="table table-condensed table-bordered table-striped table-hover table_freeze_header">
     <thead>
     <tr>
       <th>Name          </th>

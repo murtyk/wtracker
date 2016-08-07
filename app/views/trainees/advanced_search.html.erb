@@ -96,41 +96,43 @@
       </div>
     </div>
 
-    <table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
-    <tr>
-      <th><%= sort_link(@q, :first, "First Name") %></th>
-      <th><%= sort_link(@q, :last, "Last Name") %></th>
-      <% if current_grant.trainee_applications? %>
-        <th>Applied On</th>
-        <th>Status</th>
-        <th>UI Claim Verified On</th>
-        <th>Disabled On</th>
-        <th>Disabled Notes</th>
-      <% end %>
-      <th><%= sort_link(@q, :email, "Email") %></th>
-      <th>Mobile No</th>
-      <th><%= sort_link(@q, :home_address_county, "County") %></th>
-      <% if current_grant.trainee_applications? %>
-        <th>Last Job Title</th>
-        <th>Last Salary</th>
-        <th><%= sort_link(@q, :applicant_sector_name, "Industry") %></th>
-      <% end %>
-      <th><%= sort_link(@q, :funding_source_name, "Funding Source") %></th>
+    <table id="data-table" class="table table-condensed table-bordered table-striped table-hover table_freeze_header thead-normal">
+    <thead>
+      <tr>
+        <th><%= sort_link(@q, :first, "First Name") %></th>
+        <th><%= sort_link(@q, :last, "Last Name") %></th>
+        <% if current_grant.trainee_applications? %>
+          <th>Applied On</th>
+          <th>Status</th>
+          <th>UI Claim Verified On</th>
+          <th>Disabled On</th>
+          <th>Disabled Notes</th>
+        <% end %>
+        <th><%= sort_link(@q, :email, "Email") %></th>
+        <th>Mobile No</th>
+        <th><%= sort_link(@q, :home_address_county, "County") %></th>
+        <% if current_grant.trainee_applications? %>
+          <th>Last Job Title</th>
+          <th>Last Salary</th>
+          <th><%= sort_link(@q, :applicant_sector_name, "Industry") %></th>
+        <% end %>
+        <th><%= sort_link(@q, :funding_source_name, "Funding Source") %></th>
 
-      <th>Education</th>
-      <th>Veteran</th>
-      <% if current_grant.trainee_applications? %>
-        <th>Skills</th>
-        <th>Trainee Source</th>
-        <th>Navigator</th>
-      <% end %>
-      <th>Classes</th>
-      <th>Assessment</th>
-      <th>Assessment Dates</th>
-      <% @tas.grant_specific_headers.each do |field| %>
-        <th><%= field %></th>
-      <% end %>
-    </tr>
+        <th>Education</th>
+        <th>Veteran</th>
+        <% if current_grant.trainee_applications? %>
+          <th>Skills</th>
+          <th>Trainee Source</th>
+          <th>Navigator</th>
+        <% end %>
+        <th>Classes</th>
+        <th>Assessment</th>
+        <th>Assessment Dates</th>
+        <% @tas.grant_specific_headers.each do |field| %>
+          <th><%= field %></th>
+        <% end %>
+      </tr>
+    </thead>
     <% @trainees.each do |t| %>
     <tr>
       <td><%= link_to t.first, t %></td>

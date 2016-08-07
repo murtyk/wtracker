@@ -12,7 +12,7 @@
 
   <%=  render 'layouts/' + top_bar %>
   <% if admin_signed_in? || user_signed_in? || trainee_signed_in? %>
-    <div class = 'container' style = "min-height:500px;">
+    <div id='page_container' class='container' style = "min-height:500px;">
       <div id="flash_notice">
         <% flash.each do |name, msg| %>
           <% if msg.is_a?(String) %>
@@ -23,6 +23,8 @@
           <% end %>
         <% end %>
       </div>
+      <a href="#" class="back-to-top" style=”display: inline;”><i class="icon-arrow-up"></i></a>
+
       <%= yield %>
     </div>
   <% elsif controller_name == 'shared_job_statuses' %>
