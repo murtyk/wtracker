@@ -30,7 +30,7 @@ class HubH1bReport < Report
       row = builder.build_row(trainee)
       excel_file.add_row row
     end
-    excel_file.save
+    excel_file.save([[2, :trainee_id]])
     excel_file
   end
 

@@ -1,6 +1,7 @@
 # typically used for download
 class ExcelFile
-  attr_reader :user, :data_name, :sheet_name, :package, :sheet
+  STYLES = [:trainee_id]
+  attr_reader :user, :data_name, :sheet_name, :package, :sheet, :styles
   def initialize(user, data_name, sheet_name = nil)
     @user = user
     @data_name = data_name
@@ -25,10 +26,16 @@ class ExcelFile
     File.delete(file_path) if File.exist?(file_path)
     @package ||= Axlsx::Package.new
     package.use_shared_strings = true
+
+    generate_styles
     @sheet = package.workbook.add_worksheet(name: sheet_name || data_name)
   end
 
-  def save
+  def save(col_styles = [])
+    col_styles.each do |col, style|
+      sheet.col_style col, styles[style], :row_offset => 1 if styles[style]
+    end
+
     package.serialize file_path
   end
 
@@ -38,5 +45,10 @@ class ExcelFile
 
   def file_path
     Rails.root.join('tmp/').to_s + file_name
+  end
+
+  def generate_styles
+    @styles = {}
+    styles[:trainee_id] = package.workbook.styles.add_style :format_code => "0########"
   end
 end
