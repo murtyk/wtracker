@@ -1,71 +1,73 @@
-<div class = 'row-fluid page-caption-div' >
-  <h1>Classes</h1>
-</div>
-
-<% if Klass.count > 0 %>
-  <div class = 'row-fluid'>
-    <div class = 'span3'>
-      Total Classes: <%= Klass.count %>
-    </div>
-    <div class='span1 pull-right'>
-      <% max_rows = (ENV['MAX_ROWS_FOR_DOWNLOAD'] || 6).to_i %>
-      <% if Klass.count > max_rows %>
-        <%= email_download_button %>
-      <% else %>
-        <%= download_button %>
-      <% end %>
-    </div>
+<div id="klasses_list_page">
+  <div class = 'row-fluid page-caption-div' >
+    <h1>Classes</h1>
   </div>
-<% end %>
 
-<% unless @programs_data.any? %>
-  <h4>Please define a program and add classes</h4>
-<% end %>
-
-<% @programs_data.each do |program_data| %>
-  <% next if program_data[2].empty? %>
-  <h4>
-    <%= program_data[0]%>
-    <%= new_button(Klass, {program_id: program_data[1]}, "New Class for #{program_data[0]}")%>
-  </h4>
-  <table class="table table-condensed table-bordered table-striped table-hover">
-    <thead>
-    <tr>
-      <th>Name          </th>
-      <th>College       </th>
-      <th>Category      </th>
-      <th>Certificates  </th>
-      <th>Enrolled      </th>
-      <th>Placed        </th>
-      <th>Dropped       </th>
-      <% @klasses_service.funding_sources_names.each do |fs_name| %>
-      <th> <%= fs_name %> </th>
-      <% end %>
-      <th>Training hours</th>
-      <th>Credits       </th>
-      <th>Start date    </th>
-      <th>End date      </th>
-      <th></th>
-    </tr>
-    </thead>
-    <% program_data[2].each do |klass, enrolled_count, placed_count, dropped_count, fs_counts| %>
-      <tr>
-        <td><%= name_and_link(klass) %> </td>
-        <td><%= klass.college_name %>   </td>
-        <td><%= klass.klass_category_name %>  </td>
-        <td><%= klass.certificate_names %></td>
-        <td><%= enrolled_count %> </td>
-        <td><%= placed_count %> </td>
-        <td><%= dropped_count %></td>
-        <% fs_counts.each do |count| %>
-        <td> <%= count %> </td>
+  <% if Klass.count > 0 %>
+    <div class = 'row-fluid'>
+      <div class = 'span3'>
+        Total Classes: <%= Klass.count %>
+      </div>
+      <div class='span1 pull-right'>
+        <% max_rows = (ENV['MAX_ROWS_FOR_DOWNLOAD'] || 6).to_i %>
+        <% if Klass.count > max_rows %>
+          <%= email_download_button %>
+        <% else %>
+          <%= download_button %>
         <% end %>
-        <td><%= klass.training_hours %> </td>
-        <td><%= klass.credits %>        </td>
-        <td><%= klass.start_date %>     </td>
-        <td><%= klass.end_date %>       </td>
-        <td><%= render('shared/show_edit_destroy_buttons', resource: klass, confirm_message: "Are your sure you want to delete the class #{klass.name}?") %></td>
+      </div>
+    </div>
+  <% end %>
+
+  <% unless @programs_data.any? %>
+    <h4>Please define a program and add classes</h4>
+  <% end %>
+
+  <% @programs_data.each do |program_data| %>
+    <% next if program_data[2].empty? %>
+    <h4>
+      <%= program_data[0]%>
+      <%= new_button(Klass, {program_id: program_data[1]}, "New Class for #{program_data[0]}")%>
+    </h4>
+    <table id="klasses_<%=program_data[1]%>" class="table table-condensed table-bordered table-striped table-hover table_freeze_header">
+      <thead>
+      <tr>
+        <th>Name          </th>
+        <th>College       </th>
+        <th>Category      </th>
+        <th>Certificates  </th>
+        <th>Enrolled      </th>
+        <th>Placed        </th>
+        <th>Dropped       </th>
+        <% @klasses_service.funding_sources_names.each do |fs_name| %>
+        <th> <%= fs_name %> </th>
+        <% end %>
+        <th>Training hours</th>
+        <th>Credits       </th>
+        <th>Start date    </th>
+        <th>End date      </th>
+        <th></th>
       </tr>
-    <% end %>
-  </table>
-<% end %>
+      </thead>
+      <% program_data[2].each do |klass, enrolled_count, placed_count, dropped_count, fs_counts| %>
+        <tr>
+          <td><%= name_and_link(klass) %> </td>
+          <td><%= klass.college_name %>   </td>
+          <td><%= klass.klass_category_name %>  </td>
+          <td><%= klass.certificate_names %></td>
+          <td><%= enrolled_count %> </td>
+          <td><%= placed_count %> </td>
+          <td><%= dropped_count %></td>
+          <% fs_counts.each do |count| %>
+          <td> <%= count %> </td>
+          <% end %>
+          <td><%= klass.training_hours %> </td>
+          <td><%= klass.credits %>        </td>
+          <td><%= klass.start_date %>     </td>
+          <td><%= klass.end_date %>       </td>
+          <td><%= render('shared/show_edit_destroy_buttons', resource: klass, confirm_message: "Are your sure you want to delete the class #{klass.name}?") %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>
