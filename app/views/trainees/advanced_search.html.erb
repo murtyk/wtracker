@@ -162,7 +162,7 @@
       <% end %>
       <td><%= t.klasses.map{ |k| link_to(k.to_label, k) }.join(',').html_safe %></td>
       <td><%= t.assessments.map{ |a| a.name }.join('<br>').html_safe %></td>
-      <td><%= t.trainee_assessments.map{ |a| a.date }.join('<br>').html_safe %></td>
+      <td><%= t.trainee_assessments.map{ |a| a.date }.join(';').html_safe %></td>
       <% @tas.grant_specific_values(t).each do |field| %>
         <th><%= field %></th>
       <% end %>
