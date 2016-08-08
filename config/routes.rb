@@ -2,6 +2,8 @@ WTracker::Application.routes.draw do
   resources :applicants, except: [:destroy] do
     collection do
       get :analysis
+      get :change_navigator
+      post :assign_navigator
     end
   end
   resources :applicant_reapplies, only: [:new, :create, :index]

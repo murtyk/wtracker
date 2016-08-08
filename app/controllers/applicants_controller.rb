@@ -5,6 +5,21 @@ class ApplicantsController < ApplicationController
   before_action :set_applicant,      only: [:show, :edit, :update]
   before_action :user_or_key,        only: [:update]
 
+  def change_navigator
+  end
+
+  def assign_navigator
+    input_params = params.require(:applicants).permit(:from_nav_id, :to_nav_id)
+    if input_params[:from_nav_id] == input_params[:to_nav_id]
+      @error_message = "From and To navigators can not be same!"
+    else
+      count = ApplicantFactory.assign_navigator(input_params)
+      from_nav = User.find(input_params[:from_nav_id])
+      to_nav = User.find(input_params[:to_nav_id])
+      @success_message = "#{count} applicants successfully moved from #{from_nav.name} to #{to_nav.name}"
+    end
+  end
+
   def analysis
     am = ApplicantMetrics.new(current_user)
     @metrics = am.generate_analysis

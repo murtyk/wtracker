@@ -1,0 +1,5 @@
+<% if @success_message %>
+  <h1 style="color: green"><%= @success_message %></h1>
+<% else %>
+  <%= render 'assign_navigator_form', error_message: @error_message %>
+<% end %>

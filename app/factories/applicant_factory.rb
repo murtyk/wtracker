@@ -138,4 +138,21 @@ class ApplicantFactory
     a_params[:dob] = opero_str_to_date(a_params[:dob])
     a_params
   end
+
+  def self.navigators
+    nav_counts = Applicant.group(:navigator_id).count
+    nav_ids = nav_counts.map{|id, count| id}.compact
+    navs = User.where(id: nav_ids).order(:first, :last)
+    navs.map do |nav|
+      OpenStruct.new(id: nav.id, to_label: nav.name + "(#{nav_counts[nav.id]})")
+    end
+  end
+
+  def self.assign_navigator(params)
+    count = Applicant.where(navigator_id: params[:from_nav_id]).count
+    Applicant
+      .where(navigator_id: params[:from_nav_id])
+      .update_all(navigator_id: params[:to_nav_id])
+    count
+  end
 end

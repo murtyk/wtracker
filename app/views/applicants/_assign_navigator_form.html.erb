@@ -1,0 +1,35 @@
+<div class="row-fluid" >
+  <div class="opero-widget-box">
+    <div class="opero-widget-header">
+      <h1>Assign Applicants to another Navigator</h1>
+    </div>
+    <div class="row-fluid">
+      <div class="span4 offset1">
+        <%= simple_form_for(:applicants, url: assign_navigator_applicants_path, method: :post) do |f| %>
+          <%= f.error_notification %>
+
+          <div class="form-inputs">
+            <% if error_message %>
+              <b style="color: red"><%= error_message %></b><br>
+            <% end %>
+            <%= f.input :from_nav_id,
+                        label: "From:",
+                        collection: ApplicantFactory.navigators,
+                        include_blank: false %>
+
+            <%= f.input :to_nav_id,
+                        label: "To:",
+                        collection: current_grant.navigators,
+                        include_blank: false %>
+          </div>
+
+          <div class="form-actions">
+            <button id='submit_button' class='btn btn-flat btn-small btn-primary' type='submit'>
+              <i class='#{icon_class}'></i> Assign
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
