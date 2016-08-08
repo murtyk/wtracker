@@ -171,16 +171,21 @@ module MenusHelper
   end
 
   def applicants_menu_items
-    applicants_search_menu +
-      applicants_analysis_menu
+    items = applicants_search_menu + applicants_analysis_menu
+    return items unless current_user.director?
+    items + divider_menu + applicants_change_navigator
   end
 
   def applicants_search_menu
-    trainee_applications? ? menu_link('Search', applicants_path) : nil
+    menu_link('Search', applicants_path)
   end
 
   def applicants_analysis_menu
-    trainee_applications? ? menu_link('Analysis', analysis_applicants_path) : nil
+    menu_link('Analysis', analysis_applicants_path)
+  end
+
+  def applicants_change_navigator
+    menu_link('Change Navigator', change_navigator_applicants_path)
   end
 
   def trainees_menu
