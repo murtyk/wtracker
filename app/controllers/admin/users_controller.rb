@@ -16,7 +16,7 @@ class Admin
     end
 
     def find_users
-      users = account_users.paginate(page: params[:page], per_page: 10).decorate
+      users = account_users.paginate(page: params[:page], per_page: 30).decorate
 
       return users unless @online_only
       users.map { |user| user if user.online? }.compact if @online_only

@@ -2,7 +2,7 @@
 <% @statuses.each do |status| %>
   <% account = status[0] %>
   <h4><%= "#{account.name} - #{account.subdomain}" %></h4>
-  <table id="table_report" class="table table-bordered table-striped table-hover">
+  <table id="table_report" class="table table-bordered table-striped table-hover table_freeze_header">
     <thead>
       <tr>
         <th>Created At</th>
@@ -14,6 +14,7 @@
         <th></th>
       </tr>
     </thead>
+    <tbody>
     <% status[1].each do |import_status| %>
       <tr id='tr_<%=import_status.id%>'>
         <td><%= import_status.created_at.to_s %></td>
@@ -38,5 +39,6 @@
         </td>
       </tr>
     <% end %>
+    </tbody>
   </table>
 <% end %>

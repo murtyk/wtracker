@@ -9,7 +9,7 @@ class Admin
 
     def index
       if params[:filters]
-        @cities = find_cities.paginate(page: params[:page], per_page: 20)
+        @cities = find_cities.paginate(page: params[:page], per_page: 30)
       else
         @cities = []
       end
