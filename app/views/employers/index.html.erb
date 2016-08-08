@@ -3,13 +3,15 @@
   <%= simple_form_for :filters,
             method: :get,
             url: :employers,
-            html: { class: 'form-search-employers', id: 'form_employers_search'} do |f| %>
+            html: { class: 'form-search-employers',
+                    style: 'margin-bottom: 0px;',
+                    id: 'form_employers_search'} do |f| %>
     <div class='row-fluid'>
       <div class='span3'>
         Counties<%= f.input_field :county_ids, label: 'County', collection: employer_counties_for_selection, class: "search-query input-block-level", multiple: true%>
       </div>
       <div class='span3'>
-        Sector<br><%= f.input_field :sector_id, label: 'Sector', collection: employer_sectors_for_selection, class: "search-query input-block-level", width:'50%'%><br>
+        Sector<br><%= f.input_field :sector_id, label: 'Sector', collection: employer_sectors_for_selection, class: "search-query input-block-level", width:'50%'%>
         Source<br><%= f.input_field :employer_source_id, label: 'Source', collection: employer_sources_for_selection, class: "search-query input-block-level"%>
       </div>
       <div class='span2'>
@@ -27,7 +29,6 @@
       <div class='span2' style='padding-top:20px'>
         <%= download_button({filters: {all: 1}}, "Download All") %>
       </div>
-
     </div>
   <% end %>
 </div>
@@ -44,60 +45,62 @@
   <% end %>
 </div>
 
-<table id="table_employer" class="table table-condensed table-bordered table-striped table-hover">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>City</th>
-    <th>County</th>
-    <th>Contacts</th>
-    <th>Notes</th>
-    <th>Source</th>
-    <th></th>
-  </tr>
-  </thead>
-<% @employers.each do |emp| %>
-  <% employer = emp.decorate %>
-  <tr id='tr_<%=employer.id%>'>
-    <td><%= name_and_link(employer) %></td>
-    <td><%= employer.city %></td>
-    <td><%= employer.county_state %></td>
-    <td>
-      <p><%= employer.phone_no %></p>
-      <% emp.contacts.each do |contact_object| %>
-        <% contact = contact_object.decorate %>
-        <p>
-        <%= contact.name %>
-        <%= contact.land_no %>
-        <%= contact.mobile_no %>
-        <%= contact.email %>
-        </p>
-      <% end %>
-    </td>
-    <td>
-      <ol>
-      <% employer.employer_notes.each do |notes|%>
-        <li><%= notes.note %></li>
-      <% end %>
-      </ol>
-    </td>
-    <td><%= employer.employer_source_name %></td>
-    <td>
-      <% resource = employer %>
-      <% confirm_message = "Are your sure you want to delete employer #{employer.name}?" %>
+<div class = 'row-fluid'>
+  <table id="table_employer" class="table table-condensed table-bordered table-striped table-hover table_freeze_header">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>City</th>
+      <th>County</th>
+      <th>Contacts</th>
+      <th>Notes</th>
+      <th>Source</th>
+      <th></th>
+    </tr>
+    </thead>
+  <% @employers.each do |emp| %>
+    <% employer = emp.decorate %>
+    <tr id='tr_<%=employer.id%>'>
+      <td><%= name_and_link(employer) %></td>
+      <td><%= employer.city %></td>
+      <td><%= employer.county_state %></td>
+      <td>
+        <p><%= employer.phone_no %></p>
+        <% emp.contacts.each do |contact_object| %>
+          <% contact = contact_object.decorate %>
+          <p>
+          <%= contact.name %>
+          <%= contact.land_no %>
+          <%= contact.mobile_no %>
+          <%= contact.email %>
+          </p>
+        <% end %>
+      </td>
+      <td>
+        <ol>
+        <% employer.employer_notes.each do |notes|%>
+          <li><%= notes.note %></li>
+        <% end %>
+        </ol>
+      </td>
+      <td><%= employer.employer_source_name %></td>
+      <td>
+        <% resource = employer %>
+        <% confirm_message = "Are your sure you want to delete employer #{employer.name}?" %>
 
-      <%= show_button(resource) %>
-      <% if policy(resource).edit? %>
-        <%= edit_button(resource) %>
-      <% end %>
-      <% if policy(resource).destroy? %>
-        <%= button_destroy_association(resource, confirm_message: confirm_message)%>
-      <% end %>
-    </td>
-  </tr>
-<% end %>
-</table>
+        <%= show_button(resource) %>
+        <% if policy(resource).edit? %>
+          <%= edit_button(resource) %>
+        <% end %>
+        <% if policy(resource).destroy? %>
+          <%= button_destroy_association(resource, confirm_message: confirm_message)%>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
 
-<% if @employers.any? %>
-  <div align="center"><%= will_paginate @employers%></div>
-<% end %>
+  <% if @employers.any? %>
+    <div align="center"><%= will_paginate @employers%></div>
+  <% end %>
+</div>

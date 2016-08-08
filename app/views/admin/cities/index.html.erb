@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <table id="table_city" class="table table-condensed table-bordered table-striped table-hover">
+  <table id="table_city" class="table table-condensed table-bordered table-striped table-hover table_freeze_header">
   <thead>
     <tr>
       <th>Name</th>
@@ -29,6 +29,7 @@
       <th></th>
     </tr>
   </thead>
+  <tbody>
     <% @cities.each do |city| %>
       <tr>
         <td><%= link_to city.name,admin_city_path(city)  %></td>
@@ -40,6 +41,7 @@
         <td></td>
       </tr>
     <% end %>
+  </tbody>
   </table>
 
   <div align="center">
