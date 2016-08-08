@@ -59,6 +59,11 @@ thead {
   color: white;
 }
 
+.thead-normal thead {
+  background-color: #FFFFFF;
+  color: black;
+}
+
 /*
 tbody {
   background-color: #ebf5fb ;
@@ -98,7 +103,7 @@ tbody {
   background-color: rgb(242, 222, 222);
 }
 
-body { padding-top: 90px; }
+body { padding-top: 0px; }
 @media screen and (max-width: 980px) {
     body { padding-top: 0px; }
 }
