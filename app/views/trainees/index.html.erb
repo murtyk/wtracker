@@ -35,6 +35,7 @@
 <table id="table_trainee" class="table table-condensed table-bordered table-striped table-hover">
   <thead>
   <tr>
+    <th>TAPO ID</th>
     <th>Name</th>
     <th>email</th>
     <th>Land No.</th>
@@ -45,6 +46,7 @@
   </thead>
   <% @trainees.each do |trainee| %>
     <tr id='tr_<%=trainee.id%>'>
+      <td><%= trainee.id %></td>
       <td><%= name_and_link trainee %></td>
       <td><%= trainee.email%></td>
       <td><%= format_phone_no(trainee.land_no)%></td>
