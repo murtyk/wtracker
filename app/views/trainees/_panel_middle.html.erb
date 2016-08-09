@@ -8,7 +8,9 @@
 </div>
 
 <% if current_grant.trainee_applications? %>
-  <br>
+  <p>
+    Registered Date: <%= trainee.applicant.created_at.to_date.to_s %>
+  </p>
   EDP Date: <%= trainee.edp_date.to_s %>
 <% end %>
 <hr>
