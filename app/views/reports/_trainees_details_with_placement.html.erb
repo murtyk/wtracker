@@ -29,29 +29,31 @@
   </thead>
   <% report.klasses_data.each do |klass, klass_link, trainees_data| %>
     <% trainees_data.each do |trainee_data| %>
+      <% index = -1 %>
       <tr>
-        <td><%= trainee_data[0]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
         <td>
             <%#= policy(klass).show? ? link_to(klass.to_label, klass) : klass.to_label %>
             <%= klass_link %>
         </td>
-        <td><%= trainee_data[1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
         <td><%= klass.start_date%></td>
         <td><%= klass.end_date%></td>
-        <td><%= trainee_data[2]%></td>
-        <td><%= trainee_data[3]%></td>
-        <td><%= trainee_data[4]%></td>
-        <td><%= trainee_data[5]%></td>
-        <td><%= trainee_data[6]%></td>
-        <td><%= trainee_data[7]%></td>
-        <td><%= trainee_data[8]%></td>
-        <td><%= trainee_data[9]%></td>
-        <td><%= trainee_data[10]%></td>
-        <td><%= trainee_data[11]%></td>
-        <td><%= trainee_data[12]%></td>
-        <td><%= trainee_data[13]%></td>
-        <td><%= trainee_data[14]%></td>
-        <td><%= trainee_data[15]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
+        <td><%= trainee_data[index += 1]%></td>
       </tr>
     <% end %>
   <% end %>
