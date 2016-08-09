@@ -38,7 +38,7 @@ class ApplicantMetrics
 
   def generate_navigator_metrics
     @metrics = OpenStruct.new
-    @metrics.headers = [''] + navigator_names
+    @metrics.headers = ['', 'Total'] + navigator_names
     @metrics.rows = [
       new_applicants_links, trainees_not_in_class_links, trainees_in_class_links,
       trainees_not_placed_links, trainees_ojt_enrolled_links, trainees_placed_links,
@@ -73,10 +73,15 @@ class ApplicantMetrics
   # Navigator should be determined based on the county entered by applicant
   def new_applicants_links
     ['# ' + TITLES['navigator_new_applicants']] +
+      [total_new_applicants] +
       navigator_ids.map do |id|
         count = new_applicants_count(id)
         new_applicants_link(id, count)
       end
+  end
+
+  def total_new_applicants
+    Trainee.where(funding_source_id: nil).count
   end
 
   def new_applicants_count(nav_id)
@@ -89,10 +94,19 @@ class ApplicantMetrics
   # Navigator should be determined based on the county entered by applicant
   def trainees_not_in_class_links
     ['# ' + TITLES['trainees_not_in_class']] +
+    [total_trainees_not_in_class] +
       navigator_ids.map do |id|
         count = trainees_not_in_class_count(id)
         trainees_not_in_class_link(id, count)
       end
+  end
+
+  def total_trainees_not_in_class
+    ids = Trainee.pluck(:id) -
+            KlassTrainee.pluck(:trainee_id) -
+            placed_trainee_ids
+
+    ids.uniq.count
   end
 
   # exclude placed ones
@@ -111,10 +125,15 @@ class ApplicantMetrics
   # Navigator should be determined based on the county entered by applicant
   def trainees_in_class_links
     ['# Trainees Assigned to Workshops'] +
+    [total_trainees_in_class] +
       navigator_ids.map do |id|
         count = trainees_in_class_count(id)
         trainees_in_class_link(id, count)
       end
+  end
+
+  def total_trainees_in_class
+    KlassTrainee.select(:trainee_id).distinct.count
   end
 
   def trainees_in_class_count(nav_id)
@@ -138,10 +157,15 @@ class ApplicantMetrics
   # Placement is based on TraineeInteractions entered by user
   def trainees_not_placed_links
     ['# of Active Trainees'] +
+      [total_trainees_not_placed] +
       navigator_ids.map do |id|
         count = not_placed_count(id)
         trainees_not_placed_link(id, count)
       end
+  end
+
+  def total_trainees_not_placed
+    Trainee.where.not(id: placed_trainee_ids).count
   end
 
   def not_placed_count(nav_id)
@@ -157,10 +181,18 @@ class ApplicantMetrics
   # TraineeInteractions: status = ojt enrolled and termination_date is nil
   def trainees_ojt_enrolled_links
     ['# of Trainees OJT Enrolled'] +
+    [total_ojt_enrolled] +
       navigator_ids.map do |id|
         count = ojt_enrolled_count(id)
         trainees_ojt_enrolled_link(id, count)
       end
+  end
+
+  def total_ojt_enrolled
+    Trainee.joins(:trainee_interactions, :applicant)
+           .where(trainee_interactions: { status: 5,
+                                          termination_date: nil })
+           .count
   end
 
   def ojt_enrolled_count(nav_id)
@@ -190,11 +222,20 @@ class ApplicantMetrics
   # TraineeInteractions: status = 4(No OJT) or 6( OJT Completed)
   def trainees_placed_links
     ['# of Trainees Placed'] +
+    [total_placed_count] +
       navigator_ids.map do |id|
         count = placed_count(id)
         trainees_placed_link(id, count)
       end
   end
+
+  def total_placed_count
+    Trainee.joins(:trainee_interactions)
+           .where(trainee_interactions: { status: [4, 6],
+                                          termination_date: nil })
+           .joins(:applicant)
+           .count
+end
 
   def placed_count(nav_id)
     unless @placed_counts
@@ -214,10 +255,15 @@ class ApplicantMetrics
   # Navigator is determined by navigator_id.
   def trainees_reported_placement_links
     ['# of Applicants Reported Placement'] +
+    [total_reported_placement] +
       navigator_ids.map do |id|
         count = reported_placement_count(id)
         trainees_reported_placement_link(id, count)
       end
+  end
+
+  def total_reported_placement
+    Trainee.joins(:trainee_placements, :applicant).count
   end
 
   def reported_placement_count(nav_id)
