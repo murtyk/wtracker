@@ -139,7 +139,7 @@ class Indeed
 
     begin
       response        = HTTParty.get(@url)
-      parsed_response =  symbolize JSON.parse(response.parsed_response)
+      parsed_response =  symbolize response.parsed_response
       parse_header(parsed_response)
       @jobs = parse_jobs(parsed_response[:results])
     rescue StandardError => e
