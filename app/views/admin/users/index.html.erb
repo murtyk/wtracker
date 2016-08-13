@@ -39,7 +39,9 @@
     <td><%= user.account_name %></td>
     <td><%= user.last_activity_at && (user.last_activity_at > 5.minutes.ago) ? 'Yes' : ''%></td>
     <td><%= user.current_sign_in_at ? distance_of_time_in_words_to_now(user.current_sign_in_at) + ' ago': '<b style="color:red">never</b>'.html_safe%>
-    <td>
+    <td><%= if user.account.subdomain == request.subdomain
+              link_to("Observe", observe_admins_path(id: user.id))
+            end %>
     </td>
   </tr>
 <% end %>

@@ -22,6 +22,15 @@
           </ul>
         </li>
       </ul><!--/.nav-->
+
+      <% if admin_signed_in? %>
+        <ul class="nav pull-right">
+          <li style="background-color: yellow;margin-top: 10px;padding:5px">
+            <b><%= link_to("END OBSERVER SESSION", end_observe_admins_path) %></b>
+          </li>
+        </ul>
+      <% end %>
+
     </div><!--/.container-fluid-->
 
     <div class="container-fluid" style ='background-color: #26294D'>
