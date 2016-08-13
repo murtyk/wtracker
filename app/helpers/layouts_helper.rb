@@ -1,6 +1,7 @@
 # for page layout menus etc. based on who signed
 module LayoutsHelper
   def top_bar
+    return 'clienttopbar' if admin_signed_in? && user_signed_in?
     return 'admintopbar' if admin_signed_in?
     return 'clienttopbar' if user_signed_in? && current_user
     return 'trainee_portal_topbar' if trainee_portal?

@@ -203,6 +203,13 @@ WTracker::Application.routes.draw do
     end
   end
 
+  resources :admins do
+    collection do
+      get :observe
+      get :end_observe
+    end
+  end
+
   namespace :admin do
     resources :accounts do
       member do
