@@ -30,6 +30,10 @@ class UserPolicy < Struct.new(:user, :otheruser)
     user.director? && otheruser.deletable?
   end
 
+  def observe?
+    user.director?
+  end
+
   private
 
   def can_edit_other?

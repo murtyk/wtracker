@@ -93,6 +93,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def observe
+    sign_in(:trainee, Trainee.find(params[:id]), { :bypass => true })
+    redirect_to "/trainee/trainees/#{params[:id]}/portal"
+  end
+
+  def end_observe
+    sign_out(:trainee)
+    redirect_to "/trainees" # or user_root_url
+  end
+
   private
 
   def valid_password

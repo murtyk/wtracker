@@ -200,6 +200,8 @@ WTracker::Application.routes.draw do
       post :update_password
       get :preferences
       post :update_preferences
+      get :observe
+      get :end_observe
     end
   end
 

@@ -63,6 +63,14 @@
         <% if policy(resource).destroy? %>
           <%= button_destroy_association(resource, confirm_message: confirm_message)%>
         <% end %>
+        <% if policy(current_user).observe? && trainee.login_id %>
+          <%= link_to(observe_users_path(id: trainee.id),
+                      class: 'btn btn-flat btn-mini btn-info',
+                      title: "Observe") do
+                  '<i class="icon-user"></i>'.html_safe
+               end
+          %>
+        <% end %>
       </td>
 
     </tr>

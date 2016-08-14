@@ -262,9 +262,13 @@ h4{
 }
 
 .footer {
+  position:fixed;
   bottom: 0;
-  padding-top:20px;
-  height: 40px;
+  right: 0;
+  left: 0;
+  clear: both;
+  padding-top:10px;
+  height: 30px;
   background-color: #000;
   text-align: center;
   border-top: 5px solid #26294D;
@@ -279,6 +283,7 @@ color: inherit;
 body {
      padding-right: 0; /*15px in bootstrap.css*/
      padding-left: 0;  /*idem*/
+     padding-bottom: 40px;
      margin-right: auto;
      margin-left: auto;
 }

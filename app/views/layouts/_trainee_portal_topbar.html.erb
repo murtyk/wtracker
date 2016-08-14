@@ -3,14 +3,19 @@
     <div class="container-fluid">
        <div class="navbar-header">
           <div class='row-fluid'>
-          <div class='span3'>
-          <h2 style='margin:0;color: white'><%=current_grant.name%></h2>
-          </div>
-          <div class='span9'>
-          <a class="navbar-brand pull-right" href="#">
-            <img alt="Brand" src='<%= current_grant.applicant_logo %>'>
-          </a>
-          </div>
+            <div class='span3'>
+              <h2 style='margin:0;color: white'><%=current_grant.name%></h2>
+            </div>
+            <div class='span9'>
+              <a class="navbar-brand pull-right" href="#">
+                <img alt="Brand" src='<%= current_grant.applicant_logo %>'>
+              </a>
+              <% if user_signed_in? %>
+                <div class="pull-right" style="margin-right:30px;padding:10px;background-color:yellow">
+                  <b><%= link_to("END OBSERVER SESSION", end_observe_users_path) %></b>
+                </div>
+              <% end %>
+            </div>
           </div>
       </div>
     </div><!--/.container-fluid-->
