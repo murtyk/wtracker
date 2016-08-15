@@ -1,0 +1,25 @@
+<% if report.has_data? %>
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <thead>
+    <tr style="display:none;">
+      <th><%= report.title%></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr>
+      <% report.header.each do |h| %>
+        <th><%= h %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% report.rows.each do |row| %>
+      <tr>
+        <% row.each do |d| %>
+          <td><%= d %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

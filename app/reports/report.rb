@@ -22,6 +22,7 @@ class Report
   EMPLOYERS_ACTIVITIES_WITH_NOTES = 'employers_activities_with_notes'
   EMPLOYERS_ADDRESS_MISSING       = 'employers_no_address'
   CLASS_TRAINEES                  = 'class_trainees'
+  FUNDING_SOURCE_MONTHLY          = 'funding_source_monthly'
 
   REPORT_CLASS = {
     TRAINEES_PLACED                   => :TraineesPlacedReport,
@@ -38,7 +39,8 @@ class Report
     ACTIVE_EMPLOYERS                  => :ActiveEmployersReport,
     EMPLOYERS_ACTIVITIES_WITH_NOTES   => :EmployersActivitiesWithNotesReport,
     EMPLOYERS_ADDRESS_MISSING         => :EmployersNoAddressReport,
-    CLASS_TRAINEES                    => :ClassTraineesReport
+    CLASS_TRAINEES                    => :ClassTraineesReport,
+    FUNDING_SOURCE_MONTHLY            => :FundingSourceMonthlyReport
   }
 
   def initialize(user, params = nil)
@@ -56,9 +58,12 @@ class Report
   end
 
   def self.reports_by_type(user)
-    [['Class Reports', class_reports],
+    [
+     ['Class Reports', class_reports],
      ['Trainee Reports', trainee_reports(user)],
-     ['Employer Reports', employer_reports(user)]]
+     ['Employer Reports', employer_reports(user)],
+     ['Funding Source Reports', funding_source_reports(user)]
+   ]
   end
 
   def self.class_reports
@@ -84,6 +89,10 @@ class Report
 
     [EMPLOYERS_HIRED, ACTIVE_EMPLOYERS,
      EMPLOYERS_ACTIVITIES_WITH_NOTES, EMPLOYERS_ADDRESS_MISSING]
+  end
+
+  def self.funding_source_reports(user)
+    return [FUNDING_SOURCE_MONTHLY]
   end
 
   def start_date
