@@ -1,0 +1,27 @@
+<div class = 'row-fluid filters-div' style='margin-bottom:10px'>
+
+<%= simple_form_for report, as: :report,
+                            method: :post,
+                            url: '/reports',
+                            html: { class: 'form-search'} do |f| %>
+      <%= f.hidden_field :report_name %>
+      <b>Funding Source</b>
+      <%= f.input_field :funding_source_id, label: 'Funding Source',
+                             include_blank: false,
+                             collection: FundingSource.order(:name).all,
+                             input_html: { class: "search-query" } %>
+
+      <span style="font-weight:bold;margin-left: 20px">Ending Month</span>
+      <%= f.input_field :ending_month, label: "Month Ending",
+                             include_blank: false,
+                             collection: report.ending_months,
+                             input_html: { class: "search-query" } %>
+
+      <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
+              style='margin-left: 20px'
+              data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Finding...">
+          <i class="icon-search icon-white"></i>Find
+      </button>
+
+<% end %>
+</div>
