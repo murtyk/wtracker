@@ -9,13 +9,18 @@
       <%= f.input_field :funding_source_id, label: 'Funding Source',
                              include_blank: false,
                              collection: FundingSource.order(:name).all,
-                             input_html: { class: "search-query" } %>
+                             class: "search-query" %>
+
+      <span style="font-weight:bold;margin-left: 20px">Start Date</span>
+      <%= f.input_field :start_date, label: "Start Date",
+                             required: true,
+                             class: "search-query date_field" %>
 
       <span style="font-weight:bold;margin-left: 20px">Ending Month</span>
       <%= f.input_field :ending_month, label: "Month Ending",
                              include_blank: false,
                              collection: report.ending_months,
-                             input_html: { class: "search-query" } %>
+                             class: "search-query" %>
 
       <button type="submit" id='submit-button' class="btn btn-flat btn-primary btn-spinner"
               style='margin-left: 20px'
