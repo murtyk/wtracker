@@ -31,6 +31,10 @@ class ExcelFile
     @sheet = package.workbook.add_worksheet(name: sheet_name || data_name)
   end
 
+  def add_sheet(name)
+    @sheet = package.workbook.add_worksheet(name: name)
+  end
+
   def save(col_styles = [])
     col_styles.each do |col, style|
       sheet.col_style col, styles[style], :row_offset => 1 if styles[style]

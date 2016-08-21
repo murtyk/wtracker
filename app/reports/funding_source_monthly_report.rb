@@ -51,11 +51,19 @@ class FundingSourceMonthlyReport < Report
   end
 
   def build_excel
-    excel_file = ExcelFile.new(user, 'fs_monthly')
+    excel_file = ExcelFile.new(user, 'fs_monthly', "Details")
     excel_file.add_row data_header
     data_rows.each do |row|
       excel_file.add_row row
     end
+
+    excel_file.add_sheet("Summary")
+
+    excel_file.add_row header
+    rows.each do |row|
+      excel_file.add_row row
+    end
+
     excel_file.save
     excel_file
   end
@@ -80,7 +88,7 @@ class FundingSourceMonthlyReport < Report
 
   def workshops_of_trainee(trainee)
     klasses = trainee.
-                klasses.
+                klass_trainees.map(&:klass).
                 select{ |k| k.klass_category_code == "WS" && k.start_date >= month_start_date && k.end_date <= end_date }
     klasses.map do |klass|
       "#{klass.name} - #{klass.start_date} - #{klass.end_date}"
@@ -97,7 +105,7 @@ class FundingSourceMonthlyReport < Report
 
   def trainings_of_trainee(trainee)
     klasses = trainee.
-                klasses.
+                klass_trainees.map(&:klass).
                 select{ |k| k.klass_category_code != "WS" && k.start_date >= month_start_date && k.start_date <= end_date }
     klasses.map do |klass|
       "#{klass.name} - #{klass.start_date} - #{klass.end_date}"
@@ -123,8 +131,8 @@ class FundingSourceMonthlyReport < Report
 
     return "" unless ti
 
-    ti.employer.name + " - start date: #{ti.start_date} - title: #{ti.hire_title}" +
-      " - salary: #{ti.hire_salary} - uses traineed skills: #{ti.uses_trained_skills}"
+    [ti.employer.name, "start date: #{ti.start_date}", "title: #{ti.hire_title}",
+       "salary: #{ti.hire_salary}", "uses traineed skills: #{ti.uses_trained_skills}"].join("\n").html_safe
   end
 
   def all_trainees
@@ -310,11 +318,11 @@ class FundingSourceMonthlyReport < Report
   end
 
   def ws_category_ids
-    @ws_category_ids ||= KlassCategory.where(code: 'WS').pluck(:id)
+    @ws_category_ids ||= KlassCategory.where(code: 'WS').select(:id)
   end
 
   def trainee_ids
-    Trainee.where(funding_source_id: funding_source_id).pluck(:id)
+    Trainee.where(funding_source_id: funding_source_id).select(:id)
   end
 
   def ending_months
