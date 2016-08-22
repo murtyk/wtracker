@@ -25,6 +25,7 @@ class TraineeAdvancedSearch
       return @q.result.includes(
         :funding_source,
         :home_address,
+        :trainee_notes,
         :assessments,
         :job_search_profile,
         klasses: [:college],
@@ -35,6 +36,7 @@ class TraineeAdvancedSearch
     @q.result.includes(
       :funding_source,
       :home_address,
+      :trainee_notes,
       :assessments,
       klasses: [:college],
       trainee_interactions: [:employer],

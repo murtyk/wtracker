@@ -111,6 +111,7 @@
         <th><%= sort_link(@q, :email, "Email") %></th>
         <th>Mobile No</th>
         <th><%= sort_link(@q, :home_address_county, "County") %></th>
+        <th>Notes</th>
         <% if current_grant.trainee_applications? %>
           <th>Last Job Title</th>
           <th>Last Salary</th>
@@ -147,6 +148,7 @@
       <td><%= t.email %></td>
       <td><%= t.mobile_no %></td>
       <td><%= t.county_name %></td>
+      <td><%= t.trainee_notes.map{|n| n.created_at.to_date.to_s + ": " + n.notes}.join(";") %> </td>
       <% if current_grant.trainee_applications? %>
         <td><%= t.last_job_title %></td>
         <td><%= t.last_wages %></td>
