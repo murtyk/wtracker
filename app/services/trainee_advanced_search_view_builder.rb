@@ -12,7 +12,7 @@ class TraineeAdvancedSearchViewBuilder
   def header
     ['First Name', 'Last Name', 'TAPO No'] +
       h_applied_on +
-      ['Status', 'Email', 'Mobile No', 'County'] +
+      ['Status', 'Email', 'Mobile No', 'County', 'Notes'] +
       header_part_1 +
       ['Funding Source', 'Education', 'Veteran'] +
       header_part_2 +
@@ -55,7 +55,8 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def details_1(t)
-    [t.placement_status, t.email, t.mobile_no, t.county_name]
+    notes = t.trainee_notes.map{|n| n.created_at.to_date.to_s + ": " + n.notes}.join(";")
+    [t.placement_status, t.email, t.mobile_no, t.county_name, notes]
   end
 
   def details_2(t)
