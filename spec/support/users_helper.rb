@@ -2,9 +2,9 @@
 module  UserHelper
   def signin_opero_admin
     visit '/admins/sign_in'
-    fill_in 'Email', with: 'admin@opero.com'
-    fill_in 'Password', with: 'adminpassword'
-    click_button 'Log in'
+    fill_in 'admin_email', with: 'admin@opero.com'
+    fill_in 'admin_password', with: 'adminpassword'
+    click_button 'Sign in'
   end
 
   def signout_opero_admin
