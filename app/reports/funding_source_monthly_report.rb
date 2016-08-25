@@ -126,7 +126,10 @@ class FundingSourceMonthlyReport < Report
   def placement_info(trainee)
     ti = trainee.
           trainee_interactions.find do |ti|
-            ti.termination_date.nil? && ti.start_date >= month_start_date && ti.start_date < end_date
+            ti.termination_date.nil? &&
+            ti.start_date &&
+            ti.start_date >= month_start_date &&
+            ti.start_date < end_date
           end
 
     return "" unless ti
