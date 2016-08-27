@@ -27,6 +27,7 @@ describe AutoJobLeads do
         name: 'Grant Name',
         'email_messages_defined?' => true,
         not_disabled_trainees: [t1,t2,t3, t4],
+        trainees: [t1,t2,t3,t4,t5],
         'auto_job_leads?' => true,
         'trainee_applications?' => false)
 
