@@ -64,7 +64,8 @@ describe 'all menus' do
   end
   it 'has relevant menu list for applicants grant' do
     full_menu_list.each do |name, href|
-      expect(find_link(name)[:href]).to eq(href)
+      # if link is not found, capybara will throw an exception
+      expect(find_link(name, href: href)[:href]).to eq(href)
     end
 
     list_menus = page.all('a', text: 'List')

@@ -137,7 +137,11 @@ RSpec.configure do |config|
   # at_exit do
   #   headless.destroy unless ENV['TEST_ENV_NUMBER'].to_i > 0
   # end
-
+  config.reporter.register_listener SpecListener.new, :example_passed
 end
 
 Capybara::Screenshot.autosave_on_failure = false
+
+ActionMailer::Base.delivery_method = :test
+ActionMailer::Base.perform_deliveries = true
+ActionMailer::Base.deliveries = []
