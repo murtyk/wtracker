@@ -30,9 +30,9 @@ describe 'shared job' do
 
       if ENV['JOB_BOARD'] == 'Indeed'
         cassette = 'indeed_shared_job_status'
-        count    = 2
-        title1   = 'ASST INSTRMNT MAKER'
-        title2   = 'Warehouse Maintenance Manager'
+        count    = 3
+        title1   = 'Draftsperson (Steel Detailer)'
+        title2   = 'machinist'
       else
         cassette = 'sh_shared_job_status'
         count    = 11
