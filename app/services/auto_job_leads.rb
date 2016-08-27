@@ -64,6 +64,9 @@ class AutoJobLeads
     grants_for_auto_leads.each do |grant|
       Account.current_id = grant.account_id
       Grant.current_id   = grant.id
+
+      next unless grant.trainees.any?
+
       if grant.email_messages_defined?
         status = send_leads_for_grant_trainees(grant)
         @statuses << status
