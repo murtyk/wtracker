@@ -17,11 +17,11 @@ describe 'Job Search' do
 
       if ENV['JOB_BOARD'] == 'Indeed'
         cassette = 'indeed_job_search_in_state'
-        count    = 17
-        title1   = 'Registered Nurse'
-        title2   = 'Pediatric Nurse'
-        company1 = 'Genesis HealthCare'
-        company2 = 'CAMCare Health'
+        count    = 28
+        title1   = 'Manager of care Coordination ACO'
+        title2   = 'Urgent Care - Nurse Practition'
+        company1 = 'Lourdes Health System'
+        company2 = 'Cooper University Hospital'
       else
         cassette = 'sh_job_search_in_state'
         count    = 100
@@ -49,10 +49,11 @@ describe 'Job Search' do
 
         wait_for_ajax
 
-        20.times do
+        30.times do
           break if page.html.index("Total Jobs Found")
           sleep 0.5
         end
+
 
         expect(page).to have_text "Total Jobs Found: #{count}"
         expect(page).to have_text company2

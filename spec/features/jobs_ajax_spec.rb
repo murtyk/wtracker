@@ -15,10 +15,10 @@ describe 'Job Search' do
       if ENV['JOB_BOARD'] == 'Indeed'
         cassette = 'indeed_job_search_and_analyze'
         keywords = 'Java XML'
-        count    = 86
+        count    = 83
         pages    = 4
-        title    = 'Senior Java Developer - Team Lead'
-        company  = 'Accenture'
+        title    = 'Java Hadoop Developer'
+        company  = 'Diverse Lynx'
       else
         cassette = 'sh_job_search_and_analyze'
         keywords = 'pediatric nurse RN'
