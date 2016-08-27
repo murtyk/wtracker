@@ -9,8 +9,8 @@
           <div class = 'span5 right-border'>
             <%= f.input :name %>
             <%= f.input :description %>
-            <%= f.input :start_date, input_html: { data: { behaviour: "datepicker" }, value: klass.start_date }, as: :string %>
-            <%= f.input :end_date, input_html: { data: { behaviour: "datepicker" }, value: klass.end_date }, as: :string %>
+            <%= f.input :start_date, input_html: { class: "date_field", value: klass.start_date }, as: :string %>
+            <%= f.input :end_date, input_html: { class: "date_field", value: klass.end_date }, as: :string %>
             <%= f.input :training_hours, label: 'Hours' %>
             <%= f.input :credits %>
             <%= f.association :college, include_blank: false %>
