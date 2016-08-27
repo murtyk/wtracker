@@ -15,8 +15,8 @@ describe 'Job Search' do
       maximize_window
       if ENV['JOB_BOARD'] == 'Indeed'
         cassette = 'indeed_job_details'
-        count    = 45
-        title1   = 'Java caching developer'
+        count    = 39
+        title1   = 'JAVA AWS Architect'
         details  = 'Princeton'
       else
         cassette = 'sh_job_details'
