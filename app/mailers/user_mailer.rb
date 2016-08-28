@@ -59,6 +59,8 @@ class UserMailer < ActionMailer::Base
   end
 
   def send_event_invite(klass_event, user = nil, f_cancel = false)
+    return
+
     eb = EventMailBuilder.new(klass_event, user, f_cancel)
     eb.build
     @cal = eb.ical
