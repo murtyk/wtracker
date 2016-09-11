@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
 
   def scope_current_account
     # puts request.path_parameters.to_s
-    Account.current_id  = current_account.id
+    Account.current_id = current_account.id
     grant_for_trainee_sign_in
     Grant.current_id = current_grant.id
     ActionMailer::Base.default_url_options = { host: request.host_with_port }
