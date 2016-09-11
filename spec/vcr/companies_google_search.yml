@@ -942,4 +942,54 @@ http_interactions:
         }
     http_version: 
   recorded_at: Wed, 02 Jul 2014 18:27:30 GMT
-recorded_with: VCR 2.9.0
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/place/textsearch/json?key=&query=Munich%20Re%20near%20Princeton,NJ&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 11 Sep 2016 19:17:30 GMT
+      Pragma:
+      - no-cache
+      Expires:
+      - Fri, 01 Jan 1990 00:00:00 GMT
+      Cache-Control:
+      - no-cache, must-revalidate
+      Vary:
+      - Accept-Language
+      Content-Encoding:
+      - gzip
+      Server:
+      - pablo
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="36,35,34,33,32"
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAC/1XLuwoCQQxG4X6e4ie1+AB2wk6xjXhZK5FhlOAG94JJRhDx
+        3dW1sj2H7xkAEKuOmno2yxcmLEBNKwZjvcuZoXwromzIA5brGld+zGk2ydb7
+        LmV3lVNxGQf76sPxNz+kdP6XzLOXqdA2bvZx16QqrupYUXiFNxXauKaNAAAA
+    http_version: 
+  recorded_at: Sun, 11 Sep 2016 19:17:30 GMT
+recorded_with: VCR 2.9.2
