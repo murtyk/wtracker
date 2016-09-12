@@ -1,7 +1,20 @@
+Dev Setup
+---------------------------------------------
+1. Define environment variables in config/local_env.yml
+2. Create PG User: railsdev with password railsdev
+3. bundle install
+4. Run rake db:create and rake db:migrate
+5. rake testprep:load_data
+6. Set up entries in /etc/hosts file:
+    127.0.0.1 www.localhost.com
+    127.0.0.1 brookdale.localhost.com
+    127.0.0.1 njit.localhost.com
+    127.0.0.1 apple.localhost.com
+
 rails s -b 0.0.0.0 -p 3000
 
 Codeship:
-
+---------------------------------------------
 PS1='\u:\W\$ '
 cd /home/rof/src/bitbucket.org/murtykorada/wtracker
 export PHANTOMJS_VERSION="2.1.1"
@@ -15,29 +28,14 @@ bundle exec rake db:migrate
 bundle exec rake testprep:load_data
 
 
-==================================
 Deployment
+---------------------------------------------
 
-1. staging: merge into staging branch
+1. staging: merge master into staging branch
+2. production: git push production master
 
-=====================================
-local db to heroku:
-
-1. dump:
-
-PGPASSWORD=railsdev pg_dump -Fc --no-acl --no-owner -h localhost -U railsdev wtracker_dev > wtracker_dev.dump
-
-2. upload to dropbox and get link url
-
-3.
-
-heroku pg:backups restore 'https://www.dropbox.com/....url.....' DATABASE_URL -a appname
-
-* Last time I tried it gave an error
-
-========================================
-
-restore db dump to local:
+Restore db dump to local:
+---------------------------------------------
 
 curl -o latest.dump `heroku pg:backups public-url -a appname`
 pg_restore --verbose --clean --no-acl -h localhost -U railsdev -d wtracker_dev latest.dump
