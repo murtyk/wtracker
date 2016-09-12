@@ -5,7 +5,7 @@ development:
   database: wtracker_dev
   pool: 5
   username: railsdev
-  password: p@ssw0rd  
+  password: railsdev  
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -17,5 +17,5 @@ test:
   database: wtracker_test<%= ENV['TEST_ENV_NUMBER'] %>
   pool: 5
   username: railsdev
-  password: p@ssw0rd
+  password: railsdev
   
