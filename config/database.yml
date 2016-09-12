@@ -18,4 +18,3 @@ test:
   pool: 5
   username: railsdev
   password: railsdev
-  
