@@ -11,12 +11,13 @@ class ApplicantsController < ApplicationController
   def assign_navigator
     input_params = params.require(:applicants).permit(:from_nav_id, :to_nav_id)
     if input_params[:from_nav_id] == input_params[:to_nav_id]
-      @error_message = "From and To navigators can not be same!"
+      @error_message = 'From and To navigators can not be same!'
     else
       count = ApplicantFactory.assign_navigator(input_params)
       from_nav = User.find(input_params[:from_nav_id])
       to_nav = User.find(input_params[:to_nav_id])
-      @success_message = "#{count} applicants successfully moved from #{from_nav.name} to #{to_nav.name}"
+      @success_message =
+        "#{count} applicants successfully moved from #{from_nav.name} to #{to_nav.name}"
     end
   end
 
@@ -110,21 +111,21 @@ class ApplicantsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def applicant_params
     params.require(:applicant)
-      .permit(:salt, :reapply_key, :first_name, :last_name, :unique_id,
-              :address_line1, :address_line2, :address_city, :address_state,
-              :address_zip, :county_id, :email,
-              :mobile_phone_no, :last_employed_on, :current_employment_status,
-              :last_job_title, :salary_expected, :education_level,
-              :transportation, :computer_access, :comments, :status, :navigator_id,
-              :legal_status, :veteran, :sector_id,
-              :last_employer_name, :last_employer_city, :last_employer_state,
-              :resume, :source, :signature, :humanizer_answer,
-              :humanizer_question_id, :email_confirmation,
-              :gender, :race_id, :last_wages, :last_employer_line1,
-              :last_employer_line2, :last_employer_zip, :last_employer_manager_name,
-              :last_employer_manager_phone_no, :last_employer_manager_email,
-              :unemployment_proof, :skills, :dob, special_service_ids: [],
-                                                  trainee: [:funding_source_id])
+          .permit(:salt, :reapply_key, :first_name, :last_name, :unique_id,
+                  :address_line1, :address_line2, :address_city, :address_state,
+                  :address_zip, :county_id, :email,
+                  :mobile_phone_no, :last_employed_on, :current_employment_status,
+                  :last_job_title, :salary_expected, :education_level,
+                  :transportation, :computer_access, :comments, :status, :navigator_id,
+                  :legal_status, :veteran, :sector_id,
+                  :last_employer_name, :last_employer_city, :last_employer_state,
+                  :resume, :source, :signature, :humanizer_answer,
+                  :humanizer_question_id, :email_confirmation,
+                  :gender, :race_id, :last_wages, :last_employer_line1,
+                  :last_employer_line2, :last_employer_zip, :last_employer_manager_name,
+                  :last_employer_manager_phone_no, :last_employer_manager_email,
+                  :unemployment_proof, :skills, :dob, special_service_ids: [],
+                                                      trainee: [:funding_source_id])
   end
 
   def salt_from_params
@@ -142,7 +143,7 @@ class ApplicantsController < ApplicationController
   def grant_from_salt(salt)
     return nil unless salt
     grant_id = grant_id_from_salt(salt)
-    return nil if grant_id == 0
+    return nil if grant_id.zero?
     Grant.where(id: grant_id).first
   end
 
@@ -187,19 +188,31 @@ class ApplicantsController < ApplicationController
       return @filter_info
     end
     @filter_info ||= params.require(:filters)
-                     .permit(:name,
-                             :navigator_id,
-                             :status,
-                             :funding_source_id,
-                             :edp,
-                             :assessments,
-                             :in_klass)
+                           .permit(:name,
+                                   :navigator_id,
+                                   :status,
+                                   :funding_source_id,
+                                   :edp,
+                                   :assessments,
+                                   :in_klass)
   end
 
   def next_applicant
     return @applicant unless current_user && current_user.navigator?
     id = @applicant.id
     nav_applicants = Applicant.where(status: 'Accepted', navigator_id: current_user.id)
-    nav_applicants.where('id > ?', id).order(:id).first || nav_applicants.order(:id).first
+
+    next_applicant_for_fs(nav_applicants, id) ||
+      nav_applicants.where('id > ?', id).order(:id).first ||
+      nav_applicants.order(:id).first
+  end
+
+  def next_applicant_for_fs(applicants, start_id)
+    applicants
+      .where('applicants.id > ?', start_id)
+      .joins(:trainee)
+      .where(trainees: { funding_source_id: nil })
+      .order(:id)
+      .first
   end
 end
