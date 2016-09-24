@@ -2,6 +2,15 @@
   Trainee UI Verified?
   <%= trainee.ui_claim_verified_on ? "Yes, on #{trainee.ui_claim_verified_on}" : 'No'%>
 </h2>
+<h4>
+  UI Verified Notes
+  <%= button_new_association(UiVerifiedNote, from: 1, trainee_id: trainee.id, id_prefix: "trainee_#{trainee.id}_", title: 'New Note') %>
+</h4>
+<div id = 'trainee_<%=trainee.id%>_ui_verified_notes'>
+  <%= render trainee.ui_verified_notes%>
+</div>
+<hr>
+
 <%= trainee.assessments_header %>
 <div id="<%=div_id_for_collection(TraineeAssessment)%>">
   <%= render trainee.trainee_assessments %>

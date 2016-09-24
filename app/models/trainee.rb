@@ -70,6 +70,8 @@ class Trainee < ActiveRecord::Base
 
   delegate :name,  to: :funding_source, prefix: true, allow_nil: true
 
+  has_many :ui_verified_notes, dependent: :destroy
+
   has_many :trainee_assessments, dependent: :destroy
   has_many :assessments, through: :trainee_assessments
   has_many :trainee_notes, -> { order('created_at DESC') }, dependent: :destroy

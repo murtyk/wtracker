@@ -44,6 +44,11 @@ module TraineesHelper
     TraineeNote.where(trainee_id: trainee_ids).pluck(:id).sort
   end
 
+  def get_ui_verified_notes_ids
+    trainee_ids = get_trainee_ids
+    UiVerifiedNote.where(trainee_id: trainee_ids).pluck(:id).sort
+  end
+
   def destroy_trainees
     allow_any_instance_of(TraineePolicy).to receive('destroy?')
       .and_return(true)

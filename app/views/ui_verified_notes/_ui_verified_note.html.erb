@@ -1,0 +1,8 @@
+<div id = '<%=div_id_for(ui_verified_note)%>'>
+  <p>
+    <%= button_destroy_association(ui_verified_note, title: 'Delete note') %>
+    <%= ui_verified_note.created_at.to_date.to_s%>:
+    <%= ui_verified_note.user.name%>:
+    <%= ui_verified_note.notes%>
+  </p>
+</div>
