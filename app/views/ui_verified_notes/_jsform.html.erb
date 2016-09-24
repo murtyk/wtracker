@@ -1,0 +1,12 @@
+<%= simple_form_for(ui_verified_note, remote: true) do |f| %>
+  <hr>
+  <div class="form-inputs">
+      <%= f.hidden_field :trainee_id %>
+      <%= f.input :notes, label: 'Enter Notes'%>
+  </div>
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(ui_verified_note, "trainee_#{ui_verified_note.trainee_id}_") %>
+<% end %>
+

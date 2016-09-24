@@ -1,0 +1,7 @@
+$('#new_ui_verified_note').remove(); // remove form
+<% if @ui_verified_note.errors.any? %>
+  $('#<%=new_link_id("ui_verified_note", "trainee_#{@ui_verified_note.trainee.id}_")%>').hide().after('<%= j render("jsform", ui_verified_note: @ui_verified_note) %>');
+<% else %>
+  $('#<%=new_link_id("ui_verified_note", "trainee_#{@ui_verified_note.trainee.id}_")%>').show();
+  $('#trainee_<%=@trainee.id%>_ui_verified_notes').html('<%= j render @trainee.ui_verified_notes %>');
+<% end %>

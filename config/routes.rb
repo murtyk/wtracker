@@ -78,6 +78,7 @@ WTracker::Application.routes.draw do
   resources :trainee_assessments, only: [:new, :create, :destroy]
   resources :trainee_emails,      except: [:edit, :update]
   resources :trainee_notes,       except: [:index, :show]
+  resources :ui_verified_notes,   except: [:index, :show, :edit, :update]
   resources :trainee_statuses,    except: [:index, :show]
 
   resources :job_searches, only: [:new, :show, :create] do

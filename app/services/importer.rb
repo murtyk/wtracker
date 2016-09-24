@@ -1,7 +1,7 @@
 include UtilitiesHelper
 # mother of all impoerters
 class Importer
-  attr_reader :import_status, :import_status_id
+  attr_reader :import_status, :import_status_id, :current_user_id
 
   def initialize(all_params = nil, _current_user = nil)
     @aws_file_name = Amazon.store_file(all_params[:file], 'imports')

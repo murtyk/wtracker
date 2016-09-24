@@ -5,6 +5,8 @@ class TraineeUiClaimVerifiedOnImporter < Importer
   def initialize(all_params = nil, current_user = nil)
     return unless current_user && all_params
 
+    @current_user_id = current_user.id
+
     file_name = all_params[:file].original_filename
 
     @import_status = TraineeUiClaimVerifiedOnImportStatus
@@ -29,7 +31,15 @@ class TraineeUiClaimVerifiedOnImporter < Importer
     trainee = Trainee.find(row[:tapo_id])
 
     dt = row[:ui_claim_verified_on] && clean_date(row[:ui_claim_verified_on])
-    trainee.ui_claim_verified_on = dt if dt
+
+    ui_notes = nil
+    if dt
+      trainee.ui_claim_verified_on = dt
+      notes = row[:ui_verified_notes]
+      unless notes.blank?
+        ui_notes = trainee.ui_verified_notes.build(user_id: current_user_id, notes: notes)
+      end
+    end
 
     trainee.disabled_date = disabled_on(row)
 
@@ -37,6 +47,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
     trainee.funding_source_id = fs_id if fs_id
 
     trainee.save!
+    ui_notes && ui_notes.save!
 
     trainee
   end
