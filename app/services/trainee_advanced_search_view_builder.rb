@@ -21,7 +21,8 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def h_applied_on
-    applicant? ? ['Applied On', 'UI Claim Verified On', 'Disabled On', 'Disabled Notes'] : []
+    return [] unless applicant?
+    ['Applied On', 'Unemployment Status', 'UI Claim Verified On', 'Disabled On', 'Disabled Notes']
   end
 
   def header_part_1
@@ -51,7 +52,7 @@ class TraineeAdvancedSearchViewBuilder
 
   def applied_on(t)
     return [] unless applicant?
-    [t.applied_on, t.ui_claim_verified_on, t.disabled_date, t.disabled_notes]
+    [t.applied_on, t.applicant.current_employment_status, t.ui_claim_verified_on, t.disabled_date, t.disabled_notes]
   end
 
   def details_1(t)

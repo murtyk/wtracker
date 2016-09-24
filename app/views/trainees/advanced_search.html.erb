@@ -26,6 +26,11 @@
         <%= f.collection_select :applicant_navigator_id_eq,
                                 current_grant.navigators, :id, :name,
                                 include_blank: true %>
+
+        <%= f.label :applicant_current_employment_status_eq, 'Current Employment Status' %>
+        <%= f.select :applicant_current_employment_status_eq,
+                                EmploymentStatus.pluck(:status).sort,
+                                include_blank: true %>
       <% end %>
 
       <%= f.label :home_address_county_eq, 'County' %>
@@ -103,6 +108,7 @@
         <th><%= sort_link(@q, :last, "Last Name") %></th>
         <% if current_grant.trainee_applications? %>
           <th>Applied On</th>
+          <th>Unemployment Status</th>
           <th>Status</th>
           <th>UI Claim Verified On</th>
           <th>Disabled On</th>
@@ -140,6 +146,7 @@
       <td><%= link_to t.last, t %></td>
       <% if current_grant.trainee_applications? %>
         <td><%= t.applied_on %></td>
+        <td><%= t.applicant.current_employment_status %></td>
         <td><%= t.placement_status %></td>
         <td><%= t.ui_claim_verified_on %></td>
         <td><%= t.disabled_date %></td>
