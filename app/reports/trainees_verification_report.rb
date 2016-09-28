@@ -8,7 +8,7 @@ class TraineesVerificationReport < Report
   def build_trainees
     @trainees = find_trainees
     @trainees_count = @trainees.count
-    @trainees = @trainees.limit(show_max_rows)
+    @trainees = @trainees.limit(show_max_rows).decorate
   end
 
   def find_trainees
@@ -20,7 +20,7 @@ class TraineesVerificationReport < Report
     excel_file = ExcelFile.new(user, 'trainees_verification')
     excel_file.add_row builder.header
     find_trainees.each do |trainee|
-      row = builder.build_row(trainee)
+      row = builder.build_row(trainee.decorate)
       excel_file.add_row row
     end
     excel_file.save

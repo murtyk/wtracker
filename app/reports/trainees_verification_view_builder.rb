@@ -5,7 +5,7 @@ class TraineesVerificationViewBuilder
   def header
     ['Name', 'TAPO ID', 'DOB', 'Trainee ID', 'Address', 'County', 'Email',
      'Mobile', 'Funding Source', 'Navigator', 'Placement Status',
-     'UI Claim Verified On', 'Disabled On', 'Disabled Notes']
+     'UI Claim Verified On', 'UI Verification Notes', 'Disabled On', 'Disabled Notes']
   end
 
   def build_row(trainee)
@@ -21,6 +21,7 @@ class TraineesVerificationViewBuilder
      trainee.navigator_name,
      trainee.placement_status,
      trainee.ui_claim_verified_on,
+     trainee.ui_verification_notes,
      trainee.disabled_date,
      trainee.disabled_notes]
   end

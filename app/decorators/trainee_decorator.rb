@@ -136,4 +136,12 @@ class TraineeDecorator < Draper::Decorator
     txt.gsub!('$EMPLOYMENT_STATUS$', '&emsp;' + applicant.current_employment_status)
     txt.html_safe
   end
+
+  def ui_verification_notes
+    ui_verified_notes.map do |vn|
+      date = vn.created_at.to_date.to_s
+      user_name = vn.user.name
+      [date, user_name, vn.notes].join(":")
+    end.join("; ")
+  end
 end
