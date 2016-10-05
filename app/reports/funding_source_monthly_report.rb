@@ -69,21 +69,28 @@ class FundingSourceMonthlyReport < Report
   end
 
   def data_header
-    ["TAPO ID", "Trainee", "Workshops", assessment_names,
-      "Trainings", "Completed Trainings", "Placement Info"].flatten
+    ["TAPO ID", "Trainee", "Job Developer", "Workshops", assessment_names,
+      "Trainings", "Start Date", "End Date", "Training Hours", "Placement Info"].flatten
   end
 
   def data_rows
+    rows = []
     all_trainees.map do |trainee|
-      [trainee.id,
-        trainee.name,
-        workshops_of_trainee(trainee),
-        assessments_of_trainee(trainee),
-        trainings_of_trainee(trainee),
-        completions_of_trainee(trainee),
-        placement_info(trainee),
-        ].flatten
+      trainings_of_trainee(trainee).map do |training_name, start_date, end_date, training_hours|
+        rows << [trainee.id,
+          trainee.name,
+          trainee.navigator_name,
+          workshops_of_trainee(trainee),
+          assessments_of_trainee(trainee),
+          training_name,
+          start_date,
+          end_date,
+          training_hours,
+          placement_info(trainee),
+          ].flatten
+      end
     end
+    rows
   end
 
   def workshops_of_trainee(trainee)
@@ -107,9 +114,10 @@ class FundingSourceMonthlyReport < Report
     klasses = trainee.
                 klass_trainees.map(&:klass).
                 select{ |k| k.klass_category_code != "WS" && k.start_date >= month_start_date && k.start_date <= end_date }
-    klasses.map do |klass|
-      "#{klass.name} - #{klass.start_date} - #{klass.end_date}"
-    end.join(";")
+    trainings = klasses.map do |klass|
+      [klass.name, klass.start_date, klass.end_date, klass.training_hours]
+    end
+    trainings.any? ? trainings : ["","","",""]
   end
 
   def completions_of_trainee(trainee)
@@ -143,7 +151,8 @@ class FundingSourceMonthlyReport < Report
       .where(id: all_trainee_ids)
       .includes(klass_trainees: { klass: :klass_category },
                 trainee_interactions: :employer,
-                trainee_assessments: :assessment)
+                trainee_assessments: :assessment,
+                applicant: :navigator)
       .order(:first, :last)
   end
 
