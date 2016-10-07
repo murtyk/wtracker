@@ -1,12 +1,13 @@
 include UtilitiesHelper
 
 class FundingSourceMonthlyReport < Report
-  attr_reader :funding_source_id, :start_date, :ending_month
+  attr_reader :funding_source_id, :start_date, :ending_month, :skip_dates
 
   def post_initialize(params)
     @funding_source_id = params[:funding_source_id]
     @ending_month = params[:ending_month]
     @start_date = opero_str_to_date(params[:start_date])
+    @skip_dates = false
   end
 
   def count
@@ -35,7 +36,7 @@ class FundingSourceMonthlyReport < Report
   end
 
   def funding_source
-    funding_source_id && FundingSource.find(funding_source_id)
+    @funding_source ||= funding_source_id && FundingSource.find(funding_source_id)
   end
 
   def render_counts
@@ -52,6 +53,7 @@ class FundingSourceMonthlyReport < Report
 
   def build_excel
     excel_file = ExcelFile.new(user, 'fs_monthly', "Details")
+
     excel_file.add_row data_header
     data_rows.each do |row|
       excel_file.add_row row
@@ -64,26 +66,56 @@ class FundingSourceMonthlyReport < Report
       excel_file.add_row row
     end
 
+    excel_file.add_sheet("No Dates Filter")
+
+    @start_date = "01/01/2000".to_date
+    @ending_month = "DEC 2030"
+    @skip_dates = true
+
+    excel_file.add_row data_header
+    data_rows.each do |row|
+      excel_file.add_row row
+    end
+
     excel_file.save
     excel_file
   end
 
   def data_header
-    ["TAPO ID", "Trainee", "Workshops", assessment_names,
-      "Trainings", "Completed Trainings", "Placement Info"].flatten
+    ["TAPO ID", "Trainee", "Trainee ID", "Address", "Mobile", "email",
+      "Job Developer", "Workshops", "Assessment Name", "Assessment Date",
+      "Trainings", "Start Date", "End Date", "Training Hours",
+      "Status", "Hired Company", "Title", "Start Date", "Salary",
+      "Uses Traineed Skills",
+      "UI Verfied Date", "UI Verified Notes", "Funding Source"].flatten
   end
 
   def data_rows
+    rows = []
     all_trainees.map do |trainee|
-      [trainee.id,
-        trainee.name,
-        workshops_of_trainee(trainee),
-        assessments_of_trainee(trainee),
-        trainings_of_trainee(trainee),
-        completions_of_trainee(trainee),
-        placement_info(trainee),
-        ].flatten
+      trainee_d = trainee.decorate
+      trainings_of_trainee(trainee).map do |training_name, start_date, end_date, training_hours|
+        rows << [trainee.id,
+          trainee.name,
+          trainee.trainee_id,
+          trainee_d.home_address,
+          trainee_d.mobile_no(true),
+          trainee.email,
+          trainee.navigator_name,
+          workshops_of_trainee(trainee),
+          assessments_of_trainee(trainee),
+          training_name,
+          start_date,
+          end_date,
+          training_hours,
+          placement_status(trainee),
+          placement_info(trainee),
+          ui_verification_info(trainee),
+          funding_source.name
+          ].flatten
+      end
     end
+    rows
   end
 
   def workshops_of_trainee(trainee)
@@ -96,20 +128,28 @@ class FundingSourceMonthlyReport < Report
   end
 
   def assessments_of_trainee(trainee)
-    tas = trainee.trainee_assessments.where("date >= ? and date <= ?", month_start_date, end_date)
+    tas = trainee.trainee_assessments
 
-    assessment_names.map do |name|
-      tas.select{|ta| ta.name == name}.map(&:date).map(&:to_s).flatten.join(";")
+    unless skip_dates
+      tas = tas.where("date >= ? and date <= ?", month_start_date, end_date)
     end
+
+    # assessment_names.map do |name|
+    #   tas.select{|ta| ta.name == name}.map(&:date).map(&:to_s).flatten.join(";")
+    # end
+
+    ta = tas.all.sort{ |a,b| a.date <=> b.date }.first
+    [ta.try(:name), ta.try(:date).to_s]
   end
 
   def trainings_of_trainee(trainee)
     klasses = trainee.
                 klass_trainees.map(&:klass).
                 select{ |k| k.klass_category_code != "WS" && k.start_date >= month_start_date && k.start_date <= end_date }
-    klasses.map do |klass|
-      "#{klass.name} - #{klass.start_date} - #{klass.end_date}"
-    end.join(";")
+    trainings = klasses.map do |klass|
+      [klass.name, klass.start_date, klass.end_date, klass.training_hours]
+    end
+    trainings.any? ? trainings : [["","","",""]]
   end
 
   def completions_of_trainee(trainee)
@@ -123,6 +163,19 @@ class FundingSourceMonthlyReport < Report
     end.join(";")
   end
 
+  def placement_status(trainee)
+    ti = trainee.
+          trainee_interactions.find do |ti|
+            ti.start_date &&
+            ti.start_date >= month_start_date &&
+            ti.start_date < end_date
+          end
+
+    return "" unless ti
+
+    ti.termination_date.nil? ? "Placed" : "Terminated"
+  end
+
   def placement_info(trainee)
     ti = trainee.
           trainee_interactions.find do |ti|
@@ -132,18 +185,28 @@ class FundingSourceMonthlyReport < Report
             ti.start_date < end_date
           end
 
-    return "" unless ti
+    return [""] * 5 unless ti
 
-    [ti.employer.name, "start date: #{ti.start_date}", "title: #{ti.hire_title}",
-       "salary: #{ti.hire_salary}", "uses traineed skills: #{ti.uses_trained_skills}"].join("\n").html_safe
+    [ti.employer.name, ti.hire_title, ti.start_date, ti.hire_salary, ti.uses_trained_skills]
+  end
+
+  def ui_verification_info(trainee)
+    [
+      trainee.ui_claim_verified_on,
+      trainee.ui_verified_notes.sort{|a,b| a.id <=> b.id}.last.try(:notes)
+    ]
   end
 
   def all_trainees
     Trainee
       .where(id: all_trainee_ids)
-      .includes(klass_trainees: { klass: :klass_category },
+      .includes(:ui_verified_notes,
+                :funding_source,
+                :home_address,
+                klass_trainees: { klass: :klass_category },
                 trainee_interactions: :employer,
-                trainee_assessments: :assessment)
+                trainee_assessments: :assessment,
+                applicant: :navigator)
       .order(:first, :last)
   end
 
@@ -174,10 +237,13 @@ class FundingSourceMonthlyReport < Report
   # --------------------------------------------------
 
   def assessments(st, et)
-    TraineeAssessment.
+    tas = TraineeAssessment.
       joins(:assessment).
-      where(trainee_id: trainee_ids).
-      where("trainee_assessments.date >= ? and trainee_assessments.date < ?", st, et)
+      where(trainee_id: trainee_ids)
+
+    return tas if skip_dates
+
+    tas.where("trainee_assessments.date >= ? and trainee_assessments.date < ?", st, et)
   end
 
   def assessment_counts(st, et)
@@ -305,6 +371,7 @@ class FundingSourceMonthlyReport < Report
   end
 
   def month_start_date
+    return start_date if skip_dates
     @mst ||= ending_month.to_date
   end
 
