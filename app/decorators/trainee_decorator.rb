@@ -16,9 +16,10 @@ class TraineeDecorator < Draper::Decorator
     h.format_phone_no(object.land_no) + '<br>'.html_safe
   end
 
-  def mobile_no
+  def mobile_no(skip_suffix = false)
     return nil unless object.mobile_no?
-    h.format_phone_no(object.mobile_no) + '(m)<br>'.html_safe
+    suffix = skip_suffix ? "" : '(m)<br>'.html_safe
+    h.format_phone_no(object.mobile_no) + suffix
   end
 
   def home_address
