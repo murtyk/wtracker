@@ -359,6 +359,7 @@ class FundingSourceMonthlyReport < Report
   end
 
   def end_date
+    return ending_month.to_date if skip_dates
     @end_dt ||= ending_month.to_date + 1.month - 1.day
   end
 
