@@ -83,8 +83,8 @@ class FundingSourceMonthlyReport < Report
 
   def data_header
     ["TAPO ID", "Trainee", "Trainee ID", "Address", "Mobile", "email",
-      "Job Developer", "Workshops", "Assessment Name", "Assessment Date",
-      "Trainings", "Start Date", "End Date", "Training Hours",
+      "Job Developer", "Class", "Category", "Start Date", "End Date",
+      "Training Hours", "Assessment Name", "Assessment Date",
       "Status", "Hired Company", "Title", "Start Date", "Salary",
       "Uses Traineed Skills",
       "UI Verfied Date", "UI Verified Notes", "Funding Source"].flatten
@@ -94,20 +94,20 @@ class FundingSourceMonthlyReport < Report
     rows = []
     all_trainees.map do |trainee|
       trainee_d = trainee.decorate
-      trainings_of_trainee(trainee).map do |training_name, start_date, end_date, training_hours|
+      klasses_of_trainee(trainee).map do |training_name, category, start_date, end_date, training_hours|
         rows << [trainee.id,
           trainee.name,
           trainee.trainee_id,
-          trainee_d.home_address,
+          trainee.formatted_address,
           trainee_d.mobile_no(true),
           trainee.email,
           trainee.navigator_name,
-          workshops_of_trainee(trainee),
-          assessments_of_trainee(trainee),
           training_name,
+          category,
           start_date,
           end_date,
           training_hours,
+          assessments_of_trainee(trainee),
           placement_status(trainee),
           placement_info(trainee),
           ui_verification_info(trainee),
@@ -140,6 +140,16 @@ class FundingSourceMonthlyReport < Report
 
     ta = tas.all.sort{ |a,b| a.date <=> b.date }.first
     [ta.try(:name), ta.try(:date).to_s]
+  end
+
+  def klasses_of_trainee(trainee)
+    return [["","","","",""]] unless trainee.klasses.any?
+
+    klasses = trainee.klasses.sort{|a,b| a.klass_category_code <=> b.klass_category_code }
+
+    klasses.map do |klass|
+      [klass.name, klass.klass_category_code, klass.start_date, klass.end_date, klass.training_hours]
+    end
   end
 
   def trainings_of_trainee(trainee)
