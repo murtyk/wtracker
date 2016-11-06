@@ -21,10 +21,12 @@ group :production, :staging, :integration do
 end
 
 gem 'pg'
-gem 'mongo'
+# gem 'mongo'
+gem 'mongo', '~> 2.2'
 gem 'bson_ext'
 # gem 'mongoid', github: 'mongoid/mongoid'
-gem 'mongoid'
+# gem 'mongoid'
+gem 'mongoid', '~> 5.0'
 
 gem 'attr_encrypted', '1.3.3'
 gem 'draper'
