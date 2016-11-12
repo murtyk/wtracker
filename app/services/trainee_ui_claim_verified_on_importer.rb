@@ -32,13 +32,14 @@ class TraineeUiClaimVerifiedOnImporter < Importer
 
     dt = row[:ui_claim_verified_on] && clean_date(row[:ui_claim_verified_on])
 
-    ui_notes = nil
     if dt
       trainee.ui_claim_verified_on = dt
-      notes = row[:ui_verified_notes]
-      unless notes.blank?
-        ui_notes = trainee.ui_verified_notes.build(user_id: current_user_id, notes: notes)
-      end
+    end
+
+    ui_notes = nil
+    notes = row[:ui_verified_notes]
+    unless notes.blank?
+      ui_notes = trainee.ui_verified_notes.build(user_id: current_user_id, notes: notes)
     end
 
     trainee.disabled_date = disabled_on(row)
@@ -53,7 +54,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
   end
 
   def disabled_on(row)
-    disabled = row[:disable].downcase == 'yes'
+    disabled = row[:disable].to_s.downcase == 'yes'
 
     disabled ? Date.today : nil
   end
