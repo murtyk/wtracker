@@ -8,6 +8,7 @@
         <th>Created At</th>
         <th>User</th>
         <th>Type</th>
+        <th>File</th>
         <th>Success Count</th>
         <th>Fail Count</th>
         <th>Params</th>
@@ -20,6 +21,9 @@
         <td><%= import_status.created_at.to_s %></td>
         <td><%= import_status.user_name %></td>
         <td><%= import_status.type %></td>
+        <td>
+          <%= link_to import_status.file_name, import_status.file_url.to_s %>
+        </td>
         <td><%= import_status.rows_successful %></td>
         <td><%= import_status.rows_failed %></td>
         <td><%= import_status.params %></td>
