@@ -17,7 +17,12 @@ class ImportStatus < ActiveRecord::Base
   before_destroy :delete_aws_file
 
   def user_name
-    user_id && User.unscoped.find(user_id).name
+    return "no user id" unless user_id
+
+    u = User.unscoped.where(id: user_id).first
+    return "no user found for id: #{user_id}" unless u
+
+    u.name
   end
 
   def get_param(attr)
