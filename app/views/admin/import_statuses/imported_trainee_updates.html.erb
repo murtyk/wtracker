@@ -1,0 +1,31 @@
+<div class = 'row-fluid page-caption-div' >
+  <h1>Imported Trainees</h1>
+</div>
+
+<%= render 'shared/import_fails', import_status: @import_status %>
+
+<h4>Following <%= @import_status.trainees.count %> Trainees were updated successfully</h4>
+
+<table id="table_trainee" class="table table-condensed table-bordered table-striped table-hover">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>DOB</th>
+    <th>EDP Date</th>
+    <th>Assessments</th>
+    <th></th>
+  </tr>
+
+  <% @import_status.trainees.each do |trainee| %>
+    <tr id='tr_<%=trainee.id%>'>
+      <td><%= link_to trainee.id, trainee_path(trainee)%></td>
+      <td><%= link_to trainee.name, trainee_path(trainee)%></td>
+      <td><%= trainee.dob %></td>
+      <td><%= trainee.edp_date%></td>
+      <td><%= trainee.trainee_assessments
+                     .map{ |ta| ta.name + ' - ' + ta.date.to_s }
+                     .join('<br>')
+                     .html_safe %></td>
+    </tr>
+  <% end %>
+</table>
