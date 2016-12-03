@@ -89,6 +89,10 @@ class Klass < ActiveRecord::Base
     label + " - #{end_date}"
   end
 
+  def label_for_trainees_advanced_search
+    [id.to_s,name,college.name,start_date.to_s,end_date.to_s].join(" - ")
+  end
+
   def trainees_for_selection
     Trainee
       .where(disabled_date: nil)
