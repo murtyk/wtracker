@@ -111,6 +111,7 @@
           <th>Unemployment Status</th>
           <th>Status</th>
           <th>UI Claim Verified On</th>
+          <th>UI Verified Notes</th>
           <th>Disabled On</th>
           <th>Disabled Notes</th>
         <% end %>
@@ -132,6 +133,7 @@
           <th>Trainee Source</th>
           <th>Navigator</th>
         <% end %>
+        <th>Documents</th>
         <th>Classes</th>
         <th>Assessment</th>
         <th>Assessment Dates</th>
@@ -149,6 +151,7 @@
         <td><%= t.applicant.current_employment_status %></td>
         <td><%= t.placement_status %></td>
         <td><%= t.ui_claim_verified_on %></td>
+        <td><%= t.ui_verified_notes.map(&:notes).join(";") %></td>
         <td><%= t.disabled_date %></td>
         <td><%= t.disabled_notes %></td>
       <% end %>
@@ -169,7 +172,14 @@
         <td><%= t.source %></td>
         <td><%= t.navigator_name %></td>
       <% end %>
-      <td><%= t.klasses.map{ |k| link_to(k.to_label, k) }.join(',').html_safe %></td>
+      <td>
+        <% t.trainee_files.each do |tf| %>
+          <%= link_to tf, class: 'btn-link', target: "_blank" do %>
+              <%= tf.created_at.to_date.to_s %> : <%= tf.name %> : <%= tf.notes %>
+          <% end %>
+        <% end %>
+      </td>
+      <td><%= t.klasses.map{ |k| link_to(k.label_for_trainees_advanced_search, k) }.join(',').html_safe %></td>
       <td><%= t.assessments.map{ |a| a.name }.join('<br>').html_safe %></td>
       <td><%= t.trainee_assessments.map{ |a| a.date }.join(';').html_safe %></td>
       <% @tas.grant_specific_values(t).each do |field| %>
