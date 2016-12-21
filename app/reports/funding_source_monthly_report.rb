@@ -209,7 +209,6 @@ class FundingSourceMonthlyReport < Report
 
   def all_trainees
     Trainee
-      .where(id: all_trainee_ids)
       .includes(:ui_verified_notes,
                 :funding_source,
                 :home_address,
@@ -217,6 +216,7 @@ class FundingSourceMonthlyReport < Report
                 trainee_interactions: :employer,
                 trainee_assessments: :assessment,
                 applicant: :navigator)
+      .where(funding_source_id: funding_source_id)
       .order(:first, :last)
   end
 
