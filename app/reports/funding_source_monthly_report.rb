@@ -1,13 +1,14 @@
 include UtilitiesHelper
 
 class FundingSourceMonthlyReport < Report
-  attr_reader :funding_source_id, :start_date, :ending_month, :skip_dates
+  attr_reader :funding_source_id, :start_date, :ending_month, :skip_dates, :full_data
 
   def post_initialize(params)
     @funding_source_id = params[:funding_source_id]
     @ending_month = params[:ending_month]
     @start_date = opero_str_to_date(params[:start_date])
     @skip_dates = false
+    @full_data = params[:full_data]
   end
 
   def count
@@ -87,12 +88,14 @@ class FundingSourceMonthlyReport < Report
       "Training Hours", "Assessment Name", "Assessment Date",
       "Status", "Hired Company", "Title", "Start Date", "Salary",
       "Uses Traineed Skills",
-      "UI Verfied Date", "UI Verified Notes", "Funding Source"].flatten
+      "UI Verfied Date", "UI Verified Notes", "Funding Source", "Registration Date"].flatten
   end
 
   def data_rows
     rows = []
-    all_trainees.map do |trainee|
+    trainees = full_data ? all_trainees : all_trainees.limit(data_limit)
+
+    trainees.map do |trainee|
       trainee_d = trainee.decorate
       klasses_of_trainee(trainee).map do |training_name, category, start_date, end_date, training_hours|
         rows << [trainee.id,
@@ -111,11 +114,17 @@ class FundingSourceMonthlyReport < Report
           placement_status(trainee),
           placement_info(trainee),
           ui_verification_info(trainee),
-          funding_source.name
+          funding_source.name,
+          registration_date(trainee)
           ].flatten
       end
     end
     rows
+  end
+
+  def registration_date(trainee)
+    applicant = trainee.applicant
+    (applicant && applicant.created_at.to_date).to_s
   end
 
   def workshops_of_trainee(trainee)
@@ -416,5 +425,9 @@ class FundingSourceMonthlyReport < Report
 
   def template
     "funding_source_monthly"
+  end
+
+  def data_limit
+    ENV['SHOW_MAX_ROWS'] || 10
   end
 end

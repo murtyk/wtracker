@@ -14,7 +14,7 @@ class ReportData
   end
 
   def excel_file
-    @report ||= Report.new_report(user, params)
+    @report ||= Report.new_report(user, params.merge(full_data: true))
     @ef ||= @report.build_excel
   end
 
