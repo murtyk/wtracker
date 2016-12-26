@@ -137,7 +137,7 @@ class JobSearchServices
   end
 
   def search_and_process(job_board, page)
-    job_board.search_jobs(job_search_args)
+    job_board.search_jobs(job_search_args.merge(page: page))
 
     @jobs_count = job_board.accessible_count.to_i unless page == 1 && jobs_count > 0
 
