@@ -27,8 +27,10 @@ class TraineeAdvancedSearch
         :home_address,
         :trainee_notes,
         :assessments,
+        :trainee_files,
+        :ui_verified_notes,
         :job_search_profile,
-        klasses: [:college],
+        klasses: [:college, :klass_category],
         trainee_interactions: [:employer],
         tact_three: [:education],
         applicant: [:navigator, :sector])
@@ -38,7 +40,9 @@ class TraineeAdvancedSearch
       :home_address,
       :trainee_notes,
       :assessments,
-      klasses: [:college],
+      :trainee_files,
+      :ui_verified_notes,
+      klasses: [:college, :klass_category],
       trainee_interactions: [:employer],
       tact_three: [:education])
   end

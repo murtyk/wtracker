@@ -16,7 +16,7 @@ class TraineeAdvancedSearchViewBuilder
       header_part_1 +
       ['Funding Source', 'Education', 'Veteran'] +
       header_part_2 +
-      %w(Classes Assessment) + ['Assessment Date'] +
+      %w(Classes Assessment) + ['Assessment Date'] + header_hire_details +
       tas.grant_specific_headers
   end
 
@@ -35,6 +35,10 @@ class TraineeAdvancedSearchViewBuilder
     ['Skills', 'Trainee Source', 'Navigator']
   end
 
+  def header_hire_details
+    ["Employer", "Title", "Start Date", "Pay"]
+  end
+
   def row(t)
     names(t) + [t.id] +
       applied_on(t) +
@@ -42,7 +46,7 @@ class TraineeAdvancedSearchViewBuilder
       details_2(t) +
       details_3(t) +
       details_4(t) +
-      [klasses(t), assessments(t), assessment_dates(t)] +
+      [klasses(t), assessments(t), assessment_dates(t)] + hire_details(t) +
       tas.grant_specific_values(t)
   end
 
@@ -88,5 +92,12 @@ class TraineeAdvancedSearchViewBuilder
 
   def assessment_dates(t)
     t.trainee_assessments.map(&:date).join("\x0A").html_safe
+  end
+
+  # employer name, job title, start date, pay
+  def hire_details(t)
+    ti = t.trainee_interactions.find(&:hired?)
+    return [""] * 4 unless ti
+    [ti.employer_name, ti.hire_title, ti.start_date.to_s, ti.hire_salary]
   end
 end
