@@ -35,7 +35,7 @@ class Indeed
     @distance     = 5 if @distance == 0
     @days         = args[:days] || 0
     @current_page = args[:page] || 1
-    @keywords     = args[:keywords].join('+OR+')
+    @keywords     = args[:keywords].join(',').gsub(" ", "+")
 
     @url = ''
     @jobs = nil
