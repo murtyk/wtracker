@@ -9,6 +9,8 @@ class Trainee < ActiveRecord::Base
   include ValidationsMixins
   include InteractionsMixins
   include PgSearch
+  include FeaturesMixins
+
   pg_search_scope :search_by_name,
                   against: [:first, :last],
                   using: { tsearch: { prefix: true } }

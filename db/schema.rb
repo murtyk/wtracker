@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160924140702) do
+ActiveRecord::Schema.define(version: 20170114191643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -596,6 +596,7 @@ ActiveRecord::Schema.define(version: 20160924140702) do
     t.string   "zip",                 limit: 255
     t.date     "start_date"
     t.integer  "opt_out_reason_code"
+    t.boolean  "received_leads"
   end
 
   add_index "job_search_profiles", ["account_id"], name: "index_job_search_profiles_on_account_id", using: :btree
@@ -1082,6 +1083,7 @@ ActiveRecord::Schema.define(version: 20160924140702) do
     t.string   "disabled_notes"
     t.date     "ui_claim_verified_on"
     t.string   "employment_status"
+    t.string   "features",                           default: [],              array: true
   end
 
   add_index "trainees", ["account_id", "grant_id"], name: "index_trainees_on_account_id_and_grant_id", using: :btree
