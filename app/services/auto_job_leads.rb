@@ -82,7 +82,7 @@ class AutoJobLeads
     log_info "AutoJobLeads: started leads for #{grant_name}"
     init_trainee_stats
     grant.not_disabled_trainees.each do |trainee|
-      perform_action_for_trainee(trainee)
+      perform_action_for_trainee(trainee) if trainee.has_feature?("job_leads")
     end
     log_info "AutoJobLeads: completed leads for #{grant_name}"
     build_status(grant)
