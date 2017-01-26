@@ -32,7 +32,10 @@
     <th>TAPO ID</th>
     <th>DOB</th>
     <th>Trainee ID</th>
-    <th>Address</th>
+    <th>Street</th>
+    <th>City</th>
+    <th>State</th>
+    <th>Zip</th>
     <th>County</th>
     <th>Email</th>
     <th>Mobile</th>
@@ -52,7 +55,10 @@
       <td><%= trainee.id %></td>
       <td><%= trainee.dob %></td>
       <td><%= trainee.trainee_id %></td>
-      <td><%= trainee.formatted_address %></td>
+      <td><%= trainee.line1 %></td>
+      <td><%= trainee.city %></td>
+      <td><%= trainee.state %></td>
+      <td><%= trainee.zip %></td>
       <td><%= trainee.county_name %></td>
       <td><%= trainee.email %></td>
       <td><%= trainee.mobile_no %></td>
