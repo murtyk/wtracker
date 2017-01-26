@@ -3,7 +3,8 @@ class TraineesVerificationViewBuilder
   include Enumerable
 
   def header
-    ['Name', 'TAPO ID', 'DOB', 'Trainee ID', 'Address', 'County', 'Email',
+    ['Name', 'TAPO ID', 'DOB', 'Trainee ID', 'Street', 'City', 'State', 'Zip',
+     'County', 'Email',
      'Mobile', 'Funding Source', 'Navigator', 'Placement Status',
      'UI Claim Verified On', 'UI Verification Notes', 'Disabled On', 'Disabled Notes']
   end
@@ -13,7 +14,10 @@ class TraineesVerificationViewBuilder
      trainee.id,
      trainee.dob,
      trainee.trainee_id,
-     trainee.formatted_address,
+     trainee.line1,
+     trainee.city,
+     trainee.state,
+     trainee.zip,
      trainee.county_name,
      trainee.email,
      trainee.mobile_no,
