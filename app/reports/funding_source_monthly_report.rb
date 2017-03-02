@@ -1,7 +1,7 @@
 include UtilitiesHelper
 
 class FundingSourceMonthlyReport < Report
-  attr_reader :funding_source_id, :start_date, :ending_month, :skip_dates, :full_data
+  attr_reader :funding_source_id, :start_date, :ending_month, :skip_dates, :full_data, :all_funding_sources
 
   def post_initialize(params)
     @funding_source_id = params[:funding_source_id]
@@ -9,6 +9,7 @@ class FundingSourceMonthlyReport < Report
     @start_date = opero_str_to_date(params[:start_date])
     @skip_dates = false
     @full_data = params[:full_data]
+    @all_funding_sources = false
   end
 
   def count
@@ -67,11 +68,12 @@ class FundingSourceMonthlyReport < Report
       excel_file.add_row row
     end
 
-    excel_file.add_sheet("No Dates Filter")
+    excel_file.add_sheet("All Trainees")
 
     @start_date = "01/01/2000".to_date
     @ending_month = "DEC 2030"
     @skip_dates = true
+    @all_funding_sources = true
 
     excel_file.add_row data_header
     data_rows.each do |row|
@@ -217,7 +219,7 @@ class FundingSourceMonthlyReport < Report
   end
 
   def all_trainees
-    Trainee
+    trainees = Trainee
       .includes(:ui_verified_notes,
                 :funding_source,
                 :home_address,
@@ -225,8 +227,10 @@ class FundingSourceMonthlyReport < Report
                 trainee_interactions: :employer,
                 trainee_assessments: :assessment,
                 applicant: :navigator)
-      .where(funding_source_id: funding_source_id)
-      .order(:first, :last)
+
+    trainees = trainees.where(funding_source_id: funding_source_id) unless all_funding_sources
+
+    trainees.order(:first, :last)
   end
 
   def all_trainee_ids
