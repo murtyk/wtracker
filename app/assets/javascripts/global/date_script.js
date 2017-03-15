@@ -26,6 +26,32 @@ $(document).on("blur", ".date_field", function() {
   }
 });
 
+ // Added by Sahu start
+$(document).on("blur", "#klass_start_date", function() {
+  validate_year(this);
+});
+
+$(document).on("blur", "#klass_end_date", function() {
+  validate_year(this);
+});
+
+function validate_year(current_field){
+  var date_string = $(current_field).val();
+  var required = $(current_field).attr("required") == "required";
+  var valid = is_valid_date(date_string, required);
+  var id = current_field.id
+
+  if(valid){
+    var year = parseInt(date_string.split("/")[2]);
+    if (year < 2000){
+      alert("Year of the Date must be greater then 2000");
+      $(current_field).css({backgroundColor: 'yellow'});
+      $(current_field)[0].focus();
+    }
+  }
+}
+ // Added by Sahu end
+
 function is_valid_date_format(date_string){
   var validformat = /^\d{2}\/\d{2}\/\d{4}$/; //Basic check for format validity
   return validformat.test(date_string);
