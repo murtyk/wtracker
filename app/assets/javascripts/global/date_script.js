@@ -27,11 +27,7 @@ $(document).on("blur", ".date_field", function() {
 });
 
  // Added by Sahu start
-$(document).on("blur", "#klass_start_date", function() {
-  validate_year(this);
-});
-
-$(document).on("blur", "#klass_end_date", function() {
+$(document).on("blur", "#klass_start_date, #klass_end_date", function() {
   validate_year(this);
 });
 
