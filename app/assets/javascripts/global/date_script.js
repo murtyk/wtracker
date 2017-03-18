@@ -26,7 +26,6 @@ $(document).on("blur", ".date_field", function() {
   }
 });
 
- // Added by Sahu start
 $(document).on("blur", "#klass_start_date, #klass_end_date", function() {
   validate_year(this);
 });
@@ -46,7 +45,6 @@ function validate_year(current_field){
     }
   }
 }
- // Added by Sahu end
 
 function is_valid_date_format(date_string){
   var validformat = /^\d{2}\/\d{2}\/\d{4}$/; //Basic check for format validity
