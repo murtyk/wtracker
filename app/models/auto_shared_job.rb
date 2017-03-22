@@ -88,7 +88,7 @@ class AutoSharedJob < ActiveRecord::Base
   end
 
   def self.status_codes(status_param)
-    return [1] if status_param == 'Viewed'
+    return [1, 3] if status_param == 'Viewed'
     return [2] if status_param == 'Applied'
     return [3, 4] if status_param == 'Not Interested'
     [0, nil]
