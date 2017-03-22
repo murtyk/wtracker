@@ -117,6 +117,7 @@ class AutoJobLeads
   end
 
   def action_for_trainee(trainee)
+    return :SKIP if trainee.incumbent?
     return :SKIP unless trainee.not_placed?
     return :OPTED_OUT if trainee.opted_out_from_auto_leads?
     return :SEND_LEADS if trainee.valid_profile?
