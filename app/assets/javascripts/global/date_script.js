@@ -39,7 +39,7 @@ function validate_year(current_field){
   if(valid){
     var year = parseInt(date_string.split("/")[2]);
     if (year < 2000){
-      alert("Year of the Date must be greater then 2000");
+      alert("Year can't be less than 2000");
       $(current_field).css({backgroundColor: 'yellow'});
       $(current_field)[0].focus();
     }
