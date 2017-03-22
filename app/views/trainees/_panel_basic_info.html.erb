@@ -9,7 +9,10 @@
 </p>
 <% end %>
 
-<% if current_grant.auto_job_leads? && trainee.job_search_profile %>
+<% if current_grant.auto_job_leads? &&
+    trainee.job_search_profile &&
+    !trainee.incumbent?
+    %>
   <div id='opt_out_div'>
     <%= render 'job_search_profiles/opt_out_in', job_search_profile: trainee.job_search_profile %>
   </div>

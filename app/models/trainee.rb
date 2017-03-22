@@ -222,6 +222,10 @@ class Trainee < ActiveRecord::Base
     klasses[0] ? 'Yes' : 'No'
   end
 
+  def incumbent?
+    applicant.try(:employment_status_pre_selected?)
+  end
+
   def opted_out_from_auto_leads?
     job_search_profile && job_search_profile.opted_out
   end
