@@ -12,6 +12,7 @@ class Klass < ActiveRecord::Base
   validates :name, presence: true, length: { minimum: 3, maximum: 80 }
   validates :college_id, presence: true
   validates :program_id, presence: true
+  validate :valid_year
 
   belongs_to :account
   belongs_to :grant
@@ -52,6 +53,21 @@ class Klass < ActiveRecord::Base
   delegate :name,     to: :college, prefix: true
   delegate :location, to: :college
   delegate :name, :code, to: :klass_category, prefix: true, allow_nil: true
+
+  def valid_year
+   if start_date.present?  
+     start_date_year = start_date.strftime("%Y").to_i 
+     if start_date_year < 2000
+       errors.add(:start_date, "Year can't be less than 2000")
+     end
+   end  
+   if end_date.present?
+     end_date_year = end_date.strftime("%Y").to_i
+     if end_date_year < 2000
+       errors.add(:end_date, "Year can't be less than 2000")
+     end
+   end  
+  end
 
   def college_name_location
     "#{college_name} (#{location})"
