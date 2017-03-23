@@ -27,41 +27,38 @@
   </tr>
 
   <thead>
-  <tr>
-    <th>Name</th>
-    <th>TAPO ID</th>
-    <th>DOB</th>
-    <th>Trainee ID</th>
-    <th>Street</th>
-    <th>City</th>
-    <th>State</th>
-    <th>Zip</th>
-    <th>County</th>
-    <th>Email</th>
-    <th>Mobile</th>
-    <th>Funding Source</th>
-    <th>Navigator</th>
-    <th>Placement Status</th>
-    <th>UI Claim Verified On</th>
-    <th>UI Verification Notes</th>
-    <th>Disabled On</th>
-    <th>Disabled Notes</th>
-  </tr>
+   <tr>
+      <th>Name</th>
+      <th>Trainee ID</th>
+      <th>Email</th>
+      <th>Mobile</th>
+      <th>Street</th>
+      <th>City</th>
+      <th>Zip</th>
+      <th>TAPO ID</th>
+      <th>Funding Source</th>
+      <th>Navigator</th>
+      <th>Placement Status</th>
+      <th>UI Claim Verified On</th>
+      <th>UI Verification Notes</th>
+      <th>Disabled On</th>
+      <th>Disabled Notes</th>
+      <th>DOB</th>
+      <th>State</th>
+      <th>County</th>
+    </tr>
   </thead>
 
   <% @report.trainees.each do |trainee| %>
     <tr>
       <td><%= link_to(trainee.name, trainee)%></td>
-      <td><%= trainee.id %></td>
-      <td><%= trainee.dob %></td>
       <td><%= trainee.trainee_id %></td>
-      <td><%= trainee.line1 %></td>
-      <td><%= trainee.city %></td>
-      <td><%= trainee.state %></td>
-      <td><%= trainee.zip %></td>
-      <td><%= trainee.county_name %></td>
       <td><%= trainee.email %></td>
       <td><%= trainee.mobile_no %></td>
+      <td><%= trainee.line1 %></td>
+      <td><%= trainee.city %></td>
+      <td><%= trainee.zip %></td>
+      <td><%= trainee.id %></td>
       <td><%= trainee.funding_source_name %></td>
       <td><%= trainee.navigator_name %></td>
       <td><%= trainee.placement_status %></td>
@@ -69,6 +66,9 @@
       <td><%= trainee.ui_verification_notes %></td>
       <td><%= trainee.disabled_date %></td>
       <td><%= trainee.disabled_notes %></td>
+      <td><%= trainee.dob %></td>
+      <td><%= trainee.state %></td>
+      <td><%= trainee.county_name %></td>
     </tr>
   <% end %>
 </table>
