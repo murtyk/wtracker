@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170114191643) do
+ActiveRecord::Schema.define(version: 20170325200047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1030,6 +1030,19 @@ ActiveRecord::Schema.define(version: 20170114191643) do
 
   add_index "trainee_races", ["account_id"], name: "index_trainee_races_on_account_id", using: :btree
 
+  create_table "trainee_services", force: :cascade do |t|
+    t.date     "start_date", null: false
+    t.date     "end_date"
+    t.string   "name",       null: false
+    t.integer  "trainee_id"
+    t.integer  "account_id"
+    t.integer  "grant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "trainee_services", ["account_id", "grant_id", "trainee_id"], name: "trainee_services_scope", using: :btree
+
   create_table "trainee_submits", force: :cascade do |t|
     t.integer  "account_id",              null: false
     t.integer  "trainee_id",              null: false
@@ -1182,6 +1195,9 @@ ActiveRecord::Schema.define(version: 20170114191643) do
   add_foreign_key "trainee_auto_lead_statuses", "accounts"
   add_foreign_key "trainee_auto_lead_statuses", "grants"
   add_foreign_key "trainee_auto_lead_statuses", "trainees"
+  add_foreign_key "trainee_services", "accounts"
+  add_foreign_key "trainee_services", "grants"
+  add_foreign_key "trainee_services", "trainees"
   add_foreign_key "ui_verified_notes", "trainees"
   add_foreign_key "ui_verified_notes", "users"
 end

@@ -2,9 +2,10 @@
 # one trainee record for each gran
 # trainee can be assigned to any number of classes
 # status defines placement status and it is updated by TI
+# rubocop:disable ClassLength
 class Trainee < ActiveRecord::Base
-  LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }
-  STATUSES = { 0 => 'Not Placed', 4 => 'Placed', 5 => 'OJT Enrolled' }
+  LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }.freeze
+  STATUSES = { 0 => 'Not Placed', 4 => 'Placed', 5 => 'OJT Enrolled' }.freeze
   include Encryption
   include ValidationsMixins
   include InteractionsMixins
@@ -70,7 +71,7 @@ class Trainee < ActiveRecord::Base
   belongs_to :funding_source
   belongs_to :race
 
-  delegate :name,  to: :funding_source, prefix: true, allow_nil: true
+  delegate :name, to: :funding_source, prefix: true, allow_nil: true
 
   has_many :ui_verified_notes, dependent: :destroy
 
@@ -86,14 +87,17 @@ class Trainee < ActiveRecord::Base
 
   has_one :hired_interaction, -> { where termination_date: nil },
           class_name: 'TraineeInteraction'
-  scope :placed, -> { joins(:trainee_interactions).where(trainee_interactions: {termination_date: nil}) }
+  scope :placed, lambda {
+    joins(:trainee_interactions)
+      .where(trainee_interactions: { termination_date: nil })
+  }
 
   has_many :klass_trainees, dependent: :destroy
   has_many :klasses, through: :klass_trainees
   has_many :completed_klass_trainees, -> { where(status: [2, 4, 5]) },
            class_name: 'KlassTrainee'
   has_many :completed_klasses, through: :completed_klass_trainees,
-           source: :klass
+                               source: :klass
 
   has_many :trainee_submits, dependent: :destroy
   has_many :trainee_files, dependent: :destroy
@@ -119,6 +123,8 @@ class Trainee < ActiveRecord::Base
 
   has_one :trainee_auto_lead_status, dependent: :destroy
 
+  has_many :trainee_services
+
   after_initialize :init
 
   def self.reset_password_keys
@@ -126,20 +132,26 @@ class Trainee < ActiveRecord::Base
   end
 
   def init
-    if Rails.env.development? || Rails.env.test?
-      begin
-        self.trainee_id  ||= ''
-      rescue => error
-        self.trainee_id = ''
-      end
-    else
-      self.trainee_id  ||= ''
-    end
+    init_trainee_id
+
     if new_record? && !(grant && grant.trainee_applications?)
       self.password              ||= 'password'
       self.password_confirmation ||= 'password'
     end
+
     self.email ||= ''
+  end
+
+  def init_trainee_id
+    if Rails.env.development? || Rails.env.test?
+      begin
+        self.trainee_id ||= ''
+      rescue
+        self.trainee_id = ''
+      end
+    else
+      self.trainee_id ||= ''
+    end
   end
 
   def name
@@ -191,7 +203,7 @@ class Trainee < ActiveRecord::Base
 
   # not hired and not OJT Enrolled
   def not_placed?
-    status == 0
+    status.zero?
   end
 
   def placement_status
@@ -299,7 +311,12 @@ class Trainee < ActiveRecord::Base
   end
 
   def class_categories
-    klasses.map(&:klass_category_code).compact.join(",")
+    klasses.map(&:klass_category_code).compact.join(',')
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    # whitelist only the title and body attributes for other users
+    super & %w(first last email funding_source_id mobile_no veteran status)
   end
 
   private
@@ -308,10 +325,5 @@ class Trainee < ActiveRecord::Base
     self.land_no   = land_no.delete('^0-9') if land_no
     self.mobile_no = mobile_no.delete('^0-9') if mobile_no
     self.status ||= 0
-  end
-
-  def self.ransackable_attributes(auth_object = nil)
-    # whitelist only the title and body attributes for other users
-    super & %w(first last email funding_source_id mobile_no veteran status)
   end
 end
