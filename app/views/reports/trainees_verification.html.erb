@@ -46,6 +46,7 @@
       <th>DOB</th>
       <th>State</th>
       <th>County</th>
+      <th>Registration Date</th>
     </tr>
   </thead>
 
@@ -69,6 +70,7 @@
       <td><%= trainee.dob %></td>
       <td><%= trainee.state %></td>
       <td><%= trainee.county_name %></td>
+      <td><%= trainee.applicant ? trainee.applicant.applied_on : "" %></td>
     </tr>
   <% end %>
 </table>
