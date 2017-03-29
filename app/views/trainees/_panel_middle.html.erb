@@ -1,5 +1,11 @@
+<% if trainee.applicant %>  
+  <h2>
+    Incumbent?
+    <%= trainee.applicant.employment_status_pre_selected? ? "Yes" : "No" %>
+  </h2>
+<% end %>  
 <h2>
-  Trainee UI Verified?
+  UI Verified?
   <%= trainee.ui_claim_verified_on ? "Yes, on #{trainee.ui_claim_verified_on}" : 'No'%>
 </h2>
 <h4>
