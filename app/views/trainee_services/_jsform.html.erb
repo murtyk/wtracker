@@ -1,0 +1,22 @@
+<style>
+  select {
+    width: 70px 
+  }
+</style>
+
+<%= simple_form_for(trainee_service, remote: true)  do |f| %>
+  <hr>
+  <div class="form-inputs">
+    <div class = 'row-fluid'>
+      <%= f.hidden_field :trainee_id %>
+      <%= f.input :name, label: '* Enter Name' %>
+      <%= f.input :start_date, input_html: { data: {behaviour: "datepicker"}, value:trainee_service.start_date}, as: :string %>
+      <%= f.input :end_date, input_html: { data: {behaviour: "datepicker"}, value:trainee_service.end_date}, as: :string %>
+    </div>
+  </div>    
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(trainee_service, "trainee_#{trainee_service.trainee_id}_") %>
+<% end %>
+
