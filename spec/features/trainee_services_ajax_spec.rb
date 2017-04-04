@@ -15,8 +15,8 @@ describe 'TraineeService', js: true do
       wait_for_ajax
       
       fill_in 'trainee_service_name', with: 'Sahu Service'
-      fill_in 'trainee_service_start_date', with: '11/01/2017'
-      fill_in 'trainee_service_end_date', with: '11/01/2018'
+      # fill_in 'trainee_service_start_date', with: '11/01/2017'
+      # fill_in 'trainee_service_end_date', with: '11/01/2018'
       
       click_on 'Add'
       wait_for_ajax
@@ -26,8 +26,8 @@ describe 'TraineeService', js: true do
       wait_for_ajax
       
       fill_in 'trainee_service_name', with: 'Sahu Service updated'
-      fill_in 'trainee_service_start_date', with: '11/01/2017'
-      fill_in 'trainee_service_end_date', with: '11/01/2018'
+      # fill_in 'trainee_service_start_date', with: '11/01/2017'
+      # fill_in 'trainee_service_end_date', with: '11/01/2018'
      
       click_on 'Update'
       wait_for_ajax
