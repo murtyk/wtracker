@@ -12,8 +12,7 @@ class TraineeServicesController < ApplicationController
   # POST /trainee_services
   # POST /trainee_services.json
   def create
-    attributes = trainee_service_params.merge(account_id: Account.current_id, grant_id: Grant.current_id)
-    @trainee_service = TraineeService.new(attributes)
+    @trainee_service = TraineeService.new(trainee_service_params)
     authorize @trainee_service
     @trainee_service.save
     @trainee = @trainee_service.trainee 
