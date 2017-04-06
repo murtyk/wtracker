@@ -116,7 +116,7 @@ class FundingSourceMonthlyReport < Report
           placement_status(trainee),
           placement_info(trainee),
           ui_verification_info(trainee),
-          funding_source.name,
+          trainee.funding_source_name,
           registration_date(trainee)
           ].flatten
       end
