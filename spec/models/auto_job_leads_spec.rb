@@ -3,21 +3,26 @@ require 'rails_helper'
 describe AutoJobLeads do
   before :each do
     #mock trainee
-    t1 = double('Trainee', 'not_placed?' => false) # placed
+    t1 = double('Trainee', 'not_placed?' => false,
+                           'incumbent?' => false) # placed
     t2 = double('Trainee', 'not_placed?' => true,
-                           'opted_out_from_auto_leads?' => true)
+                           'opted_out_from_auto_leads?' => true,
+                           'incumbent?' => false)
     t3 = double('Trainee', 'not_placed?' => true,
                            'opted_out_from_auto_leads?' => false,
-                           'valid_profile?' => true)
+                           'valid_profile?' => true,
+                           'incumbent?' => false)
     t4 = double('Trainee', 'not_placed?' => true,
                            'opted_out_from_auto_leads?' => false,
                            'valid_profile?' => false,
-                           'job_search_profile' => true)
+                           'job_search_profile' => true,
+                           'incumbent?' => false)
     t5 = double('Trainee', 'not_placed?' => true,
                            'opted_out_from_auto_leads?' => false,
                            'valid_profile?' => false,
                            'job_search_profile' => false,
-                           'valid_email?' => true)
+                           'valid_email?' => true,
+                           'incumbent?' => false)
 
 
     #mock grant
