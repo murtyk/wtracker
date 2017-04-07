@@ -59,7 +59,7 @@ describe 'auto job leads' do
         profile_url = "/profiles/#{id}?key=#{key}"
         visit profile_url
 
-        expect(page).to have_text 'Lead Consultant/Technical Architect'
+        expect(page).to have_text 'Java Developer'
         expect(page).to have_text 'Status:Not Viewed'
         expect(page).to have_text 'Not Viewed 25'
         expect(page).to_not have_text 'Applied 1'
