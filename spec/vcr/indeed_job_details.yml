@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Princeton,NJ&limit=25&publisher=5675970181406859&q=Java%20OR%20Ajax&radius=10&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Princeton,NJ&limit=25&publisher=5675970181406859&q=Java,Ajax&radius=10&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -304,11 +304,11 @@ http_interactions:
         c29yZWQiOmZhbHNlLCJleHBpcmVkIjpmYWxzZSwiaW5kZWVkQXBwbHkiOmZh
         bHNlLCJmb3JtYXR0ZWRMb2NhdGlvbkZ1bGwiOiJIYW1pbHRvbiwgTkogMDg2
         MTkiLCJmb3JtYXR0ZWRSZWxhdGl2ZVRpbWUiOiIyIGRheXMgYWdvIn1dfQ==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 19:56:22 GMT
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Princeton,NJ&limit=25&publisher=5675970181406859&q=Java%20OR%20Ajax&radius=10&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Princeton,NJ&limit=25&publisher=5675970181406859&q=Java,Ajax&radius=10&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -809,6 +809,6 @@ http_interactions:
         ZXhwaXJlZCI6ZmFsc2UsImluZGVlZEFwcGx5IjpmYWxzZSwiZm9ybWF0dGVk
         TG9jYXRpb25GdWxsIjoiUHJpbmNldG9uLCBOSiAwODU0MCIsImZvcm1hdHRl
         ZFJlbGF0aXZlVGltZSI6IjEgZGF5IGFnbyJ9XX0=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:00:29 GMT
 recorded_with: VCR 2.9.2
