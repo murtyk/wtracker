@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=25&publisher=5675970181406859&q=pediatric%20OR%20nurse&radius=5&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=25&publisher=5675970181406859&q=pediatric,nurse&radius=5&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -527,11 +527,11 @@ http_interactions:
         IjpmYWxzZSwiaW5kZWVkQXBwbHkiOnRydWUsImZvcm1hdHRlZExvY2F0aW9u
         RnVsbCI6IlBoaWxhZGVscGhpYSwgUEEiLCJmb3JtYXR0ZWRSZWxhdGl2ZVRp
         bWUiOiIzIGRheXMgYWdvIn1dfQ==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:53:11 GMT
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=25&publisher=5675970181406859&q=pediatric%20OR%20nurse&radius=5&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=25&publisher=5675970181406859&q=pediatric,nurse&radius=5&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -1042,11 +1042,11 @@ http_interactions:
         ZCI6ZmFsc2UsImluZGVlZEFwcGx5IjpmYWxzZSwiZm9ybWF0dGVkTG9jYXRp
         b25GdWxsIjoiQ2FtZGVuLCBOSiIsImZvcm1hdHRlZFJlbGF0aXZlVGltZSI6
         IjIgZGF5cyBhZ28ifV19
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:53:12 GMT
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=100&publisher=5675970181406859&q=pediatric%20OR%20nurse&radius=5&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=100&publisher=5675970181406859&q=pediatric,nurse&radius=5&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -1557,11 +1557,11 @@ http_interactions:
         ZCI6ZmFsc2UsImluZGVlZEFwcGx5IjpmYWxzZSwiZm9ybWF0dGVkTG9jYXRp
         b25GdWxsIjoiQ2FtZGVuLCBOSiIsImZvcm1hdHRlZFJlbGF0aXZlVGltZSI6
         IjIgZGF5cyBhZ28ifV19
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:53:12 GMT
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=100&publisher=5675970181406859&q=pediatric%20OR%20nurse&radius=5&start=100&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=100&publisher=5675970181406859&q=pediatric,nurse&radius=5&start=100&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -2080,11 +2080,11 @@ http_interactions:
         cG9uc29yZWQiOmZhbHNlLCJleHBpcmVkIjpmYWxzZSwiaW5kZWVkQXBwbHki
         OmZhbHNlLCJmb3JtYXR0ZWRMb2NhdGlvbkZ1bGwiOiJQaGlsYWRlbHBoaWEs
         IFBBIiwiZm9ybWF0dGVkUmVsYXRpdmVUaW1lIjoiMiBkYXlzIGFnbyJ9XX0=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:53:12 GMT
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=100&publisher=5675970181406859&q=pediatric%20OR%20nurse&radius=5&start=200&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=100&publisher=5675970181406859&q=pediatric,nurse&radius=5&start=200&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -2609,11 +2609,11 @@ http_interactions:
         ZSwiaW5kZWVkQXBwbHkiOmZhbHNlLCJmb3JtYXR0ZWRMb2NhdGlvbkZ1bGwi
         OiJDaGVycnkgSGlsbCwgTkoiLCJmb3JtYXR0ZWRSZWxhdGl2ZVRpbWUiOiIy
         IGRheXMgYWdvIn1dfQ==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:53:13 GMT
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=100&publisher=5675970181406859&q=pediatric%20OR%20nurse&radius=5&start=300&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=100&publisher=5675970181406859&q=pediatric,nurse&radius=5&start=300&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -3141,7 +3141,7 @@ http_interactions:
         cHBseSI6ZmFsc2UsImZvcm1hdHRlZExvY2F0aW9uRnVsbCI6Ik5vcnRoIENl
         bnRyYWwsIFBBIiwiZm9ybWF0dGVkUmVsYXRpdmVUaW1lIjoiNSBkYXlzIGFn
         byJ9XX0=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:53:13 GMT
 - request:
     method: get
@@ -3241,7 +3241,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:28 GMT
 - request:
     method: get
@@ -3749,7 +3749,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:29 GMT
 - request:
     method: get
@@ -3851,7 +3851,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:29 GMT
 - request:
     method: get
@@ -3900,7 +3900,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:31 GMT
 - request:
     method: get
@@ -4002,7 +4002,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:31 GMT
 - request:
     method: get
@@ -4204,7 +4204,7 @@ http_interactions:
         kFCaLgmj3gRjRkPQ21nXtJOd2EpnR4wFz8oIAlV7a3NSl9zxDJpR1BexMZfZ
         0id5GwBNuHBOJ0rX2PJUi1r96bN+Hu+fnln+uF+7j2RTVz/95R9/+T8OB7y5
         6FwAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:32 GMT
 - request:
     method: get
@@ -4275,7 +4275,7 @@ http_interactions:
         aHbIfoAdhSSI2ace35j0GY72EA4hP4Il3/51QvezpOqmLBmKJBuyJqqsrXWz
         hpFRh4XzCCxbRJBVcSOahw77ZqDLfcONfbQ151vtL4c2CSncwGKo8jxv2yWL
         SlD80aZr+KI3smp6js75o5ej/wGxxpKvEAsAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:33 GMT
 - request:
     method: get
@@ -4380,7 +4380,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:33 GMT
 - request:
     method: get
@@ -4449,7 +4449,7 @@ http_interactions:
         2slYm46aUx3rVtx30nhOV9Zwknb0KeiH8Uqz9p3+OzqKYGixfXGU2Tkg+Qjx
         0aJR4DLslcqcU+r6zKC2wTdOB38S+SHf8NZzI+dIfD6hbw+f+nL73WWPUpz/
         xCaD0sPHwz8arloTIwcAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:57:35 GMT
 - request:
     method: get
@@ -4597,7 +4597,7 @@ http_interactions:
         /PoKbsIfWAjUTiggF6/Gf+9K79+S/Nvy7X9pNUGQdHAmVdFFQ6jJ2osZeWbB
         ZA4kYfwTLXC850cAth/hl66ff5X3Mk5BNynm10/GgC1FUVTLAtDjL1qqIJZX
         XFRKVbvAj7jy8qO/8c3FD7/98F/mdp+qJS0AAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:28 GMT
 - request:
     method: get
@@ -4869,7 +4869,7 @@ http_interactions:
         fBZSH0ftHhpUSm23Ea0qCC0ptRMVlTuE0MhAputf6AVShp6ZxxLI1Vhs983J
         wYb9QwgiCOXzZU+NuOJGaxB3K8k9ykq5FwAgNR+eIlev7zXZDb3laaQv0l/k
         P/zLpdv844/B/+WBotMH+lAPv/zjv/7x/wNftDK+HYIAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:29 GMT
 - request:
     method: get
@@ -5092,7 +5092,7 @@ http_interactions:
         szZPzH1XmWvAp1s5KUXduI6sXRt9yEQoVHkiZNXGgfvC3V9O+x0b05BXqTXG
         uu8RqihAoxBVJH79sOx18lfAwo8TzffuW1P/EaL+8scD/HBHr/bh2h9Wyw9/
         +d+//B9d3PtXLGQAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:30 GMT
 - request:
     method: get
@@ -5174,7 +5174,7 @@ http_interactions:
         YJMfuHDt2PLIJ2TuIuBJ5N4ZWufC+Vu3jW8AsDxf4jgBsIwAJE6UwNl3gnXi
         bRmjfSXTLP9ayWRj0MmXCN7dW5nIt+DF0nQ2t0GL2MboFRTBtNlsHqylHu+L
         cI9qX3uHzpLLBmxy2MoGndyXn1/+BZMUFuppDwAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:30 GMT
 - request:
     method: get
@@ -5279,7 +5279,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:30 GMT
 - request:
     method: get
@@ -5781,7 +5781,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:30 GMT
 - request:
     method: get
@@ -5830,7 +5830,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:31 GMT
 - request:
     method: get
@@ -5900,7 +5900,7 @@ http_interactions:
         sReFTMRzWnJOgnVVTvWVAY74UZNKoS8au6eZnWFWW3LHqjJxYEDh+aoM5JSB
         VjIU7f57I9Q1xRARBwdOvdXlqG/Z+rDe3F0Ciyit7xCa+iPuS1/en87msivb
         B3Expe/e7n4DO/rJUW8HAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:32 GMT
 - request:
     method: get
@@ -5949,7 +5949,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:32 GMT
 - request:
     method: get
@@ -6025,7 +6025,7 @@ http_interactions:
         koUo21bR0RvBvSX6U19ZlX1zuoRn2tTvesNmdzJLrMJuyIux1Jst473G1uXe
         4vKlswELJnDjj6RwuVxotuQ9eLaebZzWvy1f1fz8V6pqweIiVaN+7cPnD38B
         UHEP+X8NAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:33 GMT
 - request:
     method: get
@@ -6100,7 +6100,7 @@ http_interactions:
         DSJ+WxeXrhAZDTf0M3E8CKFsZ353sfdZNUxTUhVdkU1ZUk1FUvQFi4y5PJqf
         QnkMmoomzU0j7PILIJvU++fiUjLroRdT5eCkmMGcEOeT5/lBiByXdycln1JH
         lXLEouvKqub87kb89PbpXw8G+SjOEAAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:34 GMT
 - request:
     method: get
@@ -6168,7 +6168,7 @@ http_interactions:
         jMa4mhYuWm6e2HH+GMj17NB5Cu7mO3PCmc9Da7dQV0sI7UqTUWHZiwEzVt5m
         ui3YwJXetMgedUTTomtWHWXfNToR1BLTA9RSOom181+wfvff5U4zv/8FNV4p
         zxnzMG3dfL/5G99xHDA6CQAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:58:54 GMT
 - request:
     method: get
@@ -6239,7 +6239,7 @@ http_interactions:
         zHK1EHnpbOzZZQULhvNL/oPGYUD9iH/+iWtbICXhDuphPAmhZN4/TuB+U+SW
         IemyavDRKSuWybtxhSdlDo/mUSg7pq5o0lLEC84/J9hs1+zjn3GL8bfylcOY
         Bgw2EOV53ggrLsXAGphMmuLBsn/EokvSaroOzsSD3wf/AT2Spp0kCwAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:11 GMT
 - request:
     method: get
@@ -6339,7 +6339,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:11 GMT
 - request:
     method: get
@@ -6519,7 +6519,7 @@ http_interactions:
         qytIFbq9WHZTKs2PSxNkQnhCmzKCehL5urexSbkUmGynCxFn9DHAnOD3s5u9
         aRfJbWGdl0NX6LflAvb7M57oOY0jeenEuBSdjONekNQ/+jT5T7911Ic7E5tH
         AV0pH376+0//DXNdyTdFTgAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:12 GMT
 - request:
     method: get
@@ -6590,7 +6590,7 @@ http_interactions:
         ZlnOF6IsnUMDJ6tgynB5KH+QG2EeTuXnn7qzBRIWHaEepZMIMub97WH/c9mo
         23rFMG05Oo1yrSq7cYsnEZ6MFnDIOkYrW/pGJAsuPyfE8tjsk59x6/G39TUH
         l2MBe4jm83kxyrlEQBQpm5TUs03/qGmXJPl07V2qZ7/O/gP8ui10JAsAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:12 GMT
 - request:
     method: get
@@ -6639,7 +6639,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:13 GMT
 - request:
     method: get
@@ -6839,7 +6839,7 @@ http_interactions:
         S7efa9vaIUN1tS3rmPs2x6LBcj3F1aE7WYS6CfunzGou2n2gBDLst9eJqxdc
         1YzHxrI5jGb3pBLttCfVkyxN5QdM//Ip4sffX59B/siO6pkgi8lPf/vX3/4H
         bfM/x7hcAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:15 GMT
 - request:
     method: get
@@ -6910,7 +6910,7 @@ http_interactions:
         Ktn2d4DDr8ACjmGZhtNxHNCWowdcYwMjF4FMN+GoHBPNsPT10QwH8vYWy/2S
         V9wq27K3CTpHPscCrbFJaPP5vEklkQJJpBKberQeHbUYkLyS1usL9ej16H9r
         9zyUrAoAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:18 GMT
 - request:
     method: get
@@ -7006,7 +7006,7 @@ http_interactions:
         vjjWiG96yUg/C522VW70jltBlwzXKd54q8rOxK6z3golv1PkiVuSqO/tZoPL
         S9L4MN1PW+yMa/fczUlIAiIMqnhhm8SWBjoNexPMAxc6rpjybcM4dsGvfEm6
         5N+eyy+hVFyZZzy4+fT10z9RTdK1YxcAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:19 GMT
 - request:
     method: get
@@ -7081,7 +7081,7 @@ http_interactions:
         GBVd6m8+Dr41G42WmBZs22yZdrNpNe3p/ylKxn0hLWSoSBdVNz67KTEe+GJU
         5y+VOaf6P0ltcQeaowHDHH1RK8/z7bRsX0PZvRa6nUzmHFYX25a71ssdiw23
         PuNNkW13Vo5b59+VrfetfwGBs9P5qhIAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:19 GMT
 - request:
     method: get
@@ -7183,7 +7183,7 @@ http_interactions:
         GMBDOj8dFNvt+ud2WOvbYyyFz7LYlpSOrCauKriTpTZipOMh3zIRHvq7RWKA
         2rS9aVtFtXicZ4uJoKb9mu6oHJQ/hkWX9tPnzovvnK7cmT0/fPjrw38ANaV0
         IiMdAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:00:30 GMT
 - request:
     method: get
@@ -7232,7 +7232,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:01:09 GMT
 - request:
     method: get
@@ -7302,7 +7302,7 @@ http_interactions:
         9PqBbA2lZrFA6zSAL5ftbHN5VFaL5TQIoT0BuOk3lZuas+Scgko5VFEoSyFx
         IrbBsNVtVL7RGz+ihNC3FMGE2Ghn04mWiF6+dJFOjhvBLIypBljmr+yvXH3+
         XsvbL69+mr/H7MPHw3/X5se3kwcAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:01:42 GMT
 - request:
     method: get
@@ -7457,7 +7457,7 @@ http_interactions:
         L+Hq5ZO3/9Qd4++lslQvy1W1ppbLSrWm1NUnhlFIYh2kmRETwFMsVY4gXIA+
         il1SvHP27IcBpz81evYDgadlt0yLnJgdlQPdttvteZA1qYyQit7us/iTQPSs
         pRTwpfIk+y3C4Lrwyx+//B/mDKNL2TUAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:01:43 GMT
 - request:
     method: get
@@ -7526,7 +7526,7 @@ http_interactions:
         Ue/k3o/GGE8w+7p4SJmBkBgmspYlTOaahuM+s+Nhn449h1tuzYkM7Bsa8jKF
         9b5QreL/jW21CasoTHIHeQ45CCHk20ec5AC7KMRBDBOykS93nybz8T+rPkFF
         /ZeaG62797t/Adxy3ZwEBwAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:01:43 GMT
 - request:
     method: get
@@ -7645,6 +7645,6 @@ http_interactions:
         FUVaXQVdF1VZ0Z5Kay6JDWrOilAWVE6UH8tK7uAaNDTx6fbQlZ1kPxy8Pg2V
         og39DPToEXUoTdP8ZeGTDy/FNI/MpJClxyU/c+zULrkc7Pbvc999+e4/+TSc
         BwojAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 21:01:44 GMT
 recorded_with: VCR 2.9.2
