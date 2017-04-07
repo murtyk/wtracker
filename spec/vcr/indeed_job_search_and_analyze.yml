@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=25&publisher=5675970181406859&q=Java%20OR%20XML&radius=5&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=25&publisher=5675970181406859&q=Java,XML&radius=5&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -507,11 +507,11 @@ http_interactions:
         bHNlLCJpbmRlZWRBcHBseSI6ZmFsc2UsImZvcm1hdHRlZExvY2F0aW9uRnVs
         bCI6IlBoaWxhZGVscGhpYSwgUEEiLCJmb3JtYXR0ZWRSZWxhdGl2ZVRpbWUi
         OiIyIGRheXMgYWdvIn1dfQ==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:12:12 GMT
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=25&publisher=5675970181406859&q=Java%20OR%20XML&radius=5&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,NJ&limit=25&publisher=5675970181406859&q=Java,XML&radius=5&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -1019,11 +1019,11 @@ http_interactions:
         OmZhbHNlLCJleHBpcmVkIjpmYWxzZSwiaW5kZWVkQXBwbHkiOmZhbHNlLCJm
         b3JtYXR0ZWRMb2NhdGlvbkZ1bGwiOiJQaGlsYWRlbHBoaWEsIFBBIiwiZm9y
         bWF0dGVkUmVsYXRpdmVUaW1lIjoiNSBkYXlzIGFnbyJ9XX0=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:12:13 GMT
 - request:
     method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,%20NJ&limit=100&publisher=5675970181406859&q=Java%20OR%20XML&radius=5&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Camden,%20NJ&limit=100&publisher=5675970181406859&q=Java,XML&radius=5&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
     body:
       encoding: US-ASCII
       string: ''
@@ -1531,7 +1531,7 @@ http_interactions:
         aW5kZWVkQXBwbHkiOmZhbHNlLCJmb3JtYXR0ZWRMb2NhdGlvbkZ1bGwiOiJQ
         aGlsYWRlbHBoaWEsIFBBIiwiZm9ybWF0dGVkUmVsYXRpdmVUaW1lIjoiNSBk
         YXlzIGFnbyJ9XX0=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:16:30 GMT
 - request:
     method: get
@@ -1631,7 +1631,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:16:31 GMT
 - request:
     method: get
@@ -2256,7 +2256,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:16:31 GMT
 - request:
     method: get
@@ -2356,7 +2356,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:16:54 GMT
 - request:
     method: get
@@ -2863,7 +2863,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:16:54 GMT
 - request:
     method: get
@@ -2926,7 +2926,7 @@ http_interactions:
         u13eiaZ4kUSsOQo3qipsmzT3aJKN9b3aMcY3SxCnDF+eEOkFDGMRKWW5T0pS
         sabBWga5I+lbmZQBbmLCowSn0qxvpSuLfT1JhX/yy0Pz/KiUPkt/AWeOwGrH
         BAAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:16:55 GMT
 - request:
     method: get
@@ -2998,7 +2998,7 @@ http_interactions:
         MYtTzYXOFtkPXAQ+8UJ2O+V2pkKKgwo5xrEboEKN/1i+/V3UGoKuqay4BImV
         mCRI6o4KUmqxcA5BReXwkiJstpa+xfRAs6oOyG54FU2QO9mUC5cXRVp2z8mA
         O3k9+R/7flJUngsAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:16:56 GMT
 - request:
     method: get
@@ -3068,7 +3068,7 @@ http_interactions:
         vUXbGk/tsD/pD4NRPKd0NTwaXkCHzqJreE06iwcvS1laaDnodu0w37Vizx8G
         vcamt/sJQ67eTLQ74Lxy9QYh16VnCFwrfkRQeWZXy59g6TLgElF/a3+xqpzf
         P5XKrtueuWQ+Vu7e7v4EX7zpb18JAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:01 GMT
 - request:
     method: get
@@ -3139,7 +3139,7 @@ http_interactions:
         /DmLD3CN0jBGFdX+9nHwWTEFM0xNtzXdVGTLsi271xTPuS/KzTNUDUdb1eW1
         6RH74uLmywNqJz6gdvWuSVkgL8McrZEJYEVRdGDJIX9NoQqgdLQeHqkckbyW
         VudSOno5+h+EDox1qAoAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:01 GMT
 - request:
     method: get
@@ -3239,7 +3239,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:01 GMT
 - request:
     method: get
@@ -3682,7 +3682,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:01 GMT
 - request:
     method: get
@@ -3752,7 +3752,7 @@ http_interactions:
         sNDc244M0eTHQXeQzPFqJ6iOKOjjkEftxXK3D7Q9DU/ZyOCCqzaQcwIfmKUW
         l34z7TC3bkZUs0B6GyquQQLy4qojt4iLsXMbSzCKiYlds3jAsvQ2oWSzQpT5
         ESwYvw396dsefN3W5Sc1r+7gyaD29Pn0Hz2UD7viBwAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:02 GMT
 - request:
     method: get
@@ -3914,7 +3914,7 @@ http_interactions:
         ioIiSLzMSZLAKhL7MMc0MUC7FeMCSyX24c3T1cExHFJ7FiqefrtEvg97/v3S
         w5iX8uHeNLAsy7IbVAAQlrawrZjNmSCuyCcv6fkbqX776qfff/pfkZDx4AA7
         AAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:03 GMT
 - request:
     method: get
@@ -4015,7 +4015,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:03 GMT
 - request:
     method: get
@@ -4458,7 +4458,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:03 GMT
 - request:
     method: get
@@ -4520,7 +4520,7 @@ http_interactions:
         qWm4hjLx2XTwuNs492p4//TEJt1oOqejAX0b77P5PXL7D/yldGJqqcnO223j
         7cybtGF5e3FafsjR6bcQ15Vhwr0s9MQirkA4si7JYoF+glmcIiJs+Fo7s83X
         n1N5ojj9JOOhXPus/QVrLA37qAQAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:04 GMT
 - request:
     method: get
@@ -4592,7 +4592,7 @@ http_interactions:
         LBT2r4f8b6qmWx2tY1mmpmsdU9d1cxU7Yx6PFlBYlITU1uRqa4Y8/gHBHms6
         XD5KarvcyvEcTihisKLH2c3n8+aE6wfk8in4iXtVyYh5YWRlOz09Fvde9v4H
         iqMzHrULAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:04 GMT
 - request:
     method: get
@@ -4683,7 +4683,7 @@ http_interactions:
         +9Lbnf1E5db2ReaDrYEXFwVuZ/McLVWd6JyWHvaG3MlNlmpbrfc9N+RdTaTc
         mfV1dwhnZTOI5yMrm4xzx0P0KOadlMIMLg1fdQ174cb7UXdFT79KL5p8lzuu
         7xfHnFwPtBQiSe62s3D7k0Bq+6fPz20+HR/hMxvdfPry6W9/kQnPsxYAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:05 GMT
 - request:
     method: get
@@ -4759,7 +4759,7 @@ http_interactions:
         IijamN9d7L1XTNUyDkzN0vSGZeiGIXrFMnjKXRHOZ1AIv67q8sI0xq74CuWT
         asOcf44sN82luwwGDHNYsBKksizbc4vexE2cglYhoqlspLzpSqc9ef+z9O75
         3b9U8uLtYREAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:05 GMT
 - request:
     method: get
@@ -4864,7 +4864,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:17:06 GMT
 - request:
     method: get
@@ -4934,7 +4934,7 @@ http_interactions:
         Ndyc+fMAU0dhlZxwkITcjOylRNzbE6MHbd5803LCIxL1R8d0v3XPQbScw/js
         ZqududWzG8JrNIthKaScRYwiauGdlX9yZvKruJ7fSfkdZweI+CGMcm3+Ufml
         E9dntrgF0/LxnI5rDx8P/wNWFYXZmwcAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:18:00 GMT
 - request:
     method: get
@@ -5040,7 +5040,7 @@ http_interactions:
         A/F+jIHpubHjE0cUrmTebqPbwvl3y13+QgyTOFYQWLnIibIsCcplJxUSbBFt
         dgyPIaO5SyUvkFJJXI2z77wdkcx+/Xx0EZlCM3Yx/GYYsStNU2LPsSbTbnB6
         Vjhi97R5CvlrQ3J6pOq2Cp++fvoPUb95Uu0fAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:18:01 GMT
 - request:
     method: get
@@ -5110,7 +5110,7 @@ http_interactions:
         W8tl0DE7WjaYkvF6sbk4LcsjdGdASpgkaQxJsZT4LnLyKzj4DMKQg3El5RQq
         fK7FEcWEWdSz+Iv3lm/oKwMugnaIk2DLb8Vvs/F3V5wA/rp/i/WZnm/V52Hp
         4fPhD9eoZsy0BwAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:18:01 GMT
 - request:
     method: get
@@ -5159,7 +5159,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:18:02 GMT
 - request:
     method: get
@@ -5236,7 +5236,7 @@ http_interactions:
         WZnDk9lyLEygIxlkdz9dB5AI29MAh9XKVtXFcXpIzfGk42tocmyZ0iRZYDfQ
         pHzheS2w6vlzao+MvqFlq3a7ck1bikdylD/Mx5CoH8GWen78R6vbobxw5G7Y
         +PT10z9yq3QE2A0AAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:18:06 GMT
 - request:
     method: get
@@ -5410,7 +5410,7 @@ http_interactions:
         Ugu6VmjNuWk4s075MVh1VrvN9nzUg1kJUc3hSo8Qk0zHAtfzw02bcKMt/inO
         khclSdZSWjxoMdna/BiDAEDjLB3p15U6TyTTm/2XH7Vq+md5Z88Hc/Tht3/9
         9v+vZyMcCUsAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:18:06 GMT
 - request:
     method: get
@@ -5480,7 +5480,7 @@ http_interactions:
         lWRzpos6uDRwi3LkRBULT/yAMUYsjMQnnbw20NME7+ARpRMMCxp99ZD/RbUd
         kS2jpVliBGqaZltqFTvlnogWMFgQv97SlZVoijzxZcDneydY5S2DY4Y4XGES
         kLIsa3gMZUtiNAjkTflg1Q9yzvq0HJMXPfng5eB/3EHEyfsKAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:19:55 GMT
 - request:
     method: get
@@ -5585,7 +5585,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:19:55 GMT
 - request:
     method: get
@@ -6087,7 +6087,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:19:55 GMT
 - request:
     method: get
@@ -6150,7 +6150,7 @@ http_interactions:
         sZ/c3KFfpaM/ktmtMpnl0yjWUbZSE3K/QPZin8KcGAoas2w+VkhKJ0v3hpGj
         anmVw+ZXEoPHrKAA14IROgkquS1aSBDmHok8sYm2iBchjGIDfopYkkEsJvC/
         /Qe9vv93tRiL5heb/5Rbb61/alE75iQFAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:19:56 GMT
 - request:
     method: get
@@ -6243,7 +6243,7 @@ http_interactions:
         Vo1VDngWxvpXSKPfbNvzfcdx4C+/5ftQlrgLfXIV9jWCSXHsmuXMS63KDQ0p
         0/+rsHXEqBPWypRxwXmapub6gXrj8bgeLRJloWIBqxLXFT2ZysuR5vt3lRff
         X/wXaSyaIjobAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:19:58 GMT
 - request:
     method: get
@@ -6343,7 +6343,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:20:01 GMT
 - request:
     method: get
@@ -6752,7 +6752,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:20:01 GMT
 - request:
     method: get
@@ -6814,7 +6814,7 @@ http_interactions:
         axHSOryQu1FOt0/32dN2uvN+3w23xnpkI4+wWc8K5SJ5tNn+pXPLu5yn3cj0
         uvF8cvm7yn2OT9tCXRdLqPRZ7CunrkBNYxVoyqEgTQTJMFUj+Fo5m5jPnVOO
         Q3HaJI/3WuWj8hc3+HsVqAQAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:20:02 GMT
 - request:
     method: get
@@ -6886,7 +6886,7 @@ http_interactions:
         MCzE9Z+H/K96UzOMlu7YWrNpWVbT1FbzR065J7wFDBbloOimutzKkCfuEHz2
         SocT94ptTW5legqHDHG4JCj4TafTOpyLpyAo7y3LRc6LIi376eU3ee957w8C
         Ua+fvgsAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:20:02 GMT
 - request:
     method: get
@@ -6991,7 +6991,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:20:03 GMT
 - request:
     method: get
@@ -7040,7 +7040,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:20:41 GMT
 - request:
     method: get
@@ -7103,7 +7103,7 @@ http_interactions:
         Jbg1VVjl1/Cir70n2Vo+Wg+2oxRHapWrjR9l1uynBZucL8nVylsnyDFvn68a
         ReBlAvUnJapIQ8Jt6ttiEyUQL6IjtcWGnShkQQxENOFfB05T+/7VVSOZ1R/Y
         ZtluvbX+ApOssbgfBQAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:20:42 GMT
 - request:
     method: get
@@ -7216,7 +7216,7 @@ http_interactions:
         x/GmtiJznSCKHw6XBPE3nwe/2k4PClzHaXftdrfTbLq2u/LYM9c+qAsVM/m2
         33Ssxa0p9/GE5osfrNf/D8y2H66XkmfMg7aJLQwE+2azWf2mKnhpOXkZSw2b
         FnRewx8+8+Jn8rdntWffnv0H8J7KR/YkAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:20:45 GMT
 - request:
     method: get
@@ -7277,7 +7277,7 @@ http_interactions:
         ew2exsfZ8xKg8G9Jd8j5eKX3J/AkRtsh8vOidI0BmdvsyFIttrFB+z5ZvmjG
         2sy8XYGHu1ph4pDD+aeXXyajqQiyOJCbrFZOW1NR5YbXCeWEQSpH7LVxMRLf
         T0fV7/L8IDxO1MZn4wsn+xuebwQAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:30:03 GMT
 - request:
     method: get
@@ -7351,7 +7351,7 @@ http_interactions:
         7op0Y4ayd6yqurLemmNXfKjx5R5BSSW7LCpFxGc0YpijEjBfaENtGgWTDFbC
         6ohma3U4EuOyLgBgN51FGwGroJb+Icl4lQ82OR1fSa5vvSv55O3kPxb/Hhq4
         DAAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:30:03 GMT
 - request:
     method: get
@@ -7420,7 +7420,7 @@ http_interactions:
         9jwbb+3F/jKLGVkZu8PRXoRPh0QZrWZQg5rPuBrkJ+6mjN9POKF9y1CzvX3E
         jwdb1vysd55sbkTILzFuJqZSMSJhrke2Xm2VMvXAUp1qQ4ZPMjfAYTWEr3df
         OvH5O6s/QUXzk1rNO3cfd/8BF5E4dgMHAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:30:04 GMT
 - request:
     method: get
@@ -7501,7 +7501,7 @@ http_interactions:
         vn8M1/wuiLIgalBRJQ1qbCrIClA2zpPYYO4sivN35EXpI/VsvhvsJ0K8PFhp
         slVxvdZsLKV4Qt0YfwBieNI0vfB4yKDkcAzK5ztBplEMy1I2EpNiaep3Sl/e
         v/wHjJ+qSfMOAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:30:05 GMT
 - request:
     method: get
@@ -7570,7 +7570,7 @@ http_interactions:
         PXqyQU4J5saT/fNdXCnOWvhxrsOlLO6B5MguOzVX3CS0zi4YlfzE44Px0X6w
         3uZT/jBV9LO5vFK8k58S1ExMpSLFce5Q36mWSpl6YJlOtcBdhLOQoLgawteb
         L5X4fM7qX1DRPFL3Zufm4+Y/8gECfwMHAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:30:06 GMT
 - request:
     method: get
@@ -7651,7 +7651,7 @@ http_interactions:
         ds/mcWCOue9vA5vfBFEWxApQNakCKnQqyCqv7pwnsUHdWRHK35ETpY/U0/lu
         0J8I8fpkpclWxe1as7OUommEY/QBiOJJ0/TG5QCFksMxIi7fCTKNYliy2UhM
         iqWp98h+ef/yL87Y9eHzDgAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:30:07 GMT
 - request:
     method: get
@@ -7719,7 +7719,7 @@ http_interactions:
         vzRscaLOXxZjyzpFSaIdV8vcDqflbChpO4JpcjjZg3J1GPqdrXee6P7YE/t6
         b+OXA2d6WIzM7Shka4l5WM89kj8sk2AsP6yeQCzulrPntbg96H9HYhr79nNu
         5qG4yslCa9293v0GAPKr2NEHAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:31:25 GMT
 - request:
     method: get
@@ -7799,7 +7799,7 @@ http_interactions:
         sBwriFTF/wL4wj6jcpQANLUNm7spquahdYr+CGj41vY8yyoT5dqWa3ltc106
         Wq4C8BZJUh5Wb1qre9dmNIA/UGrxjLFzbW9OfEkVWUUFQc3n8zqHGUeWM04Z
         VwmbCrdaMb3l1Wx79lF79ePV34uJmjskEAAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:31:25 GMT
 - request:
     method: get
@@ -7904,7 +7904,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:31:25 GMT
 - request:
     method: get
@@ -7992,7 +7992,7 @@ http_interactions:
         ZW1Yr71wpTmk2kXIFLoUUoMuRjN9eNyNAGY67HwKfNwaTu1MoPfSUkokY9Fu
         yyzFdH0xMpK5wSw3W1/jKGkbGyLy2b4/W/kthoauMbHTvrv157STwdKh/UHX
         +zVn3nr89odQHfL9tVVMRs1PXz/9CZUXH7tFEgAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:31:27 GMT
 - request:
     method: get
@@ -8101,7 +8101,7 @@ http_interactions:
         WYyFxYZGaQynMerxBw/NsrChOTcHpyxGcPIhi5u7wA7i46H6w6nfxc8IXjn9
         e1RcASsPCvCAD8Krquo2PWVlAbMSIrw7ZeG5vjSP50bl+YhxPGh++vrpv6Wd
         578vIgAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:31:30 GMT
 - request:
     method: get
@@ -8163,7 +8163,7 @@ http_interactions:
         183Q2Xd8dbFSP8Zb5z58Hi0pGR/zeaJbU/5AR3P9If5tdjfbdrXW/JDicjmI
         yiSEcjfxXXGI34qxqwNJHN46IiyMMRWz9lY7G43vFVP0PS8Xx2gg1b5qfwEg
         J1oTlwQAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:32:07 GMT
 - request:
     method: get
@@ -8224,7 +8224,7 @@ http_interactions:
         +zyDf3JPmUtsulw2e80gjetLTRaLyXzcAHkeo/pFF22jmHCX+m7hilYUO9kW
         xMKBXYhZECFSLOL7JTnDEBPMqxcvyrokCTMaEOFBsBEhyMuFIU1DlIHEE37J
         A0lqC8sAh8BDYRxgILYuVvD7F1PuV1rpERe22Ppq/QWTtSVclwQAAA==
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:32:10 GMT
 - request:
     method: get
@@ -8273,7 +8273,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:32:14 GMT
 - request:
     method: get
@@ -8350,7 +8350,7 @@ http_interactions:
         vjWr296gO93uH9Gm7PU6u4Fm9AJfhQ90NK7KaVwtamO+dgU+2br3y66ldclq
         uFEegUMGnf4xeTrcwnrb9WHFKiDavTsa/9FAvPq72K1GxIrT8LvTW1ffr/4C
         D+eEH80LAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:32:15 GMT
 - request:
     method: get
@@ -8437,7 +8437,7 @@ http_interactions:
         TI7+gKnvYXcBAxppO4fHkX/mCrSLmL+bnvW7rNA40RSZF/N5QRJUQVR3tmNi
         Ums2hlkEs4L4ntbp/dP0gvTT239xB98pTuAUewS+w6Po8DYcnTQaM3xZEG5y
         Sy69uMWbC3+7mfv269t/APCVYgFdFgAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:32:15 GMT
 - request:
     method: get
@@ -8542,7 +8542,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:32:15 GMT
 - request:
     method: get
@@ -9050,7 +9050,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:32:15 GMT
 - request:
     method: get
@@ -9110,7 +9110,7 @@ http_interactions:
         Y8s6+ql33L8dn4LFflhY82cwW1tpPDKn6dZn3vwYxhST9Vc8zsf7uzGZ7OcH
         +2Hd+jFxpui64nI4hFcMkHqocpbwrHZlt8qMiLBMQhlkB7iokzKACGc8LWSz
         VeWjc7NTP4+nXpjq+iSWC7Vz6fwDkyF203EDAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:32:16 GMT
 - request:
     method: get
@@ -9177,7 +9177,7 @@ http_interactions:
         MQ2C+bipSkCW1xVFw2H0rddodg8NpqLggJakUFyA2wOohhezeVzNEAlZCtUP
         mBEs0kx1X985QAUnR8jH2IKginufIU4+WY5nq3mbbmh7gR86lrdDlUJClW0u
         ULUUhu2ar6oVhurzITd7H8GTV/brJceLeseHl/rJr5P/Ab2dDajDBwAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:35:14 GMT
 - request:
     method: get
@@ -9282,7 +9282,7 @@ http_interactions:
            ],
            "status" : "OK"
         }
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:37:24 GMT
 - request:
     method: get
@@ -9331,7 +9331,7 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:37:25 GMT
 - request:
     method: get
@@ -9394,7 +9394,7 @@ http_interactions:
         wbkx+uFopfrBni7sORjFj2iSbFk495TbtCx3/U1/Txx1x+114Zrq0sf9ORio
         PXwzX9iG9eKclYEfcnSaWqKOBGfcJaErFlEC8SuakiwW6CWYRSnKRBv+9eAo
         3Y/ZV+myOE202VRuvDf+Ah2KVtUwBQAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:37:26 GMT
 - request:
     method: get
@@ -9500,7 +9500,7 @@ http_interactions:
         TbRe1SpjrkKw/KqzhOA/Qhr90XYcfaZowz/Pghu/1Vr6LlQI3kZQAZtvS3Dq
         WDTBCVYvx+zuw+LaHyts+sC4HHlKhnAuJYv4ILzpdNqYLpQOLz7ZmFgNaUvV
         qOnvUkX5RfPkXe3Vj1f/BY9cP+qhIgAA
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:39:05 GMT
 - request:
     method: get
@@ -9549,6 +9549,6 @@ http_interactions:
       string: !binary |-
         H4sIAAAAAAAC/6vmUlBQUMooyc2JTywpKcpMKi3JzM8rVlKwUoiO1QFLFqUW
         l+aUoAgVlySWlIJFlKJcg/zjg1yDQ31CgpW4arkASV/0qFEAAAA=
-    http_version: 
+    http_version:
   recorded_at: Sat, 27 Aug 2016 20:39:09 GMT
 recorded_with: VCR 2.9.2
