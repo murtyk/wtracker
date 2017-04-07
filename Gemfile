@@ -114,6 +114,7 @@ group :test do
 
   gem 'simplecov' #, require: false
   gem 'simplecov-csv'
+  gem 'codecov', :require => false, :group => :test
   gem "rspec_junit_formatter"
 
   gem 'shog'

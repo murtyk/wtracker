@@ -82,6 +82,10 @@ GEM
     clockwork (1.2.0)
       activesupport
       tzinfo
+    codecov (0.1.10)
+      json
+      simplecov
+      url
     coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -407,6 +411,7 @@ GEM
     unicorn-worker-killer (0.4.3)
       get_process_mem (~> 0)
       unicorn (~> 4)
+    url (0.3.2)
     uuidtools (2.1.5)
     vcr (2.9.2)
     warden (1.2.3)
@@ -446,6 +451,7 @@ DEPENDENCIES
   capybara (= 2.7.1)
   capybara-screenshot
   clockwork
+  codecov
   coffee-rails (~> 4.1.0)
   dalli (= 2.6.4)
   database_cleaner
@@ -507,3 +513,6 @@ DEPENDENCIES
   webmock (= 1.11.0)
   will_paginate (= 3.0.7)
   zip-zip (~> 0.2)
+
+BUNDLED WITH
+   1.11.2
