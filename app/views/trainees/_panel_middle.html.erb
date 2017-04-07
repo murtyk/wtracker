@@ -1,11 +1,11 @@
 <% if trainee.applicant %>  
   <h2>
     Incumbent?
-    <%= trainee.applicant.employment_status_pre_selected? ? "Yes" : "No" %>
+    <%= trainee.applicant.employment_status_pre_selected? ? "Yes" : 'No' %>
   </h2>
 <% end %>  
 <h2>
-  UI Verified?
+UI Verified?
   <%= trainee.ui_claim_verified_on ? "Yes, on #{trainee.ui_claim_verified_on}" : 'No'%>
 </h2>
 <h4>
@@ -14,6 +14,15 @@
 </h4>
 <div id = 'trainee_<%=trainee.id%>_ui_verified_notes'>
   <%= render trainee.ui_verified_notes%>
+</div>
+<hr>
+
+<h4>
+ Services
+  <%= button_new_association(TraineeService, from: 1, trainee_id: trainee.id, id_prefix: "trainee_#{trainee.id}_", title: 'New Service') %>
+</h4>
+<div id = 'trainee_<%=trainee.id%>_trainee_services'>
+  <%= render trainee.trainee_services%>
 </div>
 <hr>
 

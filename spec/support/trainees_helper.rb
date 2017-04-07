@@ -28,6 +28,11 @@ module TraineesHelper
     get_trainees.order(:id).pluck(:id)
   end
 
+  def get_trainee_services_ids
+    trainee_ids = get_trainee_ids
+    TraineeService.where(trainee_id: trainee_ids).pluck(:id)
+  end
+
   def get_trainees
     Account.current_id = 1
     Grant.current_id = 1

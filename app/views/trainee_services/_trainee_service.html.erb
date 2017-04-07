@@ -1,0 +1,12 @@
+<div id = '<%=div_id_for(trainee_service)%>'>
+  <p>
+  	<%= button_edit_association(trainee_service, title: 'Edit trainee service') %>
+    <%= button_destroy_association(trainee_service, title: 'Delete service') %>
+    <%= trainee_service.start_date.to_date.to_s if trainee_service.start_date%>
+    <% if trainee_service.end_date %>
+    	 to
+    	<%= trainee_service.end_date.to_date.to_s%>:
+    <% end %>	
+    <%= trainee_service.name%>
+  </p>
+</div>

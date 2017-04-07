@@ -1,0 +1,7 @@
+$('#edit_trainee_service_<%=@trainee_service.id%>').remove();
+<% if @trainee_service.errors.any? %>
+  $('#<%=div_id_for(@trainee_service)%>').hide().after('<%= j render("jsform", trainee_service: @trainee_service) %>');
+<% else %>
+  $('#<%=div_id_for(@trainee_service)%>').replaceWith('<%= j render(@trainee_service) %>');
+  $('#<%=div_id_for(@trainee_service)%>').show();
+<% end %>
