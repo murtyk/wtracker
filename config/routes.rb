@@ -271,6 +271,4 @@ WTracker::Application.routes.draw do
       resources :leads_queues, only: [:show, :update]
     end
   end
-
-  match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post]
 end
