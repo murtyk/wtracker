@@ -22,6 +22,7 @@ end
 
 # --- End of unicorn worker killer code ---
 
+require 'delayed_job_web'
 if ENV['RAILS_ENV'] == 'production'
   DelayedJobWeb.use Rack::Auth::Basic do |username, password|
 
