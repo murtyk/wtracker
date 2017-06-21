@@ -22,5 +22,21 @@ end
 
 # --- End of unicorn worker killer code ---
 
+if Rails.env.production?
+  DelayedJobWeb.use Rack::Auth::Basic do |username, password|
+
+    hex_username = ::Digest::SHA256.hexdigest(username)
+    dj_username = ::Digest::SHA256.hexdigest(ENV['DJ_USERNAME'])
+
+    hex_password = ::Digest::SHA256.hexdigest(password)
+    dj_password = ::Digest::SHA256.hexdigest(ENV['DJ_PASSWORD'])
+
+    ActiveSupport::SecurityUtils.secure_compare(hex_username, dj_username) &&
+      ActiveSupport::SecurityUtils.secure_compare(hex_password, dj_password)
+  end
+end
+
 require ::File.expand_path('../config/environment',  __FILE__)
 run WTracker::Application
+
+
