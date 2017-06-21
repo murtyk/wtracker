@@ -16,14 +16,14 @@ namespace :auto_job_leads do
   task schedule: :environment do
     s = "object:AutoJobLeads\n  statuses: []\nmethod_name: :perform"
     if Delayed::Job.where("handler like '%#{s}%'").any?
-      abort "Jobs already exist."
+      abort 'Jobs already exist.'
     end
 
-    time = Date.today.to_time + 7.hours
+    time = Date.today.to_time + 6.hours
     count = (ENV['AUTO_LEADS_SCHEDULE_COUNT'] || 1000).to_i
     count.times do
       time += 1.day
-      AutoJobLeads.new.delay(run_at: time).perform
+      AutoJobLeads.new.delay(run_at: time, queue: 'daily').perform
     end
 
     puts "scheduled for #{count} days."
