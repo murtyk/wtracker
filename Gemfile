@@ -79,8 +79,6 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'uglifier', '>= 1.3.0'
   # gem 'jquery-ui-rails'
 
-gem "delayed_job_web"
-
 group :development do
   gem 'rack-mini-profiler'
   gem 'web-console', '~> 2.0'
