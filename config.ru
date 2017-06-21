@@ -22,7 +22,7 @@ end
 
 # --- End of unicorn worker killer code ---
 
-if Rails.env.production?
+if ENV['RAILS_ENV'] == 'production'
   DelayedJobWeb.use Rack::Auth::Basic do |username, password|
 
     hex_username = ::Digest::SHA256.hexdigest(username)
