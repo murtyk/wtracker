@@ -99,7 +99,7 @@ class AutoJobLeads
     when :INCOMPLETE
       @incomplete_profiles << trainee.job_search_profile
     when :SOLICIT_PROFILE
-      unless trainee.grant.trainee_applications?
+      unless trainee.grant.trainee_applications? || trainee.grant.skip_profile_solication
         @job_search_profiles << solicit_profile(trainee)
       end
     end
