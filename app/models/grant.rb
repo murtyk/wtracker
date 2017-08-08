@@ -34,7 +34,8 @@ class Grant < ActiveRecord::Base
   validates :account_id, presence: true
 
   cattr_accessor :current_id, instance_writer: false, instance_reader: false
-  attr_accessor :auto_job_leads, :trainee_applications, :applicant_logo_file
+  attr_accessor :auto_job_leads, :trainee_applications,
+                :applicant_logo_file, :skip_profile_solication
 
   belongs_to :account
   has_many :programs, dependent: :destroy
@@ -98,6 +99,7 @@ class Grant < ActiveRecord::Base
     @auto_job_leads       = options[:auto_job_leads] || false
     @trainee_applications = options[:trainee_applications] || false
     @applicant_logo_file  = options[:applicant_logo_file]
+    @skip_profile_solication = options[:skip_profile_solication] || false
   end
 
   def auto_job_leads?
