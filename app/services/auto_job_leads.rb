@@ -117,13 +117,14 @@ class AutoJobLeads
   end
 
   def action_for_trainee(trainee)
+    return :SKIP unless trainee.valid_email?
     return :SKIP if trainee.incumbent?
     return :SKIP unless trainee.not_placed?
     return :OPTED_OUT if trainee.opted_out_from_auto_leads?
     return :SEND_LEADS if trainee.valid_profile?
     # trainee did not update with skills etc.
     return :INCOMPLETE if trainee.job_search_profile
-    return :SOLICIT_PROFILE if trainee.valid_email? # no profile
+    return :SOLICIT_PROFILE # no profile
     @error_messages << "missing or invalid email for trainee #{trainee.name}"
     nil
   end
