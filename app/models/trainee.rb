@@ -221,7 +221,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def valid_email?
-    !email.blank?
+    !email.blank? && !bounced
   end
 
   def valid_profile?
