@@ -19,4 +19,11 @@ describe Trainee do
     trainee = FactoryGirl.create(:trainee, first: 'John', last: 'Doe')
     expect(trainee.name).to eq('John Doe')
   end
+
+  describe "when email bounced" do
+    let(:trainee) { FactoryGirl.create(:trainee, bounced: true) }
+    it "valid_email? returns false" do
+      expect(trainee.valid_email?).not_to be_truthy
+    end
+  end
 end
