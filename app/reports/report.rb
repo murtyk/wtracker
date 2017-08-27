@@ -15,6 +15,7 @@ class Report
   TRAINEES_ACTIVITY               = 'trainees_activity'
   TRAINEES_NEAR_BY_EMPLOYERS      = 'trainees_near_by_employers'
   TRAINEES_VERIFICATION           = 'trainees_verification'
+  TRAINEES_BOUNCED_EMAILS         = 'trainees_bounced_emails'
   JOBS_APPLIED                    = 'jobs_applied'
   HUB_H1B                         = 'hub_h1b'
   ACTIVE_EMPLOYERS                = 'active_employers'
@@ -33,6 +34,7 @@ class Report
     TRAINEES_VERIFICATION             => :TraineesVerificationReport,
     TRAINEES_NOT_PLACED               => :TraineesNotPlacedReport,
     TRAINEES_NEAR_BY_EMPLOYERS        => :TraineesNearByEmployersReport,
+    TRAINEES_BOUNCED_EMAILS           => :TraineesBouncedEmailsReport,
     JOBS_APPLIED                      => :JobsAppliedReport,
     HUB_H1B                           => :HubH1bReport,
     EMPLOYERS_HIRED                   => :EmployersHiredReport,
@@ -79,7 +81,7 @@ class Report
 
     return list unless user.admin_access?
 
-    list + [TRAINEES_NEAR_BY_EMPLOYERS, HUB_H1B]
+    list + [TRAINEES_NEAR_BY_EMPLOYERS, HUB_H1B, TRAINEES_BOUNCED_EMAILS]
   end
 
   def self.employer_reports(user)

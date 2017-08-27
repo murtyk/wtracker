@@ -1,0 +1,46 @@
+<h1><%= @report.title %></h1>
+
+<%#= render 'select_funding_source', report: @report %>
+
+<% if @report.trainees.any? %>
+  <b>Count: <%= @report.count %></b>
+  <% show_max_rows = (ENV['SHOW_MAX_ROWS'] || 10).to_i %>
+  <% if @report.count > show_max_rows %>
+    <b style='margin-left: 20px'>
+      Too many records to display. Only first <%=show_max_rows%> are shown. Please download for full list.
+    </b>
+  <% end %>
+  <% max_rows = (ENV['MAX_ROWS_FOR_DOWNLOAD'] || 5).to_i %>
+  <%=
+      if @report.count > max_rows
+        email_download_button(@report.download_params)
+      else
+        download_button(@report.download_params)
+      end
+  %>
+<% end %>
+
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr style="display:none;">
+    <th><%= @report.title%></th>
+    <%= ('<th></th>' * 4).html_safe %>
+  </tr>
+
+  <thead>
+   <tr>
+      <th>Name</th>
+      <th>Trainee ID</th>
+      <th>Email</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+
+  <% @report.trainees.each do |trainee| %>
+    <tr>
+      <td><%= link_to(trainee.name, trainee)%></td>
+      <td><%= trainee.trainee_id %></td>
+      <td><%= trainee.email %></td>
+      <td><%= trainee.bounced_reason %></td>
+    </tr>
+  <% end %>
+</table>
