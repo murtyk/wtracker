@@ -3,12 +3,12 @@ class TraineesBouncedEmailsViewBuilder
   include Enumerable
 
   def header
-    ['Name', 'Trainee ID', 'Email', 'Reason']
+    ['Name', 'TAPO ID', 'Email', 'Reason']
   end
 
   def build_row(trainee)
     [trainee.name,
-     trainee.trainee_id,
+     trainee.id,
      trainee.email,
      trainee.bounced_reason]
   end
