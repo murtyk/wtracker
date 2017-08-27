@@ -29,7 +29,7 @@
   <thead>
    <tr>
       <th>Name</th>
-      <th>Trainee ID</th>
+      <th>TAPO ID</th>
       <th>Email</th>
       <th>Reason</th>
     </tr>
@@ -38,7 +38,7 @@
   <% @report.trainees.each do |trainee| %>
     <tr>
       <td><%= link_to(trainee.name, trainee)%></td>
-      <td><%= trainee.trainee_id %></td>
+      <td><%= trainee.id %></td>
       <td><%= trainee.email %></td>
       <td><%= trainee.bounced_reason %></td>
     </tr>
