@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170823215423) do
+ActiveRecord::Schema.define(version: 20170825011936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1098,6 +1098,7 @@ ActiveRecord::Schema.define(version: 20170823215423) do
     t.string   "employment_status"
     t.string   "features",                           default: [],              array: true
     t.boolean  "bounced"
+    t.string   "bounced_reason"
   end
 
   add_index "trainees", ["account_id", "grant_id"], name: "index_trainees_on_account_id_and_grant_id", using: :btree
