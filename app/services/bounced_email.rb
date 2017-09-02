@@ -65,14 +65,14 @@ class BouncedEmail
     def process(email, reason)
       trainee = Trainee.unscoped.where("email ilike '#{email}'").first
       unless trainee
-        puts "trainee not found for email: #{email}"
+        puts "bounce email process: trainee not found for email: #{email}"
         return
       end
 
       Account.current_id = trainee.account_id
       Grant.current_id = trainee.grant_id
 
-      puts "updating trainee: #{trainee.name}"
+      puts "bounce email process: updating trainee: #{trainee.id} #{trainee.name}"
       trainee.update(bounced: true, bounced_reason: reason)
     end
 
