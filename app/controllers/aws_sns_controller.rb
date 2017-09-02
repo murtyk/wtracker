@@ -36,8 +36,13 @@ class AwsSnsController < ApplicationController
     msg = JSON.parse(json['Message'])
 
     msg['bounce']['bouncedRecipients'].each do |recipient|
-      logger.info "email: #{recipient['emailAddress']}"
-      logger.info "diagnosticCode: #{recipient['diagnosticCode']}"
+      email = recipient['emailAddress']
+      reason = recipient['diagnosticCode']
+
+      logger.info "email: #{email}"
+      logger.info "diagnosticCode: #{reason}"
+
+      BouncedEmail.process(email, reason).delay
     end
   end
 end
