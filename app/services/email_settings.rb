@@ -1,5 +1,14 @@
 # email settings from trainees and users
 class EmailSettings
+  SES_SETTINGS = {
+    :address              => ENV['SES_ADDRESS'],
+    :port                 => 465,
+    :user_name            => ENV['SES_SMTP_USER_NAME'],
+    :password             => ENV['SES_SMTP_PASSWORD'],
+    :authentication       => :plain,
+    :ssl                  => true   #For TLS SSL connection
+  }
+
   COMMON_SMTP_SETTINGS = {
     enable_starttls_auto: true,
     address: 'smtp.gmail.com',
@@ -28,6 +37,10 @@ class EmailSettings
   }
 
   class << self
+
+  def use_ses
+    ActionMailer::Base.smtp_settings = SES_SETTINGS
+  end
 
   def use_auto_leads_email(lead_number = 0)
     from_email = auto_leads_from_email(lead_number)

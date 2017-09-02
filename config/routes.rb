@@ -260,6 +260,8 @@ WTracker::Application.routes.draw do
     end
   end
 
+  post 'aws_sns/bounce' => 'aws_sns#bounce'
+
   root to: 'dashboards#starting_page'
 
   # Api definition
