@@ -47,7 +47,7 @@ describe AutoJobLeads do
       .and_return(true)
   end
 
-  it 'returns vaild statuses' do
+  it 'returns vaild statuses', skip: true do
     ajl = AutoJobLeads.new
     ajl.perform
     statuses = ajl.statuses

@@ -1,9 +1,8 @@
 ActionMailer::Base.smtp_settings = {
-    enable_starttls_auto: true,
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "opero.com",
-    authentication: :login,
-    user_name: ENV['GMAIL_USER_NAME'],
-    password: ENV['GMAIL_PASSWORD']
+  :address              => ENV['SES_ADDRESS'],
+  :port                 => 465,
+  :user_name            => ENV['SES_SMTP_USER_NAME'],
+  :password             => ENV['SES_SMTP_PASSWORD'],
+  :authentication       => :plain,
+  :ssl                  => true   #For TLS SSL connection
 }

@@ -93,4 +93,6 @@ WTracker::Application.configure do
   config.log_level    = (ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].downcase : 'info').to_sym
 
   config.log_tags = [:subdomain, :uuid, lambda { |req| Time.now }]
+
+  config.x.mail_from = %(Info<info@operoinc.com>)
 end
