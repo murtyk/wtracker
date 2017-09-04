@@ -82,7 +82,7 @@ class AutoJobLeads
     log_info "AutoJobLeads: started leads for #{grant_name}"
     init_trainee_stats
     grant.not_disabled_trainees.find_each do |trainee|
-      perform_action_for_trainee(trainee) #if trainee.has_feature?("job_leads")
+      perform_action_for_trainee(trainee) # if trainee.has_feature?("job_leads")
     end
     log_info "AutoJobLeads: completed leads for #{grant_name}"
     build_status(grant)
@@ -99,10 +99,12 @@ class AutoJobLeads
     when :INCOMPLETE
       @incomplete_profiles << trainee.job_search_profile
     when :SOLICIT_PROFILE
-      unless trainee.grant.trainee_applications? || trainee.grant.skip_profile_solication
-        @job_search_profiles << solicit_profile(trainee)
-      end
+      @job_search_profiles << solicit_profile(trainee)
     end
+  end
+
+  def can_solicit_profile?(grant)
+    !(grant.trainee_applications? || grant.skip_profile_solication)
   end
 
   def send_leads_to_trainee(trainee)
@@ -112,21 +114,29 @@ class AutoJobLeads
     sleep((1 + rand * 10).round)
   rescue StandardError => error
     msg = "AutoJobLeads: Trainee #{trainee.name} " \
-          "ID: #{trainee.id} EXCEPTION: #{error}\n" +  error.backtrace.join("\n")
+          "ID: #{trainee.id} EXCEPTION: #{error}\n" + error.backtrace.join("\n")
     Rails.logger.error msg
   end
 
   def action_for_trainee(trainee)
-    return :SKIP unless trainee.valid_email?
-    return :SKIP if trainee.incumbent?
-    return :SKIP unless trainee.not_placed?
+    unless trainee.valid_email?
+      @error_messages << "missing or invalid email for trainee #{trainee.name}"
+      return :SKIP
+    end
+
+    return :SKIP if skip_action?(trainee)
+
     return :OPTED_OUT if trainee.opted_out_from_auto_leads?
     return :SEND_LEADS if trainee.valid_profile?
     # trainee did not update with skills etc.
     return :INCOMPLETE if trainee.job_search_profile
-    return :SOLICIT_PROFILE # no profile
-    @error_messages << "missing or invalid email for trainee #{trainee.name}"
+
+    return :SOLICIT_PROFILE if can_solicit_profile?(trainee.grant)
     nil
+  end
+
+  def skip_action?(trainee)
+    trainee.skip_auto_leads || trainee.incumbent? || !trainee.not_placed?
   end
 
   def init_trainee_stats

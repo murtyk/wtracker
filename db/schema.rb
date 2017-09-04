@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825011936) do
+ActiveRecord::Schema.define(version: 20170904122629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -456,10 +456,11 @@ ActiveRecord::Schema.define(version: 20170825011936) do
 
   create_table "funding_sources", force: :cascade do |t|
     t.integer  "account_id"
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "name",            limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "grant_id"
+    t.boolean  "skip_auto_leads"
   end
 
   add_index "funding_sources", ["account_id"], name: "index_funding_sources_on_account_id", using: :btree
