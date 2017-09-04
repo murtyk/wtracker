@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe AutoMailer do
+describe ApplicantMailer do
   describe 'notify_applicant_status' do
     before :each do
       @account = Account.where(subdomain: 'apple').first
@@ -21,19 +21,20 @@ describe AutoMailer do
                           last_name:     'Caton',
                           name:          'Lucas Caton',
                           email:         'mkorada@jobpadhq.com',
-                          login_id:      'Lucas_Caton'
+                          login_id:      'Lucas_Caton',
+                          reapply_key:   nil
                          )
     end
 
     it 'reply_to should be admins email' do
-      mail = AutoMailer.notify_applicant_status(@applicant)
+      mail = ApplicantMailer.notify_applicant_status(@applicant).deliver_now
       expect(mail.reply_to).to eql([@account.admins.first.email])
       mail.deliver
     end
 
     it 'reply_to should be grant reply to email' do
       @grant.reply_to_email = 'rtw@nomail.com'
-      mail = AutoMailer.notify_applicant_status(@applicant)
+      mail = ApplicantMailer.notify_applicant_status(@applicant).deliver_now
       expect(mail.reply_to).to eql([@applicant.grant.reply_to_email])
     end
   end

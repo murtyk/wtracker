@@ -107,11 +107,10 @@ class AutoMailer < ActionMailer::Base
   end
 
   def inline_email(f_email, t_email, r_email, subject, body)
-    wait_a_bit
+    # wait_a_bit
 
     atrs = { from: f_email, to: t_email, reply_to: r_email, subject: subject }
     mail(atrs) { |format| format.html { render inline: body } }
-
     log_entry "AutoMailer: Using #{ActionMailer::Base.smtp_settings[:user_name]}"
     use_standard_email
   end
@@ -123,14 +122,14 @@ class AutoMailer < ActionMailer::Base
   end
 
   def html_for_status_error_messages(error_messages)
-    return '' if error_messages.empty?
+    return '' if error_messages.blank?
     body = "<p style='color: red'>Errors:</p>" + "<ol style='color: red'>"
     error_messages.each { |msg| body += "<li>#{msg}</li>" }
     body + '</ol><hr>'
   end
 
   def html_for_jsps(jsps)
-    return '' if jsps.empty?
+    return '' if jsps.blank?
 
     body = '<p>Profile Requests Sent To:</p>' + '<ol>'
     jsps.each { |profile| body += "<li>#{profile.name}</li>" }
@@ -154,12 +153,12 @@ class AutoMailer < ActionMailer::Base
   end
 
   def from_job_leads(use_support_email = false)
-    email = ENV['JOB_LEADS_EMAIL']
-    email = ActionMailer::Base.smtp_settings[:user_name] if use_support_email
+    email = ENV['GMAIL_USER_NAME']
+    # email = ActionMailer::Base.smtp_settings[:user_name] if use_support_email
     "JobLeads<#{email}>"
   end
 
   def support_email
-    ENV['SUPPORT_FROM_EMAIL']
+    ENV['GMAIL_USER_NAME']
   end
 end
