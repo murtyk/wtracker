@@ -281,10 +281,10 @@ class Trainee < ActiveRecord::Base
     auto_shared_jobs.count
   end
 
-  delegate :skip_auto_leads, to: :funding_source, allow: nil
+  delegate :skip_auto_leads, to: :funding_source, allow_nil: true
   delegate :opted_out_reason, :opted_out_date, :opted_out_reason_desc,
            :opted_out_new_employer, :opted_out_title, :opted_out_start_date,
-           to: :job_search_profile, allow: nil
+           to: :job_search_profile, allow_nil: true
 
   def pending_data?
     trainee_id.blank? || dob.blank?
