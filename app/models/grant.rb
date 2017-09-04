@@ -2,7 +2,9 @@
 # several programs in a grant
 # grant has end date after which it should become read only
 class Grant < ActiveRecord::Base
-  STATUSES = { 1 => 'Planning', 2 => 'Started', 3 => 'Closed' }
+  STATUSES = { 1 => 'Planning', 2 => 'Started', 3 => 'Closed' }.freeze
+  OTHER_PLEASE_SPECIFY = 'Other, Please specify'.freeze
+
   default_scope { where(account_id: Account.current_id) }
 
   store_accessor :specific_data, :hidden_sidebars
@@ -26,7 +28,6 @@ class Grant < ActiveRecord::Base
                  :trainee_employment_statuses, # TDC grant
                  :navigators_can_create_klasses
 
-
   validates :name, presence: true, length: { minimum: 3, maximum: 40 }
   validates :start_date, presence: true
   validates :end_date, presence: true
@@ -35,7 +36,8 @@ class Grant < ActiveRecord::Base
 
   cattr_accessor :current_id, instance_writer: false, instance_reader: false
   attr_accessor :auto_job_leads, :trainee_applications,
-                :applicant_logo_file, :skip_profile_solication
+                :applicant_logo_file, :skip_profile_solication,
+                :auto_profiles_1_week_before_klass
 
   belongs_to :account
   has_many :programs, dependent: :destroy
@@ -100,6 +102,8 @@ class Grant < ActiveRecord::Base
     @trainee_applications = options[:trainee_applications] || false
     @applicant_logo_file  = options[:applicant_logo_file]
     @skip_profile_solication = options[:skip_profile_solication] || false
+    @auto_profiles_1_week_before_klass =
+      options[:auto_profiles_1_week_before_klass] || false
   end
 
   def auto_job_leads?
@@ -111,7 +115,7 @@ class Grant < ActiveRecord::Base
   end
 
   def has_trainee_employment_statuses?
-    trainee_employment_statuses && trainee_employment_statuses.size > 0
+    trainee_employment_statuses && trainee_employment_statuses.any?
   end
 
   def trainee_employment_statuses_collection
@@ -155,7 +159,6 @@ class Grant < ActiveRecord::Base
     status != 3
   end
 
-  OTHER_PLEASE_SPECIFY = 'Other, Please specify'
   def collection_employment_statuses
     employment_statuses.where(pre_selected: [nil, false]).pluck(:status)
   end
@@ -179,7 +182,7 @@ class Grant < ActiveRecord::Base
   # navigators that are give admin rights to this grant
   def navigators
     user_ids = User.joins(klass_navigators: :klass)
-               .where(users: { role: 3, status: 1 }).pluck(:id) +
+                   .where(users: { role: 3, status: 1 }).pluck(:id) +
                User.joins(:grant_admins)
                .where(grant_admins: { grant_id: id })
                .where(users: { role: 3, status: 1 }).pluck(:id)
@@ -200,8 +203,8 @@ class Grant < ActiveRecord::Base
   end
 
   def salt
-    atoz = ('a'..'z').map { |x| x }
-    atoz.shuffle[0..3].join + '0000' + atoz.shuffle[0..3].join + id.to_s
+    atoz = ('a'..'z').to_a
+    atoz.sample(4).join + '0000' + atoz.sample(4).join + id.to_s
   end
 
   def capture_optout_reason?
@@ -209,7 +212,6 @@ class Grant < ActiveRecord::Base
   end
 
   private
-
 
   def save_options
     auto_job_leads_setting
@@ -234,8 +236,11 @@ class Grant < ActiveRecord::Base
   end
 
   def options_hash
-    { auto_job_leads: @auto_job_leads,
+    {
+      auto_job_leads: @auto_job_leads,
       trainee_applications: @trainee_applications,
-      applicant_logo_file: @applicant_logo_file }
+      applicant_logo_file: @applicant_logo_file,
+      auto_profiles_1_week_before_klass: @auto_profiles_1_week_before_klass
+    }
   end
 end
