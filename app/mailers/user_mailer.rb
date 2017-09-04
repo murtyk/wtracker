@@ -87,14 +87,13 @@ class UserMailer < ActionMailer::Base
       message = mail(to: @email.sender,
                      bcc: to_emails,
                      subject: @email.subject,
-                     from: EmailSettings::JOB_LEADS_SETTINGS[:user_name],
-                     reply_to: @email.sender_email_address,
-                     delivery_method_options: EmailSettings::JOB_LEADS_SETTINGS)
+                     from: ENV['GMAIL_USER_NAME'],
+                     reply_to: @email.sender_email_address)
     else
       message = mail(to: @email.sender,
                      bcc: to_emails,
                      subject: @email.subject,
-                     from: ActionMailer::Base.smtp_settings[:user_name],
+                     from: ENV['GMAIL_USER_NAME'],
                      reply_to: @email.sender_email_address)
     end
     message
