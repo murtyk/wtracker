@@ -35,7 +35,6 @@
       <b>Send Email(BCC) to:</b><br> <%= @trainee_email.trainee_names.join(';') %><hr>
       <%= simple_form_for @trainee_email,
                           html: { id: 'trainee_skills_email_form'} do |f| %>
-        <%= f.hidden_field :use_job_leads_email, value: true %>
         <%= f.hidden_field :klass_id %>
         <%= f.hidden_field :trainee_ids %>
         <%= f.input :subject, input_html: { style: 'width: 90%'} %>

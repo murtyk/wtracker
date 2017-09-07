@@ -42,28 +42,6 @@ class EmailSettings
     ActionMailer::Base.smtp_settings = SES_SETTINGS
   end
 
-  def use_auto_leads_email(lead_number = 0)
-    # from_email = auto_leads_from_email(lead_number)
-
-    # change_smtp_settings(AUTOLEADS_SETTINGS.merge(user_name: from_email))
-  end
-
-  def use_job_leads_email(num = 1)
-    # use_auto_leads_email(num)
-  end
-
-  def use_standard_email
-    # change_smtp_settings(STANDARD_SETTINGS)
-  end
-
-  def use_support_email
-    # change_smtp_settings(SUPPORT_SETTINGS)
-  end
-
-  def change_smtp_settings(settings)
-    # ActionMailer::Base.smtp_settings = COMMON_SMTP_SETTINGS.merge(settings)
-  end
-
   def auto_leads_from_email(lead_number)
     # index = lead_number % auto_leads_emails_count
     # auto_leads_emails[index]

@@ -6,15 +6,8 @@ class AutoMailer < ActionMailer::Base
   PLACEHOLDERS = %w($PROFILELINK$ $DIRECTOR$ $TRAINEEFIRSTNAME$
                     $JOBLEADS$ $VIEWJOBSLINK$ $OPTOUTLINK$ $APPLICANT_NAME$
                     $TRAINEE_SIGNIN_LINK$ $PASSWORD$)
-  delegate :use_job_leads_email,
-           :use_standard_email,
-           :use_support_email,
-           :use_auto_leads_email,
-           to: EmailSettings
 
   def solicit_job_search_profile(trainee)
-    use_support_email
-
     to_email, reply_to_email, subject, body_text =
                             TraineeEmailTextBuilder.new(trainee)
                             .profile_request_attributes
@@ -27,8 +20,6 @@ class AutoMailer < ActionMailer::Base
   def send_job_leads(auto_shared_jobs, lead_number = 1)
     return if auto_shared_jobs.blank?
 
-    use_auto_leads_email(lead_number)
-
     trainee_id = auto_shared_jobs.first.trainee_id
     trainee = Trainee.unscoped.where(id: trainee_id).first
 
@@ -36,15 +27,13 @@ class AutoMailer < ActionMailer::Base
                 TraineeEmailTextBuilder.new(trainee)
                 .job_leads_email_attrs(auto_shared_jobs)
 
-    inline_email(from_job_leads(true), to_email, reply_to_email, subject, body_text)
+    inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 
     log_entry "sent job leads email to #{to_email} : #{auto_shared_jobs.count}"
   end
 
   def notify_grant_status(grant, status)
     return if status.error_message
-
-    use_support_email
 
     to_email   = grant_status_to_emails(grant)
     subject    =  'Job Leads - Status Summary'
@@ -56,8 +45,6 @@ class AutoMailer < ActionMailer::Base
   end
 
   def notify_status(statuses)
-    use_support_email
-
     subject    =  'Auto Leads Status'
 
     body = "<p>Job Leads Status - #{Date.today}</p>"
@@ -73,8 +60,6 @@ class AutoMailer < ActionMailer::Base
   end
 
   def notify_hot_jobs(a_emails, subject, body)
-    use_job_leads_email
-
     emails = a_emails.join(';')
     mail(from: from_job_leads,
          to: from_job_leads,
@@ -82,8 +67,6 @@ class AutoMailer < ActionMailer::Base
          subject: subject) do |format|
            format.html { render inline: body }
          end
-
-    use_standard_email
   end
 
   def notify_tapo_admin(msg, subject = 'TAPO ERROR')
@@ -112,7 +95,6 @@ class AutoMailer < ActionMailer::Base
     atrs = { from: f_email, to: t_email, reply_to: r_email, subject: subject }
     mail(atrs) { |format| format.html { render inline: body } }
     log_entry "AutoMailer: Using #{ActionMailer::Base.smtp_settings[:user_name]}"
-    use_standard_email
   end
 
   def auto_leads_status_body(status)
@@ -152,9 +134,8 @@ class AutoMailer < ActionMailer::Base
     Rails.logger.info msg
   end
 
-  def from_job_leads(use_support_email = false)
+  def from_job_leads
     email = ENV['GMAIL_USER_NAME']
-    # email = ActionMailer::Base.smtp_settings[:user_name] if use_support_email
     "JobLeads<#{email}>"
   end
 
