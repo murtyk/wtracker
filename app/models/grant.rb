@@ -37,7 +37,8 @@ class Grant < ActiveRecord::Base
   cattr_accessor :current_id, instance_writer: false, instance_reader: false
   attr_accessor :auto_job_leads, :trainee_applications,
                 :applicant_logo_file, :skip_profile_solication,
-                :auto_profiles_1_week_before_klass
+                :auto_profiles_1_week_before_klass,
+                :dashboard
 
   belongs_to :account
   has_many :programs, dependent: :destroy
@@ -104,6 +105,8 @@ class Grant < ActiveRecord::Base
     @skip_profile_solication = options[:skip_profile_solication] || false
     @auto_profiles_1_week_before_klass =
       options[:auto_profiles_1_week_before_klass] || false
+
+    @dashboard = options[:dashboard]
   end
 
   def auto_job_leads?
@@ -240,7 +243,8 @@ class Grant < ActiveRecord::Base
       auto_job_leads: @auto_job_leads,
       trainee_applications: @trainee_applications,
       applicant_logo_file: @applicant_logo_file,
-      auto_profiles_1_week_before_klass: @auto_profiles_1_week_before_klass
+      auto_profiles_1_week_before_klass: @auto_profiles_1_week_before_klass,
+      dashboard: @dashboard
     }
   end
 end
