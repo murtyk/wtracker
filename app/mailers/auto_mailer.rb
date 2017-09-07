@@ -27,7 +27,7 @@ class AutoMailer < ActionMailer::Base
                 TraineeEmailTextBuilder.new(trainee)
                 .job_leads_email_attrs(auto_shared_jobs)
 
-    inline_email(from_job_leads(true), to_email, reply_to_email, subject, body_text)
+    inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 
     log_entry "sent job leads email to #{to_email} : #{auto_shared_jobs.count}"
   end
