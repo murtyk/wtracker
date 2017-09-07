@@ -9,8 +9,7 @@ class EmailFactory
     trainee_email = current_user.trainee_emails.new(e_params)
     if trainee_email.save
       UserMailer.send_trainee_email(trainee_email,
-                                    email_addresses,
-                                    params[:use_job_leads_email]).deliver_now
+                                    email_addresses).deliver_now
     end
     trainee_email
   end

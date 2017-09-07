@@ -80,23 +80,14 @@ class UserMailer < ActionMailer::Base
          reply_to: email.sender_email_address
   end
 
-  def send_trainee_email(trainee_email, email_addresses, use_job_leads_setting = false)
+  def send_trainee_email(trainee_email, email_addresses)
     @email = trainee_email
     to_emails = email_addresses.join(';')
-    if use_job_leads_setting
-      message = mail(to: @email.sender,
-                     bcc: to_emails,
-                     subject: @email.subject,
-                     from: ENV['GMAIL_USER_NAME'],
-                     reply_to: @email.sender_email_address)
-    else
-      message = mail(to: @email.sender,
-                     bcc: to_emails,
-                     subject: @email.subject,
-                     from: ENV['GMAIL_USER_NAME'],
-                     reply_to: @email.sender_email_address)
-    end
-    message
+    mail(to: @email.sender,
+      bcc: to_emails,
+      subject: @email.subject,
+      from: ENV['GMAIL_USER_NAME'],
+      reply_to: @email.sender_email_address)
   end
 
   def send_data(user, subject, body, docs = nil)

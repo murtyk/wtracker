@@ -3,8 +3,6 @@ class ApplicantMailer < ActionMailer::Base
   PLACEHOLDERS = %w($PROFILELINK$ $DIRECTOR$ $TRAINEEFIRSTNAME$
                     $JOBLEADS$ $VIEWJOBSLINK$ $OPTOUTLINK$ $APPLICANT_NAME$
                     $TRAINEE_SIGNIN_LINK$ $PASSWORD$)
-  delegate :use_support_email,
-           :use_standard_email, to: EmailSettings
 
   def notify_applicant_status(applicant)
     to_email,
@@ -43,7 +41,6 @@ class ApplicantMailer < ActionMailer::Base
   end
 
   # def notify_hot_jobs(a_emails, subject, body)
-  #   use_support_email
   #   emails = a_emails.join(';')
   #   mail(from: from_job_leads,
   #        to: from_job_leads,
@@ -51,19 +48,15 @@ class ApplicantMailer < ActionMailer::Base
   #        subject: subject) do |format|
   #          format.html { render inline: body }
   #        end
-  #   use_standard_email
   # end
 
   private
 
   def inline_email(f_email, t_email, r_email, subject, body)
-    use_support_email
     wait_a_bit
 
     atrs = { from: f_email, to: t_email, reply_to: r_email, subject: subject }
     mail(atrs) { |format| format.html { render inline: body } }
-
-    use_standard_email
   end
 
   def wait_a_bit

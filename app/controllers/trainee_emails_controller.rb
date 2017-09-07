@@ -46,7 +46,7 @@ class TraineeEmailsController < ApplicationController
   def trainee_email_params
     te_params = params.require(:trainee_email)
                 .permit(:account_id, :user_id, :klass_id, :trainee_names,
-                        :subject, :content, :use_job_leads_email,
+                        :subject, :content,
                         trainee_ids: [])
     te_params[:trainee_ids] ||= params[:trainee_ids]
     te_params[:trainee_ids] ||= params[:trainee_email][:trainee_ids]
