@@ -56,7 +56,7 @@ class TraineeAdvancedSearch
   def build_document(q_params)
     trainees = search(q_params)
     excel_file.add_row header
-    trainees.each { |t| excel_file.add_row view_builder.row(t) }
+    trainees.find_each { |t| excel_file.add_row view_builder.row(t) }
     excel_file.save
   end
 
