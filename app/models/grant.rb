@@ -150,6 +150,8 @@ class Grant < ActiveRecord::Base
                         valid_email_message?(job_leads_content)
     return true if trainee_applications?
 
+    return true if skip_profile_solication
+
     valid_email_message?(profile_request_subject) &&
       valid_email_message?(profile_request_content)
   end
