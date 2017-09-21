@@ -26,7 +26,9 @@ class Grant < ActiveRecord::Base
                  :email_password_subject, :email_password_body,
                  :scoped_employers, # TDC grant
                  :trainee_employment_statuses, # TDC grant
-                 :navigators_can_create_klasses
+                 :navigators_can_create_klasses,
+                 :login_details_subject,
+                 :login_details_content
 
   validates :name, presence: true, length: { minimum: 3, maximum: 40 }
   validates :start_date, presence: true
