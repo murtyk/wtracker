@@ -7,6 +7,7 @@ class TraineePortal
   end
 
   def action
+    return :jobs if skip_data_capture?
     return :pending_data if pending_data?
     return :pending_profile if pending_profile?
     return :pending_resume if pending_resume?
@@ -16,6 +17,10 @@ class TraineePortal
 
   def show_menu_bar?
     action == :jobs
+  end
+
+  def skip_data_capture?
+    trainee.grant.skip_trainee_data_capture
   end
 
   def pending_data?

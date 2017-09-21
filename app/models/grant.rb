@@ -26,7 +26,10 @@ class Grant < ActiveRecord::Base
                  :email_password_subject, :email_password_body,
                  :scoped_employers, # TDC grant
                  :trainee_employment_statuses, # TDC grant
-                 :navigators_can_create_klasses
+                 :navigators_can_create_klasses,
+                 :credentials_email_subject, # Amazon grant
+                 :credentials_email_content, # Amazon grant
+                 :skip_trainee_data_capture # true for Amazon
 
   validates :name, presence: true, length: { minimum: 3, maximum: 40 }
   validates :start_date, presence: true

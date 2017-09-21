@@ -23,7 +23,7 @@ class AutoProfileGenerator
       klasses.each do |klass|
         next unless klass.klass_titles.any?
 
-        log_info("AutoProfileGenerator: generating profiles for klass: #{klass.name}")
+        log_info("generating profiles for klass: #{klass.name} grant_id: #{grant.id}")
         perform_for_klass(klass)
       end
     end
@@ -42,21 +42,38 @@ class AutoProfileGenerator
 
       unless jsp
         create_job_search_profile(trainee, profile_attrs)
+        send_login_details(trainee)
         return
       end
 
       return if jsp.skills.include?(profile_attrs[:skills])
 
-      log_info("AutoProfileGenerator: updating profile for trainee #{trainee.name}")
+      log_info("updating profile for trainee #{trainee.name} #{trainee.id}")
       jsp.skills = jsp.skills + ',' + profile_attrs[:skills]
       jsp.save
     end
 
     def create_job_search_profile(trainee, profile_attrs)
-      log_info("AutoProfileGenerator: creating profile for trainee #{trainee.name}")
+      log_info("creating profile for trainee #{trainee.name}  #{trainee.id}")
       address = trainee.home_address
       attrs = { location: "#{address.city}, #{address.state}", zip: address.zip }
       trainee.create_job_search_profile(profile_attrs.merge(attrs))
+    end
+
+    def send_login_details(trainee)
+      return if trainee.grant.credentials_email_subject.blank?
+      return if trainee.grant.credentials_email_content.blank?
+
+      log_info("sending login details to #{trainee.name}")
+
+      pwd = password(trainee)
+      trainee.update(
+        login_id: login_id(trainee),
+        password: pwd,
+        password_confirmation: pwd
+      )
+
+      TraineeMailer.notify_credentials(trainee, pwd).deliver_now
     end
 
     def build_profie_attributes(klass)
@@ -69,8 +86,29 @@ class AutoProfileGenerator
       }
     end
 
+    def login_id(trainee)
+      id = login_id_name(trainee)
+      n = 0
+      loop do
+        break unless Trainee.unscoped.where(login_id: id).any?
+        n += 1
+        id += n.to_s
+      end
+      id
+    end
+
+    def login_id_name(trainee)
+      first = trainee.first.delete('^a-zA-Z')
+      last  = trainee.last.delete('^a-zA-Z')
+      first + '_' + last
+    end
+
+    def password(trainee)
+      (trainee.first[0..2] + '00000000')[0..7]
+    end
+
     def log_info(msg)
-      Rails.logger.info(msg)
+      Rails.logger.info("AutoProfileGenerator: #{msg}")
     end
   end
 end

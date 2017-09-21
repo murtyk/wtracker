@@ -9,6 +9,8 @@ class AutoJobLeads
   attr_accessor :statuses
 
   def initialize
+    @grant_leads_count = 0
+    @trainee_job_leads = []
     @statuses = []
   end
 
