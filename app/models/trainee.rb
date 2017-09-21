@@ -301,6 +301,8 @@ class Trainee < ActiveRecord::Base
   end
 
   def completed_trainee_data?
+    return true if grant.skip_trainee_data_capture
+
     !(pending_data? || pending_files_upload?)
   end
 
