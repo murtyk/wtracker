@@ -5,27 +5,30 @@ include UtilitiesHelper
 class AutoMailer < ActionMailer::Base
   PLACEHOLDERS = %w($PROFILELINK$ $DIRECTOR$ $TRAINEEFIRSTNAME$
                     $JOBLEADS$ $VIEWJOBSLINK$ $OPTOUTLINK$ $APPLICANT_NAME$
-                    $TRAINEE_SIGNIN_LINK$ $PASSWORD$)
+                    $TRAINEE_SIGNIN_LINK$ $PASSWORD$).freeze
 
   def solicit_job_search_profile(trainee)
-    to_email, reply_to_email, subject, body_text =
-                            TraineeEmailTextBuilder.new(trainee)
-                            .profile_request_attributes
+    to_email,
+    reply_to_email,
+    subject,
+    body_text = TraineeEmailTextBuilder.new(trainee).profile_request_attributes
 
     inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 
     Rails.logger.info "sent job search profile request to #{trainee.name}"
   end
 
-  def send_job_leads(auto_shared_jobs, lead_number = 1)
+  def send_job_leads(auto_shared_jobs)
     return if auto_shared_jobs.blank?
 
     trainee_id = auto_shared_jobs.first.trainee_id
     trainee = Trainee.unscoped.where(id: trainee_id).first
 
-    to_email, reply_to_email, subject, body_text =
-                TraineeEmailTextBuilder.new(trainee)
-                .job_leads_email_attrs(auto_shared_jobs)
+    to_email,
+    reply_to_email,
+    subject,
+    body_text = TraineeEmailTextBuilder.new(trainee)
+                                       .job_leads_email_attrs(auto_shared_jobs)
 
     inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 
@@ -35,9 +38,9 @@ class AutoMailer < ActionMailer::Base
   def notify_grant_status(grant, status)
     return if status.error_message
 
-    to_email   = grant_status_to_emails(grant)
-    subject    =  'Job Leads - Status Summary'
-    body       = grant_status_body(status)
+    to_email = grant_status_to_emails(grant)
+    subject = 'Job Leads - Status Summary'
+    body = grant_status_body(status)
 
     inline_email(from_job_leads, to_email, nil, subject, body)
 
@@ -45,7 +48,7 @@ class AutoMailer < ActionMailer::Base
   end
 
   def notify_status(statuses)
-    subject    =  'Auto Leads Status'
+    subject = 'Auto Leads Status'
 
     body = "<p>Job Leads Status - #{Date.today}</p>"
     statuses.each do |status|
@@ -90,8 +93,6 @@ class AutoMailer < ActionMailer::Base
   end
 
   def inline_email(f_email, t_email, r_email, subject, body)
-    # wait_a_bit
-
     atrs = { from: f_email, to: t_email, reply_to: r_email, subject: subject }
     mail(atrs) { |format| format.html { render inline: body } }
     log_entry "AutoMailer: Using #{ActionMailer::Base.smtp_settings[:user_name]}"

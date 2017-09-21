@@ -17,45 +17,9 @@ class EmailSettings
     authentication: :login,
   }
 
-  AUTOLEADS_SETTINGS = {
-    password: ENV['AUTOLEAD_EMAIL_PASSWORD']
-  }
-
-  # JOB_LEADS_SETTINGS = {
-  #   user_name: ENV['AUTOLEAD_EMAIL_USERNAME'],
-  #   password: ENV['AUTOLEAD_EMAIL_PASSWORD']
-  # }
-
-  STANDARD_SETTINGS = {
-    user_name: ENV['GMAIL_USER_NAME'],
-    password: ENV['GMAIL_PASSWORD']
-  }
-
-  SUPPORT_SETTINGS = {
-    user_name: ENV['SUPPORT_FROM_EMAIL'],
-    password: ENV['SUPPORT_EMAIL_PASSWORD']
-  }
-
   class << self
-
-  def use_ses
-    ActionMailer::Base.smtp_settings = SES_SETTINGS
-  end
-
-  def auto_leads_from_email(lead_number)
-    # index = lead_number % auto_leads_emails_count
-    # auto_leads_emails[index]
-
-    ENV['GMAIL_USER_NAME']
-  end
-
-  def auto_leads_emails
-    @auto_leads_emails ||= ENV['AUTOLEAD_FROM_EMAILS'].split(",")
-  end
-
-  def auto_leads_emails_count
-    @auto_leads_emails_count ||= auto_leads_emails.size
-  end
-
+    def use_ses
+      ActionMailer::Base.smtp_settings = SES_SETTINGS
+    end
   end
 end

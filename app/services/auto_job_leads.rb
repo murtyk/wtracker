@@ -7,7 +7,6 @@
 class AutoJobLeads
   include ActiveSupport
   attr_accessor :statuses
-  attr_reader :lead_number
 
   def initialize
     @statuses = []
@@ -20,7 +19,6 @@ class AutoJobLeads
     log_info 'AutoJobLeads: creating missing job search profiles'
     JobSearchProfileJob.new.perform
 
-    @lead_number = 1
     send_leads
     log_statuses
     notify
@@ -189,8 +187,7 @@ class AutoJobLeads
     end
 
     if leads_to_be_sent.any?
-      AutoMailer.send_job_leads(leads_to_be_sent, lead_number).deliver_now
-      @lead_number += 1
+      AutoMailer.send_job_leads(leads_to_be_sent).deliver_now
     end
 
     leads_to_be_sent.count
