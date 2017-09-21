@@ -43,7 +43,9 @@ class Trainee < ActiveRecord::Base
     # remember to call the super
     # then put our own check to determine "active" state using
     # our own "is_active" column
-    super && applicant && not_disabled?
+    super &&
+      (applicant || Grant.unscoped.find(grant_id).auto_job_leads?) &&
+      not_disabled?
   end
 
   before_save :cb_before_save
