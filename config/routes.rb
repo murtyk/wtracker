@@ -222,6 +222,12 @@ WTracker::Application.routes.draw do
     end
     resources :grants,          except: [:destroy, :index]
     resources :users,           only: [:index]
+    resources :trainees,        only: [:index] do
+      member do
+        get :bounce
+        patch :update_bounce
+      end
+    end
     resources :sectors,         only: [:new, :show, :create, :index]
     resources :account_states,  only: [:new, :create, :destroy]
     resources :import_statuses, only: [:new, :create, :show, :index, :destroy] do

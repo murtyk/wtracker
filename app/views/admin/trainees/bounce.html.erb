@@ -1,0 +1,15 @@
+<div class="row-fluid" >
+  <h1><%="Bounce Trainee #{@trainee.name}"%></h1>
+  <%= simple_form_for(@trainee, url: update_bounce_admin_trainee_path(@trainee), method: :patch ) do |f| %>
+    <div class = 'row-fluid'>
+        <%= f.error_notification %>
+        <div class="form-inputs">
+          <%= f.input :bounced_reason, input_html: {style: 'width: 600px'} %>
+        </div>
+    </div>
+    <div class="form-actions">
+      <%= render 'shared/cancel_link' %>
+      <%= submit_button(f, 'Update') %>
+    </div>
+  <% end %>
+</div>

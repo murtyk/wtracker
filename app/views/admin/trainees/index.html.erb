@@ -1,0 +1,41 @@
+<h1>Users</h1>
+<div class = 'row-fluid filters-div' >
+  <%= simple_form_for :filters, method: :get, url: url_for([:admin, :trainees]),html: {class: 'form-search'} do |f| %>
+    <div class = 'row-fluid'>
+      Account<%= f.input_field :account_id, collection: accounts_collection, selected: @account_id, include_blank: true, class: "search-query" %>
+      Email<%= f.input_field :email_text, class: "search-query" %>
+      <button type="submit" class="btn btn-flat btn-small btn-primary">
+        <i class="icon-search icon-white"></i> Find
+      </button>
+    </div>
+  <% end %>
+</div>
+
+<% if @trainees.any? %>
+  <div class = 'row-fluid'>
+    <div align="center">
+      <%= will_paginate @trainees%>
+    </div>
+  </div>
+<% end %>
+
+<table id="table_trainee" class="table table-condensed table-bordered table-striped table-hover table_freeze_header">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>email</th>
+      <th>Account</th>
+      <th>Bounced?</th>
+      <th></th>
+    </tr>
+  </thead>
+<% @trainees.each do |trainee| %>
+  <tr>
+    <td><%= trainee.name %></td>
+    <td><%= trainee.email %></td>
+    <td><%= trainee.account.name %></td>
+    <td><%= trainee.bounced %></td>
+    <td><%= link_to("Bounce", bounce_admin_trainee_path(id: trainee.id)) %>
+  </tr>
+<% end %>
+</table>

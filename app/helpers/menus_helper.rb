@@ -440,8 +440,9 @@ module MenusHelper
   # following is for building menus for opero admin
   def admin_menu_items
     [
-      menu_link('Users', admin_users_path),
       menu_link('Accounts', admin_accounts_path),
+      menu_link('Users', admin_users_path),
+      menu_link('Trainees', admin_trainees_path),
       menu_link('Import Status', admin_import_statuses_path),
       menu_link('Counties', admin_counties_path),
       admin_cities_menu_group,
