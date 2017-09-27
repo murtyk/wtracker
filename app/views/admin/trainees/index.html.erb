@@ -1,9 +1,23 @@
-<h1>Users</h1>
+<h1>Trainees</h1>
 <div class = 'row-fluid filters-div' >
   <%= simple_form_for :filters, method: :get, url: url_for([:admin, :trainees]),html: {class: 'form-search'} do |f| %>
     <div class = 'row-fluid'>
       Account<%= f.input_field :account_id, collection: accounts_collection, selected: @account_id, include_blank: true, class: "search-query" %>
-      Email<%= f.input_field :email_text, class: "search-query" %>
+      Email<%= f.input_field :email_text,
+        value: @email_text,
+        style: 'width: 100px',
+        class: "search-query" %>
+
+      Name<%= f.input_field :name_text,
+        value: @name_text,
+        style: 'width: 100px',
+        class: "search-query" %>
+
+      Job<%= f.input_field :job_title,
+        value: @job_title,
+        style: 'width: 150px',
+        class: "search-query" %>
+
       <button type="submit" class="btn btn-flat btn-small btn-primary">
         <i class="icon-search icon-white"></i> Find
       </button>
