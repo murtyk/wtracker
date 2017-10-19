@@ -45,7 +45,7 @@ class EmployersHiredReport < Report
     end
 
     TraineeInteraction
-      .includes(trainee: [{klasses: :college}, :applicant, :funding_source])
+      .includes(trainee: [{klasses: :college}, {applicant: :navigator}, :funding_source])
       .includes(employer: :address)
       .where(id: ti_ids).to_a
   end
