@@ -24,9 +24,9 @@ class Amazon
     Rails.logger.error "AWD Delete failed for #{aws_bucket}/#{aws_file}"
   end
 
-  def file_url(aws_file_name)
+  def file_url(aws_file_name, secure = false)
     o = bucket.objects[aws_file_name]
-    o.url_for(:read, secure: false)
+    o.url_for(:read, secure: secure)
   end
 
   def bucket

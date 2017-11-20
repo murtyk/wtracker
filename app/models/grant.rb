@@ -129,7 +129,7 @@ class Grant < ActiveRecord::Base
   end
 
   def applicant_logo
-    applicant_logo_file && Amazon.file_url(applicant_logo_file)
+    applicant_logo_file && Amazon.file_url(applicant_logo_file, true)
   end
 
   def delete_applicant_logo
