@@ -56,7 +56,13 @@ class TraineeAdvancedSearch
   def build_document(q_params)
     trainees = search(q_params)
     excel_file.add_row header
-    trainees.find_each { |t| excel_file.add_row view_builder.row(t) }
+    trainees.find_each do |t|
+      if grant.trainee_applications? && t.applicant.nil?
+        notify_applicant_missing(t)
+        next
+      end
+      excel_file.add_row view_builder.row(t)
+    end
     excel_file.save
   end
 
@@ -102,5 +108,9 @@ class TraineeAdvancedSearch
     return [] unless has_grant_attributes?
 
     GRANT_ATTRIBUTES[grant.type].map{ |attribute| trainee.send(attribute.downcase.gsub(" ", "_")) }
+  end
+
+  def notify_applicant_missing(t)
+    AdminMailer.notify_applicant_missing(t).deliver_now
   end
 end
