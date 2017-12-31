@@ -1,11 +1,12 @@
 # Account is tenant in our multi-tenant app.
 # account_id is default scope for all the models specific to an account
 # account_id is based on the subdomain
+# rubocop:disable ClassLength
 class Account < ActiveRecord::Base
-  TYPES     = { 1 => 'Grant Recipient', 2 => 'College' }
-  STATUSES  = { 1 => 'Active', 2 => 'Not Active', 3 => 'Readonly' }
+  TYPES     = { 1 => 'Grant Recipient', 2 => 'College' }.freeze
+  STATUSES  = { 1 => 'Active', 2 => 'Not Active', 3 => 'Readonly' }.freeze
   TRACK_TRAINEE_OPTIONS = { 0 => 'Do not track status',
-                            1 => 'Track status by email' }
+                            1 => 'Track status by email' }.freeze
 
   serialize :options
 
@@ -157,6 +158,76 @@ class Account < ActiveRecord::Base
 
   def account_import_statuses
     ImportStatus.unscoped.where(account_id: id).order('created_at desc')
+  end
+
+  # rubocop:disable AbcSize
+  # rubocop:disable MethodLength
+  def destroy_all_dependends
+    Account.current_id = id
+    Address.destroy_all
+    Applicant.destroy_all
+    Attachment.destroy_all
+    College.destroy_all
+    Contact.destroy_all
+    Email.destroy_all
+    Employer.destroy_all
+    EmployerFile.destroy_all
+    EmployerNote.destroy_all
+    EmployerSector.destroy_all
+    EmployerSource.destroy_all
+    GrantAdmin.destroy_all
+    HotJob.destroy_all
+    ImportFail.destroy_all
+    ImportStatus.destroy_all
+    JobOpening.destroy_all
+    JobSearch.destroy_all
+    JobShare.destroy_all
+    JobSharedTo.destroy_all
+    KlassCertificate.destroy_all
+    KlassEvent.destroy_all
+    KlassInstructor.destroy_all
+    KlassNavigator.destroy_all
+    KlassSchedule.destroy_all
+    KlassTitle.destroy_all
+    KlassTrainee.destroy_all
+
+    User.destroy_all
+    UserCounty.destroy_all
+    UserEmployerSource.destroy_all
+
+    destroy_grant_objects
+  end
+
+  def destroy_grant_objects
+    Grant.all.each do |g|
+      Grant.current_id = g.id
+
+      ApplicantReapply.destroy_all
+      ApplicantSource.destroy_all
+      Assessment.destroy_all
+      CertificateCategory.destroy_all
+      EmploymentStatus.destroy_all
+      FundingSource.destroy_all
+      GrantJobLeadCount.destroy_all
+      Klass.destroy_all
+      KlassCategory.destroy_all
+      KlassInteraction.destroy_all
+      Program.destroy_all
+      SharedJob.destroy_all
+      SharedJobStatus.destroy_all
+      SpecialService.destroy_all
+      TactThree.destroy_all
+      Trainee.destroy_all
+      TraineeAssessment.destroy_all
+      TraineeAutoLeadStatus.destroy_all
+      TraineeEmail.destroy_all
+      TraineeFile.destroy_all
+      TraineeInteraction.destroy_all
+      TraineePlacement.destroy_all
+      TraineeRace.destroy_all
+      TraineeService.destroy_all
+      UnemploymentProof.destroy_all
+    end
   end
 
   private
