@@ -41,7 +41,7 @@ namespace :gmail do
   task :bounces do
     service = Google::Apis::GmailV1::GmailService.new
     service.client_options.application_name = APPLICATION_NAME
-    service.authorization = authorize
+    service.authorization = rake_authorize
 
     bounced_emails = []
 
@@ -85,7 +85,7 @@ namespace :gmail do
   # the user's default browser will be launched to approve the request.
   #
   # @return [Google::Auth::UserRefreshCredentials] OAuth2 credentials
-  def authorize
+  def rake_authorize
     FileUtils.mkdir_p(File.dirname(CREDENTIALS_PATH))
 
     client_id = Google::Auth::ClientId.from_file(CLIENT_SECRETS_PATH)
