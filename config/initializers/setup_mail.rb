@@ -6,3 +6,5 @@ ActionMailer::Base.smtp_settings = {
   :authentication       => :plain,
   :ssl                  => true   #For TLS SSL connection
 }
+
+ActionMailer::Base.register_interceptor('MailIntercepter')
