@@ -29,39 +29,39 @@ namespace :data do
 
     addresses.map do |a|
       [
-        Faker::Name.first_name, Faker::Name.last_name, '', dob,
-        %w(M F).sample, veteran, a[:phone], a[:phone], Faker::Internet.email,
-        Faker::Number.number(9), education, ethnicity,
+        Faker::Name.first_name, Faker::Name.last_name, '', data_dob,
+        %w(M F).sample, data_veteran, a[:phone], a[:phone], Faker::Internet.email,
+        Faker::Number.number(9), data_education, data_ethnicity,
         a[:line1], a[:city], a[:state], a[:zip],
         a[:line1], a[:city], a[:state], a[:zip],
         '', '', '', '',
         '', '', '', '',
-        fs, registration_date
+        data_fs, data_registration_date
       ]
     end
   end
 
-  def dob
+  def data_dob
     rand(35..45).years.ago.to_date.to_s
   end
 
-  def education
+  def data_education
     Education.all.sample.name
   end
 
-  def ethnicity
+  def data_ethnicity
     Race.all.sample.name
   end
 
-  def veteran
+  def data_veteran
     rand(0..9) > 7 ? 'x' : ''
   end
 
-  def registration_date
+  def data_registration_date
     rand(1.year.ago..2.months.ago).to_date.strftime('%m/%d/%y')
   end
 
-  def fs
+  def data_fs
     ['One Stop', 'HPOG', 'NEG', 'RTW', 'USAID'].sample
   end
 

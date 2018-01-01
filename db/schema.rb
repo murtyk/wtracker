@@ -598,7 +598,6 @@ ActiveRecord::Schema.define(version: 20180101033726) do
     t.string   "zip",                 limit: 255
     t.date     "start_date"
     t.integer  "opt_out_reason_code"
-    t.boolean  "received_leads"
   end
 
   add_index "job_search_profiles", ["account_id"], name: "index_job_search_profiles_on_account_id", using: :btree
