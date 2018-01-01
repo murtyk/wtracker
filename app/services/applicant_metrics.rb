@@ -133,7 +133,7 @@ class ApplicantMetrics
   end
 
   def total_trainees_in_class
-    KlassTrainee.select(:trainee_id).distinct.count
+    KlassTrainee.joins(:trainee).select(:trainee_id).distinct.count
   end
 
   def trainees_in_class_count(nav_id)
