@@ -68,6 +68,31 @@ class GoogleApi
     [match[:score], json]
   end
 
+  def self.generate_addresses(type, lat, lng, n = 10)
+    # should try nearby search
+    options = { location: "#{lat},#{lng}",
+                radius:   10_000,
+                types:    type}
+
+    json = near_by_search(options)
+    return nil unless json['status'] == 'OK'
+
+    addresses = []
+
+    json['results'][0..(n-1)].each do |r|
+      ref = details(reference: r['reference'])
+
+      addr_comp = {
+        "formatted_address" => ref["formatted_address"],
+        "formatted_phone_number" => ref["formatted_phone_number"]
+      }.merge(ref["geometry"])
+
+      addresses << addr_comp
+    end
+
+    addresses
+  end
+
   def self.company_with_match_score(name, city_name, state_code,
                                    latitude, longitude)
     json = text_search(query: "#{name} near #{city_name},#{state_code}")
