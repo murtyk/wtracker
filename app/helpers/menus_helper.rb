@@ -226,7 +226,7 @@ module MenusHelper
     return unless current_grant.auto_job_leads?
     items = divider_menu +
             trainees_search_by_skills_menu
-    return items unless trainee_applications?
+    # return items unless trainee_applications?
     items + auto_job_leads_metrics_menu
   end
 
