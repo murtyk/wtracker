@@ -1,8 +1,10 @@
 <div class = 'row-fluid page-caption-div' >
   <h1>Trainee Information
-  <% if @trainee.applicant %>
+  <% if @trainee.applicant || @trainee.job_search_profile.present? %>
       <span class='pull-right' style='font-size: medium'>
-        <%= link_to('Applicant Page', @trainee.applicant) %> |
+        <% if @trainee.applicant %>
+          <%= link_to('Applicant Page', @trainee.applicant) %> |
+        <% end %>
         <%= link_to('Job Leads', auto_shared_jobs_path(trainee_id: @trainee.id)) %>
       </span>
   <% end %>
