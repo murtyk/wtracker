@@ -29,7 +29,8 @@ class Grant < ActiveRecord::Base
                  :navigators_can_create_klasses,
                  :credentials_email_subject, # Amazon grant
                  :credentials_email_content, # Amazon grant
-                 :skip_trainee_data_capture # true for Amazon
+                 :skip_trainee_data_capture, # true for Amazon
+                 :applicant_registration_subheader
 
   validates :name, presence: true, length: { minimum: 3, maximum: 40 }
   validates :start_date, presence: true
