@@ -5,7 +5,7 @@
 # a navigator has bunch of counties assigned to them through UserCounty
 # a college gets assigned to a navigator based the college county
 class NearByCollegesMap < MapService
-  NO_COLLEGE_MSG = 'No college within 20 miles'
+  NO_COLLEGE_MSG = 'No college within 20 miles'.freeze
   attr_reader :navigators, :colleges_no_navigator, :trainees_no_college,
               :fs_id, :error
 
@@ -75,12 +75,12 @@ class NearByCollegesMap < MapService
   # trainees with address but no college near by will be
   # added to this collection in attach_trainees_to_colleges
   def build_trainees_no_college
-    no_address_ids = trainee_ids - Address.where(addressable_type: 'Trainee')
-                                   .pluck(:addressable_id)
+    no_address_ids =
+      trainee_ids - Address.where(addressable_type: 'Trainee').pluck(:addressable_id)
     invalid_address_msg  = 'Trainee address missing or invalid. Check applicant details.'
     @trainees_no_college = Trainee.where(id: no_address_ids)
-                           .order(:first, :last)
-                           .map { |t| [t, nil, invalid_address_msg] }
+                                  .order(:first, :last)
+                                  .map { |t| [t, nil, invalid_address_msg] }
   end
 
   def build_addresses
@@ -92,7 +92,7 @@ class NearByCollegesMap < MapService
   def attach_trainees_to_colleges
     a = Address.new
     trainees.each do |t|
-      addr        = t.home_address
+      addr = t.home_address
       next unless addr
       trainee     = OpenStruct.new(name: "#{t.name} - #{t.funding_source_name}", id: t.id)
       college_id  = nearest_college(t, a)
@@ -132,7 +132,8 @@ class NearByCollegesMap < MapService
   end
 
   def trainee_addresses
-    @trainee_addresses ||= HomeAddress.where(addressable_id: trainee_ids)
+    @trainee_addresses ||= HomeAddress.includes(:addressable)
+                                      .where(addressable_id: trainee_ids)
   end
 
   def college_addresses
@@ -145,20 +146,20 @@ class NearByCollegesMap < MapService
   def trainee_ids
     return @trainee_ids if @trainee_ids
     predicate = { status: 0 }
-    predicate.merge!(funding_source_id: fs_id) if fs_id > 0
+    predicate[:funding_source_id] = fs_id if fs_id > 0
     @trainee_ids = Trainee.not_disabled.where(predicate).pluck(:id) -
                    KlassTrainee.pluck(:trainee_id)
   end
 
   def trainees
     Trainee.includes(:home_address)
-      .where(id: trainee_ids)
-      .order(:first, :last)
+           .where(id: trainee_ids)
+           .order(:first, :last)
   end
 
   def college_navigator(college)
     @nav_counties ||= Hash[UserCounty.where(user_id: @navigator_ids)
-                           .pluck(:county_id, :user_id)]
+                      .pluck(:county_id, :user_id)]
     nav_id          = @nav_counties[college.county_id]
     @navigators[nav_id]
   end
