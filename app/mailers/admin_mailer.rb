@@ -11,6 +11,14 @@ class AdminMailer < ActionMailer::Base
     inline_email(from_tapo, ENV['GMAIL_USER_NAME'], subject, body_text)
   end
 
+  def notify_hub_report_errors(errors)
+    subject = 'Errors in hub report'
+
+    body_text = errors.join("\n")
+
+    inline_email(from_tapo, ENV['GMAIL_USER_NAME'], subject, body_text)
+  end
+
   def inline_email(f_email, t_email, subject, body)
     atrs = { from: f_email, to: t_email, subject: subject }
     mail(atrs) { |format| format.html { render inline: body } }

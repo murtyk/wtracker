@@ -23,13 +23,22 @@ class HubH1bReport < Report
   end
 
   def build_excel
+    errors = []
+
     excel_file = ExcelFile.new(user, 'hub_h1b')
     excel_file.add_row builder.header
     excel_file.add_row builder.header_numbers
     trainees.each do |trainee|
-      row = builder.build_row(trainee)
-      excel_file.add_row row
+      begin
+        row = builder.build_row(trainee)
+        excel_file.add_row row
+      rescue StandardError => error
+        errors << "trainee_id: #{trainee.id} #{error.message}"
+      end
     end
+
+    AdminMailer.notify_hub_report_errors(errors).deliver_later if errors.any?
+
     excel_file.save([[2, :trainee_id]])
     excel_file
   end
@@ -52,9 +61,9 @@ class HubH1bReport < Report
                                  :trainee_assessments,
                                  :applicant,
                                  tact_three: :education)
-                .where(funding_source_id: funding_source_id)
-                .where('applicants.applied_on <= ?', end_date)
-                .references(:applicants)
+                       .where(funding_source_id: funding_source_id)
+                       .where('applicants.applied_on <= ?', end_date)
+                       .references(:applicants)
   end
 
   # def placed_ids
@@ -90,7 +99,7 @@ class HubH1bReport < Report
   end
 
   # JAN FEB MAR APR MAY JUN JULY AUG SEP OCT NOV DEC
-  QUARTER_START_MONTH = [10, 10, 10, 1,  1,  1,  4,   4,  4,  7,  7,  7]
+  QUARTER_START_MONTH = [10, 10, 10, 1, 1, 1, 4, 4, 4, 7, 7, 7].freeze
   def quarter_start_date
     m  = Date.current.month
     sm = QUARTER_START_MONTH[m - 1]
