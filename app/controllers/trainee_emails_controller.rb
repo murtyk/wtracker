@@ -19,12 +19,12 @@ class TraineeEmailsController < ApplicationController
 
   # POST /trainee_emails
   def create
-    @trainee_email = EmailFactory.create_trainee_email(trainee_email_params,
-                                                       current_user)
+    @trainee_emails = EmailFactory.create_trainee_email(trainee_email_params,
+                                                        current_user)
 
-    if @trainee_email.errors.empty?
+    if @trainee_emails.last.errors.empty?
       notice = 'email was successfully scheduled for delivery.'
-      redirect_to @trainee_email, notice: notice
+      redirect_to trainee_emails_path, notice: notice
     else
       render :new
     end
@@ -45,9 +45,9 @@ class TraineeEmailsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def trainee_email_params
     te_params = params.require(:trainee_email)
-                .permit(:account_id, :user_id, :klass_id, :trainee_names,
-                        :subject, :content,
-                        trainee_ids: [])
+                      .permit(:account_id, :user_id, :klass_id, :trainee_names,
+                              :subject, :content,
+                              trainee_ids: [])
     te_params[:trainee_ids] ||= params[:trainee_ids]
     te_params[:trainee_ids] ||= params[:trainee_email][:trainee_ids]
     te_params
@@ -57,8 +57,8 @@ class TraineeEmailsController < ApplicationController
     if current_user.admin_access?
       klass_ids = current_grant.klasses.pluck(:id) + [0]
       TraineeEmail.includes(:user)
-        .where(klass_id: klass_ids)
-        .order('created_at desc')
+                  .where(klass_id: klass_ids)
+                  .order('created_at desc')
     else
       current_user.trainee_emails.order('created_at desc')
     end

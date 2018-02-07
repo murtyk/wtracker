@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# runs rubocop on modified and new .rb files
+git status --porcelain | cut -c4- | grep '\.rb' | xargs rubocop -a
