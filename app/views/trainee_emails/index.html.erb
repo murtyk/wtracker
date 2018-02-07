@@ -16,6 +16,7 @@
 <table class="table table-bordered table-striped table-hover table-condensed">
   <thead>
     <tr>
+      <th>Sent On</th>
       <th>Sent By</th>
       <th>Class</th>
       <th>Sent To</th>
@@ -28,6 +29,7 @@
   <tbody>
     <% @trainee_emails.each do |trainee_email| %>
       <tr id ='tr_<%=trainee_email.id%>'>
+        <td><%= trainee_email.created_at.to_date %></td>
         <td><%= trainee_email.user.name %></td>
         <td><%= trainee_email.klass_name %></td>
         <td><%= trainee_email.trainee_names.join(';') %></td>
