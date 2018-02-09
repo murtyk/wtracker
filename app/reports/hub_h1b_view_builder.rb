@@ -437,9 +437,9 @@ class HubH1bViewBuilder
   def training_dates_and_status(t)
     trainings = non_ws_klasses(t).map do |k|
       k_status = t.klass_trainees.where(klass_id: k.id).first.status
-      status = (k_status == 2) ? 1 : (k_status == 3 ? 0 : '')
+      status = [2, 4, 5].include?(k_status) ? 1 : (k_status == 3 ? 0 : '')
       status = '' unless k.end_date <= end_date
-      k_end_date = (k.end_date <= end_date && k_status == 2) ? k.end_date : ''
+      k_end_date = (k.end_date <= end_date && status == 1) ? k.end_date : ''
       OpenStruct.new(start_date: f_date(k.start_date),
         end_date: f_date(k_end_date),
         status: status)
