@@ -3,8 +3,8 @@
 class TraineeAdvancedSearch
   attr_accessor :account_id, :grant_id, :user_id, :q
 
-  GRANT_TYPES = ["RTW"]
-  GRANT_ATTRIBUTES = { "RTW" => ["EDP_Date", "Class Categories"] }
+  GRANT_TYPES = ['RTW'].freeze
+  GRANT_ATTRIBUTES = { 'RTW' => ['EDP_Date', 'Class Categories'] }.freeze
 
   def initialize(user)
     @account_id = Account.current_id
@@ -20,21 +20,7 @@ class TraineeAdvancedSearch
     search_by_grant_type
   end
 
-  def search_by_grant_type
-    if grant.trainee_applications?
-      return @q.result.includes(
-        :funding_source,
-        :home_address,
-        :trainee_notes,
-        :assessments,
-        :trainee_files,
-        :ui_verified_notes,
-        :job_search_profile,
-        klasses: [:college, :klass_category],
-        trainee_interactions: [:employer],
-        tact_three: [:education],
-        applicant: [:navigator, :sector])
-    end
+  def search_for_applicant_grant
     @q.result.includes(
       :funding_source,
       :home_address,
@@ -42,9 +28,31 @@ class TraineeAdvancedSearch
       :assessments,
       :trainee_files,
       :ui_verified_notes,
+      :job_search_profile,
       klasses: [:college, :klass_category],
       trainee_interactions: [:employer],
-      tact_three: [:education])
+      tact_three: [:education],
+      applicant: [:navigator, :sector]
+    )
+  end
+
+  def search_for_standard_grant
+    @q.result.includes(
+      :funding_source,
+      :home_address,
+      :trainee_notes,
+      :assessments,
+      :trainee_files,
+      :ui_verified_notes,
+      :trainee_services,
+      klasses: [:college, :klass_category],
+      trainee_interactions: [:employer],
+      tact_three: [:education]
+    )
+  end
+
+  def search_by_grant_type
+    grant.trainee_applications? ? search_for_applicant_grant : search_for_standard_grant
   end
 
   def send_results(q_params)
@@ -53,6 +61,7 @@ class TraineeAdvancedSearch
     Rails.logger.info "TAS file sent by email to #{user.name}"
   end
 
+  # rubocop:disable AbcSize
   def build_document(q_params)
     trainees = search(q_params)
     excel_file.add_row header
@@ -96,18 +105,20 @@ class TraineeAdvancedSearch
     User.find user_id
   end
 
-  def has_grant_attributes?
+  def grant_attributes?
     GRANT_TYPES.include?(grant.type)
   end
 
   def grant_specific_headers
-    has_grant_attributes? ? GRANT_ATTRIBUTES[grant.type] : []
+    grant_attributes? ? GRANT_ATTRIBUTES[grant.type] : []
   end
 
   def grant_specific_values(trainee)
-    return [] unless has_grant_attributes?
+    return [] unless grant_attributes?
 
-    GRANT_ATTRIBUTES[grant.type].map{ |attribute| trainee.send(attribute.downcase.gsub(" ", "_")) }
+    GRANT_ATTRIBUTES[grant.type].map do |attribute|
+      trainee.send(attribute.downcase.tr(' ', '_'))
+    end
   end
 
   def notify_applicant_missing(t)
