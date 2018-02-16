@@ -141,12 +141,16 @@
         <th>Title</th>
         <th>Start Date</th>
         <th>Pay</th>
+        <th>Service Name</th>
+        <th>Service Start Date</th>
+        <th>Service End Date</th>
         <% @tas.grant_specific_headers.each do |field| %>
           <th><%= field %></th>
         <% end %>
       </tr>
     </thead>
     <% @trainees.each do |t| %>
+    <% ts = t.trainee_services.first %>
     <tr>
       <td><%= link_to t.first, t %></td>
       <td><%= link_to t.last, t %></td>
@@ -190,6 +194,9 @@
       <td><%= t.hire_title %></td>
       <td><%= t.start_date %></td>
       <td><%= t.hire_salary %></td>
+      <td><%= ts.try(:name) %></td>
+      <td><%= ts.try(:start_date) %></td>
+      <td><%= ts.try(:end_date) %></td>
       <% @tas.grant_specific_values(t).each do |field| %>
         <th><%= field %></th>
       <% end %>
