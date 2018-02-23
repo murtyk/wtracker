@@ -22,7 +22,7 @@ class TraineeAdvancedSearchViewBuilder
   end
 
   def h_trainee_service
-    ['Service', 'Service Start Date', 'Service End Date']
+    ['# Services', 'Service', 'Service Start Date', 'Service End Date']
   end
 
   def h_applied_on
@@ -66,8 +66,8 @@ class TraineeAdvancedSearchViewBuilder
 
   def trainee_service(t)
     ts = t.trainee_services.first
-    return ['', '', ''] unless ts
-    [ts.name, ts.start_date.to_s, ts.end_date.to_s]
+    return [0, '', '', ''] unless ts
+    [t.trainee_services.count, ts.name, ts.start_date.to_s, ts.end_date.to_s]
   end
 
   def applied_on(t)
