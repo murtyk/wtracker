@@ -1,5 +1,6 @@
 # for grants where applicants can register
 # Federal govt specifies the report format
+# rubocop:disable ClassLength
 class HubH1bViewBuilder
   attr_reader :start_date, :end_date, :prev_quarter_start_date, :prev_quarter_end_date
 
@@ -69,7 +70,7 @@ class HubH1bViewBuilder
      9,
      trainee_dob(t),
      gender(t),
-     9,            # 105 Disability
+     9, # 105 Disability
      race(1, t), race(2, t), race(3, t), race(4, t), race(5, t), race(6, t),
      veteran(t), # 113
      education(t)]
@@ -92,7 +93,7 @@ class HubH1bViewBuilder
   def data_200s(t)
     ap = t.applicant
     [employment_status(ap),
-     incumbent_worker(t), #201
+     incumbent_worker(t), # 201
      under_employed(ap),
      longterm_unemployed(ap)]
   end
@@ -128,9 +129,9 @@ class HubH1bViewBuilder
      program_completion_date(t),
      '',
      0,
-     assessment_date(t),  # 320
+     assessment_date(t), # 320
      assessement_in_prev_quarter(t),
-     '',  # 330
+     '', # 330
      0,
      recent_service_date(t), # 340
      received_service_in_prev_quarter(t), # 341
@@ -172,6 +173,8 @@ class HubH1bViewBuilder
     headers['400s'].keys
   end
 
+  # rubocop:disable MethodLength
+  # rubocop:disable AbcSize
   def data_400s(t)
     # training_dates = date_receiving_class_or_job_training(t)
     # end_dates = training_end_dates(t)
@@ -185,10 +188,10 @@ class HubH1bViewBuilder
      '',
      '',
      tds[0].try(:end_date), # 405
-     tds[0].try(:status),  # 406
+     tds[0].try(:status), # 406
      tds[1].try(:start_date), # 410
      '', # 411
-     codes[1],  # 412
+     codes[1], # 412
      '',
      '',
      tds[1].try(:end_date), # 415
@@ -306,7 +309,11 @@ class HubH1bViewBuilder
 
   # 201
   def incumbent_worker(t)
-    t.applicant.employment_status_pre_selected? ? 1 : 0
+    incumbent?(t) ? 1 : 0
+  end
+
+  def incumbent?(t)
+    t.applicant.employment_status_pre_selected?
   end
 
   # 202
@@ -327,7 +334,7 @@ class HubH1bViewBuilder
     dates += t.trainee_assessments.map(&:date)
     dates << t.edp_date if t.edp_date
     dates << ojt_start_date(t) if ojt_start_date(t)
-    dates << hired_start_date(t) if hired_start_date(t) && (!ojt_start_date(t))
+    dates << hired_start_date(t) if hired_start_date(t) && !ojt_start_date(t)
     f_date(dates.compact.min)
   rescue StandardError => error
     Rails.logger.error("registered_date: trainee_id: #{t.id} error: #{error}")
@@ -335,11 +342,17 @@ class HubH1bViewBuilder
   end
 
   # 302
+  # do not include disabled date
   def exit_date(t)
-    dt = ojt_completed_date(t) || hired_start_date(t) || t.disabled_date
-    return if dt.blank?
-    report_dt = dt + 90.days
-    report_dt <= end_date ? f_date(dt) : ''
+    # if date is there in 501 then same date should be in 302
+    dt = hired_or_ojt_completed_data(t)
+    return dt unless dt.blank?
+
+    return '' unless incumbent?(t)
+
+    # end date of incumbent training, same as 405.
+    trainings = non_ws_trainings(t)
+    trainings.any? ? trainings.first.end_date : ''
   end
 
   # 303
@@ -352,7 +365,7 @@ class HubH1bViewBuilder
   def program_completion_date(t)
     dates = [ojt_completed_date(t)]
     dates += non_ws_completed_klasses(t).pluck(:end_date)
-    max_date = dates.compact.select{ |d| d <= end_date }.max
+    max_date = dates.compact.select { |d| d <= end_date }.max
     max_date && f_date(max_date)
   rescue StandardError => error
     Rails.logger.error("program_completion_date: trainee_id: #{t.id} error: #{error}")
@@ -360,10 +373,9 @@ class HubH1bViewBuilder
   end
 
   # 320
+  # take all assessments irrespective of quarter and pick the most recent
   def assessment_date(t)
-    dates = t.trainee_assessments.map do |ta|
-      ta.date if ta.date && ta.date >= start_date && ta.date <= end_date
-    end.compact
+    dates = t.trainee_assessments.map(&:date).compact
     f_date(dates.max)
   rescue StandardError => error
     Rails.logger.error("assessment_date: trainee_id: #{t.id} error: #{error}")
@@ -384,7 +396,7 @@ class HubH1bViewBuilder
   def recent_service_date(t)
     dates = ws_klasses(t).map(&:end_date)
     dates << t.edp_date if t.edp_date
-    max_date = dates.compact.select{ |d| d <= end_date }.max
+    max_date = dates.compact.select { |d| d <= end_date }.max
     return f_date(max_date) if max_date
     active?(t) ? quarter_end_date : ''
   rescue StandardError => error
@@ -403,13 +415,14 @@ class HubH1bViewBuilder
     0
   end
 
+  # rubocop:disable CyclomaticComplexity
   # 350
   def recent_work_exp_data(t)
     dt = ojt_completed_date(t)
     dt ||= t.termination_date if t.terminated? && t.termination_interaction.ojt_enrolled?
 
     return f_date(dt) if dt && dt <= end_date
-    (dt || t.ojt_enrolled?) ? quarter_end_date : ''
+    dt || t.ojt_enrolled? ? quarter_end_date : ''
   end
 
   # 351   1 or  0
@@ -434,16 +447,9 @@ class HubH1bViewBuilder
   # 400: training start date
   # 405: training end date
   # 406: 1 if training completed 0-otherwise
+  #  if dropped take class end date
   def training_dates_and_status(t)
-    trainings = non_ws_klasses(t).map do |k|
-      k_status = t.klass_trainees.where(klass_id: k.id).first.status
-      status = [2, 4, 5].include?(k_status) ? 1 : (k_status == 3 ? 0 : '')
-      status = '' unless k.end_date <= end_date
-      k_end_date = (k.end_date <= end_date && status == 1) ? k.end_date : ''
-      OpenStruct.new(start_date: f_date(k.start_date),
-        end_date: f_date(k_end_date),
-        status: status)
-    end
+    trainings = non_ws_trainings(t)
 
     hi = any_ojt_interaction(t)
 
@@ -465,13 +471,31 @@ class HubH1bViewBuilder
     trainings + [os]
   end
 
+  # helper for 405 and 302
+  def non_ws_trainings(t)
+    non_ws_klasses(t).map do |k|
+      k_status = t.klass_trainees.where(klass_id: k.id).first.status
+      status = if [2, 4, 5].include?(k_status)
+                 1
+               else
+                 (k_status == 3 ? 0 : '')
+               end
+
+      status = '' unless k.end_date <= end_date
+
+      k_end_date = status.blank? ? '' : k.end_date
+
+      OpenStruct.new(start_date: f_date(k.start_date),
+                     end_date: f_date(k_end_date),
+                     status: status)
+    end
+  end
+
   # 402, 412, 422
   def training_service_codes(t)
     return [6, 6, 6] if t.applicant.employment_status_pre_selected?
 
-    codes = non_ws_klasses(t).map do |k|
-      k.klass_category_code
-    end
+    codes = non_ws_klasses(t).map(&:klass_category_code)
 
     codes << 1 if any_ojt_interaction(t)
     codes + ['', '', '']
@@ -508,33 +532,33 @@ class HubH1bViewBuilder
   # end
 
   # 406 and 416
-    # For 406 and 416.   426 is blank.
+  # For 406 and 416.   426 is blank.
 
-    # Related to 400
+  # Related to 400
 
-    # Use Case 1:
+  # Use Case 1:
 
-    #     Class completed and OJT completed
-    #     406:  1
-    #     416: 1
+  #     Class completed and OJT completed
+  #     406:  1
+  #     416: 1
 
-    # Use Case 2:
+  # Use Case 2:
 
-    #     Class dropped and OJT completed
-    #     406:  0
-    #     416: 1
+  #     Class dropped and OJT completed
+  #     406:  0
+  #     416: 1
 
-    # Use Case 3:
+  # Use Case 3:
 
-    #     Class completed and OJT terminated
-    #     406: 1
-    #     416: 0
+  #     Class completed and OJT terminated
+  #     406: 1
+  #     416: 0
 
-    # Use Case 4:
+  # Use Case 4:
 
-    #     Has one of A Class Or OJT (not both)
-    #     406: 1 completed 0 dropped/term
-    #     416: blank
+  #     Has one of A Class Or OJT (not both)
+  #     406: 1 completed 0 dropped/term
+  #     416: blank
 
   # 406
   # def training_completed_1(t)
@@ -564,7 +588,9 @@ class HubH1bViewBuilder
 
   # 501
   def hired_or_ojt_completed_data(t)
-    return f_date(t.completion_date) if t.ojt_completed? && t.completion_date.try('<=', end_date)
+    if t.ojt_completed? && t.completion_date.try('<=', end_date)
+      return f_date(t.completion_date)
+    end
     t.hired? && t.start_date && t.start_date <= end_date ? f_date(t.start_date) : ''
   end
 
@@ -609,7 +635,7 @@ class HubH1bViewBuilder
   def non_ws_klasses_by_status(t, status)
     Klass.joins(:klass_trainees)
          .where(klass_category_id: non_ws_category_ids)
-         .where(klass_trainees: { trainee_id: t.id, status: status } )
+         .where(klass_trainees: { trainee_id: t.id, status: status })
          .where('klasses.start_date <= ?', end_date)
   end
 
@@ -623,24 +649,24 @@ class HubH1bViewBuilder
 
   def ojt_interaction(t)
     t.trainee_interactions
-      .where(status: [5, 6], termination_date: nil)
-      .where('start_date <= ?', end_date)
-      .last
+     .where(status: [5, 6], termination_date: nil)
+     .where('start_date <= ?', end_date)
+     .last
   end
 
   def any_ojt_interaction(t)
     t.trainee_interactions
-      .where(status: [5, 6])
-      .where('start_date <= ?', end_date)
-      .last
+     .where(status: [5, 6])
+     .where('start_date <= ?', end_date)
+     .last
   end
 
   def any_ojt_terminated?(t)
     t.trainee_interactions
-      .where.not(termination_date: nil)
-      .where(status: [5, 6])
-      .where('start_date <= ?', end_date)
-      .last
+     .where.not(termination_date: nil)
+     .where(status: [5, 6])
+     .where('start_date <= ?', end_date)
+     .last
   end
 
   # for 400, 410, 420
@@ -669,7 +695,7 @@ class HubH1bViewBuilder
 
   def hired_start_date(t)
     return nil unless t.hired?
-    return nil unless (start_date..end_date).include?(t.start_date)
+    return nil unless (start_date..end_date).cover?(t.start_date)
     t.start_date
   end
 

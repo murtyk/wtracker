@@ -141,6 +141,7 @@
         <th>Title</th>
         <th>Start Date</th>
         <th>Pay</th>
+        <th># Services</th>
         <th>Service Name</th>
         <th>Service Start Date</th>
         <th>Service End Date</th>
@@ -194,6 +195,7 @@
       <td><%= t.hire_title %></td>
       <td><%= t.start_date %></td>
       <td><%= t.hire_salary %></td>
+      <td><%= t.trainee_services.count %></td>
       <td><%= ts.try(:name) %></td>
       <td><%= ts.try(:start_date) %></td>
       <td><%= ts.try(:end_date) %></td>
