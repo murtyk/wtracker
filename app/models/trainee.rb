@@ -187,7 +187,7 @@ class Trainee < ActiveRecord::Base
   end
 
   delegate :start_date, :completion_date, :ojt_completed?, :ojt_enrolled?,
-           :employer_name, :hire_title, :hire_salary,
+           :employer_name, :hire_title, :hire_salary, :uses_trained_skills,
            to: :hired_employer_interaction, allow_nil: true
 
   def termination_interaction
