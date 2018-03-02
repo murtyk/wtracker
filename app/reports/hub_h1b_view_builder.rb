@@ -123,16 +123,16 @@ class HubH1bViewBuilder
   end
 
   def data_300s(t)
-    [registered_date(t),
-     exit_date(t),
-     other_reasons_for_exit(t),
-     program_completion_date(t),
-     '',
-     0,
+    [registered_date(t), # 301
+     exit_date(t), # 302
+     other_reasons_for_exit(t), # 303
+     program_completion_date(t), # 304
+     '', # 310
+     '', # 311  0 if prev quarter
      assessment_date(t), # 320
      assessement_in_prev_quarter(t),
      '', # 330
-     0,
+     '', # 331 should be blank
      recent_service_date(t), # 340
      received_service_in_prev_quarter(t), # 341
      recent_work_exp_data(t), # 350
@@ -327,7 +327,6 @@ class HubH1bViewBuilder
   end
 
   # 301 Take earliest date of registration, classes, assessments and edp
-  # TODO also include hired date
   def registered_date(t)
     dates = [t.applicant.created_at.to_date]
     dates += t.klasses.map(&:start_date)
@@ -384,6 +383,8 @@ class HubH1bViewBuilder
 
   # 321     1 (Yes)  or    0 (No)
   def assessement_in_prev_quarter(t)
+    return '' unless assessment_date(t)
+
     t.trainee_assessments.each do |ta|
       return 1 if ta.date &&
                   ta.date >= prev_quarter_start_date &&
@@ -404,8 +405,10 @@ class HubH1bViewBuilder
     error.to_s
   end
 
-  # 341 1 or 0
+  # 341 '', 1 or 0
   def received_service_in_prev_quarter(t)
+    return '' if recent_service_date(t).blank?
+
     dates = ws_klasses(t).map(&:end_date)
     dates << t.edp_date if t.edp_date
     dates.compact.each do |d|
@@ -425,8 +428,10 @@ class HubH1bViewBuilder
     dt || t.ojt_enrolled? ? quarter_end_date : ''
   end
 
-  # 351   1 or  0
+  # 351  '', 1 or  0
   def work_exp_in_prev_quarter(t)
+    return '' if recent_work_exp_data(t).blank?
+
     dt = ojt_completed_date(t)
     dt ||= t.termination_date if t.terminated? &&
                                  t.termination_interaction.ojt_enrolled?
@@ -596,10 +601,18 @@ class HubH1bViewBuilder
 
   # 503 User will manually update
   def ojt_completed_start_date(t)
-    # return '' unless t.hired?
     return 1 if ojt_completed?(t)
-    return 9 if non_ws_completed_klasses(t).any? && t.hired?
-    ''
+    return '' unless t.hired?
+
+    result = case t.uses_trained_skills
+             when 'Yes'
+               1
+             when 'No'
+               0
+             else
+               9 # dont know
+             end
+    result
   end
 
   # 600s
