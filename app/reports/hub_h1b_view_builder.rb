@@ -599,10 +599,14 @@ class HubH1bViewBuilder
     t.hired? && t.start_date && t.start_date <= end_date ? f_date(t.start_date) : ''
   end
 
+  # If there is no training activity or OJT, it should be blank.
+  # If OJT completed, always 1.
+  # Only if there is training activity, pull in data from TaPO.
   # 503 User will manually update
   def ojt_completed_start_date(t)
+    return '' unless t.hired? || any_ojt_interaction(t)
+
     return 1 if ojt_completed?(t)
-    return '' unless t.hired?
 
     result = case t.uses_trained_skills
              when 'Yes'
