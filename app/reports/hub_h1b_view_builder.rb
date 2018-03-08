@@ -303,7 +303,7 @@ class HubH1bViewBuilder
 
   # 200
   def employment_status(ap)
-    return 1 if incumbent_worker(t) == 1
+    return 1 if incumbent_worker(ap.trainee) == 1
 
     @employment_status_codes ||= config['employment_status_codes']
     @employment_status_codes[ap.current_employment_status]
@@ -320,13 +320,13 @@ class HubH1bViewBuilder
 
   # 202
   def under_employed(ap)
-    return 0 if incumbent_worker(t) == 1
+    return 0 if incumbent_worker(ap.trainee) == 1
     ap.current_employment_status.index('Underemployed') ? 1 : 0
   end
 
   # 204
   def longterm_unemployed(ap)
-    return 0 if incumbent_worker(t) == 1
+    return 0 if incumbent_worker(ap.trainee) == 1
     ap.current_employment_status == 'Unemployed - 6 Months or more' ? 1 : 2
   end
 
