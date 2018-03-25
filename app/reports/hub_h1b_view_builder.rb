@@ -333,7 +333,7 @@ class HubH1bViewBuilder
   # 301 Take earliest date of registration, classes, assessments and edp
   def registered_date(t)
     dates = [t.applicant.created_at.to_date]
-    dates += t.klasses.map(&:start_date)
+    dates += all_klasses(t).map(&:start_date)
     dates += t.trainee_assessments.map(&:date)
     dates << t.edp_date if t.edp_date
     dates << ojt_start_date(t) if ojt_start_date(t)
@@ -367,7 +367,7 @@ class HubH1bViewBuilder
   # should be blank OJT terminated or did not complete a class
   def program_completion_date(t)
     dates = [ojt_completed_date(t)]
-    dates += non_ws_completed_klasses(t).pluck(:end_date)
+    dates += non_ws_completed_klasses(t).map(&:end_date)
     max_date = dates.compact.select { |d| d <= end_date }.max
     max_date && f_date(max_date)
   rescue StandardError => error
@@ -625,7 +625,7 @@ class HubH1bViewBuilder
 
   # 600s
   def certificates(t)
-    completed_klass_ids = non_ws_completed_klasses(t).pluck :id
+    completed_klass_ids = non_ws_completed_klasses(t).map(&:id)
     certs = KlassCertificate.where(klass_id: completed_klass_ids)
     certs.map { |c| [c.certificate_category_code, f_date(c.klass.end_date)] }
   end
@@ -638,8 +638,14 @@ class HubH1bViewBuilder
     @ws_category_ids ||= KlassCategory.where(code: 'WS').pluck(:id)
   end
 
+  def all_klasses(t)
+    t.klass_trainees.map(&:klass)
+  end
+
   def ws_klasses(t)
-    t.klasses.where(klass_category_id: ws_category_ids)
+    # t.klasses.where(klass_category_id: ws_category_ids)
+
+    all_klasses(t).select { |k| ws_category_ids.include?(k.klass_category_id) }
   end
 
   def non_ws_category_ids
@@ -647,21 +653,35 @@ class HubH1bViewBuilder
   end
 
   def non_ws_klasses(t)
-    t.klasses
-     .where(klass_category_id: non_ws_category_ids)
-     .where('start_date <= ?', end_date)
-     .order(:start_date)
+    # t.klasses
+    #  .where(klass_category_id: non_ws_category_ids)
+    #  .where('start_date <= ?', end_date)
+    #  .order(:start_date)
+
+    all_klasses(t)
+      .select { |k| non_ws_category_ids.include?(k.klass_category_id) }
+      .select { |k| k.start_date <= end_date }
+      .sort_by(&:start_date)
   end
 
   def non_ws_klasses_by_status(t, status)
-    Klass.joins(:klass_trainees)
-         .where(klass_category_id: non_ws_category_ids)
-         .where(klass_trainees: { trainee_id: t.id, status: status })
-         .where('klasses.start_date <= ?', end_date)
+    # Klass.joins(:klass_trainees)
+    #      .where(klass_category_id: non_ws_category_ids)
+    #      .where(klass_trainees: { trainee_id: t.id, status: status })
+    #      .where('klasses.start_date <= ?', end_date)
+
+    a_status = status.is_a?(Array) ? status : [status]
+
+    t
+      .klass_trainees
+      .select { |kt| a_status.include?(kt.status) }
+      .map(&:klass)
+      .select { |k| non_ws_category_ids.include?(k.klass_category_id) }
+      .select { |k| k.start_date <= end_date }
   end
 
   def non_ws_completed_klasses(t)
-    non_ws_klasses_by_status(t, [2, 4, 5]).where('end_date <= ?', end_date)
+    non_ws_klasses_by_status(t, [2, 4, 5]).select { |k| k.end_date <= end_date }
   end
 
   def non_ws_dropped_klasses(t)
@@ -669,25 +689,44 @@ class HubH1bViewBuilder
   end
 
   def ojt_interaction(t)
-    t.trainee_interactions
-     .where(status: [5, 6], termination_date: nil)
-     .where('start_date <= ?', end_date)
-     .last
+    # t.trainee_interactions
+    #  .where(status: [5, 6], termination_date: nil)
+    #  .where('start_date <= ?', end_date)
+    #  .last
+    t
+      .trainee_interactions
+      .select { |ti| [5, 6].include?(ti.status) }
+      .select { |ti| ti.termination_date.nil? }
+      .select { |ti| ti.start_date <= end_date }
+      .last
   end
 
   def any_ojt_interaction(t)
-    t.trainee_interactions
-     .where(status: [5, 6])
-     .where('start_date <= ?', end_date)
-     .last
+    # t.trainee_interactions
+    #  .where(status: [5, 6])
+    #  .where('start_date <= ?', end_date)
+    #  .last
+
+    t
+      .trainee_interactions
+      .select { |ti| [5, 6].include?(ti.status) }
+      .select { |ti| ti.start_date <= end_date }
+      .last
   end
 
   def any_ojt_terminated?(t)
-    t.trainee_interactions
-     .where.not(termination_date: nil)
-     .where(status: [5, 6])
-     .where('start_date <= ?', end_date)
-     .last
+    # t.trainee_interactions
+    #  .where.not(termination_date: nil)
+    #  .where(status: [5, 6])
+    #  .where('start_date <= ?', end_date)
+    #  .last
+
+    t
+      .trainee_interactions
+      .select { |ti| ti.termination_date.present? }
+      .select { |ti| [5, 6].include?(ti.status) }
+      .select { |ti| ti.start_date <= end_date }
+      .last
   end
 
   # for 400, 410, 420

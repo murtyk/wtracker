@@ -22,6 +22,7 @@ class HubH1bReport < Report
     @end_date || quarter_end_date
   end
 
+  # rubocop:disable AbcSize
   def build_excel
     errors = []
 
@@ -56,10 +57,10 @@ class HubH1bReport < Report
   end
 
   def build_trainees
-    @trainees = Trainee.includes(:klasses,
-                                 :trainee_interactions,
+    @trainees = Trainee.includes(:trainee_interactions,
                                  :trainee_assessments,
                                  :applicant,
+                                 klass_trainees: :klass,
                                  tact_three: :education)
                        .where(funding_source_id: funding_source_id)
                        .where('applicants.applied_on <= ?', end_date)
