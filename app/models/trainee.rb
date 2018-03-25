@@ -183,7 +183,11 @@ class Trainee < ActiveRecord::Base
   end
 
   def hired_employer_interaction
-    trainee_interactions.where(status: [4, 5, 6], termination_date: nil).first
+    # trainee_interactions.where(status: [4, 5, 6], termination_date: nil).first
+    trainee_interactions
+      .select { |ti| [4, 5, 6].include?(ti.status) }
+      .select { |ti| ti.termination_date.nil? }
+      .first
   end
 
   delegate :start_date, :completion_date, :ojt_completed?, :ojt_enrolled?,
@@ -191,7 +195,8 @@ class Trainee < ActiveRecord::Base
            to: :hired_employer_interaction, allow_nil: true
 
   def termination_interaction
-    trainee_interactions.where.not(termination_date: nil).last
+    # trainee_interactions.where.not(termination_date: nil).last
+    trainee_interactions.select { |ti| ti.termination_date.present? }.last
   end
 
   def terminated?
