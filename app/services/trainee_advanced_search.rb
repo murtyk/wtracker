@@ -28,6 +28,7 @@ class TraineeAdvancedSearch
       :assessments,
       :trainee_files,
       :ui_verified_notes,
+      :trainee_services,
       :job_search_profile,
       klasses: [:college, :klass_category],
       trainee_interactions: [:employer],
