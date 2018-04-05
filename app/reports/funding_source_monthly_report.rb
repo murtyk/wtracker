@@ -142,7 +142,7 @@ class FundingSourceMonthlyReport < Report
   def assessments_of_trainee(as)
     tas = as
     unless skip_dates
-      tas = tas.select{ |ta| ta.date >= month_start_date && date <= end_date }
+      tas = tas.select{ |ta| ta.date >= month_start_date && ta.date <= end_date }
     end
 
     # assessment_names.map do |name|
