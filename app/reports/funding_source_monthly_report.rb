@@ -86,7 +86,7 @@ class FundingSourceMonthlyReport < Report
 
   def data_header
     ["TAPO ID", "Trainee", "Trainee ID", "Address", "Mobile", "email",
-      "Job Developer", "Class", "Category", "Start Date", "End Date",
+      "Job Developer", "Class", "College", "Category", "Start Date", "End Date",
       "Training Hours", "Assessment Name", "Assessment Date",
       "Status", "Hired Company", "Title", "Start Date", "Salary",
       "Uses Traineed Skills",
@@ -99,7 +99,7 @@ class FundingSourceMonthlyReport < Report
 
     trainees.map do |trainee|
       trainee_d = trainee.decorate
-      klasses_of_trainee(trainee).map do |training_name, category, start_date, end_date, training_hours|
+      klasses_of_trainee(trainee).map do |training_name, college, category, start_date, end_date, training_hours|
         rows << [trainee.id,
           trainee.name,
           trainee.trainee_id,
@@ -108,11 +108,12 @@ class FundingSourceMonthlyReport < Report
           trainee.email,
           trainee.navigator_name,
           training_name,
+          college,
           category,
           start_date,
           end_date,
           training_hours,
-          assessments_of_trainee(trainee),
+          assessments_of_trainee(trainee.trainee_assessments),
           placement_status(trainee),
           placement_info(trainee),
           ui_verification_info(trainee),
@@ -138,28 +139,29 @@ class FundingSourceMonthlyReport < Report
     end.join(";")
   end
 
-  def assessments_of_trainee(trainee)
-    tas = trainee.trainee_assessments
-
+  def assessments_of_trainee(as)
+    tas = as
     unless skip_dates
-      tas = tas.where("date >= ? and date <= ?", month_start_date, end_date)
+      tas = tas.select{ |ta| ta.date >= month_start_date && date <= end_date }
     end
 
     # assessment_names.map do |name|
     #   tas.select{|ta| ta.name == name}.map(&:date).map(&:to_s).flatten.join(";")
     # end
 
-    ta = tas.all.sort{ |a,b| a.date <=> b.date }.first
+    ta = tas.sort{ |a,b| a.date <=> b.date }.first
     [ta.try(:name), ta.try(:date).to_s]
   end
 
   def klasses_of_trainee(trainee)
-    return [["","","","",""]] unless trainee.klasses.any?
+    klasses = trainee.klass_trainees.map(&:klass)
 
-    klasses = trainee.klasses.sort{|a,b| a.klass_category_code <=> b.klass_category_code }
+    return [["","","","","",""]] if klasses.size.zero?
+
+    klasses = klasses.sort{|a,b| a.klass_category_code <=> b.klass_category_code }
 
     klasses.map do |klass|
-      [klass.name, klass.klass_category_code, klass.start_date, klass.end_date, klass.training_hours]
+      [klass.name, klass.college_name + " - " + klass.college.city_state, klass.klass_category_code, klass.start_date, klass.end_date, klass.training_hours]
     end
   end
 
@@ -223,7 +225,7 @@ class FundingSourceMonthlyReport < Report
       .includes(:ui_verified_notes,
                 :funding_source,
                 :home_address,
-                klass_trainees: { klass: :klass_category },
+                klass_trainees: { klass: [:klass_category, college: :address ] },
                 trainee_interactions: :employer,
                 trainee_assessments: :assessment,
                 applicant: :navigator)
