@@ -27,6 +27,8 @@ describe QueueAutoLeadsJobs do
   end
 
   it 'queues a job for sending leads' do
+    Delayed::Worker.delay_jobs = true
+
     allow_any_instance_of(QueueAutoLeadsJobs).to receive(:grants_for_auto_leads)
       .and_return([Grant.find(Grant.current_id)])
 
