@@ -24,7 +24,7 @@ describe 'Daily Job to update Klass Trainee Status' do
     yd -= 1.day if Date.today == Date.yesterday
 
     klass.update(end_date: yd)
-    DailyKlassTraineeStatus.new.perform
+    DailyKlassTraineeStatus.perform
 
     visit "/klasses/#{klass.id}"
     expect(page).to_not have_text 'Enrolled - 2'

@@ -43,3 +43,11 @@ Restore db dump to local:
 
 curl -o latest.dump `heroku pg:backups public-url -a appname`
 pg_restore --verbose --clean --no-acl -h localhost -U railsdev -d wtracker_dev latest.dump
+
+## Schedule Jobs
+
+1. Add jobs to lib/tasks/scheduler.rake
+2. Use the jobs in heroku scheduler
+
+
+
