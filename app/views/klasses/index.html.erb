@@ -38,6 +38,7 @@
       <th>Enrolled      </th>
       <th>Placed        </th>
       <th>Dropped       </th>
+      <th>% Placed      </th>
       <% @klasses_service.funding_sources_names.each do |fs_name| %>
       <th> <%= fs_name %> </th>
       <% end %>
@@ -49,7 +50,8 @@
     </tr>
     </thead>
     <% program_data[2].each do |klass, enrolled_count, placed_count, dropped_count, fs_counts| %>
-      <tr>
+      <% row_style_class = enrolled_count.to_i > 0 ? "" : "not-enrolled" %>
+      <tr class="<%= row_style_class %>">
         <td><%= name_and_link(klass) %> </td>
         <td><%= klass.college_name %>   </td>
         <td><%= klass.klass_category_name %>  </td>
@@ -57,6 +59,16 @@
         <td><%= enrolled_count %> </td>
         <td><%= placed_count %> </td>
         <td><%= dropped_count %></td>
+        <td>
+          <%=
+            if (enrolled_count.to_i > 0 && placed_count.to_i > 0)
+              perc = (placed_count.to_i * 100.0 / enrolled_count.to_i).to_s
+              sprintf('%.2f', perc) + "%"
+            else
+              ""
+            end
+          %>
+        </td>
         <% fs_counts.each do |count| %>
         <td> <%= count %> </td>
         <% end %>
