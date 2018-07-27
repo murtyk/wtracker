@@ -205,6 +205,10 @@ class Trainee < ActiveRecord::Base
 
   delegate :termination_date, to: :termination_interaction, allow_nil: true
 
+  def last_ui_verified_notes
+    ui_verified_notes.order(:created_at).last
+  end
+
   # placed with No OJT or OJT Completed
   def hired?
     status == 4
