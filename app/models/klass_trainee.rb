@@ -18,7 +18,7 @@ class KlassTrainee < ActiveRecord::Base
   before_save :determine_status
   after_initialize :default_values
 
-  delegate :name, :name_fs, to: :trainee
+  delegate :name, :name_fs, :last_ui_verified_notes, to: :trainee
   delegate :name, to: :klass, prefix: true
   delegate :college_name_location, to: :klass
 
