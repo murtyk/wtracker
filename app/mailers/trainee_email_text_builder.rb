@@ -12,12 +12,12 @@ class TraineeEmailTextBuilder
 
   def job_leads_email_attrs(jobs)
     @jobs = jobs
-    grant    = trainee.grant
+    grant = trainee.grant
 
     to_email,
     reply_to_email = email_addresses
 
-    subject   =  grant.job_leads_subject.content
+    subject = grant.job_leads_subject.content
     body_text = job_leads_body
 
     [to_email, reply_to_email, subject, body_text]
@@ -46,9 +46,9 @@ class TraineeEmailTextBuilder
     body = body.gsub('$JOBLEADS$', job_leads_html) if jobs.any?
 
     body.gsub('$TRAINEEFIRSTNAME$', trainee.first)
-      .gsub('$VIEWJOBSLINK$', view_jobs_link)
-      .gsub('$TRAINEE_SIGNIN_LINK$', sign_in_link(trainee))
-      .gsub('$OPTOUTLINK$', opt_out_link)
+        .gsub('$VIEWJOBSLINK$', view_jobs_link)
+        .gsub('$TRAINEE_SIGNIN_LINK$', sign_in_link(trainee))
+        .gsub('$OPTOUTLINK$', opt_out_link)
   end
 
   def profile_request_body
@@ -96,7 +96,10 @@ class TraineeEmailTextBuilder
   end
 
   def job_leads_raw_body
-    grant.job_leads_content.content.gsub(/\r\n/, '<br>')
+    raw_body = grant.job_leads_content.content.gsub(/\r\n/, '<br>')
+    return raw_body unless grant.closing
+
+    grant.closing_job_leads_message + '<br>' + raw_body
   end
 
   def sign_in_link(trainee)
@@ -113,6 +116,7 @@ class TraineeEmailTextBuilder
 
   def job_leads_html
     return '' unless jobs.any?
+
     '<ol>' +
       jobs.map { |job| "<li>#{job.title} - #{job.company}</li>" }.join +
       '</ol>'

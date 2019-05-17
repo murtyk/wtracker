@@ -30,7 +30,9 @@ class Grant < ActiveRecord::Base
                  :credentials_email_subject, # Amazon grant
                  :credentials_email_content, # Amazon grant
                  :skip_trainee_data_capture, # true for Amazon
-                 :applicant_registration_subheader
+                 :applicant_registration_subheader,
+                 :closing, # true when ending soon
+                 :closing_job_leads_message
 
   validates :name, presence: true, length: { minimum: 3, maximum: 40 }
   validates :start_date, presence: true
@@ -183,6 +185,7 @@ class Grant < ActiveRecord::Base
 
   def shift_other_to_end(collection)
     return collection unless collection.include?(OTHER_PLEASE_SPECIFY)
+
     collection -= [OTHER_PLEASE_SPECIFY]
     collection + [OTHER_PLEASE_SPECIFY]
   end
@@ -233,6 +236,7 @@ class Grant < ActiveRecord::Base
 
   def auto_job_leads_setting
     return unless @auto_job_leads.is_a? String
+
     ajl = @auto_job_leads.to_i
     @auto_job_leads = ajl > 0
   end
