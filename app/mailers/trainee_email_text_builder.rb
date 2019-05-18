@@ -97,9 +97,10 @@ class TraineeEmailTextBuilder
 
   def job_leads_raw_body
     raw_body = grant.job_leads_content.content.gsub(/\r\n/, '<br>')
-    return raw_body unless grant.closing
 
-    grant.closing_job_leads_message + '<br>' + raw_body
+    closing_message = grant.closing ? (grant.closing_job_leads_message + '<br>') : ''
+
+    raw_body.gsub('$CLOSINGMESSAGE$', closing_message)
   end
 
   def sign_in_link(trainee)

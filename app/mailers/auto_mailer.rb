@@ -3,9 +3,9 @@ include UtilitiesHelper
 
 # for sending auto job leads to students
 class AutoMailer < ActionMailer::Base
-  PLACEHOLDERS = %w($PROFILELINK$ $DIRECTOR$ $TRAINEEFIRSTNAME$
+  PLACEHOLDERS = %w[$PROFILELINK$ $DIRECTOR$ $TRAINEEFIRSTNAME$
                     $JOBLEADS$ $VIEWJOBSLINK$ $OPTOUTLINK$ $APPLICANT_NAME$
-                    $TRAINEE_SIGNIN_LINK$ $PASSWORD$).freeze
+                    $TRAINEE_SIGNIN_LINK$ $PASSWORD$].freeze
 
   def solicit_job_search_profile(trainee)
     to_email,
@@ -23,6 +23,9 @@ class AutoMailer < ActionMailer::Base
 
     trainee_id = auto_shared_jobs.first.trainee_id
     trainee = Trainee.unscoped.where(id: trainee_id).first
+
+    Account.current_id = trainee.account_id
+    Grant.current_id = trainee.grant_id
 
     to_email,
     reply_to_email,
@@ -106,6 +109,7 @@ class AutoMailer < ActionMailer::Base
 
   def html_for_status_error_messages(error_messages)
     return '' if error_messages.blank?
+
     body = "<p style='color: red'>Errors:</p>" + "<ol style='color: red'>"
     error_messages.each { |msg| body += "<li>#{msg}</li>" }
     body + '</ol><hr>'
