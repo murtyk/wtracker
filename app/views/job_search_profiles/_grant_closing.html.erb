@@ -1,4 +1,4 @@
-<% if current_grant.closing %>
-  <%= current_grant.closing_job_leads_message %>
+<% if grant.closing %>
+  <%= grant.closing_job_leads_message.html_safe %>
   <br>
 <% end %>
