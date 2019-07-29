@@ -7,6 +7,9 @@ class Trainee
 
     def perform_portal_action
       case @trainee_portal.action
+      when :closed
+        sign_out @trainee
+        render 'closed', layout: false
       when :pending_data
         render 'edit'
       when :pending_resume

@@ -7,6 +7,7 @@ class TraineePortal
   end
 
   def action
+    return :closed if trainee.grant.status == 3
     return :jobs if skip_data_capture?
     return :pending_data if pending_data?
     return :pending_profile if pending_profile?

@@ -1,8 +1,17 @@
 <div class = 'row-fluid'>
-<div class='span10 offset1'>
-  <h2 style='margin-left: 20px; padding-top: 5px'>
-  Please complete this form to determine your eligibility to receive employment related services and training at NO COST to you. Thank you.
-  </h2>
-  <%= render 'form', applicant: @applicant %>
-</div>
+  <% if @grant.status == 3 %>
+    <p>
+      EFFECTIVE 7/31/19 THE READY TO WORK NJ GRANT EXPIRED AND THEREFORE NO ADDITIONAL SERVICES WILL BE AVAILABLE.  
+    </p>
+    <p>
+      IF YOU ARE IN NEED OF ADDITIONAL SERVICES PLEASE CONTACT YOUR LOCAL ONE STOP CAREER CENTER AND SPEAK TO AN EMPLOYMENT COUNSELOR TO DETERMINE ELIGIBILITY. GOOD LUCK!
+    </p>
+  <% else %>
+    <div class='span10 offset1'>
+      <h2 style='margin-left: 20px; padding-top: 5px'>
+      Please complete this form to determine your eligibility to receive employment related services and training at NO COST to you. Thank you.
+      </h2>
+      <%= render 'form', applicant: @applicant %>
+    </div>
+  <% end %>
 </div>
