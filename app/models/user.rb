@@ -134,7 +134,7 @@ class User < ActiveRecord::Base
 
   def active_grants
     # debugger
-    return Grant.where.not(status: 3).order(:name) if admin_or_director?
+    return Grant.order(:name) if admin_or_director?
     return active_grants_of_navigator if navigator?
     active_grants_of_instructor
   end

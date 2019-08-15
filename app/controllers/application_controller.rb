@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   def current_grant
     if session[:grant_id]
       grant = Grant.find(session[:grant_id])
-      return grant if grant && grant.active?
+      return grant if grant
     end
     current_account.active_grants.first
   end
