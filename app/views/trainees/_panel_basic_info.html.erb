@@ -30,6 +30,26 @@
   <%= trainee.email        %>
 </p>
 
+<% if current_grant.tranee_has_employer %>
+  <p>
+    Employer: <%= trainee.employer && link_to(trainee.employer.name, employer_path(trainee.employer))%>
+  </p>
+<% end %>
+<% if current_grant.trainee_has_mentor %>
+  <h4>
+    Mentor 
+    <% unless trainee.mentor.present? %>
+      <%= button_new_association(Mentor, from: 1, trainee_id: trainee.id, id_prefix: "trainee_#{trainee.id}_", title: 'New Service') %>
+    <% end %>
+  </h4>
+  <div id = 'trainee_<%=trainee.id%>_mentor'>
+    <% if trainee.mentor.present? %>
+      <%= render trainee.mentor%>
+    <% end %>
+  </div>
+  <hr>
+<% end %>
+
 <%= trainee.funding_source %>
 <%= trainee.navigator %>
 

@@ -1,0 +1,8 @@
+$('#new_mentor').remove(); // remove form
+
+<% if @mentor.errors.any? %>
+  $('#<%=new_link_id("mentor", "trainee_#{@mentor.trainee.id}_")%>').hide().after('<%= j render("jsform", mentor: @mentor) %>');
+<% else %>
+  $('#trainee_<%=@mentor.trainee.id%>_new_mentor_link').remove(); // remove new button
+  $('#trainee_<%=@trainee.id%>_mentor').html('<%= j render @trainee.mentor %>');
+<% end %>

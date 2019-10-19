@@ -79,8 +79,9 @@ WTracker::Application.routes.draw do
   resources :trainee_emails,      except: [:edit, :update]
   resources :trainee_notes,       except: [:index, :show]
   resources :ui_verified_notes,   except: [:index, :show, :edit, :update]
-  resources :trainee_services,   except: [:index, :show]
+  resources :trainee_services,    except: [:index, :show]
   resources :trainee_statuses,    except: [:index, :show]
+  resources :mentors,             except: [:index, :show]
 
   resources :job_searches, only: [:new, :show, :create] do
     member do

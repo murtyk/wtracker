@@ -117,6 +117,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    allow(GeoServices).to receive(:latlong).and_return([40, -70])
   end
 
   config.after(:each) do

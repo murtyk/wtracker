@@ -11,6 +11,10 @@
   <% if current_grant.show_side_bar?(Sidebars::EMPLOYER_PAGE_TRAINEE_INFO) %>
     <div class = 'span4'>
       <%= render 'panel_trainee_info', employer: @employer %>
+      <% if current_grant.tranee_has_employer %>
+        <hr>
+        <%= render 'panel_apprentices_info', employer: @employer %>
+      <% end %>
     </div>
   <% end %>
 

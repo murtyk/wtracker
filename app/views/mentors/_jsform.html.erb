@@ -1,0 +1,15 @@
+<%= simple_form_for(mentor, remote: true)  do |f| %>
+  <hr>
+  <div class="form-inputs">
+    <div class = 'row-fluid'>
+      <%= f.hidden_field :trainee_id %>
+      <%= f.input :name, label: '* Name' %>
+      <%= f.input :email, label: '* Email' %>
+      <%= f.input :phone, label: '* Phone' %>
+    </div>
+  </div>    
+  <div class="form-actions">
+    <%= ajax_cancel_and_submit_buttons(f) %>
+  </div>
+  <%= ajax_form_cancel_script(mentor, "trainee_#{mentor.trainee_id}_") %>
+<% end %>

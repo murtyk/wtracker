@@ -114,6 +114,11 @@ class TraineesImporter < Importer
     trainee.race_id    = find_race_id(row)
 
     legal_status = Trainee::LEGAL_STATUSES.select{|k,v| v == row['legal_status']}.keys[0]
+
+    if row['employer_id'].present?
+      employer = Employer.where(id: row['employer_id']).first
+      trainee.employer_id = employer.id if employer
+    end
   end
 
   def find_race_id(row)

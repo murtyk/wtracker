@@ -129,6 +129,9 @@ class Trainee < ActiveRecord::Base
 
   has_many :trainee_services
 
+  belongs_to :mentor
+  belongs_to :employer
+
   after_initialize :init
 
   def self.reset_password_keys
