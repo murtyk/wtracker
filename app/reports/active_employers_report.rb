@@ -80,7 +80,7 @@ class ActiveEmployersReport < Report
   def build_trainees_hired
     @trainees_hired =
       TraineeInteraction.joins(trainee: :klasses)
-      .select('employer_id, klasses.id as klass_id,
+      .select('trainee_interactions.employer_id, klasses.id as klass_id,
                                  trainee_interactions.trainee_id')
       .where(trainee_interactions: { status: [4, 6], termination_date: nil })
       .where(klasses: { id: klasses.map(&:id) })
