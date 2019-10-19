@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180102230713) do
+ActiveRecord::Schema.define(version: 20191019172400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -798,6 +798,14 @@ ActiveRecord::Schema.define(version: 20180102230713) do
 
   add_index "leads_queues", ["trainee_id"], name: "index_leads_queues_on_trainee_id", using: :btree
 
+  create_table "mentors", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "opero_companies", force: :cascade do |t|
     t.string   "name",              limit: 255
     t.string   "phone",             limit: 255
@@ -1099,10 +1107,14 @@ ActiveRecord::Schema.define(version: 20180102230713) do
     t.string   "features",                           default: [],              array: true
     t.boolean  "bounced"
     t.string   "bounced_reason"
+    t.integer  "mentor_id"
+    t.integer  "employer_id"
   end
 
   add_index "trainees", ["account_id", "grant_id"], name: "index_trainees_on_account_id_and_grant_id", using: :btree
+  add_index "trainees", ["employer_id"], name: "index_trainees_on_employer_id", using: :btree
   add_index "trainees", ["login_id"], name: "index_trainees_on_login_id", unique: true, using: :btree
+  add_index "trainees", ["mentor_id"], name: "index_trainees_on_mentor_id", using: :btree
 
   create_table "ui_verified_notes", force: :cascade do |t|
     t.integer  "user_id"
@@ -1200,6 +1212,7 @@ ActiveRecord::Schema.define(version: 20180102230713) do
   add_foreign_key "trainee_services", "accounts"
   add_foreign_key "trainee_services", "grants"
   add_foreign_key "trainee_services", "trainees"
+  add_foreign_key "trainees", "employers"
   add_foreign_key "ui_verified_notes", "trainees"
   add_foreign_key "ui_verified_notes", "users"
 end

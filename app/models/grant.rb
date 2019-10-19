@@ -32,7 +32,9 @@ class Grant < ActiveRecord::Base
                  :skip_trainee_data_capture, # true for Amazon
                  :applicant_registration_subheader,
                  :closing, # true when ending soon
-                 :closing_job_leads_message
+                 :closing_job_leads_message,
+                 :trainee_has_mentor,
+                 :tranee_has_employer
 
   validates :name, presence: true, length: { minimum: 3, maximum: 40 }
   validates :start_date, presence: true
