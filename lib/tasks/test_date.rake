@@ -403,6 +403,9 @@ namespace :testprep do
     c_a = city_hash('East Windsor', '', mercer.id, -74.54, 40.2677)
     nj_state.cities.create(c_a)
 
+    c_a = city_hash('Edison', '', middlesex.id, -74.41, 40.52)
+    nj_state.cities.create(c_a)    
+
     create_cities_for_companies_search_spec
   end
 
@@ -418,6 +421,10 @@ namespace :testprep do
     ocean = nj_state.counties.where(name: 'Ocean').first
     c_a = city_hash('Brick', '08723', ocean.id, -74.1357407, 40.0508979)
     nj_state.cities.create(c_a)
+  end
+
+  def middlesex
+    nj_state.counties.where(name: 'Middlesex').first
   end
 
   def fetch_counties
