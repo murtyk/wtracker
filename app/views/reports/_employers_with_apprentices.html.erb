@@ -1,0 +1,26 @@
+<table id="data-table" class="table table-condensed table-bordered table-striped table-hover">
+  <tr style="display:none;">
+    <th><%= report.title%></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Apprentice</th>
+    <th>Mentor</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% report.employers.each do |employer| %>
+      <% employer.apprentices.each do |apprentice| %>
+        <tr>
+          <td><%= employer_link_or_name(employer) %></td>
+          <td><%= link_to(apprentice.name, trainee_path(apprentice)) %></td>
+          <td><%= apprentice.mentor && apprentice.mentor.info %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

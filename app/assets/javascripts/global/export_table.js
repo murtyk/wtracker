@@ -1,5 +1,4 @@
 function ExportTable(tblId){
-
   var html;
   var trhtml = "";
   var gTable = document.getElementById(tblId);
@@ -93,6 +92,8 @@ function CustomMethodToExport(tblId){
 $(function() {
 $('#btnExport').on('click', function(e){
   // window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#dvData').html()));
+
+  console.log("Export Report");
   ExportTable("data-table");
   e.preventDefault();
 });

@@ -8,4 +8,8 @@ class Mentor < ActiveRecord::Base
   def trainee_id
     trainee.id
   end
+
+  def info
+    [name, email, phone].join(" - ")
+  end
 end
