@@ -1,5 +1,4 @@
 function ExportTable(tblId){
-debugger
   var html;
   var trhtml = "";
   var gTable = document.getElementById(tblId);
