@@ -1,10 +1,18 @@
 <h4>Apprentices</h4>
-<% employer.apprentices.each do |apprentice| %>
-  <p>
-    <% name = apprentice.name %>
-    <% if apprentice.mentor.present?
-        name = [name, apprentice.mentor.name, apprentice.mentor.email, apprentice.mentor.phone].join(" - ")
-       end %>
-    <%= link_to(name, trainee_path(apprentice)) %>
-  </p>
-<% end %>
+  <table id="table_employer" class="table table-condensed table-bordered table-striped table-hover table_freeze_header">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Mentor</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+      <% employer.apprentices.each do |apprentice| %>
+        <tr>
+          <td><%= link_to(apprentice.name, trainee_path(apprentice))%></td>
+          <td><%= apprentice.mentor && [apprentice.mentor.name, apprentice.mentor.email, apprentice.mentor.phone].join(" - ")%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

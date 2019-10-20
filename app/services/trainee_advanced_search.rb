@@ -3,8 +3,11 @@
 class TraineeAdvancedSearch
   attr_accessor :account_id, :grant_id, :user_id, :q
 
-  GRANT_TYPES = ['RTW'].freeze
-  GRANT_ATTRIBUTES = { 'RTW' => ['EDP_Date', 'Class Categories'] }.freeze
+  GRANT_TYPES = ['RTW', 'GAINS'].freeze
+  GRANT_ATTRIBUTES = { 
+    'RTW' => ['EDP_Date', 'Class Categories'],
+    'GAINS' => ['Mentor Info', 'Employed At']
+  }.freeze
 
   def initialize(user)
     @account_id = Account.current_id
@@ -39,6 +42,8 @@ class TraineeAdvancedSearch
 
   def search_for_standard_grant
     @q.result.includes(
+      :mentor,
+      :employer,
       :funding_source,
       :home_address,
       :trainee_notes,
