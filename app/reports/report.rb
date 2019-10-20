@@ -22,6 +22,7 @@ class Report
   EMPLOYERS_HIRED                 = 'employers_hired'
   EMPLOYERS_ACTIVITIES_WITH_NOTES = 'employers_activities_with_notes'
   EMPLOYERS_ADDRESS_MISSING       = 'employers_no_address'
+  EMPLOYERS_WITH_APPRENTICES      = 'employers_with_apprentices'
   CLASS_TRAINEES                  = 'class_trainees'
   FUNDING_SOURCE_MONTHLY          = 'funding_source_monthly'
 
@@ -41,6 +42,7 @@ class Report
     ACTIVE_EMPLOYERS                  => :ActiveEmployersReport,
     EMPLOYERS_ACTIVITIES_WITH_NOTES   => :EmployersActivitiesWithNotesReport,
     EMPLOYERS_ADDRESS_MISSING         => :EmployersNoAddressReport,
+    EMPLOYERS_WITH_APPRENTICES        => :EmployersWithApprenticesReport,
     CLASS_TRAINEES                    => :ClassTraineesReport,
     FUNDING_SOURCE_MONTHLY            => :FundingSourceMonthlyReport
   }
@@ -89,8 +91,14 @@ class Report
             EMPLOYERS_ADDRESS_MISSING,
             EMPLOYERS_ACTIVITIES_WITH_NOTES] unless user.admin_access?
 
-    [EMPLOYERS_HIRED, ACTIVE_EMPLOYERS,
-     EMPLOYERS_ACTIVITIES_WITH_NOTES, EMPLOYERS_ADDRESS_MISSING]
+    list = [EMPLOYERS_HIRED, ACTIVE_EMPLOYERS,
+            EMPLOYERS_ACTIVITIES_WITH_NOTES, EMPLOYERS_ADDRESS_MISSING]
+
+    if Grant.current_grant && Grant.current_grant.type == 'GAINS'
+      list << EMPLOYERS_WITH_APPRENTICES
+    end
+
+    list
   end
 
   def self.funding_source_reports(user)
