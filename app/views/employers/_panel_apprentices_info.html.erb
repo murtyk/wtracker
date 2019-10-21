@@ -11,7 +11,7 @@
       <% employer.apprentices.each do |apprentice| %>
         <tr>
           <td><%= link_to(apprentice.name, trainee_path(apprentice))%></td>
-          <td><%= apprentice.mentor && [apprentice.mentor.name, apprentice.mentor.email, apprentice.mentor.phone].join(" - ")%></td>
+          <td><%= apprentice.mentor && apprentice.mentor.info %></td>
         </tr>
       <% end %>
     </tbody>
