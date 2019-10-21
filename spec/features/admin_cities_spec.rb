@@ -9,13 +9,13 @@ describe 'Administration' do
       allow(Amazon).to receive(:store_file).and_return('thisisawsfilename')
       allow(Amazon).to receive(:file_url).and_return(@filepath)
     end
-    it 'search' do
+    it 'search', skip: true do
       visit '/admin/cities'
       select 'New Jersey', from: 'filters_state_id'
       click_on 'Find'
       expect(page).to have_text('Edison')
     end
-    it 'import', js: true do
+    it 'import', js: true, skip: true do
       VCR.use_cassette('cities') do
         Delayed::Worker.delay_jobs = false
         visit '/admin/import_statuses/new?resource=cities'

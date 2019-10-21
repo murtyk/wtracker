@@ -334,7 +334,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def mentor_info
-    mentor ? [mentor.name, mentor.email, mentor.phone].join(" - ") : ""
+    (mentor && mentor.info).to_s
   end
 
   def employed_at
