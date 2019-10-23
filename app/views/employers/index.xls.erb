@@ -1,5 +1,6 @@
 <table border="1">
   <tr>
+  <td>employer:id</td>
   <td>company:name</td>
   <td>company:source</td>
   <td>company:phone_no</td>
@@ -32,6 +33,7 @@
   </tr>
   <% @employers.each do |employer| %>
   <tr>
+    <td><%= employer.id %></td>
     <td><%= employer.name %></td>
     <td><%= employer.employer_source_name %></td>
     <td><%= format_phone_no employer.phone_no %></td>
@@ -66,5 +68,3 @@
   <% end %>
 
 </table>
-
-
