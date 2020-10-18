@@ -3,10 +3,10 @@ require 'rails_helper'
 describe 'trainees' do
   describe 'import' do
     def stub_reader(trainees)
-      header = %w(tapo_id ui_claim_verified_on funding_source disable)
+      header = %w[tapo_id ui_claim_verified_on funding_source disable]
       claim_dates = [nil, '3/23/2014', '10/22/2014']
       fs = [nil, nil, 'NC']
-      disable = %w(Yes No No)
+      disable = %w[Yes No No]
       rows = (0..2).map do |i|
         [trainees[i].id, claim_dates[i], fs[i], disable[i]]
       end
@@ -18,7 +18,7 @@ describe 'trainees' do
 
       allow_any_instance_of(Applicant).to receive(:humanizer_questions)
         .and_return([{ 'question' => 'Two plus two?',
-                       'answers' => %w(4 four) }])
+                       'answers' => %w[4 four] }])
 
       os_latlong = OpenStruct.new(latitude: 40.50, longitude: -75.25)
       allow(GeoServices).to receive(:perform_search).and_return([os_latlong])
@@ -42,7 +42,7 @@ describe 'trainees' do
 
     it 'imports ui claim verifications' do
       expect(Trainee.where.not(disabled_date: nil).count).to eql(1)
-      expect(Trainee.where(ui_claim_verified_on: '3/23/2014').count).to eql(1)
+      expect(Trainee.where(ui_claim_verified_on: '20140323'.to_date).count).to eql(1)
       expect(Trainee.where(funding_source_id: @nc.id).count).to eql(1)
     end
   end
