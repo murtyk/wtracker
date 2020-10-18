@@ -2,18 +2,18 @@
 # one trainee record for each gran
 # trainee can be assigned to any number of classes
 # status defines placement status and it is updated by TI
-# rubocop:disable ClassLength
+# rubocop:disable Metrics/ClassLength
 class Trainee < ActiveRecord::Base
   LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }.freeze
   STATUSES = { 0 => 'Not Placed', 4 => 'Placed', 5 => 'OJT Enrolled' }.freeze
   include Encryption
   include ValidationsMixins
   include InteractionsMixins
-  include PgSearch
+  include PgSearch::Model
   include FeaturesMixins
 
   pg_search_scope :search_by_name,
-                  against: [:first, :last],
+                  against: %i[first last],
                   using: { tsearch: { prefix: true } }
 
   default_scope { where(account_id: Account.current_id) }
@@ -153,7 +153,7 @@ class Trainee < ActiveRecord::Base
     if Rails.env.development? || Rails.env.test?
       begin
         self.trainee_id ||= ''
-      rescue
+      rescue StandardError
         self.trainee_id = ''
       end
     else
@@ -280,9 +280,9 @@ class Trainee < ActiveRecord::Base
 
   def job_lead_counts_by_status
     {
-      'Not Viewed'     => not_viewed_job_leads_count,
-      'Viewed'         => viewed_job_leads_count,
-      'Applied'        => applied_job_leads_count,
+      'Not Viewed' => not_viewed_job_leads_count,
+      'Viewed' => viewed_job_leads_count,
+      'Applied' => applied_job_leads_count,
       'Not Interested' => not_interested_job_leads_count
     }
   end
@@ -343,7 +343,7 @@ class Trainee < ActiveRecord::Base
 
   def self.ransackable_attributes(auth_object = nil)
     # whitelist only the title and body attributes for other users
-    super & %w(first last email funding_source_id mobile_no veteran status)
+    super & %w[first last email funding_source_id mobile_no veteran status]
   end
 
   private

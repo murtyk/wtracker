@@ -26,7 +26,7 @@ gem 'bson_ext'
 # gem 'mongoid'
 gem 'mongoid'
 
-gem 'attr_encrypted', '1.3.3'
+gem 'attr_encrypted', '1.3.5'
 gem 'draper'
 gem 'simple_form', '~> 3.1.0'
 gem 'devise', '~> 3.4.1'
