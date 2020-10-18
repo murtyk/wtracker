@@ -7,12 +7,12 @@ class Employer < ActiveRecord::Base
   include InteractionsMixins
 
   scope :order_by_name, -> { order(:name) }
-  scope :from_source, -> (source_id) { where(employer_source_id: source_id) }
+  scope :from_source, ->(source_id) { where(employer_source_id: source_id) }
 
-  scope :in_sector, lambda  { |sector_id|
+  scope :in_sector, lambda { |sector_id|
     joins(:employer_sectors).where(employer_sectors: { sector_id: sector_id })
   }
-  scope :in_counties, lambda  { |county_ids|
+  scope :in_counties, lambda { |county_ids|
     joins(:address).where(addresses: { county_id: county_ids })
   }
 
@@ -45,7 +45,7 @@ class Employer < ActiveRecord::Base
 
   has_many :hot_jobs, dependent: :destroy
 
-  has_many :apprentices, class: Trainee
+  has_many :apprentices, class_name: Trainee
 
   def formatted_address
     address ? address.gmaps4rails_address : ''
@@ -78,21 +78,21 @@ class Employer < ActiveRecord::Base
 
   def self.existing_employer(name, employer_source_id, lat, lng)
     Employer.joins(:address)
-      .where(
-        'name ILIKE ? and employer_source_id = ? and
+            .where(
+              'name ILIKE ? and employer_source_id = ? and
         round(addresses.latitude::numeric, 2)= ?
         and round(addresses.longitude::numeric, 2) = ?',
-        name, employer_source_id, lat.to_f.round(2), lng.to_f.round(2)
+              name, employer_source_id, lat.to_f.round(2), lng.to_f.round(2)
             )
-      .first
+            .first
   end
 
   def duplicate?(assume_no_address = false)
     return duplicate_with_address if !assume_no_address && address
 
     dupes = Employer.where('name ILIKE ? ', name)
-            .where(employer_source_id: employer_source_id)
-            .where.not(id: id)
+                    .where(employer_source_id: employer_source_id)
+                    .where.not(id: id)
 
     # do we have one without address?
 
@@ -109,9 +109,9 @@ class Employer < ActiveRecord::Base
 
   def potential_duplicates
     Employer.joins(:address)
-      .where('name ILIKE ?', name)
-      .where(employer_source_id: employer_source_id)
-      .where.not(id: id)
+            .where('name ILIKE ?', name)
+            .where(employer_source_id: employer_source_id)
+            .where.not(id: id)
   end
 
   def self.find_by_name_and_zip(name, zip)
