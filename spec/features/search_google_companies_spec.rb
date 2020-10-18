@@ -8,7 +8,6 @@ describe 'Google Companies' do
 
     it 'finds companies' do
       visit('/google_companies')
-      debugger
       VCR.use_cassette('companies_google_search') do
         fill_in 'filters_name', with: 'Munich Re'
         fill_in 'filters_location', with: 'Princeton, NJ'
