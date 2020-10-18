@@ -94,6 +94,7 @@ gem 'quiet_assets', group: :development
 
 group :test do
   gem 'rspec-rails', '~> 3.1'
+  gem 'shoulda-matchers'
   gem 'rspec-retry'
   gem 'factory_girl_rails'
   gem 'poltergeist'
@@ -109,7 +110,7 @@ group :test do
   gem 'shoulda'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'webmock', '1.11.0'
+  gem 'webmock'
   gem 'vcr', '2.9.2'
 
   gem 'simplecov' #, require: false
