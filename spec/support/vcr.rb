@@ -20,4 +20,8 @@ VCR.configure do |c|
   c.filter_sensitive_data('<googleapis_key>') do
     ENV['GOOGLE_KEY']
   end
+
+  c.filter_sensitive_data('<indeed_publisher>') do
+    ENV['PUBLISHER']
+  end
 end

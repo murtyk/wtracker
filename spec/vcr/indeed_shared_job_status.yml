@@ -1,123 +1,125 @@
 ---
 http_interactions:
-- request:
-    method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Edison,NJ&limit=25&publisher=5675970181406859&q=cnc&radius=10&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers: {}
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Sat, 27 Aug 2016 18:52:30 GMT
-      Server:
-      - Apache
-      Set-Cookie:
-      - BIGipServerjob_iad=!jwVV8iM4KDzewnQRNhs+rOzpOInz89YBEOoEIt39i4kEL/E15TG5R8WJeS4OI5PfTTlUOKfgn+dzdi0=;
-        path=/
-      - CTK=1ar6lh5lr53usf90; Domain=.indeed.com; Expires=Thu, 01-Sep-2033 13:41:01
-        GMT; Path=/
-      - JSESSIONID=AF8EB3C883FB19AE000CF1E13E50FA4F.jasxB_iad-job38; Path=/; HttpOnly
-      - ctkgen=1; Expires=Sat, 27-Aug-2016 18:55:30 GMT; Path=/
-      X-Frame-Options:
-      - SAMEORIGIN
-      Pragma:
-      - no-cache
-      Cache-Control:
-      - no-store, no-cache, must-revalidate, private
-      Expires:
-      - Sat, 27 Aug 2016 18:51:30 GMT
-      X-Content-Type-Options:
-      - nosniff
-      Vary:
-      - User-Agent
-      Transfer-Encoding:
-      - chunked
-      Content-Type:
-      - application/json;charset=UTF-8
-    body:
-      encoding: UTF-8
-      string: '{"version":2,"query":"cnc","location":"Edison,NJ","paginationPayload":"","radius":10,"dupefilter":true,"highlight":true,"totalResults":3,"start":1,"end":3,"pageNumber":0,"results":[{"jobtitle":"Draftsperson
-        (Steel Detailer)","company":"ACR Solutions Ltd","city":"Middlesex","state":"NJ","country":"US","formattedLocation":"Middlesex,
-        NJ","source":"Careers4a","date":"Tue, 23 Aug 2016 19:11:12 GMT","snippet":"Ability
-        to work under pressure and manage number of projects at any given time by
-        prioritising projects based on site dates and production needs....","url":"http://www.indeed.com/viewjob?jk=bf7433d291523e7b&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=5675970181406859&atk=1ar6lh5m053usa8d","onmousedown":"indeed_clk(this,''269'');","jobkey":"bf7433d291523e7b","sponsored":false,"expired":false,"indeedApply":false,"formattedLocationFull":"Middlesex,
-        NJ","formattedRelativeTime":"3 days ago"},{"jobtitle":"machinist","company":"Steimling
-        & Son Inc","city":"Sayreville","state":"NJ","country":"US","formattedLocation":"Sayreville,
-        NJ","source":"Workpop","date":"Fri, 26 Aug 2016 19:56:06 GMT","snippet":"Manual/CNC
-        machinist. Large/heavy parts manufacture and repair for Marine and Industrial
-        equipment. Must be physically fit. Knowledge of welding a plus but","url":"http://www.indeed.com/viewjob?jk=886283658422cb34&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=5675970181406859&atk=1ar6lh5m053usa8d","onmousedown":"indeed_clk(this,''269'');","jobkey":"886283658422cb34","sponsored":false,"expired":false,"indeedApply":false,"formattedLocationFull":"Sayreville,
-        NJ 08872","formattedRelativeTime":"22 hours ago"},{"jobtitle":"Field Service
-        Technician","company":"AXYZ International Inc.","city":"Somerset","state":"NJ","country":"US","formattedLocation":"Somerset,
-        NJ","source":"Indeed","date":"Thu, 25 Aug 2016 17:07:25 GMT","snippet":"AXYZ
-        International is a leading global manufacturer of <b>CNC</b> Router and <b>CNC</b>
-        Knife Systems, having manufactured, sold, installed and supported over 10500
-        <b>CNC</b>...","url":"http://www.indeed.com/viewjob?jk=de5b1de5265703e2&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=5675970181406859&atk=1ar6lh5m053usa8d","onmousedown":"indeed_clk(this,''269'');","jobkey":"de5b1de5265703e2","sponsored":false,"expired":false,"indeedApply":true,"formattedLocationFull":"Somerset,
-        NJ","formattedRelativeTime":"2 days ago"}]}'
-    http_version: 
-  recorded_at: Sat, 27 Aug 2016 18:52:27 GMT
-- request:
-    method: get
-    uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Edison,NJ&limit=25&publisher=5675970181406859&q=cnc&radius=10&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers: {}
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Sat, 27 Aug 2016 18:52:30 GMT
-      Server:
-      - Apache
-      Set-Cookie:
-      - BIGipServerjob_iad=!hgSGPXLknRyxSukRNhs+rOzpOInz83XvH+5RwObo0rXWQW/2rNpSlVN9uohFL+Gmv9bS4eAgMuO8694=;
-        path=/
-      - CTK=1ar6lh5pm5v1vbmt; Domain=.indeed.com; Expires=Thu, 01-Sep-2033 13:41:01
-        GMT; Path=/
-      - JSESSIONID=C1367E017389C5043F0F751A62B6D4A6.jasxB_iad-job22; Path=/; HttpOnly
-      - ctkgen=1; Expires=Sat, 27-Aug-2016 18:55:30 GMT; Path=/
-      X-Frame-Options:
-      - SAMEORIGIN
-      Pragma:
-      - no-cache
-      Cache-Control:
-      - no-store, no-cache, must-revalidate, private
-      Expires:
-      - Sat, 27 Aug 2016 18:51:30 GMT
-      X-Content-Type-Options:
-      - nosniff
-      Vary:
-      - User-Agent
-      Transfer-Encoding:
-      - chunked
-      Content-Type:
-      - application/json;charset=UTF-8
-    body:
-      encoding: UTF-8
-      string: '{"version":2,"query":"cnc","location":"Edison,NJ","paginationPayload":"","radius":10,"dupefilter":true,"highlight":true,"totalResults":3,"start":1,"end":3,"pageNumber":0,"results":[{"jobtitle":"Draftsperson
-        (Steel Detailer)","company":"ACR Solutions Ltd","city":"Middlesex","state":"NJ","country":"US","formattedLocation":"Middlesex,
-        NJ","source":"Careers4a","date":"Tue, 23 Aug 2016 19:11:12 GMT","snippet":"Ability
-        to work under pressure and manage number of projects at any given time by
-        prioritising projects based on site dates and production needs....","url":"http://www.indeed.com/viewjob?jk=bf7433d291523e7b&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=5675970181406859&atk=1ar6lh5ps5v1v8b1","onmousedown":"indeed_clk(this,''392'');","jobkey":"bf7433d291523e7b","sponsored":false,"expired":false,"indeedApply":false,"formattedLocationFull":"Middlesex,
-        NJ","formattedRelativeTime":"3 days ago"},{"jobtitle":"machinist","company":"Steimling
-        & Son Inc","city":"Sayreville","state":"NJ","country":"US","formattedLocation":"Sayreville,
-        NJ","source":"Workpop","date":"Fri, 26 Aug 2016 19:56:06 GMT","snippet":"Manual/CNC
-        machinist. Large/heavy parts manufacture and repair for Marine and Industrial
-        equipment. Must be physically fit. Knowledge of welding a plus but","url":"http://www.indeed.com/viewjob?jk=886283658422cb34&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=5675970181406859&atk=1ar6lh5ps5v1v8b1","onmousedown":"indeed_clk(this,''392'');","jobkey":"886283658422cb34","sponsored":false,"expired":false,"indeedApply":false,"formattedLocationFull":"Sayreville,
-        NJ 08872","formattedRelativeTime":"22 hours ago"},{"jobtitle":"Field Service
-        Technician","company":"AXYZ International Inc.","city":"Somerset","state":"NJ","country":"US","formattedLocation":"Somerset,
-        NJ","source":"Indeed","date":"Thu, 25 Aug 2016 17:07:25 GMT","snippet":"AXYZ
-        International is a leading global manufacturer of <b>CNC</b> Router and <b>CNC</b>
-        Knife Systems, having manufactured, sold, installed and supported over 10500
-        <b>CNC</b>...","url":"http://www.indeed.com/viewjob?jk=de5b1de5265703e2&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=5675970181406859&atk=1ar6lh5ps5v1v8b1","onmousedown":"indeed_clk(this,''392'');","jobkey":"de5b1de5265703e2","sponsored":false,"expired":false,"indeedApply":true,"formattedLocationFull":"Somerset,
-        NJ","formattedRelativeTime":"2 days ago"}]}'
-    http_version: 
-  recorded_at: Sat, 27 Aug 2016 18:52:27 GMT
+  - request:
+      method: get
+      uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Edison,NJ&limit=25&publisher=<indeed_publisher>&q=cnc&radius=10&start=25&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+      body:
+        encoding: US-ASCII
+        string: ''
+      headers: {}
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Date:
+          - Sat, 27 Aug 2016 18:52:30 GMT
+        Server:
+          - Apache
+        Set-Cookie:
+          - BIGipServerjob_iad=!jwVV8iM4KDzewnQRNhs+rOzpOInz89YBEOoEIt39i4kEL/E15TG5R8WJeS4OI5PfTTlUOKfgn+dzdi0=;
+            path=/
+          - CTK=1ar6lh5lr53usf90; Domain=.indeed.com; Expires=Thu, 01-Sep-2033 13:41:01
+            GMT; Path=/
+          - JSESSIONID=AF8EB3C883FB19AE000CF1E13E50FA4F.jasxB_iad-job38; Path=/; HttpOnly
+          - ctkgen=1; Expires=Sat, 27-Aug-2016 18:55:30 GMT; Path=/
+        X-Frame-Options:
+          - SAMEORIGIN
+        Pragma:
+          - no-cache
+        Cache-Control:
+          - no-store, no-cache, must-revalidate, private
+        Expires:
+          - Sat, 27 Aug 2016 18:51:30 GMT
+        X-Content-Type-Options:
+          - nosniff
+        Vary:
+          - User-Agent
+        Transfer-Encoding:
+          - chunked
+        Content-Type:
+          - application/json;charset=UTF-8
+      body:
+        encoding: UTF-8
+        string:
+          '{"version":2,"query":"cnc","location":"Edison,NJ","paginationPayload":"","radius":10,"dupefilter":true,"highlight":true,"totalResults":3,"start":1,"end":3,"pageNumber":0,"results":[{"jobtitle":"Draftsperson
+          (Steel Detailer)","company":"ACR Solutions Ltd","city":"Middlesex","state":"NJ","country":"US","formattedLocation":"Middlesex,
+          NJ","source":"Careers4a","date":"Tue, 23 Aug 2016 19:11:12 GMT","snippet":"Ability
+          to work under pressure and manage number of projects at any given time by
+          prioritising projects based on site dates and production needs....","url":"http://www.indeed.com/viewjob?jk=bf7433d291523e7b&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=<indeed_publisher>&atk=1ar6lh5m053usa8d","onmousedown":"indeed_clk(this,''269'');","jobkey":"bf7433d291523e7b","sponsored":false,"expired":false,"indeedApply":false,"formattedLocationFull":"Middlesex,
+          NJ","formattedRelativeTime":"3 days ago"},{"jobtitle":"machinist","company":"Steimling
+          & Son Inc","city":"Sayreville","state":"NJ","country":"US","formattedLocation":"Sayreville,
+          NJ","source":"Workpop","date":"Fri, 26 Aug 2016 19:56:06 GMT","snippet":"Manual/CNC
+          machinist. Large/heavy parts manufacture and repair for Marine and Industrial
+          equipment. Must be physically fit. Knowledge of welding a plus but","url":"http://www.indeed.com/viewjob?jk=886283658422cb34&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=<indeed_publisher>&atk=1ar6lh5m053usa8d","onmousedown":"indeed_clk(this,''269'');","jobkey":"886283658422cb34","sponsored":false,"expired":false,"indeedApply":false,"formattedLocationFull":"Sayreville,
+          NJ 08872","formattedRelativeTime":"22 hours ago"},{"jobtitle":"Field Service
+          Technician","company":"AXYZ International Inc.","city":"Somerset","state":"NJ","country":"US","formattedLocation":"Somerset,
+          NJ","source":"Indeed","date":"Thu, 25 Aug 2016 17:07:25 GMT","snippet":"AXYZ
+          International is a leading global manufacturer of <b>CNC</b> Router and <b>CNC</b>
+          Knife Systems, having manufactured, sold, installed and supported over 10500
+          <b>CNC</b>...","url":"http://www.indeed.com/viewjob?jk=de5b1de5265703e2&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=<indeed_publisher>&atk=1ar6lh5m053usa8d","onmousedown":"indeed_clk(this,''269'');","jobkey":"de5b1de5265703e2","sponsored":false,"expired":false,"indeedApply":true,"formattedLocationFull":"Somerset,
+          NJ","formattedRelativeTime":"2 days ago"}]}'
+      http_version:
+    recorded_at: Sat, 27 Aug 2016 18:52:27 GMT
+  - request:
+      method: get
+      uri: http://api.indeed.com/ads/apisearch?format=json&fromage=7&l=Edison,NJ&limit=25&publisher=<indeed_publisher>&q=cnc&radius=10&start=0&useragent=Mozilla//4.0(Firefox)&userip=127.0.0.1&v=2
+      body:
+        encoding: US-ASCII
+        string: ''
+      headers: {}
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Date:
+          - Sat, 27 Aug 2016 18:52:30 GMT
+        Server:
+          - Apache
+        Set-Cookie:
+          - BIGipServerjob_iad=!hgSGPXLknRyxSukRNhs+rOzpOInz83XvH+5RwObo0rXWQW/2rNpSlVN9uohFL+Gmv9bS4eAgMuO8694=;
+            path=/
+          - CTK=1ar6lh5pm5v1vbmt; Domain=.indeed.com; Expires=Thu, 01-Sep-2033 13:41:01
+            GMT; Path=/
+          - JSESSIONID=C1367E017389C5043F0F751A62B6D4A6.jasxB_iad-job22; Path=/; HttpOnly
+          - ctkgen=1; Expires=Sat, 27-Aug-2016 18:55:30 GMT; Path=/
+        X-Frame-Options:
+          - SAMEORIGIN
+        Pragma:
+          - no-cache
+        Cache-Control:
+          - no-store, no-cache, must-revalidate, private
+        Expires:
+          - Sat, 27 Aug 2016 18:51:30 GMT
+        X-Content-Type-Options:
+          - nosniff
+        Vary:
+          - User-Agent
+        Transfer-Encoding:
+          - chunked
+        Content-Type:
+          - application/json;charset=UTF-8
+      body:
+        encoding: UTF-8
+        string:
+          '{"version":2,"query":"cnc","location":"Edison,NJ","paginationPayload":"","radius":10,"dupefilter":true,"highlight":true,"totalResults":3,"start":1,"end":3,"pageNumber":0,"results":[{"jobtitle":"Draftsperson
+          (Steel Detailer)","company":"ACR Solutions Ltd","city":"Middlesex","state":"NJ","country":"US","formattedLocation":"Middlesex,
+          NJ","source":"Careers4a","date":"Tue, 23 Aug 2016 19:11:12 GMT","snippet":"Ability
+          to work under pressure and manage number of projects at any given time by
+          prioritising projects based on site dates and production needs....","url":"http://www.indeed.com/viewjob?jk=bf7433d291523e7b&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=<indeed_publisher>&atk=1ar6lh5ps5v1v8b1","onmousedown":"indeed_clk(this,''392'');","jobkey":"bf7433d291523e7b","sponsored":false,"expired":false,"indeedApply":false,"formattedLocationFull":"Middlesex,
+          NJ","formattedRelativeTime":"3 days ago"},{"jobtitle":"machinist","company":"Steimling
+          & Son Inc","city":"Sayreville","state":"NJ","country":"US","formattedLocation":"Sayreville,
+          NJ","source":"Workpop","date":"Fri, 26 Aug 2016 19:56:06 GMT","snippet":"Manual/CNC
+          machinist. Large/heavy parts manufacture and repair for Marine and Industrial
+          equipment. Must be physically fit. Knowledge of welding a plus but","url":"http://www.indeed.com/viewjob?jk=886283658422cb34&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=<indeed_publisher>&atk=1ar6lh5ps5v1v8b1","onmousedown":"indeed_clk(this,''392'');","jobkey":"886283658422cb34","sponsored":false,"expired":false,"indeedApply":false,"formattedLocationFull":"Sayreville,
+          NJ 08872","formattedRelativeTime":"22 hours ago"},{"jobtitle":"Field Service
+          Technician","company":"AXYZ International Inc.","city":"Somerset","state":"NJ","country":"US","formattedLocation":"Somerset,
+          NJ","source":"Indeed","date":"Thu, 25 Aug 2016 17:07:25 GMT","snippet":"AXYZ
+          International is a leading global manufacturer of <b>CNC</b> Router and <b>CNC</b>
+          Knife Systems, having manufactured, sold, installed and supported over 10500
+          <b>CNC</b>...","url":"http://www.indeed.com/viewjob?jk=de5b1de5265703e2&qd=dbiWh_LzHK6bTV-fOfIZZ7U8LQio87N9PgRm7RXVeynxMl8JTQ0RGN1-V3MUnbzCEpG5WSuhhSdJ3MGkub3C9C6VXVgS69OEWMnJ1A8fiSM&indpubnum=<indeed_publisher>&atk=1ar6lh5ps5v1v8b1","onmousedown":"indeed_clk(this,''392'');","jobkey":"de5b1de5265703e2","sponsored":false,"expired":false,"indeedApply":true,"formattedLocationFull":"Somerset,
+          NJ","formattedRelativeTime":"2 days ago"}]}'
+      http_version:
+    recorded_at: Sat, 27 Aug 2016 18:52:27 GMT
 recorded_with: VCR 2.9.2
