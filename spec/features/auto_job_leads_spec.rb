@@ -16,7 +16,7 @@ describe 'auto job leads' do
       Delayed::Worker.delay_jobs = false
     end
     it 'updates profile' do
-      allow(RandomIp).to receive(:fetch).and_return('74.102.50.66')
+      allow(RandomIp).to receive(:fetch).and_return("74.102.50.66")
 
       VCR.use_cassette('auto_job_leads') do
         # we have a trainee without a job search profile.
@@ -30,8 +30,8 @@ describe 'auto job leads' do
 
         # now trainee updates profile and it should generate leads
         profile = JobSearchProfile.last
-        id = profile.id
-        key = profile.key
+        id   = profile.id
+        key  = profile.key
 
         trainee = Trainee.unscoped.find profile.trainee_id
         grant = Grant.unscoped.find trainee.grant_id
@@ -53,11 +53,13 @@ describe 'auto job leads' do
         # it should create GrantJobLeadCount
 
         gjlc = GrantJobLeadCount.unscoped.where(grant_id: grant.id).last
+
         expect(gjlc.count).to eql(25)
 
         profile_url = "/profiles/#{id}?key=#{key}"
         visit profile_url
-        expect(page).to have_text 'Continuous Improvement Specialist'
+
+        expect(page).to have_text 'Java Developer'
         expect(page).to have_text 'Status:Not Viewed'
         expect(page).to have_text 'Not Viewed 25'
         expect(page).to_not have_text 'Applied 1'
@@ -85,8 +87,8 @@ describe 'auto job leads' do
       # generate profile
       AutoJobLeads.new.perform
       profile = JobSearchProfile.first
-      @id = profile.id
-      @key = profile.key
+      @id   = profile.id
+      @key  = profile.key
     end
     it 'trainee opts out and director can view' do
       switch_to_auto_leads_domain
