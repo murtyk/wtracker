@@ -1,9 +1,13 @@
+require 'mechanize'
+require 'webmock/rspec'
+WebMock.disable_net_connect!
+
 VCR.configure do |c|
   c.cassette_library_dir = Rails.root.join('spec', 'vcr')
   c.hook_into :webmock # or :fakeweb
   c.default_cassette_options = { record: :new_episodes }
   c.ignore_localhost = true
-  # c.allow_http_connections_when_no_cassette = true
+  c.allow_http_connections_when_no_cassette = false
 
   c.filter_sensitive_data('<simplyhired_auth>') do
     ENV['SH_AUTH']
@@ -19,5 +23,9 @@ VCR.configure do |c|
 
   c.filter_sensitive_data('<googleapis_key>') do
     ENV['GOOGLE_KEY']
+  end
+
+  c.filter_sensitive_data('<indeed_publisher>') do
+    ENV['PUBLISHER']
   end
 end

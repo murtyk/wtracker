@@ -7,7 +7,7 @@ class Api::V1::SessionsController < Api::V1::ApiBaseController
       sign_in admin, store: false
       admin.generate_authentication_token!
       admin.save
-      render json: admin, root: :admin, status: 200
+      render json: admin, root: 'admin', status: 200
     else
       render json: { errors: 'Invalid email or password' }, status: 422
     end

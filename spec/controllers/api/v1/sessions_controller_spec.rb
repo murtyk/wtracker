@@ -16,7 +16,8 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
       it 'returns the admin record corresponding to the given credentials' do
         @admin.reload
-        expect(json_response[:admin][:auth_token]).to eql @admin.auth_token
+        # expect(json_response[:admin][:auth_token]).to eql @admin.auth_token
+        expect(json_response[:auth_token]).to eql @admin.auth_token
       end
 
       it { is_expected.to respond_with 200 }

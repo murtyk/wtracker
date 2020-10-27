@@ -15,7 +15,7 @@ describe 'trainees' do
     end
 
     it 'can import trainees', js: true do
-      VCR.use_cassette('trainees_import') do
+      VCR.use_cassette('trainees_import', record: :none) do
         Delayed::Worker.delay_jobs = false
         visit '/import_statuses/new?resource=trainees'
         attach_file 'file', @filepath
@@ -23,6 +23,7 @@ describe 'trainees' do
         click_button 'Import'
         wait_for_ajax
         visit '/import_statuses/' + ImportStatus.unscoped.last.id.to_s
+        puts page.html
         expect(page).to have_text 'Lucas'
         expect(page).to have_text 'Errors encountered'
         click_on 'Retry'

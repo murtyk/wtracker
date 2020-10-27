@@ -1,6 +1,6 @@
 # trainee enters job search parameters
 class JobSearchProfile < ActiveRecord::Base
-  include PgSearch
+  include PgSearch::Model
   pg_search_scope :search_skills,
                   against: :skills,
                   using: { tsearch: { any_word: true } }

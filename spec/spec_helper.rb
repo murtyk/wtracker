@@ -1,8 +1,9 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
+ENV['RAILS_ENV'] ||= 'test'
 
-require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'
+require 'shoulda/matchers'
 # require 'rspec/autorun'
 require 'capybara/rspec'
 require 'support/subdomains.rb'
@@ -12,7 +13,6 @@ require 'capybara-screenshot/rspec'
 require 'capybara'
 require 'capybara/poltergeist'
 
-
 require 'simplecov'
 require 'simplecov-csv'
 # require 'headless'
@@ -21,7 +21,7 @@ require 'rspec/retry'
 # WebMock.allow_net_connect!
 
 # SimpleCov.formatter = SimpleCov::Formatter::CSVFormatter
-SimpleCov.coverage_dir(ENV["COVERAGE_REPORTS"] || 'coverage')
+SimpleCov.coverage_dir(ENV['COVERAGE_REPORTS'] || 'coverage')
 
 SimpleCov.start do
   add_group 'Models', '/app/models/'
@@ -40,17 +40,17 @@ SimpleCov.formatter = SimpleCov::Formatter::Codecov
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 require 'phantomjs'
 Capybara.register_driver(:poltergeist) do |app|
   options = {
-    debug: ENV["JS_DEBUG"],
+    debug: ENV['JS_DEBUG'],
     js_errors: false,
     window_size: [2400, 2000],
     inspector: true,
     phantomjs: Phantomjs.path,
-    phantomjs_logger: File.open("#{Rails.root}/log/test_phantomjs.log", "a")
+    phantomjs_logger: File.open("#{Rails.root}/log/test_phantomjs.log", 'a')
     # phantomjs_options: ['--web-security=no']
   }
   Capybara::Poltergeist::Driver.new(app, options)
@@ -83,7 +83,7 @@ RSpec.configure do |config|
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
-  config.order = "random"
+  config.order = 'random'
   # config.order = "default"
 
   Capybara.server_port = 7171 + ENV['TEST_ENV_NUMBER'].to_i
@@ -142,6 +142,13 @@ RSpec.configure do |config|
   #   headless.destroy unless ENV['TEST_ENV_NUMBER'].to_i > 0
   # end
   config.reporter.register_listener SpecListener.new, :example_passed
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end
 
 Capybara::Screenshot.autosave_on_failure = false

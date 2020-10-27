@@ -1,11 +1,9 @@
 source 'https://rubygems.org'
 
 # gem 'rails', github: 'rails/rails', ref: '968c581ea34b5236af14805e6a77913b1cb36238', branch: '4-1-stable'
-group :production, :staging, :integration do
-  ruby ENV['CUSTOM_RUBY_VERSION'] || '2.2.0'
-end
+ruby '2.4.1'
 
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.8'
 # gem 'protected_attributes', '1.0.7'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -20,15 +18,15 @@ group :production, :staging, :integration do
   gem 'rails_12factor', '0.0.2'
 end
 
-gem 'pg'
+gem 'pg', '~> 0.20'
 # gem 'mongo'
-gem 'mongo', '~> 2.2'
+gem 'mongo'
 gem 'bson_ext'
 # gem 'mongoid', github: 'mongoid/mongoid'
 # gem 'mongoid'
-gem 'mongoid', '~> 5.0'
+gem 'mongoid'
 
-gem 'attr_encrypted', '1.3.3'
+gem 'attr_encrypted', '1.3.5'
 gem 'draper'
 gem 'simple_form', '~> 3.1.0'
 gem 'devise', '~> 3.4.1'
@@ -96,6 +94,7 @@ gem 'quiet_assets', group: :development
 
 group :test do
   gem 'rspec-rails', '~> 3.1'
+  gem 'shoulda-matchers'
   gem 'rspec-retry'
   gem 'factory_girl_rails'
   gem 'poltergeist'
@@ -111,7 +110,7 @@ group :test do
   gem 'shoulda'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'webmock', '1.11.0'
+  gem 'webmock'
   gem 'vcr', '2.9.2'
 
   gem 'simplecov' #, require: false
