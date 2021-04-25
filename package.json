@@ -1,0 +1,16 @@
+{
+  "name": "mascot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://murtykorada@bitbucket.org/murtykorada/wtracker.git",
+  "author": "murtyk <murty.korada@vydia.com>",
+  "license": "MIT",
+  "scripts": {
+    "?docker-ssh": "ssh into docker",
+    "docker-ssh": "docker-compose run web /bin/bash",
+    "?console": "runs web server",
+    "console": "docker-compose run web rails c",
+    "?dev": "runs web server",
+    "dev": "docker-compose up"
+  }
+}

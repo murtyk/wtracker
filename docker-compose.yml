@@ -1,0 +1,21 @@
+version: '3.6'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5441:5432"
+    volumes:
+      - ~/volumes/wtracker:/var/lib/postgresql/data:z
+      - .:/wtracker
+
+  web:
+    tty: true
+    stdin_open: true
+    build: .
+    command: rails s -b 0.0.0.0
+    volumes:
+      - .:/wtracker
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
