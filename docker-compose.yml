@@ -12,6 +12,7 @@ services:
     tty: true
     stdin_open: true
     build: .
+    platform: linux/amd64
     command: rails s -b 0.0.0.0
     volumes:
       - .:/wtracker
