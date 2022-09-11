@@ -49,20 +49,30 @@ pg_restore --verbose --clean --no-acl -h localhost -U railsdev -d wtracker_dev l
 1. Add jobs to lib/tasks/scheduler.rake
 2. Use the jobs in heroku scheduler
 
-Certificates
+Steps generate new certificate and upload to Heroku
 
-Not able to renew them. Do a new one.
+Run on host(Mac)
 
-sudo certbot --server https://acme-v02.api.letsencrypt.org/directory -d *.managee2e.com -d managee2e.com --manual --preferred-challenges dns-01 certonly
+$sudo certbot --server https://acme-v02.api.letsencrypt.org/directory -d *.managee2e.com -d managee2e.com --manual --preferred-challenges dns-01 certonly
 
 Add the DNS records in bluehost
 
-Wait for few hours and enter to continue
+Wait for few minutes and enter to continue
 
-copy all files from /etc/letsencrypt/live/managee2e.com/  to a tmp/xxxx directory 
+copy all files from /etc/letsencrypt/live/managee2e.com/  to a tmp/xxxx directory
 
-heroku certs:update tmp/certs-060119/fullchain.pem tmp/certs-060119/privkey.pem -r production
+Find cert names for opero
 
-Test 
+$heroku certs -a opero
+Name                   Common Name(s)                  Expires               Trusted  Type  Domains
+─────────────────────  ──────────────────────────────  ────────────────────  ───────  ────  ───────
+baryonyx-43226         *.managee2e.com, managee2e.com  2022-06-22 11:44 UTC  True     SNI   0
+parasaurolophus-55999  *.managee2e.com, managee2e.com  2022-09-12 01:24 UTC  True     SNI   2
+
+Update certs on heroku
+
+$sudo heroku certs:update tmp/091122/fullchain.pem tmp/091122/privkey.pem -a opero --name parasaurolophus-55999
+
+Test
 
 Add a calendar reminder to renew/generate certificate.
