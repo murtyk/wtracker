@@ -80,6 +80,8 @@ gem 'uglifier', '>= 1.3.0'
 gem 'google-api-client'
 
 group :development do
+  gem 'libv8', '3.16.14.19'
+  gem 'therubyracer', :platforms => :ruby
   gem 'rack-mini-profiler'
   gem 'web-console', '~> 2.0'
 end

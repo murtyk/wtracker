@@ -216,6 +216,7 @@ GEM
     kgio (2.11.3)
     launchy (2.5.0)
       addressable (~> 2.7)
+    libv8 (3.16.14.19)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -333,6 +334,7 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    ref (2.0.0)
     representable (3.0.4)
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
@@ -427,6 +429,9 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    therubyracer (0.12.3)
+      libv8 (~> 3.16.14.15)
+      ref
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -512,6 +517,7 @@ DEPENDENCIES
   jquery-rails (= 4.0.3)
   jquery.fileupload-rails (= 1.11.0)
   launchy
+  libv8 (= 3.16.14.19)
   mechanize (~> 2.5.1)
   memcachier (= 0.0.2)
   mongo
@@ -544,6 +550,7 @@ DEPENDENCIES
   simplecov
   simplecov-csv
   sprockets-rails
+  therubyracer
   thin
   uglifier (>= 1.3.0)
   unicorn (= 4.8.3)
