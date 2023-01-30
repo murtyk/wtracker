@@ -10,7 +10,7 @@ gem 'rails', '4.2.8'
 # gem 'bootstrap-sass', '~> 2.1.0.0' #trying new one
 
 group :development, :test do
-  gem "thin"
+  gem 'puma', '~> 5.0'
 end
 group :production, :staging, :integration do
   gem 'unicorn', '4.8.3'

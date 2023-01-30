@@ -11,11 +11,18 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data:delegated
 
+  mongo_db:
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+    ports:
+      - "27017:27017"
+
   web:
     tty: true
     stdin_open: true
     build: .
-    platform: linux/amd64
     command: rails s -b 0.0.0.0
     volumes:
       - .:/wtracker
@@ -23,7 +30,9 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - mongo_db
 
 volumes:
+  mongo-data:
   db_data:
     external: true
