@@ -112,6 +112,7 @@ RSpec.configure do |config|
   # config.raise_errors_for_deprecations!
 
   config.before(:suite) do
+    DatabaseCleaner.allow_remote_database_url = true
     DatabaseCleaner.strategy = :transaction
   end
 
