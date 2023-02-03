@@ -5,8 +5,8 @@ require 'capybara/rspec'
 Capybara.server_port = 7171 + ENV['TEST_ENV_NUMBER'].to_i
 
 Capybara.server do |app, port|
-  require 'rack/handler/thin'
-  Rack::Handler::Thin.run(app, Port: port)
+  require 'rack/handler/puma'
+  Rack::Handler::Puma.run(app, Port: port, Threads: '0:4')
 end
 Capybara.save_path = ENV['CAPYBARA_PAGE_PATH'] || 'public/tmp'
 
