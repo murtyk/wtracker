@@ -1,4 +1,4 @@
-FROM ruby:2.4.1
+FROM ruby:2.5.9
 RUN apt-get update -qq && apt-get install -y --force-yes nodejs
 RUN apt install -y --force-yes  nodejs npm
 # RUN npm install -g phantomjs

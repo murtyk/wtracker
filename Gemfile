@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
 # gem 'rails', github: 'rails/rails', ref: '968c581ea34b5236af14805e6a77913b1cb36238', branch: '4-1-stable'
-ruby '2.4.1'
+ruby '2.5.9'
 
-gem 'rails', '4.2.8'
+gem 'rails', '4.2.11.3'
 # gem 'protected_attributes', '1.0.7'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
