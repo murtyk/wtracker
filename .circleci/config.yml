@@ -12,6 +12,8 @@ executors:
           BUNDLER_VERSION: 2.0.1
           RAILS_ENV: test
           RAILS_CI: 1
+          JOB_BOARD: Indeed
+          PUBLISHER: 5675970181406859
           DB_HOST: 127.0.0.1
           PG_HOST: 127.0.0.1
           PGUSER: postgres
