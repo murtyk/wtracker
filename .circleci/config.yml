@@ -13,11 +13,11 @@ executors:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
           PG_HOST: 127.0.0.1
-          PGUSER: hixonrails
+          PGUSER: postgres
       - image: circleci/postgres:12.0
         environment:
           POSTGRES_DB: wtracker_test
-          POSTGRES_USER: wtrackerrails
+          POSTGRES_USER: postgres
 
 commands:
   configure_bundler:
