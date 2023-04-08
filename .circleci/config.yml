@@ -1,40 +1,65 @@
 version: 2.1
-orbs:
-  ruby: circleci/ruby@1.1.0
-commands: # a reusable command with parameters
-  greeting:
-    parameters:
-      to:
-        default: "world"
-        type: string
+
+executors:
+  default:
+    working_directory: ~/wtracker
+    docker:
+      - image: circleci/ruby:2.5.9
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_PATH: vendor/bundle
+          BUNDLE_RETRY: 3
+          BUNDLER_VERSION: 2.0.1
+          RAILS_ENV: test
+          DB_HOST: 127.0.0.1
+          PG_HOST: 127.0.0.1
+          PGUSER: hixonrails
+      - image: circleci/postgres:12.0
+        environment:
+          POSTGRES_DB: wtracker_test
+          POSTGRES_USER: wtrackerrails
+
+commands:
+  configure_bundler:
+    description: Configure bundler
     steps:
-      - run: echo "Hello <<parameters.to>>"
+      - run:
+          name: Configure bundler
+          command: |
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+            source $BASH_ENV
+            gem install bundler
 
 jobs:
   build:
-    docker:
-      - image: cimg/ruby:2.5.9-node
+    executor: default
     steps:
-      - greeting:
-          to: "build"
       - checkout
-      - ruby/install-deps
-  test:
-    docker:
-      - image: cimg/ruby:2.5.9-node
-    steps:
-      - greeting:
-          to: "test"
-      - checkout
-      - ruby/install-deps
-      # Run rspec in parallel
-      - ruby/rspec-test
+      - restore_cache:
+          keys:
+            - wtracker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - wtracker-
+      - configure_bundler
+      - run:
+          name: Install bundle
+          command: bundle install
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
+      - run:
+          name: Setup DB
+          command: bundle exec rails db:create db:schema:load --trace
+      - save_cache:
+          key: wtracker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - ./wtracker
 
 workflows:
   version: 2
-  build_and_test:
+  integration:
     jobs:
       - build
-      - test:
-          requires:
-            - build
