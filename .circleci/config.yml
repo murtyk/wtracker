@@ -49,6 +49,11 @@ jobs:
       - run:
           name: Setup DB
           command: bundle exec rails db:create db:schema:load --trace
+      - run:
+          name: RSpec
+          command: |
+            bundle exec rspec --profile 10 \
+                              --format progress
       - save_cache:
           key: wtracker-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           paths:
@@ -57,23 +62,23 @@ jobs:
           root: ~/
           paths:
             - ./wtracker
-  test:
-    docker:
-      - image: cimg/ruby:2.5.9-node
+  rubocop:
+    executor: default
     steps:
-      - greeting:
-          to: "test"
-      - checkout
-      - ruby/install-deps
-      # Run rspec in parallel
-      - ruby/rspec-test
+      - attach_workspace:
+          at: ~/
+      - configure_bundler
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
 
 workflows:
   version: 2
   integration:
     jobs:
       - build
-      - test:
+      - rubocop:
           requires:
             - build
+
 
