@@ -22,6 +22,8 @@ services:
   web:
     tty: true
     stdin_open: true
+    environment:
+      - PG_HOST=db
     build: .
     command: rails s -b 0.0.0.0
     volumes:
