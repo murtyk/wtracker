@@ -57,9 +57,23 @@ jobs:
           root: ~/
           paths:
             - ./wtracker
+  test:
+    docker:
+      - image: cimg/ruby:2.5.9-node
+    steps:
+      - greeting:
+          to: "test"
+      - checkout
+      - ruby/install-deps
+      # Run rspec in parallel
+      - ruby/rspec-test
 
 workflows:
   version: 2
   integration:
     jobs:
       - build
+      - test
+          requires:
+            - build
+
