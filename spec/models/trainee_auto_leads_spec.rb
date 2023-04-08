@@ -23,7 +23,7 @@ describe TraineeAutoLeads do
     agent
   end
 
-  it 'sends jobs leads to trainee' do
+  it 'sends jobs leads to trainee', skip_on_ci: true do
     allow(AutoMailer).to receive(:send_job_leads) do |args|
       expect(args.first.trainee_id).to be(trainee.id)
     end

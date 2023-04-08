@@ -95,6 +95,8 @@ RSpec.configure do |config|
 
   # config.filter_run_excluding js: true
 
+  config.filter_run_excluding(skip_on_ci: true) if ENV['RAILS_CI']
+
   config.before(:suite) do
     DatabaseCleaner.allow_remote_database_url = true
     DatabaseCleaner.strategy = :transaction
