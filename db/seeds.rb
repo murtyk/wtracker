@@ -40,15 +40,15 @@ county_passaic = County.create(name: 'Passaic', state_id: nj_state.id)
 county_bergen = County.create(name: 'Bergen', state_id: nj_state.id)
 
 college1 = account.colleges.create!(name: 'Camden county college')
-college1.address = Address.create(line1: '200 N Broadway', city: 'Camden', state: 'NJ', zip:'08102', county_id: county_camden.id)
+college1.address = Address.create(line1: '200 N Broadway', city: 'Camden', state: 'NJ', zip:'08102', county_id: county_camden.id, latitude: 39.9466, longitude: -75.1179)
 college2 = account.colleges.create!(name: 'Middlesex county college')
-college2.address = Address.create(line1: '2600 Woodbridge Ave', city: 'Edison', state: 'NJ', zip:'08818', county_id: county_middlesex.id)
+college2.address = Address.create(line1: '2600 Woodbridge Ave', city: 'Edison', state: 'NJ', zip:'08818', county_id: county_middlesex.id, latitude: 40.5067, longitude: -74.3668)
 college3 = account.colleges.create!(name: 'Passaic Technical Institue')
-college3.address = Address.create(line1: '45 Reinhardt Rd', city: 'Wayne', state: 'NJ', zip:'07470', county_id: county_passaic.id)
+college3.address = Address.create(line1: '45 Reinhardt Rd', city: 'Wayne', state: 'NJ', zip:'07470', county_id: county_passaic.id, latitude: 40.9309, longitude: -74.2023)
 college4 = account.colleges.create!(name: 'NJITNJ')
-college4.address = Address.create(line1: '323 Martin Luther KIng Jr. Blvd', city: 'Newark', state: 'NJ', zip:'07102', county_id: county_passaic.id)
+college4.address = Address.create(line1: '323 Martin Luther KIng Jr. Blvd', city: 'Newark', state: 'NJ', zip:'07102', county_id: county_passaic.id, latitude: 40.7356, longitude: -74.1723)
 college5 = account.colleges.create!(name: 'Bergen Community College')
-college5.address = Address.create(line1: '400 Paramus Road', city: 'Paramus', state: 'NJ', zip:'07652', county_id: county_bergen.id)
+college5.address = Address.create(line1: '400 Paramus Road', city: 'Paramus', state: 'NJ', zip:'07652', county_id: county_bergen.id, latitude: 40.9512, longitude: -74.088)
 
 nav1 = account.users.create!(first: 'Linda', last: 'Peters', location: 'Camden', status: 1, role: 3, email: 'linda@mail.com', land_no:'2125553333', ext: '654', mobile_no: '6099832424',password: 'password', password_confirmation: 'password')
 nav2 = account.users.create!(first: 'Susan', last: 'Prisco', location: 'Mercer', status: 1, role: 3, email: 'susan@mail.com', land_no:'9125553333', ext: '504', password: 'password', password_confirmation: 'password')
@@ -93,7 +93,9 @@ c211 = p2.klasses.create!(credits: 4, description: "Class 1 for Program 2", end_
 state_tx = State.where(code: 'TX').first
 county = County.create!(name: 'Bexar', state_id: state_tx.id)
 
-emp1 = account.employers.create!(name: 'BE&SCO Manufacturing', source: 'google')
+source = EmployerSource.create!(name: 'google')
+
+emp1 = account.employers.create!(name: 'BE&SCO Manufacturing', employer_source_id: source.id)
 emp1.address = Address.create!(line1: '1623 North San Marcos', city: 'San Antonio', state: 'TX', zip:'78201', county_id: county.id)
-emp2 = account.employers.create!(name: 'Goodyear', source: 'google')
+emp2 = account.employers.create!(name: 'Goodyear', employer_source_id: source.id)
 emp2.address = Address.create!(line1: '5722 Babcock Rd', city: 'San Antonio', state: 'TX', zip:'78240', county_id: county.id)
