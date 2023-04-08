@@ -1,4 +1,5 @@
-version: 2.1orbs:
+version: 2.1
+orbs:
   ruby: circleci/ruby@1.1.0commands: # a reusable command with parameters
   greeting:
     parameters:
