@@ -5,12 +5,7 @@ require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'
 require 'shoulda/matchers'
 # require 'rspec/autorun'
-require 'capybara/rspec'
 require 'support/subdomains.rb'
-require 'capybara-screenshot'
-require 'capybara-screenshot/rspec'
-
-require 'capybara'
 
 # require 'simplecov'
 # require 'simplecov-csv'
@@ -96,20 +91,7 @@ RSpec.configure do |config|
 
   # config.raise_errors_for_deprecations!
 
-  Capybara.register_driver :selenium_chrome_headless_docker_friendly do |app|
-    Capybara::Selenium::Driver.load_selenium
-    browser_options = ::Selenium::WebDriver::Chrome::Options.new
-    browser_options.args << '--headless'
-    browser_options.args << '--disable-gpu'
-    # Sandbox cannot be used inside unprivileged Docker container
-    browser_options.args << '--no-sandbox'
-    browser_options.args << '--disable-dev-shm-usage'
-    Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
-  end
-
-  Capybara.javascript_driver = :selenium_chrome_headless_docker_friendly
-
-  config.filter_run_excluding js: true
+  # config.filter_run_excluding js: true
 
   config.before(:suite) do
     DatabaseCleaner.allow_remote_database_url = true
