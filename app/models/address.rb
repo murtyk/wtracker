@@ -69,7 +69,9 @@ class Address < ApplicationRecord
   end
 
   def set_latlong_before_save
+    return if ENV['RAILS_CI']
     return if latitude? && longitude?
+
     latlong = GeoServices.latlong(gmaps4rails_address)
     if latlong
       self.latitude = latlong[0]
