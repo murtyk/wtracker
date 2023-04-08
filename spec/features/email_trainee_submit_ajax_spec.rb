@@ -1,4 +1,4 @@
-frozen_string_literal: true
+# frozen_string_literal: true
 require 'rails_helper'
 describe 'email to employer' do
   describe 'attach trainee document', js: true do
