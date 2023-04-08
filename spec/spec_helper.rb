@@ -109,7 +109,7 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :selenium_chrome_headless_docker_friendly
 
-  config.filter_run_excluding :js => true
+  config.filter_run_excluding js: true
 
   config.before(:suite) do
     DatabaseCleaner.allow_remote_database_url = true
