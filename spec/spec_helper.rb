@@ -86,7 +86,7 @@ RSpec.configure do |config|
   config.include Request::HeadersHelpers, type: :controller
 
   config.include FactoryBot::Syntax::Methods
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers
   config.extend ControllerMacros, type: :controller
 
   # config.raise_errors_for_deprecations!

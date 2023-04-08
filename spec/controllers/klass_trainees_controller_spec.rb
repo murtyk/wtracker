@@ -24,22 +24,26 @@ RSpec.describe KlassTraineesController, type: :controller do
       Account.current_id = 1
       Grant.current_id = 1
     end
+
     it 'assigns @trainees and @klasses_collection when passed trainee_ids' do
-      xhr :get, :new, { trainee_ids: '' }, valid_session
+      post :new, params: { trainee_ids: '' }, xhr: true
+
       expect(assigns(:trainees)).not_to be_nil
       expect(assigns(:klasses_collection)).not_to be_nil
 
       expect(assigns(:klass)).to be_nil
     end
+
     it 'assigns @trainee and @klass_trainee when passed trainee_id' do
-      xhr :get, :new, { trainee_id: 1 }, valid_session
+      post :new, params: { trainee_id: 1 }, xhr: true
 
       expect(assigns(:trainees)).to be_nil
 
       expect(assigns(:klass_trainee)).not_to be_nil
     end
+
     it 'assigns @klass and @klass_trainee when passed klass_id' do
-      xhr :get, :new, { klass_id: 1 }, valid_session
+      post :new, params: { klass_id: 1 }, xhr: true
 
       expect(assigns(:trainee)).to be_nil
       expect(assigns(:trainees)).to be_nil

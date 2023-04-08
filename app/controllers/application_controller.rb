@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
-  around_filter :scope_current_account
+  around_action :scope_current_account
   # after_filter :user_activity
 
   include Pundit
 
   protect_from_forgery with: :exception
-  skip_before_filter :verify_authenticity_token,
+  skip_before_action :verify_authenticity_token,
                      if: proc { |c| c.request.format == 'application/json' }
 
   include SessionsHelper
