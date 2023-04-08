@@ -106,6 +106,7 @@ group :test do
   # gem 'codecov', :require => false, :group => :test
 
   gem 'shog'
+  gem 'rspec_junit_formatter'
 end
 
 gem "parallel_tests", group: :development
