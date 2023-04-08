@@ -33,16 +33,22 @@ grant1 = account.grants.create!(name: 'Grant 1', start_date: 'Jan 1, 2012', end_
 grant2 = account.grants.create!(name: 'Grant 2', start_date: 'June 1, 2014', end_date: 'Dec 31, 2018', status: 1, spots: 50, amount: 2000000)
 
 
+nj_state = State.where(code: 'NJ').first
+county_camden = County.create(name: 'Camden', state_id: nj_state.id)
+county_middlesex = County.create(name: 'Middlesex', state_id: nj_state.id)
+county_passaic = County.create(name: 'Passaic', state_id: nj_state.id)
+county_bergen = County.create(name: 'Bergen', state_id: nj_state.id)
+
 college1 = account.colleges.create!(name: 'Camden county college')
-college1.address = Address.create(line1: '200 N Broadway', city: 'Camden', state: 'NJ', zip:'08102')
+college1.address = Address.create(line1: '200 N Broadway', city: 'Camden', state: 'NJ', zip:'08102', county_id: county_camden.id)
 college2 = account.colleges.create!(name: 'Middlesex county college')
-college2.address = Address.create(line1: '2600 Woodbridge Ave', city: 'Edison', state: 'NJ', zip:'08818')
+college2.address = Address.create(line1: '2600 Woodbridge Ave', city: 'Edison', state: 'NJ', zip:'08818', county_id: county_middlesex.id)
 college3 = account.colleges.create!(name: 'Passaic Technical Institue')
-college3.address = Address.create(line1: '45 Reinhardt Rd', city: 'Wayne', state: 'NJ', zip:'07470')
+college3.address = Address.create(line1: '45 Reinhardt Rd', city: 'Wayne', state: 'NJ', zip:'07470', county_id: county_passaic.id)
 college4 = account.colleges.create!(name: 'NJITNJ')
-college4.address = Address.create(line1: '323 Martin Luther KIng Jr. Blvd', city: 'Newark', state: 'NJ', zip:'07102')
+college4.address = Address.create(line1: '323 Martin Luther KIng Jr. Blvd', city: 'Newark', state: 'NJ', zip:'07102', county_id: county_passaic.id)
 college5 = account.colleges.create!(name: 'Bergen Community College')
-college5.address = Address.create(line1: '400 Paramus Road', city: 'Paramus', state: 'NJ', zip:'07652')
+college5.address = Address.create(line1: '400 Paramus Road', city: 'Paramus', state: 'NJ', zip:'07652', county_id: county_bergen.id)
 
 nav1 = account.users.create!(first: 'Linda', last: 'Peters', location: 'Camden', status: 1, role: 3, email: 'linda@mail.com', land_no:'2125553333', ext: '654', mobile_no: '6099832424',password: 'password', password_confirmation: 'password')
 nav2 = account.users.create!(first: 'Susan', last: 'Prisco', location: 'Mercer', status: 1, role: 3, email: 'susan@mail.com', land_no:'9125553333', ext: '504', password: 'password', password_confirmation: 'password')
@@ -84,7 +90,10 @@ c112 = p1.klasses.create!(credits: 2, description: "Class 2 for Program 1", end_
 c121 = p2.klasses.create!(credits: 2, description: "Class 1 for Program 2", end_date: "Dec 31, 2014", name: "Class3", start_date: "June 1, 2014", training_hours: 50, college_id: college1.id)
 c211 = p2.klasses.create!(credits: 4, description: "Class 1 for Program 2", end_date: "Dec 31, 2014", name: "Class4", start_date: "Jan 1, 2014", training_hours: 100, college_id: college2.id)
 
+state_tx = State.where(code: 'TX').first
+county = County.create!(name: 'Bexar', state_id: state_tx.id)
+
 emp1 = account.employers.create!(name: 'BE&SCO Manufacturing', source: 'google')
-emp1.address = Address.create!(line1: '1623 North San Marcos', city: 'San Antonio', state: 'TX', zip:'78201')
+emp1.address = Address.create!(line1: '1623 North San Marcos', city: 'San Antonio', state: 'TX', zip:'78201', county_id: county.id)
 emp2 = account.employers.create!(name: 'Goodyear', source: 'google')
-emp2.address = Address.create!(line1: '5722 Babcock Rd', city: 'San Antonio', state: 'TX', zip:'78240')
+emp2.address = Address.create!(line1: '5722 Babcock Rd', city: 'San Antonio', state: 'TX', zip:'78240', county_id: county.id)
