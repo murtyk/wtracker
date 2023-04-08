@@ -54,13 +54,18 @@ class Address < ApplicationRecord
 
   def set_county_before_save
     return if county && county_id
-    xcity = GeoServices.findcity("#{city},#{state}", zip)
-    if xcity
-      self.county = xcity.county_name
-      self.county_id = xcity.county_id
-    else
-      fail "address error: city not found - #{gmaps4rails_address}"
+
+    if county_id.present? && county.blank?
+      self.county = County.find(county_id).name
+      return
     end
+
+    xcity = GeoServices.findcity("#{city},#{state}", zip)
+
+    raise "address error: city not found - #{gmaps4rails_address}" unless xcity
+
+    self.county = xcity.county_name
+    self.county_id = xcity.county_id
   end
 
   def set_latlong_before_save
