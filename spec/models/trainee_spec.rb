@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Trainee do
@@ -20,9 +22,9 @@ describe Trainee do
     expect(trainee.name).to eq('John Doe')
   end
 
-  describe "when email bounced" do
+  describe 'when email bounced' do
     let(:trainee) { FactoryBot.create(:trainee, bounced: true) }
-    it "valid_email? returns false" do
+    it 'valid_email? returns false' do
       expect(trainee.valid_email?).not_to be_truthy
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # helper for creating buttons with icons
 module PathsHelper
   def jsp_path(jsp, filters)

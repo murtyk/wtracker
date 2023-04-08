@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobSharesController < ApplicationController
   before_filter :authenticate_user!
 
@@ -37,7 +39,7 @@ class JobSharesController < ApplicationController
   end
 
   def new_multiple
-    @job_share  = JobShareFactory.new_multiple(params[:job_ids], current_user)
+    @job_share = JobShareFactory.new_multiple(params[:job_ids], current_user)
     authorize @job_share
     @job_share.klass_id = current_user.last_klass_selected
   end
@@ -75,9 +77,9 @@ class JobSharesController < ApplicationController
       JobShareFactory.send_to_trainee(params)
       trainee = Trainee.find(params[:trainee_id])
       message = trainee.name
-    rescue StandardError => error
+    rescue StandardError => e
       # debugger
-      message = error
+      message = e
     end
     respond_to do |format|
       format.json { render json: { message: message }, status: :created }
@@ -88,14 +90,14 @@ class JobSharesController < ApplicationController
 
   def job_info_params
     params.require(:job_info)
-      .permit(:company, :date_posted, :details_url, :excerpt, :location, :source, :title)
+          .permit(:company, :date_posted, :details_url, :excerpt, :location, :source, :title)
   end
 
   def job_share_params
     params.require(:job_share)
-      .permit(:company, :date_posted, :details_url, :details_url_type,
-              :excerpt, :from_id, :location, :source, :title,
-              :comment)
+          .permit(:company, :date_posted, :details_url, :details_url_type,
+                  :excerpt, :from_id, :location, :source, :title,
+                  :comment)
   end
 
   def job_ids_params

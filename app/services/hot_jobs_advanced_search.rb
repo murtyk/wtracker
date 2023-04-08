@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # performs advanced search and build excel file
 # can also email it to the user
 class HotJobsAdvancedSearch

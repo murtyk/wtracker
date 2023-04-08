@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # a county in USA.
 # belongs to a state
 # has polygon(s) for rendering on map
@@ -10,6 +12,7 @@ class County < ApplicationRecord
   def self.search(filters, include_polygons = false)
     counties = find_counties(filters)
     return [counties, []] unless include_polygons
+
     [counties, counties_polygons(counties)]
   end
 
@@ -33,12 +36,13 @@ class County < ApplicationRecord
     return [] if name.blank? && !state
 
     counties = state ? state.counties : all
-    counties = counties.where("name ilike ?", name + '%') unless name.blank?
+    counties = counties.where('name ilike ?', "#{name}%") unless name.blank?
     counties.order(:name)
   end
 
   def self.state_from_filters(filters)
     return if filters[:state_id].blank?
+
     State.find(filters[:state_id])
   end
 

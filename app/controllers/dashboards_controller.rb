@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # serves as a starting point when user logs in
 # for non admin users, signs out if they are not assigned to any grant
 # redirects to an appropriate page depending on the grant and user
@@ -14,7 +16,7 @@ class DashboardsController < ApplicationController
       @grants = current_user.active_grants
       render 'select_grant'
     else
-      fail 'unknown action for starting page'
+      raise 'unknown action for starting page'
     end
   end
 
@@ -28,6 +30,7 @@ class DashboardsController < ApplicationController
     @data = DashboardMetrics.generate(current_grant, params.permit!)
 
     return unless @data.template
+
     render @data.template
   end
 

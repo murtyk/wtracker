@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Employer can be added through add menu, imported or
 # through job search.
 # typical search is on one or more of
@@ -73,7 +75,7 @@ class Employer < ApplicationRecord
 
   def self.existing_employer_id(name, employer_source_id, lat, lng)
     emp = existing_employer(name, employer_source_id, lat, lng)
-    emp && emp.id
+    emp&.id
   end
 
   def self.existing_employer(name, employer_source_id, lat, lng)

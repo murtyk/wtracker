@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 # Trainee is also known as student, candidate, applicant
 # there is a seperate model for Applicant
 class TraineesController < ApplicationController
   before_action :authenticate_user!
 
   def search_by_skills
-    @results      = []
-    @filter_info  =  params[:filters] || {}
+    @results = []
+    @filter_info = params[:filters] || {}
 
     return unless params[:filters]
 
@@ -17,8 +19,8 @@ class TraineesController < ApplicationController
   def docs_for_selection
     klass_id = params[:klass_id].to_i
     @trainees = Trainee.includes(:trainee_files)
-                .joins(:klass_trainees)
-                .where(klass_trainees: { klass_id: klass_id })
+                       .joins(:klass_trainees)
+                       .where(klass_trainees: { klass_id: klass_id })
   end
 
   def advanced_search
@@ -32,7 +34,7 @@ class TraineesController < ApplicationController
   end
 
   def index
-    @filter_info  = params[:filters] || {}
+    @filter_info = params[:filters] || {}
     @trainees = TraineeSearchService.search(current_user, params)
   end
 
@@ -144,21 +146,21 @@ class TraineesController < ApplicationController
 
   def trainee_params
     params.require(:trainee)
-      .permit(:remember_me, :login_id, :password, :password_confirmation,
-              :disability, :dob, :education, :email, :first, :last,
-              :gender, :land_no, :middle, :mobile_no, :trainee_id,
-              :status, :veteran, :race_id, :edp_date,
-              :legal_status, :funding_source_id, :ui_claim_verified_on,
-              :employment_status,
-              klass_ids: [],
-              tact_three_attributes: [:certifications, :education_level,
-                                      :job_title, :recent_employer, :years],
-              home_address_attributes: [:id, :line1, :line2, :city, :state, :zip],
-              mailing_address_attributes: [:id, :line1, :line2, :city, :state, :zip])
+          .permit(:remember_me, :login_id, :password, :password_confirmation,
+                  :disability, :dob, :education, :email, :first, :last,
+                  :gender, :land_no, :middle, :mobile_no, :trainee_id,
+                  :status, :veteran, :race_id, :edp_date,
+                  :legal_status, :funding_source_id, :ui_claim_verified_on,
+                  :employment_status,
+                  klass_ids: [],
+                  tact_three_attributes: %i[certifications education_level
+                                            job_title recent_employer years],
+                  home_address_attributes: %i[id line1 line2 city state zip],
+                  mailing_address_attributes: %i[id line1 line2 city state zip])
   end
 
   def disabled_params
     params.require(:trainee)
-      .permit(:disabled_date, :disabled_notes)
+          .permit(:disabled_date, :disabled_notes)
   end
 end

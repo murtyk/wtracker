@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # for doing CRUD on trainee interactions
 class TraineeInteractionFactory
@@ -56,6 +58,7 @@ class TraineeInteractionFactory
     check_already_placed(ti)
     return if ti.errors.any?
     return unless trainee.save
+
     change_klass_statuses(ti)
   end
 
@@ -76,7 +79,7 @@ class TraineeInteractionFactory
 
   def self.check_already_placed(ti)
     trainee = ti.trainee
-    if trainee && trainee.hired?
+    if trainee&.hired?
       error = 'Already Placed.'
       ti.errors.add(:base, error)
       trainee.errors.add(:base, error)
@@ -90,7 +93,7 @@ class TraineeInteractionFactory
       trainee = ti.trainee
       if trainee &&
          trainee.trainee_interactions
-         .where(status: 5, termination_date: nil).count > 0
+                .where(status: 5, termination_date: nil).count.positive?
         error = 'Already OJT Enrolled'
         ti.errors.add(:base, error)
         trainee.errors.add(:base, error)

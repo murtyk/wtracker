@@ -1,10 +1,16 @@
-class Api::V1::ApiBaseController < ApplicationController
-  include Authenticable
+# frozen_string_literal: true
 
-  private
+module Api
+  module V1
+    class ApiBaseController < ApplicationController
+      include Authenticable
 
-  def scope_current_account
-    Account.current_id = current_account.id
-    yield
+      private
+
+      def scope_current_account
+        Account.current_id = current_account.id
+        yield
+      end
+    end
   end
 end

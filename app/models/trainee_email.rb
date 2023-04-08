@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # emails sent to trainees
 class TraineeEmail < ApplicationRecord
   serialize :trainee_ids
@@ -22,6 +24,6 @@ class TraineeEmail < ApplicationRecord
   end
 
   def klass_name
-    klass && klass.name
+    klass&.name
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authenticable
   # Devise methods overwrites
   def current_admin
@@ -5,8 +7,10 @@ module Authenticable
   end
 
   def authenticate_with_token!
-    render json: { errors: 'Not authenticated' },
-           status: :unauthorized unless admin_signed_in?
+    unless admin_signed_in?
+      render json: { errors: 'Not authenticated' },
+             status: :unauthorized
+    end
   end
 
   def admin_signed_in?

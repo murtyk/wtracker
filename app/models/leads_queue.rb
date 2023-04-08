@@ -1,6 +1,7 @@
-#
+# frozen_string_literal: true
+
 class LeadsQueue < ApplicationRecord
-  enum status: [:inactive, :pending, :wip, :processed]
+  enum status: %i[inactive pending wip processed]
 
   scope :pending, -> { where(status: 1) }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # account metrics for opero admin
 class AccountStats
   attr_reader :account, :users_count, :grants

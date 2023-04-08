@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Level 1 Navigators can access employers of any source
 # level 2 and 3 can only access employers with assigned sources
 class UserEmployerSource < ApplicationRecord

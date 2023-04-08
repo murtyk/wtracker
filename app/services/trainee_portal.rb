@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # primarily to determine workflow for a trainee
 class TraineePortal
   attr_accessor :trainee
@@ -13,6 +15,7 @@ class TraineePortal
     return :pending_profile if pending_profile?
     return :pending_resume if pending_resume?
     return :pending_unemployment_proof if pending_unemployment_proof?
+
     :jobs
   end
 

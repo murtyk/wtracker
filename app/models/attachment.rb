@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # email attachment which gets stored on s3
 # on delete, we should delete on s3 also
 class Attachment < ApplicationRecord

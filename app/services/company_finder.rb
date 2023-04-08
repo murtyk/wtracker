@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # for searching companies
 class CompanyFinder
   attr_accessor :company
+
   def self.google_search(filters)
     name = filters[:name]
     location = filters[:location]
@@ -39,7 +42,7 @@ class CompanyFinder
   def find_opero_company
     gps = GooglePlacesSearch.where('name ilike ? and city_id = ?',
                                    poster_name, poster_city_id).first
-    oc = gps && gps.opero_company
+    oc = gps&.opero_company
     [gps, oc]
   end
 
@@ -47,7 +50,7 @@ class CompanyFinder
     p_city = City.find(poster_city_id)
     gc     = search_google_places(p_city)
 
-    return nil unless gc && gc.longitude && gc.latitude
+    return nil unless gc&.longitude && gc&.latitude
 
     if gc.score > 90
       gps, oc   = add_gc_to_opero(gc, poster_name, poster_city_id)
@@ -63,14 +66,15 @@ class CompanyFinder
       p_city.name,
       p_city.state_code,
       p_city.latitude,
-      p_city.longitude)
+      p_city.longitude
+    )
   end
 
   def existing_employer(oc, gc = nil, employer_source_id)
-    if oc && oc.name
+    if oc&.name
       return Employer.existing_employer(oc.name, employer_source_id,
                                         oc.latitude, oc.longitude)
-    elsif gc && gc.name
+    elsif gc&.name
       return Employer.existing_employer(gc.name, employer_source_id,
                                         gc.latitude, gc.longitude)
     end
@@ -100,8 +104,8 @@ class CompanyFinder
                                    search_name, search_city_id).first
 
     oc  ||= OperoCompany.create_from_gc(gc)
-    gps ||= oc.google_places_searches.create(name:    search_name,
-                                             score:   gc.score,
+    gps ||= oc.google_places_searches.create(name: search_name,
+                                             score: gc.score,
                                              city_id: search_city_id)
 
     [gps, oc]

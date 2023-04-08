@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # An accoount can have 0, 1 or more states
 # typically used for dispaying counties in employer map
 class AccountState < ApplicationRecord

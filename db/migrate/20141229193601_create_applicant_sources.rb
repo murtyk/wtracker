@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateApplicantSources < ActiveRecord::Migration
   def change
     create_table :applicant_sources do |t|

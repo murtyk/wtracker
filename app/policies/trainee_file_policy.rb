@@ -1,4 +1,6 @@
-class TraineeFilePolicy < Struct.new(:user, :trainee_file)
+# frozen_string_literal: true
+
+TraineeFilePolicy = Struct.new(:user, :trainee_file) do
   def new?
     user.admin_or_director? || user.navigator?
   end

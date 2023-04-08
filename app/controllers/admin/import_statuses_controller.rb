@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin
   # for opero admin to view and clean up the imports done by users
   class ImportStatusesController < ApplicationController

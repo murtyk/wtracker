@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateSpecialServices < ActiveRecord::Migration
   def change
     create_table :special_services do |t|

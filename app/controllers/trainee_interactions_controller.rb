@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # all are ajax actions
 class TraineeInteractionsController < ApplicationController
   before_action :authenticate_user!
@@ -63,10 +65,10 @@ class TraineeInteractionsController < ApplicationController
 
   def trainee_interaction_params
     params.require(:trainee_interaction)
-      .permit(:employer_id, :comment, :status, :company, :employer_name,
-              :start_date, :hire_salary, :hire_title, :termination_date,
-              :klass_id, :trainee_ids, :employer_name, :completion_date,
-              :uses_trained_skills)
+          .permit(:employer_id, :comment, :status, :company, :employer_name,
+                  :start_date, :hire_salary, :hire_title, :termination_date,
+                  :klass_id, :trainee_ids, :employer_name, :completion_date,
+                  :uses_trained_skills)
   end
 
   def trainee_id

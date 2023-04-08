@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for grant with applicants. User has to define through settings menu
 class ApplicantSpecialService < ApplicationRecord
   belongs_to :account

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # same person can be in more than 1 grants
 # one trainee record for each gran
 # trainee can be assigned to any number of classes
@@ -30,7 +32,7 @@ class Trainee < ApplicationRecord
   devise :recoverable, :rememberable, :trackable
   extend ::DeviseOverrides
 
-  attr_encrypted :trainee_id, key: :encryption_key #, v2_gcm_iv: proc { |t| t.decrypting?(:trainee_id) }
+  attr_encrypted :trainee_id, key: :encryption_key # , v2_gcm_iv: proc { |t| t.decrypting?(:trainee_id) }
 
   validates :first, presence: true, length: { minimum: 2, maximum: 20 }
   validates :last,  presence: true, length: { minimum: 2, maximum: 20 }
@@ -118,7 +120,7 @@ class Trainee < ApplicationRecord
 
   has_one :job_search_profile, dependent: :destroy
   has_many :auto_shared_jobs, dependent: :destroy
-  delegate :skills, to: :job_search_profile, allow_nil: :true
+  delegate :skills, to: :job_search_profile, allow_nil: true
 
   has_one :applicant, dependent: :destroy
   delegate :applied_on, :last_wages, :last_job_title,
@@ -171,7 +173,7 @@ class Trainee < ApplicationRecord
   end
 
   def name_fs
-    name + ' -- ' + funding_source_name
+    "#{name} -- #{funding_source_name}"
   end
 
   def not_disabled?
@@ -244,7 +246,7 @@ class Trainee < ApplicationRecord
   end
 
   def valid_profile?
-    job_search_profile && job_search_profile.valid_profile?
+    job_search_profile&.valid_profile?
   end
 
   def assessed?
@@ -260,7 +262,7 @@ class Trainee < ApplicationRecord
   end
 
   def opted_out_from_auto_leads?
-    job_search_profile && job_search_profile.opted_out
+    job_search_profile&.opted_out
   end
 
   def not_viewed_job_leads_count
@@ -326,7 +328,7 @@ class Trainee < ApplicationRecord
   def klasses_for_selection
     ks = Klass.where('start_date > ?', Date.today) - klasses
     ks.map do |k|
-      [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id]
+      ["#{k.to_label}-#{k.start_date} (#{k.trainees.count})", k.id]
     end
   end
 
@@ -343,7 +345,7 @@ class Trainee < ApplicationRecord
   end
 
   def employed_at
-    employer && employer.name
+    employer&.name
   end
 
   def self.ransackable_attributes(auth_object = nil)

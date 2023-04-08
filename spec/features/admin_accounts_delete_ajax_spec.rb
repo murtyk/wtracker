@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Administration' do
@@ -34,7 +36,8 @@ describe 'Administration' do
       end
 
       5.times do
-        break unless page.html.index("Test Client")
+        break unless page.html.index('Test Client')
+
         sleep 0.5
       end
       expect(page).to_not have_text 'Test Client'

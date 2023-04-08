@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin
   # for opero admin to manage states assigned to an account
   class AccountStatesController < ApplicationController

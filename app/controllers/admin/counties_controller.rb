@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin
   # for admin to view counties and pull polygons
   class CountiesController < ApplicationController
@@ -8,11 +10,11 @@ class Admin
     end
 
     def index
-      if params[:filters]
-        @counties = find_counties.paginate(page: params[:page], per_page: 20)
-      else
-        @counties = []
-      end
+      @counties = if params[:filters]
+                    find_counties.paginate(page: params[:page], per_page: 20)
+                  else
+                    []
+                  end
     end
 
     private

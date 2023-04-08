@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportStatusesController < ApplicationController
   before_filter :authenticate_user!
 
@@ -42,6 +44,7 @@ class ImportStatusesController < ApplicationController
     return "new_#{resource}" unless resource == 'trainees'
     return "update_#{resource}" if params[:updates]
     return "ui_claim_verification_#{resource}" if params[:ui_claim_verification]
+
     "new_#{resource}"
   end
 end

@@ -1,12 +1,16 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # contains data for trainee details report
 # view renders trainees by class
 class TraineesDetailsReport < Report
   attr_reader :count, :klasses_data
+
   def post_initialize(params)
     @klasses_data = []
     @count = 0
     return unless params && params[:action] != 'new'
+
     init_klasses
     init_placements_data if placements?
     init_klass_trainees_data
@@ -58,6 +62,7 @@ class TraineesDetailsReport < Report
     if placements?
       pd = placement_data(trainee)
       return td unless pd
+
       return td + (0..3).map { |i| pd.try('[]', i) }
     end
 
@@ -77,7 +82,7 @@ class TraineesDetailsReport < Report
       trainee.formatted_address,
       trainee.dob.to_s,
       trainee.gender.to_i == 1 ? 'M' : 'F',
-      trainee.veteran ? 'x' : "",
+      trainee.veteran ? 'x' : '',
       trainee.education_name,
       land_no(trainee),
       mobile_no(trainee),

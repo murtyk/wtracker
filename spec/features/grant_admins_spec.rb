@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Grant Admin' do
 #   before :each do
 #     Account.current_id = Account.find_by(subdomain: 'apple')
@@ -7,7 +8,7 @@
 #     user = create(:user)
 #     @user_email = user.email
 #     sign_in_user('apple', @user_email)
-# 
+#
 #     @klasses = Klass.all
 #   end
 #   it 'Can access all classes in grant' do

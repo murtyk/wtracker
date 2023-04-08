@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # grant specific options for sidebar visibility
 module Sidebars
   EMPLOYER_PAGE = 100
@@ -9,15 +11,15 @@ module Sidebars
 
   PAGES = {
     EMPLOYER_PAGE => 'Employer Page',
-    TRAINEE_PAGE =>  'Trainee Page'
-  }
+    TRAINEE_PAGE => 'Trainee Page'
+  }.freeze
 
   SIDE_BARS = {
     EMPLOYER_PAGE => { EMPLOYER_PAGE_TRAINEE_INFO => 'Trainee Information',
                        EMPLOYER_PAGE_CLASS_INTERACTIONS => 'Class Interactions' },
 
-    TRAINEE_PAGE =>  { TRAINEE_PAGE_JOBS => 'Jobs Information' }
-  }
+    TRAINEE_PAGE => { TRAINEE_PAGE_JOBS => 'Jobs Information' }
+  }.freeze
 
   def hide_a_side_bar(sidebar)
     self.hidden_sidebars ||= []
@@ -46,6 +48,7 @@ module Sidebars
 
   def show_side_bar?(sidebar)
     return true if hidden_sidebars.blank?
+
     !hidden_sidebars.include?(sidebar.to_s)
   end
 end

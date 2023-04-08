@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # THIS MODEL NOT REQUIRED ANY LONGER. WE SHOULD GET RID OFF IT.
 # race of the student. optional field
 class TraineeRace < ApplicationRecord

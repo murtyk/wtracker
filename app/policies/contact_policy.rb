@@ -1,4 +1,6 @@
-class ContactPolicy < Struct.new(:user, :contact)
+# frozen_string_literal: true
+
+ContactPolicy = Struct.new(:user, :contact) do
   def new?
     user.admin_or_director? || user.navigator?
   end

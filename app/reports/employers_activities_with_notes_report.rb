@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # employers with notes activity in the date range
 class EmployersActivitiesWithNotesReport < Report
@@ -5,9 +7,9 @@ class EmployersActivitiesWithNotesReport < Report
     return unless params && params[:action] != 'new'
 
     @employers = user.employers
-                 .includes(:employer_notes)
-                 .includes(:employer_source)
-                 .where(id: employer_ids)
+                     .includes(:employer_notes)
+                     .includes(:employer_source)
+                     .where(id: employer_ids)
   end
 
   def title
@@ -26,6 +28,7 @@ class EmployersActivitiesWithNotesReport < Report
 
   def employer_ids
     return EmployerNote.pluck(:employer_id).uniq if @include_all_dates
+
     EmployerNote.where('DATE(created_at) >= ? AND DATE(created_at) <= ?',
                        start_date, end_date).pluck(:employer_id).uniq
   end

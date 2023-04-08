@@ -1,4 +1,6 @@
-class UnemploymentProofPolicy < Struct.new(:user, :unemployment_proof)
+# frozen_string_literal: true
+
+UnemploymentProofPolicy = Struct.new(:user, :unemployment_proof) do
   def new?
     user.director?
   end

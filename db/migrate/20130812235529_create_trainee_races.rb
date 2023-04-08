@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class CreateTraineeRaces < ActiveRecord::Migration
   def change
     create_table :trainee_races do |t|
-      t.references :account,  :null => false
-      t.references :trainee,  :null => false
-      t.references :race,  :null => false
+      t.references :account,  null: false
+      t.references :trainee,  null: false
+      t.references :race, null: false
 
       t.timestamps
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # industry sector
 # an employer can be in multiple sectors
 class Sector < ApplicationRecord

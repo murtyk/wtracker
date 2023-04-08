@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # grant specific managed through settings
 # used for applicant grant
 class UnemploymentProof < ApplicationRecord

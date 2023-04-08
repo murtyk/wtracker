@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # an Employer can have contacts.
 # Contact provides contactable interface
 # so can be used for contacts at other entities
@@ -21,7 +23,7 @@ class Contact < ApplicationRecord
   end
 
   def name
-    (first || '') + ' ' + (last || '')
+    "#{first || ''} #{last || ''}"
   end
 
   # def self.new_with_contactable(params)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # when a grant is set for auto job leads, the trainees in that grant get job leads daily
 # first check if trainee has updates job search profile. If not send an email
 # find matching jobs for each trainee and send them in an email
@@ -12,6 +14,7 @@ class AutoLeadsJob
 
   def perform
     return if skip_lead_generation?
+
     Rails.logger.info 'AutoLeadsJob: performing'
     lqf = LeadsQueueFactory.new
     lqf.generate
@@ -47,6 +50,7 @@ class AutoLeadsJob
 
   def spin_tapo_workers
     return if Rails.env.development? || Rails.env.test?
+
     HerokuControl.auto_leads_workers_up
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateImportFails < ActiveRecord::Migration
   def change
     create_table :import_fails do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for page layout menus etc. based on who signed
 module LayoutsHelper
   def top_bar
@@ -21,6 +23,7 @@ module LayoutsHelper
   def top_bar_based_on_request
     return 'traineetopbar' if controller_name == 'shared_job_statuses'
     return 'auto_job_leads' if controller_name == 'job_search_profiles'
+
     'hometopbar'
   end
 end

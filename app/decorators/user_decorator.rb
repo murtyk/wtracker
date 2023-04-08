@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # user decorator
 # mainly used in index view
 class UserDecorator < ApplicationDecorator
@@ -18,7 +20,8 @@ class UserDecorator < ApplicationDecorator
 
   def role_description
     return role unless navigator? && acts_as_admin?
-    role + ' (Acts as Admin)'
+
+    "#{role} (Acts as Admin)"
   end
 
   def status
@@ -40,12 +43,14 @@ class UserDecorator < ApplicationDecorator
   def assigned_to_header
     return nil unless object.navigator? || object.instructor?
     return '<strong>Assigned as Navigator to:</strong>'.html_safe if object.navigator?
+
     '<strong>Assigned as Instructor to:</strong>'.html_safe
   end
 
   def assigned_klasses
-    return []  unless object.navigator? || object.instructor?
+    return [] unless object.navigator? || object.instructor?
     return object.navigator_klasses if object.navigator?
+
     object.instructor_klasses
   end
 

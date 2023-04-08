@@ -1,4 +1,6 @@
-class KlassCategoryPolicy < Struct.new(:user, :klass_category)
+# frozen_string_literal: true
+
+KlassCategoryPolicy = Struct.new(:user, :klass_category) do
   def new?
     user.director?
   end

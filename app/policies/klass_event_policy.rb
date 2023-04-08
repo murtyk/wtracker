@@ -1,4 +1,6 @@
-class KlassEventPolicy < Struct.new(:user, :klass_event)
+# frozen_string_literal: true
+
+KlassEventPolicy = Struct.new(:user, :klass_event) do
   def new?
     user.admin_or_director? || user.navigator?
   end

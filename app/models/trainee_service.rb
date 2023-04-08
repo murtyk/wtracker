@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # In grants that have trainee applications,
 #   many services can be provided to a trainee.
 class TraineeService < ApplicationRecord

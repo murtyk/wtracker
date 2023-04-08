@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # acts like a jobs database in case of instate only job search
 class JobsInStateStore
   include Mongoid::Document
   include Mongoid::Timestamps::Short # For c_at and u_at.
 
-  field :js_id, 	as: :job_search_id, type: Integer
+  field :js_id,	as: :job_search_id, type: Integer
   field :s_c, as: :state_code, type: String
   field :f, as: :searched, type: Boolean
 
@@ -35,11 +37,11 @@ class JobsInStateStore
 
   def save_jobs(sh_jobs)
     sh_jobs.each do |shjob|
-      if shjob.location.include?(state_code)
-        j_hash = shjob_to_hash(shjob)
-        j_hash[:job_search_id] = job_search_id
-        mongo_jobs.create(j_hash)
-      end
+      next unless shjob.location.include?(state_code)
+
+      j_hash = shjob_to_hash(shjob)
+      j_hash[:job_search_id] = job_search_id
+      mongo_jobs.create(j_hash)
     end
     self.searched = true
     save
@@ -49,7 +51,7 @@ class JobsInStateStore
 
   def shjob_to_hash(shjob)
     j_hash = {}
-    attrs = [:title, :excerpt, :location, :company, :source, :details_url, :date_posted]
+    attrs = %i[title excerpt location company source details_url date_posted]
     attrs.each { |f| j_hash[f] = shjob.send(f.to_s) }
     j_hash
   end

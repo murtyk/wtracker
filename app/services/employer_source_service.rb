@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class EmployerSourceService
   class << self
-
     def find_employer_source(user, grant = current_grant)
       return [] unless user && grant
 
@@ -8,6 +9,7 @@ class EmployerSourceService
         name = "#{user.name}_#{grant.name}"
         es = EmployerSource.where(name: name, grant_id: grant.id).first
         return es unless user.admin_or_director?
+
         return es || EmployerSourceFactory.create_employer_source(user, grant)
       end
 
@@ -35,9 +37,9 @@ class EmployerSourceService
       return Employer if user.admin_access?
 
       Employer
-      .joins(employer_source: :user_employer_sources)
-      .where(employer_sources: { grant_id: nil })
-      .where(user_employer_sources: { user_id: user.id })
+        .joins(employer_source: :user_employer_sources)
+        .where(employer_sources: { grant_id: nil })
+        .where(user_employer_sources: { user_id: user.id })
     end
 
     def current_grant

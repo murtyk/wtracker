@@ -1,4 +1,6 @@
-class UiVerifiedNotePolicy < Struct.new(:user, :ui_verified_note)
+# frozen_string_literal: true
+
+UiVerifiedNotePolicy = Struct.new(:user, :ui_verified_note) do
   def new?
     user.admin_or_director? || user.navigator?
   end

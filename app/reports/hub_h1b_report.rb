@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for RTW grant reporting
 class HubH1bReport < Report
   attr_accessor :funding_source_id
@@ -6,6 +8,7 @@ class HubH1bReport < Report
   def post_initialize(params)
     initialize_objects
     return unless params && params[:action] != 'new'
+
     @funding_source_id = params[:funding_source_id]
     build_trainees
   end
@@ -22,7 +25,7 @@ class HubH1bReport < Report
     @end_date || quarter_end_date
   end
 
-  # rubocop:disable AbcSize
+  # rubocop:disable Metrics/AbcSize
   def build_excel
     errors = []
 
@@ -30,12 +33,10 @@ class HubH1bReport < Report
     excel_file.add_row builder.header
     excel_file.add_row builder.header_numbers
     trainees.each do |trainee|
-      begin
-        row = builder.build_row(trainee)
-        excel_file.add_row row
-      rescue StandardError => error
-        errors << "trainee_id: #{trainee.id} #{error.message}"
-      end
+      row = builder.build_row(trainee)
+      excel_file.add_row row
+    rescue StandardError => e
+      errors << "trainee_id: #{trainee.id} #{e.message}"
     end
 
     AdminMailer.notify_hub_report_errors(errors).deliver_later if errors.any?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # trainee with activities in a date range
 # with a particular status or all
 class TraineesActivityReport < Report
@@ -40,10 +42,10 @@ class TraineesActivityReport < Report
 
   def build_trainees
     ts = Trainee.joins(:klass_trainees)
-         .preload(:klasses, :trainee_notes, :trainee_interactions)
-         .order(:first, :last)
+                .preload(:klasses, :trainee_notes, :trainee_interactions)
+                .order(:first, :last)
     ts = ts.where(klass_trainees: { klass_id: klass_ids })
-    ts = ts.where('klass_trainees.status = ?', status) if status > 0
+    ts = ts.where('klass_trainees.status = ?', status) if status.positive?
     ts.uniq
   end
 end

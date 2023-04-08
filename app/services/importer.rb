@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # mother of all impoerters
 class Importer
@@ -14,11 +16,12 @@ class Importer
   end
 
   def self.new_importer(params, current_user = nil)
-    resource  = params[:resource]
+    resource = params[:resource]
     return KlassesImporter.new(params, current_user)   if resource == 'klasses'
     return EmployersImporter.new(params, current_user) if resource == 'employers'
     return CitiesImporter.new(params, current_user)    if resource == 'cities'
     return new_trainee_importer(params, current_user) if resource == 'trainees'
+
     nil
   end
 
@@ -27,6 +30,7 @@ class Importer
       return TraineeUiClaimVerifiedOnImporter.new(params, current_user)
     end
     return TraineesImporter.new(params, current_user) unless params[:updates]
+
     TraineeUpdatesImporter.new(params, current_user)
   end
 
@@ -55,11 +59,11 @@ class Importer
   end
 
   def header_fields
-    fail 'subclass has to implement header_fields method'
+    raise 'subclass has to implement header_fields method'
   end
 
   def template_name
-    fail 'subclass has to implement template_name method'
+    raise 'subclass has to implement template_name method'
   end
 
   def import_status
@@ -96,11 +100,12 @@ class Importer
   def validate_header
     @reader = open_reader
     return unless @reader
+
     valid_header = (@reader.header & header_fields).size == header_fields.size
-# debugger
+    # debugger
     unless valid_header
-      Rails.logger.info "file header: #{@reader.header.join("---")}"
-      Rails.logger.info "header fields: #{header_fields.join("---")}"
+      Rails.logger.info "file header: #{@reader.header.join('---')}"
+      Rails.logger.info "header fields: #{header_fields.join('---')}"
     end
     create_import_fail_for_invalid_header unless valid_header
     close_reader
@@ -127,13 +132,13 @@ class Importer
     ImportFileReader.new(file_url, @original_filename)
   rescue StandardError => e
     import_status.import_fails.create(row_no: 0, can_retry: false,
-                                        error_message: e.to_s,
-                                        geocoder_fail: false)
+                                      error_message: e.to_s,
+                                      geocoder_fail: false)
     false
   end
 
   def import_row(_row, _skip_fail_entry = false)
-    fail 'subclass should implement import_row'
+    raise 'subclass should implement import_row'
   end
 
   def store_error(row, row_no, error_message)
@@ -148,14 +153,13 @@ class Importer
     import_status.rows_successful = @count_success
     import_status.rows_failed = @count_fails
     import_status.status = status
-    if status == 'completed' && !@objects.empty?
-      import_status.data = @objects.map(&:id)
-    end
+    import_status.data = @objects.map(&:id) if status == 'completed' && !@objects.empty?
     import_status.save
   end
 
   def clean_field(s)
     return s unless s.is_a?(String)
+
     s = s.strip
     s.blank? ? nil : s
   end
@@ -170,13 +174,15 @@ class Importer
 
   PLEASE_CORRECT = ' Please correct the file and upload again.'
   def clean_state(s)
-    fail 'State can not be null.' + PLEASE_CORRECT unless s
-    fail 'State should be 2 chars.' + PLEASE_CORRECT unless s.length == 2
+    raise "State can not be null.#{PLEASE_CORRECT}" unless s
+    raise "State should be 2 chars.#{PLEASE_CORRECT}" unless s.length == 2
+
     s
   end
 
   def clean_zip(zip)
     return nil if zip.blank?
+
     zip = zip.to_i.to_s if zip.is_a? Float
     zip = zip.to_s.delete('^0-9')
     zip = '0' * (5 - zip.size) + zip if zip.size < 5
@@ -209,10 +215,14 @@ class Importer
   end
 
   def valid_float(s)
-    true if Float(s) rescue false
+    true if Float(s)
+  rescue StandardError
+    false
   end
 
   def valid_integer(s)
-    true if Integer(s) rescue false
+    true if Integer(s)
+  rescue StandardError
+    false
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # searches and sends job leads for one trainee
 class TraineeAutoLeads
   attr_reader :trainee, :jsp
@@ -19,9 +21,9 @@ class TraineeAutoLeads
     take_a_nap
     init_ip
     send_jobs(find_matching_jobs)
-  rescue StandardError => error
+  rescue StandardError => e
     msg = "AutoJobLeads: Trainee #{trainee.name} " \
-          "ID: #{trainee.id} EXCEPTION: #{error}\n" + error.backtrace.join("\n")
+          "ID: #{trainee.id} EXCEPTION: #{e}\n" + e.backtrace.join("\n")
     Rails.logger.error msg
   end
 
@@ -34,7 +36,7 @@ class TraineeAutoLeads
     sleep(rand(1..3))
   end
 
-  # rubocop:disable AbcSize
+  # rubocop:disable Metrics/AbcSize
   def send_jobs(jobs)
     last_posted_date = most_recent_posted_date
     leads_to_be_sent = []
@@ -104,17 +106,19 @@ class TraineeAutoLeads
     attempts = 1
     3.times do
       count = search_by_city_zip(sp_by_city, sp_by_zip)
-      if count > 0 && attempts > 1
+      if count.positive? && attempts > 1
         log_info "AutoJobLeads: JSP id = #{jsp.id} attempts = #{attempts}"
       end
-      break if count > 0
+      break if count.positive?
+
       attempts += 1
     end
   end
 
   def search_by_city_zip(by_city, by_zip)
     count = job_board.search_jobs(by_city)
-    return count if count > 0
+    return count if count.positive?
+
     job_board.search_jobs(by_zip)
   end
 

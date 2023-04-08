@@ -1,4 +1,6 @@
-class JobSearchPolicy < Struct.new(:user, :job_search)
+# frozen_string_literal: true
+
+JobSearchPolicy = Struct.new(:user, :job_search) do
   def new?
     user.navigator? || user.admin_or_director?
   end

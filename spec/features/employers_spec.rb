@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Employers' do
 #   describe 'existimg employers' do
 #     before :each do
@@ -29,24 +30,24 @@
 #       click_button 'Find'
 #       href_link('employers/1').click
 #       expect(page).to have_text('Wawa')
-# 
+#
 #       expect(page).to have_text('Address:')
 #       expect(page).to have_text('100 South Main Street')
-# 
+#
 #       expect(page).to have_text('Contacts')
-# 
+#
 #       expect(page).to have_text('Sectors')
 #       expect(page).to have_text('manufacturing')
-# 
+#
 #       expect(page).to have_text('Trainees Hired')
 #       expect(page).to have_text('Trainees Applied For Jobs')
 #       expect(page).to have_text('Job Openings')
-# 
+#
 #       expect(page).to have_text('Notes')
 #       expect(page).to have_text('Class Interactions')
 #     end
 #   end
-# 
+#
 #   describe 'in show' do
 #     before :each do
 #       signin_admin
@@ -55,7 +56,7 @@
 #     after :each do
 #       signout
 #     end
-# 
+#
 #     it 'can edit' do
 #       Account.current_id = 1
 #       user_name = User.last.name
@@ -66,7 +67,7 @@
 #       expect(page).to have_text user_name
 #     end
 #   end
-# 
+#
 #   describe 'new employer' do
 #     before :each do
 #       signin_admin
@@ -79,9 +80,9 @@
 #         fill_in 'City', with: 'East Windsor'
 #         select('NJ', from: 'employer_address_attributes_state')
 #         fill_in 'Zip', with: '08520'
-# 
+#
 #         select('banking', from: 'Sectors')
-# 
+#
 #         click_button 'Save'
 #         expect(page).to have_text 'Employer was successfully created.'
 #       end

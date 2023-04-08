@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'google/apis/gmail_v1'
 require 'googleauth'
 require 'googleauth/stores/file_token_store'
 require 'fileutils'
 
 namespace :gmail do
-  OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
-  APPLICATION_NAME = 'Gmail API Ruby Quickstart'.freeze
-  CLIENT_SECRETS_PATH = 'client_secret.json'.freeze
+  OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
+  APPLICATION_NAME = 'Gmail API Ruby Quickstart'
+  CLIENT_SECRETS_PATH = 'client_secret.json'
   CREDENTIALS_PATH = File.join(Dir.home, '.credentials',
                                'tokens.yaml')
   SCOPE = Google::Apis::GmailV1::AUTH_GMAIL_READONLY
@@ -46,7 +48,8 @@ namespace :gmail do
     bounced_emails = []
 
     # find bounced messages
-    response = service.list_user_messages('me', label_ids: ['INBOX'], q: 'from:mailer-daemon@googlemail.com')
+    response = service.list_user_messages('me', label_ids: ['INBOX'],
+                                                q: 'from:mailer-daemon@googlemail.com')
 
     response.messages.each do |m|
       print m.id
@@ -67,7 +70,7 @@ namespace :gmail do
     end
 
     csv_data = CSV.generate do |csv|
-      csv << %w(email reason)
+      csv << %w[email reason]
       bounced_emails.each { |row| csv << row }
     end
 
@@ -103,7 +106,7 @@ namespace :gmail do
       puts 'Open the following URL in the browser and enter the ' \
            'resulting code after authorization'
       puts url
-      code = STDIN.gets.strip
+      code = $stdin.gets.strip
       credentials = authorizer.get_and_store_credentials_from_code(
         user_id: user_id, code: code, base_url: OOB_URI
       )
@@ -114,12 +117,13 @@ namespace :gmail do
   def parse_snippet(s)
     if s.include?('Address not found')
       email = begin
-                s.split('delivered to ')[1].split(' because')[0]
-              rescue
-                ''
-              end
+        s.split('delivered to ')[1].split(' because')[0]
+      rescue StandardError
+        ''
+      end
 
       return ['', s] if email.blank?
+
       return [email, 'Address not found']
     end
 
@@ -130,23 +134,25 @@ namespace :gmail do
       begin
         s = '. See the technical details below, or try resending in a few minutes. '
         email, reason = s.split(prefix)[1].split(s)
-      rescue
+      rescue StandardError
         [nil, nil]
       end
       return [email, reason] if email
+
       return ['', s]
     end
 
     index = s.index('The response was')
     if index
       email = begin
-                s.split('delivered to ')[1].split(' because')[0]
-              rescue
-                ''
-              end
+        s.split('delivered to ')[1].split(' because')[0]
+      rescue StandardError
+        ''
+      end
       reason = s[index..-1]
 
       return ['', s] if email.blank?
+
       return [email, reason]
     end
 

@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Klasses' do
 #   describe 'instructors' do
 #     before :each do
@@ -10,7 +11,7 @@
 #       destroy_klasses
 #       signout
 #     end
-# 
+#
 #     it 'can add and remove instructors', js: true do
 #       click_link 'new_klass_instructor_link'
 #       # wait_for_ajax
@@ -25,11 +26,11 @@
 #       AlertConfirmer.accept_confirm_from do
 #         click_link id
 #       end
-# 
+#
 #       wait_for_ajax
 #       expect(page).to_not have_text name
 #     end
-# 
+#
 #     it 'removes add instructor form on cancel', js: true do
 #       click_link 'new_klass_instructor_link'
 #       # wait_for_ajax

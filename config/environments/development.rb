@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -38,7 +40,6 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
 
   config.assets.check_precompiled_asset = false
-
 
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large

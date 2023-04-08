@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 # for building header or row for search applicants
 # returns row as an array
 class ApplicantSearchViewBuilder
   attr_accessor :for_xml
+
   def initialize(for_excel = true)
     @for_excel = for_excel
   end

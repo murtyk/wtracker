@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # an acount can have multiple colleges and
 # classes get conducted in a college
 # a college should have a physical address

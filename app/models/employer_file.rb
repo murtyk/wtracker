@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # model for managing employer documents
 class EmployerFile < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

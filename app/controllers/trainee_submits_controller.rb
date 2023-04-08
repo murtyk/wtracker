@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TraineeSubmitsController < ApplicationController
   before_filter :authenticate_user!
 
@@ -27,7 +29,7 @@ class TraineeSubmitsController < ApplicationController
 
   def trainee_submit_params
     ts_params = params.require(:trainee_submit)
-                .permit(:title, :employer_id, :applied_on)
+                      .permit(:title, :employer_id, :applied_on)
 
     ts_params[:applied_on] = opero_str_to_date(ts_params[:applied_on])
     ts_params

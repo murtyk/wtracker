@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # a job search and anlysis resulted in adding opera company
 # this captures the search criteria for the opero company
 class GooglePlacesSearch < ApplicationRecord

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ethnicity of a trainee
 class Race < ApplicationRecord
   default_scope { order(:name) }

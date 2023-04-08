@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UiVerifiedNotesController < ApplicationController
   before_filter :authenticate_user!
 
@@ -19,7 +21,6 @@ class UiVerifiedNotesController < ApplicationController
     @trainee = @ui_verified_note.trainee
   end
 
-
   # DELETE /ui_verified_notes/1
   # DELETE /ui_verified_notes/1.json
   def destroy
@@ -33,6 +34,6 @@ class UiVerifiedNotesController < ApplicationController
 
   def ui_verified_note_params
     params.require(:ui_verified_note)
-      .permit(:notes, :trainee_id)
+          .permit(:notes, :trainee_id)
   end
 end

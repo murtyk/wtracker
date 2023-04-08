@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # mother of all reports
 class Report
@@ -27,25 +29,25 @@ class Report
   FUNDING_SOURCE_MONTHLY          = 'funding_source_monthly'
 
   REPORT_CLASS = {
-    TRAINEES_PLACED                   => :TraineesPlacedReport,
-    TRAINEES_DETAILS                  => :TraineesDetailsReport,
-    TRAINEES_DETAILS_WITH_PLACEMENT   => :TraineesDetailsWithPlacementReport,
-    TRAINEES_STATUS                   => :TraineesStatusReport,
-    TRAINEES_ACTIVITY                 => :TraineesActivityReport,
-    TRAINEES_VERIFICATION             => :TraineesVerificationReport,
-    TRAINEES_NOT_PLACED               => :TraineesNotPlacedReport,
-    TRAINEES_NEAR_BY_EMPLOYERS        => :TraineesNearByEmployersReport,
-    TRAINEES_BOUNCED_EMAILS           => :TraineesBouncedEmailsReport,
-    JOBS_APPLIED                      => :JobsAppliedReport,
-    HUB_H1B                           => :HubH1bReport,
-    EMPLOYERS_HIRED                   => :EmployersHiredReport,
-    ACTIVE_EMPLOYERS                  => :ActiveEmployersReport,
-    EMPLOYERS_ACTIVITIES_WITH_NOTES   => :EmployersActivitiesWithNotesReport,
-    EMPLOYERS_ADDRESS_MISSING         => :EmployersNoAddressReport,
-    EMPLOYERS_WITH_APPRENTICES        => :EmployersWithApprenticesReport,
-    CLASS_TRAINEES                    => :ClassTraineesReport,
-    FUNDING_SOURCE_MONTHLY            => :FundingSourceMonthlyReport
-  }
+    TRAINEES_PLACED => :TraineesPlacedReport,
+    TRAINEES_DETAILS => :TraineesDetailsReport,
+    TRAINEES_DETAILS_WITH_PLACEMENT => :TraineesDetailsWithPlacementReport,
+    TRAINEES_STATUS => :TraineesStatusReport,
+    TRAINEES_ACTIVITY => :TraineesActivityReport,
+    TRAINEES_VERIFICATION => :TraineesVerificationReport,
+    TRAINEES_NOT_PLACED => :TraineesNotPlacedReport,
+    TRAINEES_NEAR_BY_EMPLOYERS => :TraineesNearByEmployersReport,
+    TRAINEES_BOUNCED_EMAILS => :TraineesBouncedEmailsReport,
+    JOBS_APPLIED => :JobsAppliedReport,
+    HUB_H1B => :HubH1bReport,
+    EMPLOYERS_HIRED => :EmployersHiredReport,
+    ACTIVE_EMPLOYERS => :ActiveEmployersReport,
+    EMPLOYERS_ACTIVITIES_WITH_NOTES => :EmployersActivitiesWithNotesReport,
+    EMPLOYERS_ADDRESS_MISSING => :EmployersNoAddressReport,
+    EMPLOYERS_WITH_APPRENTICES => :EmployersWithApprenticesReport,
+    CLASS_TRAINEES => :ClassTraineesReport,
+    FUNDING_SOURCE_MONTHLY => :FundingSourceMonthlyReport
+  }.freeze
 
   def initialize(user, params = nil)
     @user_id = user.id
@@ -63,11 +65,11 @@ class Report
 
   def self.reports_by_type(user)
     [
-     ['Class Reports', class_reports],
-     ['Trainee Reports', trainee_reports(user)],
-     ['Employer Reports', employer_reports(user)],
-     ['Funding Source Reports', funding_source_reports(user)]
-   ]
+      ['Class Reports', class_reports],
+      ['Trainee Reports', trainee_reports(user)],
+      ['Employer Reports', employer_reports(user)],
+      ['Funding Source Reports', funding_source_reports(user)]
+    ]
   end
 
   def self.class_reports
@@ -76,10 +78,9 @@ class Report
 
   def self.trainee_reports(user)
     list =
-    [TRAINEES_DETAILS, TRAINEES_DETAILS_WITH_PLACEMENT, TRAINEES_PLACED,
-     TRAINEES_NOT_PLACED, TRAINEES_STATUS, TRAINEES_ACTIVITY,
-     TRAINEES_VERIFICATION, JOBS_APPLIED
-    ]
+      [TRAINEES_DETAILS, TRAINEES_DETAILS_WITH_PLACEMENT, TRAINEES_PLACED,
+       TRAINEES_NOT_PLACED, TRAINEES_STATUS, TRAINEES_ACTIVITY,
+       TRAINEES_VERIFICATION, JOBS_APPLIED]
 
     return list unless user.admin_access?
 
@@ -87,9 +88,11 @@ class Report
   end
 
   def self.employer_reports(user)
-    return [EMPLOYERS_HIRED,
-            EMPLOYERS_ADDRESS_MISSING,
-            EMPLOYERS_ACTIVITIES_WITH_NOTES] unless user.admin_access?
+    unless user.admin_access?
+      return [EMPLOYERS_HIRED,
+              EMPLOYERS_ADDRESS_MISSING,
+              EMPLOYERS_ACTIVITIES_WITH_NOTES]
+    end
 
     list = [EMPLOYERS_HIRED, ACTIVE_EMPLOYERS,
             EMPLOYERS_ACTIVITIES_WITH_NOTES, EMPLOYERS_ADDRESS_MISSING]
@@ -101,8 +104,8 @@ class Report
     list
   end
 
-  def self.funding_source_reports(user)
-    return [FUNDING_SOURCE_MONTHLY]
+  def self.funding_source_reports(_user)
+    [FUNDING_SOURCE_MONTHLY]
   end
 
   def start_date
@@ -115,6 +118,7 @@ class Report
 
   def klasses
     return [] unless klass_ids
+
     Klass.includes(college: :address).where(id: klass_ids)
   end
 
@@ -141,11 +145,11 @@ class Report
   def render_counts
     strong_class = "<strong class='align-right' style='font-color: blue'>"
     ctxt = "#{count_label}: #{count}"
-    (strong_class + ctxt + '</strong>').html_safe
+    "#{strong_class}#{ctxt}</strong>".html_safe
   end
 
   def count
-    fail 'Subclass should implement count method'
+    raise 'Subclass should implement count method'
   end
 
   def count_label
@@ -153,7 +157,7 @@ class Report
   end
 
   def download_button
-    return nil unless count > 0
+    return nil unless count.positive?
 
     btnclass = 'btn btn-flat btn-small btn-primary pull-right'
 
@@ -188,6 +192,7 @@ class Report
     @klass_id = params[:klass_id]
     @klass_ids = params[:klass_ids]
     return unless @klass_id || @klass_ids
+
     k_ids = (@klass_id && [@klass_id]) || @klass_ids
     k_ids.delete('')
     k_ids

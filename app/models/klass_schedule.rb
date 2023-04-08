@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # schedule of a class
 # class may be there only on some week days
 class KlassSchedule < ApplicationRecord

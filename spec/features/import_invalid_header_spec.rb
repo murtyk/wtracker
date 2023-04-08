@@ -1,14 +1,15 @@
+# frozen_string_literal: true
 # require 'rails_helper'
 # describe 'Import Services' do
 #   describe 'import' do
 #     before(:each) do
 #       signin_admin
-# 
+#
 #       @filepath = "#{Rails.root}/spec/fixtures/trainees.xlsx"
 #       allow(Amazon).to receive(:store_file).and_return('thisisawsfilename')
 #       allow(Amazon).to receive(:file_url).and_return(@filepath)
 #     end
-# 
+#
 #     it 'bad header' do
 #       VCR.use_cassette('import_badheader') do
 #         visit '/import_statuses/new?resource=klasses'

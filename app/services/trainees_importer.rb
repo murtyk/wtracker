@@ -1,28 +1,30 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # imports trainees from a file
 class TraineesImporter < Importer
-  REQUIRED_FIELDS  = %w(first_name last_name) # these are the minimum required fields
+  REQUIRED_FIELDS = %w[first_name last_name].freeze # these are the minimum required fields
 
-  COMMON_FIELDS    = %w(dob gender veteran mobile_no email education ethnicity home_address:line1
-                       home_address:city home_address:state home_address:zip recent_employer job_title)
+  COMMON_FIELDS = %w[dob gender veteran mobile_no email education ethnicity home_address:line1
+                     home_address:city home_address:state home_address:zip recent_employer job_title].freeze
 
   # FIELDS REQUIRED FOR MFG GRANT
-  TRAINEE_FIELDS1 = %w(middle_name land_no
+  TRAINEE_FIELDS1 = %w[middle_name land_no
                        trainee_id
                        mail_address:line1 mail_address:city
                        mail_address:state mail_address:zip
-                       years certifications)
+                       years certifications].freeze
 
   # ADDITIONAL FIELDS RQUIRED FOR TDC GRANT
-  TRAINEE_FIELDS2 = %w(legal_status current_employment_status
+  TRAINEE_FIELDS2 = %w[legal_status current_employment_status
                        funding_source registration_date
-                       last_wages last_employed_on)
+                       last_wages last_employed_on].freeze
 
   def initialize(all_params = nil, current_user = nil)
     return unless current_user && all_params
 
     @klass_id = all_params[:klass_id].to_i
-    fail 'class required for trainees import' unless @klass_id > 0
+    raise 'class required for trainees import' unless @klass_id.positive?
 
     params = { klass_id: @klass_id }
     file_name = all_params[:file].original_filename
@@ -51,7 +53,7 @@ class TraineesImporter < Importer
         import_status.save
         import_fail.destroy
       end
-    rescue
+    rescue StandardError
       return nil
     end
 
@@ -113,7 +115,9 @@ class TraineesImporter < Importer
     trainee.trainee_id = clean_field(row['trainee_id'])
     trainee.race_id    = find_race_id(row)
 
-    legal_status = Trainee::LEGAL_STATUSES.select{|k,v| v == row['legal_status']}.keys[0]
+    legal_status = Trainee::LEGAL_STATUSES.select do |_k, v|
+                     v == row['legal_status']
+                   end.keys[0]
 
     if row['employer_id'].present?
       employer = Employer.where(id: row['employer_id']).first
@@ -123,7 +127,7 @@ class TraineesImporter < Importer
 
   def find_race_id(row)
     race = Race.find_by(name: row['ethnicity'])
-    race && race.id
+    race&.id
   end
 
   def init_tact_three(t3, row)
@@ -140,25 +144,28 @@ class TraineesImporter < Importer
   end
 
   def clean_years(row)
-    clean_field(row['years']) && clean_field(row['years']).to_i
+    clean_field(row['years'])&.to_i
   end
 
   def map_gender(s)
     g = (clean_field(s) || 'x').downcase[0]
     return 1 if g == 'm'
     return 2 if g == 'f'
+
     0
   end
 
   def map_home_address(row)
     address = map_address_attributes(row, 'home_address:')
     return nil unless address
+
     copy_address_fields(HomeAddress.new, address)
   end
 
   def map_mailing_address(row)
     address = map_address_attributes(row, 'mail_address:')
     return nil unless address
+
     copy_address_fields(MailingAddress.new, address)
   end
 
@@ -166,7 +173,7 @@ class TraineesImporter < Importer
     education = clean_field(s)
     if education
       e = Education.where(name: education).first
-      return e && e.id
+      return e&.id
     end
     nil
   end
@@ -186,8 +193,10 @@ class TraineesImporter < Importer
 
   def funding_source_id(fs_name)
     return nil if fs_name.blank?
+
     fs = FundingSource.where('name ilike ?', fs_name).first
     return nil unless fs
+
     fs.id
   end
 end

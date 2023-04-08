@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddColumnsToApplicant < ActiveRecord::Migration
   def change
     add_column :applicants, :county_id, :integer

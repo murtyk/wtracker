@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TraineeServicesController < ApplicationController
   before_filter :authenticate_user!
 
@@ -15,7 +17,7 @@ class TraineeServicesController < ApplicationController
     @trainee_service = TraineeService.new(trainee_service_params)
     authorize @trainee_service
     @trainee_service.save
-    @trainee = @trainee_service.trainee 
+    @trainee = @trainee_service.trainee
   end
 
   # GET /trainee_services/1/edit
@@ -45,10 +47,10 @@ class TraineeServicesController < ApplicationController
   private
 
   def trainee_service_params
-   ts_params = params.require(:trainee_service)
-               .permit(:name, :start_date, :end_date, :trainee_id)
-   ts_params[:start_date] = opero_str_to_date(ts_params[:start_date])
-   ts_params[:end_date] = opero_str_to_date(ts_params[:end_date])
-   ts_params            
+    ts_params = params.require(:trainee_service)
+                      .permit(:name, :start_date, :end_date, :trainee_id)
+    ts_params[:start_date] = opero_str_to_date(ts_params[:start_date])
+    ts_params[:end_date] = opero_str_to_date(ts_params[:end_date])
+    ts_params
   end
 end

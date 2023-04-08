@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 namespace :admin do
   desc 'for a given account by subdomain, mask all the SSNs and emails'
-  task :mask_data, [:subdomain] => :environment do |t, args|
+  task :mask_data, [:subdomain] => :environment do |_t, args|
     account = Account.find_by(subdomain: args[:subdomain])
     raise "account not found for #{subdomain}" unless account
 
@@ -17,35 +19,35 @@ namespace :admin do
         trainee.update(email: email, trainee_id: random_id)
 
         applicant = trainee.applicant
-        applicant.update(email: email) if applicant
+        applicant&.update(email: email)
 
-        print "."
+        print '.'
       end
 
-      puts "-------"
+      puts '-------'
     end
   end
 
   def random_id
-    (0..9).to_a.shuffle.map(&:to_s).join("")
+    (0..9).to_a.shuffle.map(&:to_s).join('')
   end
 
   def random_email(trainee)
     email = trainee.email
-    parts = email.split("@")
-    name = parts[0] || trainee.name.split(" ").join("_") || random_name
-    name + "@" + random_domain
+    parts = email.split('@')
+    name = parts[0] || trainee.name.split(' ').join('_') || random_name
+    "#{name}@#{random_domain}"
   end
 
   def random_domain
-    random_string(5) + "." + ["net", "biz", "blah"].sample
+    "#{random_string(5)}.#{%w[net biz blah].sample}"
   end
 
   def random_name
-    [random_string, random_string].join("_")
+    [random_string, random_string].join('_')
   end
 
   def random_string(length = 4)
-    ("a".."z").to_a.shuffle[1..length].join("")
+    ('a'..'z').to_a.shuffle[1..length].join('')
   end
 end

@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'faker'
 
 def fake_address
   {
-    line1:     Faker::Address.street_address,
-    city:      Faker::Address.city,
-    state:     Faker::Address.state_abbr,
-    zip:       Faker::Address.zip,
+    line1: Faker::Address.street_address,
+    city: Faker::Address.city,
+    state: Faker::Address.state_abbr,
+    zip: Faker::Address.zip,
     longitude: Faker::Address.longitude,
-    latitude:  Faker::Address.latitude,
+    latitude: Faker::Address.latitude,
     county_id: 1,
-    county:    'mycounty'
+    county: 'mycounty'
   }
 end

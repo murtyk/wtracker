@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin
   # For admin to view all trainees
   class TraineesController < ApplicationController
@@ -17,7 +19,7 @@ class Admin
       @trainee.update(
         bounced: true,
         bounced_reason: params[:trainee][:bounced_reason]
-        )
+      )
 
       flash[:notice] = "Bounced #{@trainee.name}"
       redirect_to admin_trainees_path
@@ -38,7 +40,7 @@ class Admin
 
     def account_trainees
       ts = Trainee.unscoped.order(:account_id, :first, :last)
-      ts = ts.where(account_id: @account_id) if @account_id > 0
+      ts = ts.where(account_id: @account_id) if @account_id.positive?
       ts = ts.where("email ilike '%#{@email_text}%'") unless @email_text.blank?
 
       unless @name_text.blank?
@@ -47,8 +49,8 @@ class Admin
 
       unless @job_title.blank?
         jobs = AutoSharedJob.where(trainee_id: ts.select(:id))
-                 .where("title ilike '%#{@job_title}%'")
-        t_ids =  jobs.select(:trainee_id)
+                            .where("title ilike '%#{@job_title}%'")
+        t_ids = jobs.select(:trainee_id)
         ts = ts.where(id: t_ids)
       end
 

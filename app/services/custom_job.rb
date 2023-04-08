@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # mainly used for scoping an account
 class CustomJob
   def initialize(current_account)

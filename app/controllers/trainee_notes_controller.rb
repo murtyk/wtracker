@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TraineeNotesController < ApplicationController
   before_filter :authenticate_user!
 
@@ -46,6 +48,6 @@ class TraineeNotesController < ApplicationController
 
   def traiee_note_params
     params.require(:trainee_note)
-      .permit(:notes, :trainee_id)
+          .permit(:notes, :trainee_id)
   end
 end

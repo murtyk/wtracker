@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 require 'rest_client'
 require 'json'
 require 'fuzzystringmatch'
@@ -11,6 +12,7 @@ class GoogleApi
 
   def self.search_for_companies(name, city_state)
     return nil if city_state.blank? || name.blank?
+
     options = { query: "#{name} near #{city_state}" }
     json    = search(TEXT_SEARCH_URL, options)
     return nil unless json && json['results']
@@ -21,17 +23,17 @@ class GoogleApi
   end
 
   def self.build_google_companies(results, name, city_name, state_code)
-    companies  =
-    results.map do |result|
-      result[:score] = place_matching_score(result, name, city_name, state_code)
-      GoogleCompany.new(result)
-    end
+    companies =
+      results.map do |result|
+        result[:score] = place_matching_score(result, name, city_name, state_code)
+        GoogleCompany.new(result)
+      end
     companies.sort! { |a, b| b.score <=> a.score }
     companies[0..19]
   end
 
   def self.find_company(name, city_name, state_code,
-                                           latitude, longitude)
+                        latitude, longitude)
     score, json = find_company_with_score(name, city_name, state_code,
                                           latitude, longitude)
     return nil unless json
@@ -71,21 +73,21 @@ class GoogleApi
   def self.generate_addresses(type, lat, lng, n = 10)
     # should try nearby search
     options = { location: "#{lat},#{lng}",
-                radius:   10_000,
-                types:    type}
+                radius: 10_000,
+                types: type }
 
     json = near_by_search(options)
     return nil unless json['status'] == 'OK'
 
     addresses = []
 
-    json['results'][0..(n-1)].each do |r|
+    json['results'][0..(n - 1)].each do |r|
       ref = details(reference: r['reference'])
 
       addr_comp = {
-        "formatted_address" => ref["formatted_address"],
-        "formatted_phone_number" => ref["formatted_phone_number"]
-      }.merge(ref["geometry"])
+        'formatted_address' => ref['formatted_address'],
+        'formatted_phone_number' => ref['formatted_phone_number']
+      }.merge(ref['geometry'])
 
       addresses << addr_comp
     end
@@ -94,22 +96,24 @@ class GoogleApi
   end
 
   def self.company_with_match_score(name, city_name, state_code,
-                                   latitude, longitude)
+                                    latitude, longitude)
     json = text_search(query: "#{name} near #{city_name},#{state_code}")
 
     return nil unless json && json['status'] == 'OK'
+
     matches = get_best_matches(json, name, city_name, state_code)
 
     return matches[0] if matches[0][:score] >= 70
 
     # should try nearby search
     options = { location: "#{latitude},#{longitude}",
-                radius:   50_000,
-                types:    'establishment',
-                name:     name }
+                radius: 50_000,
+                types: 'establishment',
+                name: name }
 
     json = near_by_search(options)
     return nil unless json['status'] == 'OK'
+
     get_best_matches(json, name, city_name, state_code)[0]
   end
 
@@ -145,8 +149,8 @@ class GoogleApi
     name = result['name'].downcase
     return [name, nil, nil] unless address
 
-    city = address[1] && address[1].squish
-    state_code = address[2] && address[2].squish.downcase
+    city = address[1]&.squish
+    state_code = address[2]&.squish&.downcase
     [name, city, state_code]
   end
 
@@ -156,7 +160,7 @@ class GoogleApi
   end
 
   def self.search(url, options)
-    options = options.merge(key: ENV['GOOGLE_KEY'], sensor: :false)
+    options = options.merge(key: ENV['GOOGLE_KEY'], sensor: false)
     response = RestClient.get(url, params: options)
     JSON.parse response.body
   end

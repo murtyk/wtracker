@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A grant has many programs and a program can have many Klasses
 # Some Klass events are created by default when a class is created
 # trainees are assigned to a class
@@ -142,18 +144,18 @@ class KlassesController < ApplicationController
 
   def klass_params
     params.require(:klass)
-      .permit(:program_id, :name, :credits, :description, :klass_category_id,
-              :end_date, :start_date, :training_hours, :college_id,
-              klass_schedules_attributes: [:id, :dayoftheweek, :scheduled,
-                                           :start_ampm, :start_time_hr, :start_time_min,
-                                           :end_ampm, :end_time_hr, :end_time_min])
+          .permit(:program_id, :name, :credits, :description, :klass_category_id,
+                  :end_date, :start_date, :training_hours, :college_id,
+                  klass_schedules_attributes: %i[id dayoftheweek scheduled
+                                                 start_ampm start_time_hr start_time_min
+                                                 end_ampm end_time_hr end_time_min])
   end
 
   def send_klasses_list_file
     @klasses_service.build_document
     send_file @klasses_service.file_path, type: 'application/vnd.ms-excel',
-                              filename: @klasses_service.file_name,
-                              stream: false
+                                          filename: @klasses_service.file_name,
+                                          stream: false
   end
 
   def send_klasses_list_file_by_email

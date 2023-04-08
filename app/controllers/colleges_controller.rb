@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CollegesController < ApplicationController
   before_filter :authenticate_user!
   # GET /colleges
@@ -63,6 +65,6 @@ class CollegesController < ApplicationController
 
   def college_params
     params.require(:college)
-      .permit(:name, address_attributes: [:id, :line1, :line2, :city, :state, :zip])
+          .permit(:name, address_attributes: %i[id line1 line2 city state zip])
   end
 end

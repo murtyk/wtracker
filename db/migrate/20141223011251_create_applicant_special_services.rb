@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateApplicantSpecialServices < ActiveRecord::Migration
   def change
     create_table :applicant_special_services do |t|

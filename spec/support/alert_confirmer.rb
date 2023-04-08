@@ -1,20 +1,22 @@
+# frozen_string_literal: true
+
 module AlertConfirmer
   class << self
     include Capybara::DSL
 
-    def reject_confirm_from &block
+    def reject_confirm_from(&block)
       handle_js_modal 'confirm', false, &block
     end
 
-    def accept_confirm_from &block
+    def accept_confirm_from(&block)
       handle_js_modal 'confirm', true, &block
     end
 
-    def accept_alert_from &block
+    def accept_alert_from(&block)
       handle_js_modal 'alert', true, &block
     end
 
-    def get_alert_text_from &block
+    def get_alert_text_from(&block)
       handle_js_modal 'alert', true, true, &block
       get_modal_text 'alert'
     end
@@ -25,11 +27,11 @@ module AlertConfirmer
 
     private
 
-    def handle_js_modal name, return_val, wait_for_call = false, &block
+    def handle_js_modal(name, return_val, wait_for_call = false, &block)
       modal_called = "window.#{name}.called"
       page.execute_script "
       window.original_#{name}_function = window.#{name};
-      window.#{name} = function(msg) { window.#{name}Msg = msg; window.#{name}.called = true; return #{!!return_val}; };
+      window.#{name} = function(msg) { window.#{name}Msg = msg; window.#{name}.called = true; return #{!return_val.nil?}; };
       #{modal_called} = false;
       window.#{name}Msg = null;"
 
@@ -44,7 +46,7 @@ module AlertConfirmer
           end
 
           break if page.evaluate_script(modal_called) ||
-            (timed_out = Time.now > timeout_after)
+                   (timed_out = Time.now > timeout_after)
 
           sleep 0.001
         end

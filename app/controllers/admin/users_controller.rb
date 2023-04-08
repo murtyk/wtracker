@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin
   # For admin to view all users
   class UsersController < ApplicationController
@@ -19,11 +21,13 @@ class Admin
       users = account_users.paginate(page: params[:page], per_page: 30).decorate
 
       return users unless @online_only
+
       users.map { |user| user if user.online? }.compact if @online_only
     end
 
     def account_users
-      return User.unscoped.order(:account_id, :first, :last) if @account_id == 0
+      return User.unscoped.order(:account_id, :first, :last) if @account_id.zero?
+
       User.unscoped.where(account_id: @account_id).order(:first, :last)
     end
   end

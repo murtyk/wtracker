@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe AutoJobLeads do
   before :each do
-    #mock trainee
+    # mock trainee
     t1 = double('Trainee', 'not_placed?' => false,
                            'incumbent?' => false) # placed
     t2 = double('Trainee', 'not_placed?' => true,
@@ -24,19 +26,18 @@ describe AutoJobLeads do
                            'valid_email?' => true,
                            'incumbent?' => false)
 
-
-    #mock grant
+    # mock grant
     grant = double('Grant', account_id: 1,
-        id: 1,
-        account_name: 'Account Name',
-        name: 'Grant Name',
-        'email_messages_defined?' => true,
-        not_disabled_trainees: [t1,t2,t3, t4],
-        trainees: [t1,t2,t3,t4,t5],
-        'auto_job_leads?' => true,
-        'trainee_applications?' => false)
+                            id: 1,
+                            account_name: 'Account Name',
+                            name: 'Grant Name',
+                            'email_messages_defined?' => true,
+                            not_disabled_trainees: [t1, t2, t3, t4],
+                            trainees: [t1, t2, t3, t4, t5],
+                            'auto_job_leads?' => true,
+                            'trainee_applications?' => false)
 
-    allow(Grant).to receive_message_chain("unscoped.where.load") { [grant] }
+    allow(Grant).to receive_message_chain('unscoped.where.load') { [grant] }
 
     # stub methods
     allow_any_instance_of(AutoJobLeads).to receive(:search_and_send_jobs)

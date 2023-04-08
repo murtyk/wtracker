@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # mainly used in search action
 class ApplicantDecorator < ApplicationDecorator
   delegate_all
@@ -13,6 +15,7 @@ class ApplicantDecorator < ApplicationDecorator
 
   def trainee_tapo_id
     return unless trainee
+
     h.link_to(trainee.id, h.trainee_path(trainee))
   end
 
@@ -22,6 +25,7 @@ class ApplicantDecorator < ApplicationDecorator
 
   def unemp_proof_file
     return unless trainee
+
     trainee.unemployment_proof_file
   end
 
@@ -39,6 +43,7 @@ class ApplicantDecorator < ApplicationDecorator
 
   def web_address
     return @web_address if @web_address
+
     account = Account.find Account.current_id
     @web_address = Host.web_address(account.subdomain)
   end

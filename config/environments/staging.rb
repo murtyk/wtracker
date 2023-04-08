@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 WTracker::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -50,10 +52,9 @@ WTracker::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
   dir_list = Dir.entries('app/assets/javascripts') -
-            ['.', '..', 'application.js', 'global', 'gmaps4rails']
-  js_list  = dir_list.map{|d| d + '/*.js'}
+             ['.', '..', 'application.js', 'global', 'gmaps4rails']
+  js_list  = dir_list.map { |d| "#{d}/*.js" }
   config.assets.precompile += js_list
-
 
   # config.assets.precompile += ['applicants/*.js', 'applicant_sources/*.js',
   #                              'assessments/*.js', 'companies_finders/*.js',
@@ -87,11 +88,11 @@ WTracker::Application.configure do
   #   [u, p] == [ENV['SITE_USERNAME'], ENV['SITE_SECRET']]
   # end
 
-  config.logger = Logger.new(STDOUT)
+  config.logger = Logger.new($stdout)
   config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
   config.log_level    = (ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].downcase : 'info').to_sym
 
-  config.log_tags = [:subdomain, :uuid, lambda { |req| Time.now }]
+  config.log_tags = [:subdomain, :uuid, ->(_req) { Time.now }]
 
   # Log detail is configurable on the server
   config.consider_all_requests_local = ENV['CONSIDER_REQUESTS_LOCAL']

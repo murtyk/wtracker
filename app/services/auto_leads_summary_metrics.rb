@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # summary of leads, status, opt outs etc.
 class AutoLeadsSummaryMetrics
   attr_accessor :trainee_ids
@@ -8,14 +10,14 @@ class AutoLeadsSummaryMetrics
 
   def counts_by_status
     { TOTAL_LEADS: job_leads_sent_count,
-      AVERAGE:     average_leads,
-      PENDING:     pending_job_search_profiles_count,
+      AVERAGE: average_leads,
+      PENDING: pending_job_search_profiles_count,
       NOT_PENDING: valid_job_search_profiles_count,
-      VIEWED:      viewed_auto_leads_count,
-      NOT_VIEWED:  not_viewed_auto_leads_count,
-      APPLIED:     applied_auto_leads_count,
+      VIEWED: viewed_auto_leads_count,
+      NOT_VIEWED: not_viewed_auto_leads_count,
+      APPLIED: applied_auto_leads_count,
       NOT_APPLIED: not_applied_auto_leads_count,
-      OPTED_OUT:   opted_out_count }
+      OPTED_OUT: opted_out_count }
   end
 
   def pending_job_search_profiles_count
@@ -54,7 +56,8 @@ class AutoLeadsSummaryMetrics
   end
 
   def average_leads
-    return unless valid_job_search_profiles_count > 0
+    return unless valid_job_search_profiles_count.positive?
+
     (job_leads_sent_count * 1.0 / valid_job_search_profiles_count).round
   end
 end

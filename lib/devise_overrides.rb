@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DeviseOverrides
   def find_for_authentication(conditions)
     unscoped { super(conditions) }
@@ -7,19 +9,19 @@ module DeviseOverrides
     unscoped { super(key, salt) }
   end
 
-  def send_reset_password_instructions(attributes={})
+  def send_reset_password_instructions(attributes = {})
     unscoped { super(attributes) }
   end
 
-  def reset_password_by_token(attributes={})
+  def reset_password_by_token(attributes = {})
     unscoped { super(attributes) }
   end
 
-  def find_recoverable_or_initialize_with_errors(required_attributes, attributes, error=:invalid)
+  def find_recoverable_or_initialize_with_errors(required_attributes, attributes, error = :invalid)
     unscoped { super(required_attributes, attributes, error) }
   end
 
-  def send_confirmation_instructions(attributes={})
+  def send_confirmation_instructions(attributes = {})
     unscoped { super(attributes) }
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # captures the certificates a class issues on completion
 class KlassCertificate < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

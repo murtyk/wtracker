@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # dashboard metrics for grants where applicants can apply.
 # example grant: RTW (NJWF)
 class DashboardRtw < DashboardMetrics
@@ -23,10 +25,11 @@ class DashboardRtw < DashboardMetrics
       os = OpenStruct.new
       os.id = id
       os.header = [name, '# Trainees'] +
-                  ['Placed', 'OJT Enrolled', 'Incumbents', 'WS', 'OCC', '# Assessed', 'EDP'] +
+                  ['Placed', 'OJT Enrolled', 'Incumbents', 'WS', 'OCC', '# Assessed',
+                   'EDP'] +
 
-      # [nav name, # trainees, fs1 count..., placed, ojt enrolled, attended WS, attended OCC]
-      os.rows = []
+                  # [nav name, # trainees, fs1 count..., placed, ojt enrolled, attended WS, attended OCC]
+                  os.rows = []
       os
     end
   end
@@ -42,8 +45,10 @@ class DashboardRtw < DashboardMetrics
     ws_matrix = build_ws_counts_matrix
     occ_matrix = build_occ_counts_matrix
 
-    build_fs_matrices(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix, inc_matrix, ws_matrix, occ_matrix)
-    build_summary_matrix(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix, inc_matrix, ws_matrix, occ_matrix)
+    build_fs_matrices(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix, inc_matrix,
+                      ws_matrix, occ_matrix)
+    build_summary_matrix(t_matrix, a_matrix, e_matrix, p_matrix, oe_matrix, inc_matrix,
+                         ws_matrix, occ_matrix)
 
     self
   end
@@ -71,9 +76,9 @@ class DashboardRtw < DashboardMetrics
 
     # now add a, e, p and oe columns and build a new matrix
     t_matrix.insert_column(p_column, 1, nil)
-    t_matrix.insert_column(oe_column,2, nil)
+    t_matrix.insert_column(oe_column, 2, nil)
 
-    t_matrix.insert_column(inc_column,3, nil)
+    t_matrix.insert_column(inc_column, 3, nil)
 
     t_matrix.insert_column(ws_column, 4, nil)
     t_matrix.insert_column(occ_column, 5, nil)
@@ -101,14 +106,16 @@ class DashboardRtw < DashboardMetrics
       occ_attended  = occ_matrix.column(i + 1)
       @metrics
         .fs_data[i]
-        .rows = build_fs_rows(trainees, assessed, edp, placed, ojt_enrolled, incumbents, ws_attended, occ_attended)
+        .rows = build_fs_rows(trainees, assessed, edp, placed, ojt_enrolled, incumbents,
+                              ws_attended, occ_attended)
     end
   end
 
   def build_fs_rows(trainees, assessed, edp, placed, ojt_enrolled, incumbents, ws_attended, occ_attended)
     # [headers, trainees, 'Placed', 'OJT Enrolled', 'WS', 'OCC', '# Assessed', 'EDP'] +
 
-    columns = [column_headers, trainees, placed, ojt_enrolled, incumbents, ws_attended, occ_attended, assessed, edp]
+    columns = [column_headers, trainees, placed, ojt_enrolled, incumbents, ws_attended,
+               occ_attended, assessed, edp]
     columns.transpose
   end
 
@@ -167,20 +174,20 @@ class DashboardRtw < DashboardMetrics
 
   def build_ws_counts_matrix
     counts = KlassTrainee
-              .joins(trainee: :applicant, klass: :klass_category)
-              .where(klass_categories: { code: "WS" })
-              .group('applicants.navigator_id', 'trainees.funding_source_id')
-              .count
+             .joins(trainee: :applicant, klass: :klass_category)
+             .where(klass_categories: { code: 'WS' })
+             .group('applicants.navigator_id', 'trainees.funding_source_id')
+             .count
 
     build_nav_fs_matrix(counts)
   end
 
   def build_occ_counts_matrix
     counts = KlassTrainee
-              .joins(trainee: :applicant, klass: :klass_category)
-              .where.not(klass_categories: { code: "WS" })
-              .group('applicants.navigator_id', 'trainees.funding_source_id')
-              .count
+             .joins(trainee: :applicant, klass: :klass_category)
+             .where.not(klass_categories: { code: 'WS' })
+             .group('applicants.navigator_id', 'trainees.funding_source_id')
+             .count
     build_nav_fs_matrix(counts)
   end
 
@@ -230,12 +237,13 @@ class DashboardRtw < DashboardMetrics
     trainees = Trainee.joins(:applicant)
     trainees = trainees.where(predicate) if predicate
     trainees.group('applicants.navigator_id', 'trainees.funding_source_id')
-      .count
+            .count
   end
 
   # navs in sorted by name.
   def navigators
     return @navigators if @navigators
+
     navs        = grant.navigators
     @navigators = Hash[navs.map { |n| [n.id, n.name] }]
   end
@@ -260,10 +268,9 @@ class DashboardRtw < DashboardMetrics
   # since some trainees may not have fs assigned includes nil => 'N/A'
   def funding_sources
     return @funding_sources if @funding_sources
+
     @funding_sources = Hash[*FundingSource.order(:name).pluck(:id, :name).flatten]
-    if Trainee.where(funding_source_id: nil).any?
-      @funding_sources[nil] = 'FS N/A'
-    end
+    @funding_sources[nil] = 'FS N/A' if Trainee.where(funding_source_id: nil).any?
     @funding_sources
   end
 
@@ -291,7 +298,7 @@ class DashboardRtw < DashboardMetrics
     q = { applicant_navigator_id_eq: nav_id }
     q.merge!(funding_source_id_eq: fs_id) if fs_id
     q.merge!(funding_source_id_null: true) unless fs_id
-    q.merge!( applicant_current_employment_status_eq: 'Incumbent Worker')
+    q.merge!(applicant_current_employment_status_eq: 'Incumbent Worker')
 
     link(count, q)
   end
@@ -302,6 +309,7 @@ class DashboardRtw < DashboardMetrics
     q.merge!(funding_source_id_null: true) unless fs_id
 
     return q unless status
+
     q.merge(status_eq: status)
   end
 

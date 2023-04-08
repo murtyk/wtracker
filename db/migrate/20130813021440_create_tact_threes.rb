@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class CreateTactThrees < ActiveRecord::Migration
   def change
     create_table :tact_threes do |t|
-      t.references :account,  :null => false
-      t.references :trainee,  :null => false
+      t.references :account,  null: false
+      t.references :trainee,  null: false
       t.integer :education_level
       t.string :recent_employer
       t.string :job_title
@@ -11,7 +13,6 @@ class CreateTactThrees < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :tact_threes, [:account_id, :trainee_id]
-
+    add_index :tact_threes, %i[account_id trainee_id]
   end
 end

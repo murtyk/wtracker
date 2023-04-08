@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # seareches for list of companies in a file
 # file data:  company name, street, city, state, zip
 # search results: array of companies
@@ -17,7 +19,7 @@
 #     create from google_info
 #     update company to {found: true, employer_id: ID, company_info: text}
 class CompanyListFinder
-  HEADER_FIELDS = %w(company zip)
+  HEADER_FIELDS = %w[company zip].freeze
   attr_reader :error, :process_id, :user
 
   def initialize(params, user)
@@ -61,9 +63,8 @@ class CompanyListFinder
     return cc.merge(employer_or_oc_found_data(employer, 'EMP')) if employer
 
     cc.merge(search_company_details(row, zip))
-
-  rescue StandardError => error
-    cc[:error] = error.to_s
+  rescue StandardError => e
+    cc[:error] = e.to_s
     cc
   end
 
@@ -74,8 +75,8 @@ class CompanyListFinder
 
     data[:company_info] = [company.name,
                            company.formatted_address,
-                           'phone:' + company.phone_no,
-                           'website:' + company.website].join('<br>')
+                           "phone:#{company.phone_no}",
+                           "website:#{company.website}"].join('<br>')
     data
   end
 
@@ -92,7 +93,7 @@ class CompanyListFinder
     details      = { found: true, score: company.score }
     info_for_add = company.info_for_add
 
-    oc_id        = info_for_add[:opero_company_id]
+    oc_id = info_for_add[:opero_company_id]
     oc = OperoCompany.find(oc_id) if oc_id
     return details.merge(employer_or_oc_found_data(oc, 'OC')) if oc
 
@@ -104,11 +105,12 @@ class CompanyListFinder
 
   def build_company_info_from_google_info(gi)
     [gi[:name], gi[:line1], gi[:city], gi[:state_code], gi[:zip],
-     'phone:' + gi[:phone_no], 'website:' + gi[:website]].join('<br>')
+     "phone:#{gi[:phone_no]}", "website:#{gi[:website]}"].join('<br>')
   end
 
   def clean_zip(zip)
     return nil if zip.blank?
+
     zip = zip.to_i.to_s if zip.is_a? Float
     zip = zip.to_s.delete('^0-9')
     zip = zip[0..4]
@@ -117,31 +119,32 @@ class CompanyListFinder
   end
 
   def init_company_hash(row, zip)
-    info =  build_info_hash(row, zip)
+    info = build_info_hash(row, zip)
 
     return { error: 'name is missing' }.merge(info) if info[:company].blank?
     return { error: 'invalid or missing zip' }.merge(info) if zip.blank?
 
     city = City.where(zip: zip).first
     return { error: "city not found for zip #{zip}" }.merge(info) unless city
+
     info.merge(city_id: city.id, city: city.name,
                city_state: city.city_state, county: city.county_name)
   end
 
   def build_info_hash(row, zip)
-    { found:      false,
-      company:    row[:company].to_s.squish,
-      street:     row[:street].to_s.squish,
-      city:       row[:city].to_s.squish,
+    { found: false,
+      company: row[:company].to_s.squish,
+      street: row[:street].to_s.squish,
+      city: row[:city].to_s.squish,
       state_code: row[:state].to_s.squish,
-      zip:        zip }
+      zip: zip }
   end
 
   def open_reader
     file_path = Amazon.file_url(@aws_file_name).to_s
     @reader = ImportFileReader.new(file_path, @original_filename)
-    rescue StandardError => error
-      @error = error
+  rescue StandardError => e
+    @error = e
   end
 
   def close_reader
@@ -151,6 +154,7 @@ class CompanyListFinder
   def valid_header
     open_reader
     return false if errors?
+
     header = @reader.header
     valid = (header & HEADER_FIELDS).size == HEADER_FIELDS.size
     @error = 'Invalid Header Row.' unless valid
@@ -165,21 +169,20 @@ class CompanyListFinder
   end
 
   def generate_process_id(user)
-    @process_id = user.name.gsub(' ', '').upcase + '-' +
-                  user.id.to_s + '-' +
-                  Time.now.strftime('%m%d%y%H%M%S')
+    @process_id = "#{user.name.gsub(' ',
+                                    '').upcase}-#{user.id}-#{Time.now.strftime('%m%d%y%H%M%S')}"
   end
 
   def update_status(complete = false)
     status = { status: complete ? 'FINISHED' : 'PROCESSING',
                success_count: @count_success, fail_count: @count_fails,
                file_name: @original_filename }
-    write_cache(@process_id + '-STATUS', status)
+    write_cache("#{@process_id}-STATUS", status)
   end
 
   def update_complete_status
     update_status(true)
-    write_cache(@process_id + '-DATA', @companies)
+    write_cache("#{@process_id}-DATA", @companies)
   end
 
   def account
@@ -187,11 +190,11 @@ class CompanyListFinder
   end
 
   def self.status(process_id)
-    Rails.cache.read(process_id + '-STATUS')
+    Rails.cache.read("#{process_id}-STATUS")
   end
 
   def self.companies_data(process_id)
-    Rails.cache.read(process_id + '-DATA')
+    Rails.cache.read("#{process_id}-DATA")
   end
 
   def self.read_cache(key)
@@ -208,12 +211,13 @@ class CompanyListFinder
 
   def self.cached_companies(process_id)
     return nil unless status(process_id)
+
     companies_data(process_id)
   end
 
   def self.create_employer_with_file_data(company, sector_ids, user)
     data = { name: company[:company].squish, sector_ids: sector_ids }
-    data[:address_attributes]        = extract_address_attr(company)
+    data[:address_attributes] = extract_address_attr(company)
 
     employer, saved = EmployerFactory.create_employer(user, data)
     error = employer.errors.map { |k, v| "#{k}-#{v}" }.join(';') unless saved
@@ -239,9 +243,10 @@ class CompanyListFinder
     employer, _exists, error = add_employer_from_data(company, user, params)
 
     return [employer, error] if error
+
     company[:employer_id] = employer.id
     companies[index]      = company
-    write_cache(process_id + '-DATA', companies, 2.hours)
+    write_cache("#{process_id}-DATA", companies, 2.hours)
 
     employer
   end

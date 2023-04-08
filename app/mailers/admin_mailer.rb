@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for sending app health and critical issue notifications to app admin
 class AdminMailer < ActionMailer::Base
   def notify_applicant_missing(trainee)

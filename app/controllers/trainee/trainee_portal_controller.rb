@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Trainee
   # Trainee Signed In
   # Base controller for all controllers in Trainee namespace

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # to build and update klass
 class KlassFactory
@@ -10,9 +12,7 @@ class KlassFactory
   def self.build_klass(params)
     klass_params = params.clone
     format_dates klass_params
-    klass = Klass.new(klass_params)
-
-    klass
+    Klass.new(klass_params)
   end
 
   def self.update_klass(id, params)

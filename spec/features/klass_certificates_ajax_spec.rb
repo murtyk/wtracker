@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Klasses' do
 #   before :each do
 #     signin_admin
@@ -9,7 +10,7 @@
 #     destroy_klasses
 #     signout
 #   end
-# 
+#
 #   describe 'ajax in show' do
 #     it 'add a certifactes', js: true do
 #       click_link 'new_klass_certificate_link'
@@ -20,7 +21,7 @@
 #       # wait_for_ajax
 #       expect(page).to have_text 'Certificate 1'
 #     end
-# 
+#
 #     it 'removes new certifacte form on cancel', js: true do
 #       click_link 'new_klass_certificate_link'
 #       # wait_for_ajax

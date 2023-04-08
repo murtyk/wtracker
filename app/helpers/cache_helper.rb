@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for accessing cache
 module CacheHelper
   def cache_id_sorted_by_score(job_search_id)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AutoLeadsHelper
   def clean_job_search_profiles
     JobSearchProfile.unscoped.destroy_all

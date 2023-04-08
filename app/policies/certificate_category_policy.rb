@@ -1,4 +1,6 @@
-class CertificateCategoryPolicy < Struct.new(:user, :klass_category)
+# frozen_string_literal: true
+
+CertificateCategoryPolicy = Struct.new(:user, :klass_category) do
   def new?
     user.director?
   end

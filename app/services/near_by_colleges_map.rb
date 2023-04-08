@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This is mainly for applicant grants
 # User wants to find near by colleges for each trainee who is not in any class
 # and who is NOT placed
@@ -5,12 +7,13 @@
 # a navigator has bunch of counties assigned to them through UserCounty
 # a college gets assigned to a navigator based the college county
 class NearByCollegesMap < MapService
-  NO_COLLEGE_MSG = 'No college within 20 miles'.freeze
+  NO_COLLEGE_MSG = 'No college within 20 miles'
   attr_reader :navigators, :colleges_no_navigator, :trainees_no_college,
               :fs_id, :error
 
   def initialize(user, filters)
     return unless init(filters)
+
     build_navigators(user)
     build_colleges
     build_trainees_no_college
@@ -26,6 +29,7 @@ class NearByCollegesMap < MapService
     @navigators = []
     @trainees_no_college = []
     return false unless filters
+
     @fs_id = filters[:funding_source_id].to_i
   end
 
@@ -51,7 +55,7 @@ class NearByCollegesMap < MapService
   # key: college id
   # value: college name and trainess
   def build_colleges
-    os_colleges  = College.includes(:address, :open_klasses).order(:name).map do |college|
+    os_colleges = College.includes(:address, :open_klasses).order(:name).map do |college|
       os         = build_college_open_struct(college)
       os.klasses = open_klasses(college)
       [college.id, os]
@@ -67,7 +71,7 @@ class NearByCollegesMap < MapService
 
   def open_klasses(college)
     college.open_klasses.map do |k|
-      k.name + '-' + k.start_date.to_s + " (#{klass_trainee_count(k.id)})"
+      "#{k.name}-#{k.start_date} (#{klass_trainee_count(k.id)})"
     end.join('<br/>').html_safe
   end
 
@@ -94,6 +98,7 @@ class NearByCollegesMap < MapService
     trainees.each do |t|
       addr = t.home_address
       next unless addr
+
       trainee     = OpenStruct.new(name: "#{t.name} - #{t.funding_source_name}", id: t.id)
       college_id  = nearest_college(t, a)
       if college_id
@@ -110,7 +115,7 @@ class NearByCollegesMap < MapService
     a.latitude  = addr.latitude
     a.longitude = addr.longitude
     c_address   = a.nearbys(20).where(addressable_type: 'College').first
-    c_address && c_address.addressable_id
+    c_address&.addressable_id
   end
 
   def build_no_college_trainee(t, addr)
@@ -145,8 +150,9 @@ class NearByCollegesMap < MapService
   # all trainees not assigned to a class and not placed
   def trainee_ids
     return @trainee_ids if @trainee_ids
+
     predicate = { status: 0 }
-    predicate[:funding_source_id] = fs_id if fs_id > 0
+    predicate[:funding_source_id] = fs_id if fs_id.positive?
     @trainee_ids = Trainee.not_disabled.where(predicate).pluck(:id) -
                    KlassTrainee.pluck(:trainee_id)
   end
@@ -159,7 +165,7 @@ class NearByCollegesMap < MapService
 
   def college_navigator(college)
     @nav_counties ||= Hash[UserCounty.where(user_id: @navigator_ids)
-                      .pluck(:county_id, :user_id)]
+                                     .pluck(:county_id, :user_id)]
     nav_id          = @nav_counties[college.county_id]
     @navigators[nav_id]
   end

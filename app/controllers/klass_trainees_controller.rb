@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # trainees can be added on class page
 # class can be added on trainee page
 # multiple trainees can be added through near by colleges page
@@ -8,8 +10,8 @@ class KlassTraineesController < ApplicationController
     kt = KlassTrainee.find(params[:id])
     trainee = kt.trainee
     oe = trainee.trainee_interactions
-         .where(status: 5, termination_date: nil)
-         .count > 0
+                .where(status: 5, termination_date: nil)
+                .count.positive?
 
     render json: oe
   end
@@ -24,6 +26,7 @@ class KlassTraineesController < ApplicationController
   def edit
     @klass_trainee = KlassTrainee.find(params[:id])
     return unless @klass_trainee.hired?
+
     @error_message = 'Can not change status of a placed trainee.' \
                      ' Go to trainee page to change placement details'
   end
@@ -33,11 +36,10 @@ class KlassTraineesController < ApplicationController
     respond_to do |format|
       if @object.errors.empty?
         format.html { redirect_to @object, notice: 'Trainees Added.' }
-        format.js
       else
         format.html { render :new }
-        format.js
       end
+      format.js
     end
   end
 
@@ -62,14 +64,14 @@ class KlassTraineesController < ApplicationController
 
   def params_for_create
     params.require(:klass_trainee)
-      .permit(:klass_id, :trainee_id, :trainee_ids, trainee_id: [], trainee_ids: [])
+          .permit(:klass_id, :trainee_id, :trainee_ids, trainee_id: [], trainee_ids: [])
   end
 
   def params_for_update
     params.require(:klass_trainee)
-      .permit(:status, :notes, :employer_id, :employer_id,
-              :start_date, :completion_date,
-              :hire_title, :hire_salary, :comment,
-              :ti_status, :uses_trained_skills)
+          .permit(:status, :notes, :employer_id, :employer_id,
+                  :start_date, :completion_date,
+                  :hire_title, :hire_salary, :comment,
+                  :ti_status, :uses_trained_skills)
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class EmployerSectorsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_employer, only: [:new, :create]
+  before_action :set_employer, only: %i[new create]
 
   # GET /employer_sectors/new
   # GET /employer_sectors/new.json
@@ -20,7 +22,7 @@ class EmployerSectorsController < ApplicationController
   # POST /employer_sectors.json
   def create
     @employer_sector = @employer.employer_sectors
-                       .new(employer_sector_params)
+                                .new(employer_sector_params)
     authorize @employer_sector
 
     @employer_sector.save

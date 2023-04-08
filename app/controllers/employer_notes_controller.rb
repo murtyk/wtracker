@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmployerNotesController < ApplicationController
   before_filter :authenticate_user!
 

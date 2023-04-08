@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Klasses' do
 #   before :each do
 #     signin_admin
@@ -9,7 +10,7 @@
 #     destroy_klasses
 #     signout
 #   end
-# 
+#
 #   describe 'ajax in show' do
 #     it 'can add and remove job titles', js: true do
 #       click_link 'new_klass_title_link'
@@ -17,9 +18,9 @@
 #       fill_in 'klass_title_title', with: 'Title 1'
 #       click_on 'Add'
 #       # wait_for_ajax
-# 
+#
 #       expect(page).to have_text 'Title 1'
-# 
+#
 #       visit current_path # reloading page to cover some code in model
 #       # get the title id to determine the click_link
 #       Account.current_id = 1
@@ -29,11 +30,11 @@
 #       AlertConfirmer.accept_confirm_from do
 #         click_link id
 #       end
-# 
+#
 #       wait_for_ajax
 #       expect(page).to_not have_text 'Title 1'
 #     end
-# 
+#
 #     it 'removes new job title form on cancel', js: true do
 #       click_link 'new_klass_title_link'
 #       # wait_for_ajax

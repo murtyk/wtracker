@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'google/apis/gmail_v1'
 require 'googleauth'
 require 'googleauth/stores/file_token_store'
@@ -5,15 +7,15 @@ require 'fileutils'
 
 # for each GMAIL_AUTHn env, finds bounced emails and updates trainees
 class BouncedEmail
-  OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
-  APPLICATION_NAME = 'wtracker'.freeze
-  CLIENT_SECRETS_PATH = './tmp/cs.json'.freeze
-  CREDENTIALS_PATH = './tmp/tokens.yaml'.freeze
+  OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
+  APPLICATION_NAME = 'wtracker'
+  CLIENT_SECRETS_PATH = './tmp/cs.json'
+  CREDENTIALS_PATH = './tmp/tokens.yaml'
   SCOPE = Google::Apis::GmailV1::AUTH_GMAIL_READONLY
 
-  ADDRESS_NOT_FOUND = 'Address not found'.freeze
+  ADDRESS_NOT_FOUND = 'Address not found'
   MESSAGE_NOT_DELIVERED =
-    'Message not delivered There was a problem delivering your message to '.freeze
+    'Message not delivered There was a problem delivering your message to '
 
   attr_reader :email, :reason
 
@@ -25,7 +27,7 @@ class BouncedEmail
       n = 0
 
       while ENV[key + n.to_s]
-        gc = "default: '" + ENV[key + n.to_s] + "'"
+        gc = "default: '#{ENV[key + n.to_s]}'"
 
         perform_for(client_id, gc)
 
@@ -85,7 +87,7 @@ class BouncedEmail
     end
 
     def generate_service(client_id, gc)
-      cred = "---\n" + gc + "\n"
+      cred = "---\n#{gc}\n"
       File.delete(CREDENTIALS_PATH) if File.exist?(CREDENTIALS_PATH)
       File.open(CREDENTIALS_PATH, 'w') { |file| file.write(cred) }
 
@@ -113,13 +115,14 @@ class BouncedEmail
       index = s.index('The response was')
       if index
         email = begin
-                  s.split('delivered to ')[1].split(' because')[0]
-                rescue
-                  ''
-                end
+          s.split('delivered to ')[1].split(' because')[0]
+        rescue StandardError
+          ''
+        end
         reason = s[index..-1]
 
         return ['', s] if email.blank?
+
         return [email, reason]
       end
 
@@ -128,10 +131,10 @@ class BouncedEmail
 
     def parse_address_not_found(s)
       email = begin
-                s.split('delivered to ')[1].split(' because')[0]
-              rescue
-                ''
-              end
+        s.split('delivered to ')[1].split(' because')[0]
+      rescue StandardError
+        ''
+      end
 
       email.blank? ? ['', s] : [email, ADDRESS_NOT_FOUND]
     end
@@ -140,7 +143,7 @@ class BouncedEmail
       begin
         s = '. See the technical details below, or try resending in a few minutes. '
         email, reason = s.split(MESSAGE_NOT_DELIVERED)[1].split(s)
-      rescue
+      rescue StandardError
         [nil, nil]
       end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # user defined grant specific special services
 # applicant selects one or more
 class SpecialService < ApplicationRecord

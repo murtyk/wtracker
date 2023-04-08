@@ -1,4 +1,6 @@
-class TraineeNotePolicy < Struct.new(:user, :trainee_note)
+# frozen_string_literal: true
+
+TraineeNotePolicy = Struct.new(:user, :trainee_note) do
   def new?
     user.admin_or_director? || user.navigator?
   end

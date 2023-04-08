@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # to build and update applicant
 class ApplicantFactory
@@ -14,6 +16,7 @@ class ApplicantFactory
     Applicant.transaction do
       applicant.save
       return applicant if applicant.errors.any?
+
       ApplicantRegistration.new(applicant.id).delay.process
     end
     applicant
@@ -35,6 +38,7 @@ class ApplicantFactory
 
   def self.update_applicant(applicant, a_params)
     return unless a_params.any?
+
     applicant.attributes = a_params
     applicant.save(validate: false)
   end
@@ -46,13 +50,13 @@ class ApplicantFactory
     return unless trainee.errors.any?
 
     copy_error_messages(applicant, trainee)
-    fail ActiveRecord::Rollback, 'Inform TAPO Support Staff'
+    raise ActiveRecord::Rollback, 'Inform TAPO Support Staff'
   end
 
   def self.parse_params(params)
     a_params  = params.clone
     t_params  = a_params.delete(:trainee)
-    t_params.delete(:id) if t_params
+    t_params&.delete(:id)
     [a_params, t_params]
   end
 
@@ -65,6 +69,7 @@ class ApplicantFactory
     Applicant.transaction do
       applicant.update_attributes(params)
       return applicant if applicant.errors.any?
+
       applicant.navigator_id = navigator_id(applicant)
       applicant.save
 
@@ -77,14 +82,15 @@ class ApplicantFactory
 
   def self.navigator_id(applicant)
     return nil if applicant.county_id.blank?
+
     users = applicant.grant.navigators
     user  = users.joins(:user_counties)
-            .where(user_counties: { county_id: applicant.county_id })
-            .first
+                 .where(user_counties: { county_id: applicant.county_id })
+                 .first
 
     log_navigator_not_found(applicant) unless user
 
-    user && user.id
+    user&.id
   end
 
   def self.log_navigator_not_found(ap)
@@ -124,7 +130,8 @@ class ApplicantFactory
 
   def self.validate_reapply(grant, ap, ra)
     ra.errors.add(:base, grant.reapply_email_not_found_message) unless ap
-    return unless ap && ap.accepted?
+    return unless ap&.accepted?
+
     ra.errors.add(:base, grant.reapply_already_accepted_message)
   end
 
@@ -133,7 +140,7 @@ class ApplicantFactory
   end
 
   def self.params_opero_dates(params)
-    a_params  = params.clone
+    a_params = params.clone
     a_params[:last_employed_on] = opero_str_to_date(a_params[:last_employed_on])
     a_params[:dob] = opero_str_to_date(a_params[:dob])
     a_params
@@ -141,7 +148,7 @@ class ApplicantFactory
 
   def self.navigators
     nav_counts = Applicant.group(:navigator_id).count
-    nav_ids = nav_counts.map{|id, count| id}.compact
+    nav_ids = nav_counts.map { |id, _count| id }.compact
     navs = User.where(id: nav_ids).order(:first, :last)
     navs.map do |nav|
       OpenStruct.new(id: nav.id, to_label: nav.name + "(#{nav_counts[nav.id]})")

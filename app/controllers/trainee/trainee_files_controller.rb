@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Trainee
   # resume and unemp proof docs for workflow
   # and any other files
@@ -45,6 +47,7 @@ class Trainee
 
     def init_required_file_data
       return unless params[:notes]
+
       @required_file = true
       @caption = 'your recent resume' if params[:notes] == 'Resume'
       @caption = 'unemployment proof' if params[:notes] == 'Unemployment Proof'
@@ -88,12 +91,12 @@ class Trainee
 
     def trainee_file_params
       params.require(:trainee_file)
-        .permit(:trainee_id,
-                :file,
-                :notes,
-                :skip_resume,
-                :unemployment_proof_initial,
-                :unemployment_proof_date)
+            .permit(:trainee_id,
+                    :file,
+                    :notes,
+                    :skip_resume,
+                    :unemployment_proof_initial,
+                    :unemployment_proof_date)
     end
   end
 end

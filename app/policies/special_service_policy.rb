@@ -1,4 +1,6 @@
-class SpecialServicePolicy < Struct.new(:user, :special_service)
+# frozen_string_literal: true
+
+SpecialServicePolicy = Struct.new(:user, :special_service) do
   def new?
     user.director?
   end

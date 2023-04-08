@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # an employer hires a trainee or terminates employment
 class TraineeInteraction < ApplicationRecord
-  STATUSES = { 4 => 'No OJT', 5 => 'OJT Enrolled', 6 => 'OJT Completed' }
+  STATUSES = { 4 => 'No OJT', 5 => 'OJT Enrolled', 6 => 'OJT Completed' }.freeze
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
 
@@ -40,6 +42,7 @@ class TraineeInteraction < ApplicationRecord
   def status_name
     return 'Terminated' if termination_date
     return "Hired (#{ojt_status})" if hired?
+
     ojt_status
   end
 
@@ -52,7 +55,7 @@ class TraineeInteraction < ApplicationRecord
   end
 
   def employer_name
-    employer && employer.name
+    employer&.name
   end
 
   def update_trainee_status

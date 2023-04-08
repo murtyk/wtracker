@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Reports' do
 #   describe 'Employer' do
 #     before :each do
 #       signin_admin
 #     end
-# 
+#
 #     it 'activities with notes report' do
 #       Account.current_id = 1
 #       notes = []
@@ -16,11 +17,11 @@
 #         employer.employer_notes.create(note: note)
 #         notes << note
 #       end
-# 
+#
 #       visit_report Report::EMPLOYERS_ACTIVITIES_WITH_NOTES
 #       fill_in 'To', with: Date.current
 #       click_on 'Find'
-# 
+#
 #       notes.each do |note|
 #         expect(page).to have_content note
 #       end

@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 # for validations in Trainee, Contact and Address
 module ValidationsMixins
   def validate_email
     return true if email.blank?
+
     parts = email.split('@')
     valid_email = parts.count == 2
     if valid_email
@@ -14,6 +17,7 @@ module ValidationsMixins
 
   def validate_state_code
     return false unless state_code.size == 2
+
     state = State.where(code: state_code).first
     errors.add(:state, 'invalid state code') unless state
     state

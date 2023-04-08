@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'UiVerifiedNote', js: true do
 #   describe 'Trainee Page' do
 #     before :each do
@@ -18,11 +19,11 @@
 #       click_on 'Add'
 #       wait_for_ajax
 #       expect(page).to have_text 'This is a note'
-# 
+#
 #       AlertConfirmer.accept_confirm_from do
 #         click_link "destroy_ui_verified_note_#{get_ui_verified_notes_ids[0]}_link"
 #       end
-# 
+#
 #       wait_for_ajax
 #       expect(page).to_not have_text 'This is a note'
 #     end

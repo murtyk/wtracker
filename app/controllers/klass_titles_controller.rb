@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class KlassTitlesController < ApplicationController
   before_filter :authenticate_user!
 
@@ -28,6 +30,6 @@ class KlassTitlesController < ApplicationController
 
   def klass_title_params
     params.require(:klass_title)
-      .permit(:title, :klass_id)
+          .permit(:title, :klass_id)
   end
 end

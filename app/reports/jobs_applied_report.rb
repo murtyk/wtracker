@@ -1,11 +1,15 @@
+# frozen_string_literal: true
+
 # trainees applied for jobs
 class JobsAppliedReport < Report
   attr_reader :applied_data
+
   def post_initialize(params)
     return unless params && params[:action] != 'new'
+
     trainee_ids = TraineeSubmit.joins(trainee: :klasses)
-                  .where(klasses: { id: klass_ids })
-                  .pluck(:trainee_id).uniq
+                               .where(klasses: { id: klass_ids })
+                               .pluck(:trainee_id).uniq
 
     @trainees = Trainee.includes(:trainee_submits).where(id: trainee_ids)
     build_data
@@ -49,7 +53,6 @@ class JobsAppliedReport < Report
     end
     @applied_data[trainee.id] = { applied_dates: applied_dates,
                                   employers: employers,
-                                  titles: titles
-                                }
+                                  titles: titles }
   end
 end

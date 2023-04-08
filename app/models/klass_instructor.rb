@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # instructors assigned to a class
 class KlassInstructor < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

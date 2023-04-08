@@ -1,4 +1,6 @@
-class TraineeEmailPolicy < Struct.new(:user, :college)
+# frozen_string_literal: true
+
+TraineeEmailPolicy = Struct.new(:user, :college) do
   def new?
     user.admin_or_director? || user.grant_admin?
   end

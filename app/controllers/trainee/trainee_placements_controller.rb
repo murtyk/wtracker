@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Trainee
   # to enter placement information
   class TraineePlacementsController < TraineePortalController

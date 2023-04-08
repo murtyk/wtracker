@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # employer belongs to one source
 class EmployerSource < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

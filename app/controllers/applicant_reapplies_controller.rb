@@ -1,7 +1,8 @@
-#
+# frozen_string_literal: true
+
 class ApplicantReappliesController < ApplicationController
   before_action :authenticate_user!, only: [:index]
-  before_action :set_grant,          only: [:new, :create]
+  before_action :set_grant,          only: %i[new create]
 
   def index
     @applicant_reapplys = ApplicantReapply
@@ -27,22 +28,25 @@ class ApplicantReappliesController < ApplicationController
 
   def applicant_reapply_params
     params.require(:applicant_reapply)
-      .permit(:email)
+          .permit(:email)
   end
 
   def set_grant
     @grant = grant_from_salt
-    fail 'Not Authorized' unless @grant
+    raise 'Not Authorized' unless @grant
+
     Grant.current_id = @grant.id
     session[:grant_id] = @grant.id
     return if @grant.trainee_applications?
-    fail 'Can not add applicants for this grant'
+
+    raise 'Can not add applicants for this grant'
   end
 
   def grant_from_salt
     grant_id = grant_id_from_salt
 
-    return nil unless grant_id.to_i > 0
+    return nil unless grant_id.to_i.positive?
+
     Grant.where(id: grant_id).first
   end
 

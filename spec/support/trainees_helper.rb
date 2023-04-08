@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for creating trainee objects
 module TraineesHelper
   def create_trainees(n = 1, klass = nil, seq = nil)
@@ -67,7 +69,6 @@ module TraineesHelper
     trainees_count.times do
       AlertConfirmer.accept_confirm_from do
         find('a.btn-danger', match: :first).click
-
       end
       wait_for_ajax
     end

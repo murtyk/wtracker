@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 # provides addressable interface.
 # Trainee, College and Employers can have addresses
 # geocodes address
@@ -31,17 +32,17 @@ class Address < ApplicationRecord
   before_save :cb_before_save
 
   after_validation(on: :update) do
-    if self.changed?
+    if changed?
       self.longitude = nil
       self.latitude = nil
     end
   end
 
   def to_s_for_view
-    ['' + line1,
+    [line1.to_s,
      city,
      "#{state} #{zip}",
-     'county: <b>' + county_name + '</b>'].join('<br>')
+     "county: <b>#{county_name}</b>"].join('<br>')
   end
 
   private
@@ -77,7 +78,7 @@ class Address < ApplicationRecord
       self.latitude = latlong[0]
       self.longitude = latlong[1]
     else
-      fail "address error: Geocoding failed - #{gmaps4rails_address}"
+      raise "address error: Geocoding failed - #{gmaps4rails_address}"
     end
   end
 

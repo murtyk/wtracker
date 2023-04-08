@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_filter :authenticate_user!
 
@@ -24,8 +26,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def preferences
-  end
+  def preferences; end
 
   def update_preferences
     current_user.copy_job_shares = preferences_params
@@ -38,9 +39,9 @@ class UsersController < ApplicationController
 
   def index
     @users = current_account.users
-             .includes(:counties, :grants)
-             .order(:first, :last)
-             .decorate
+                            .includes(:counties, :grants)
+                            .order(:first, :last)
+                            .decorate
     authorize User
   end
 
@@ -94,37 +95,38 @@ class UsersController < ApplicationController
   end
 
   def observe
-    sign_in(:trainee, Trainee.find(params[:id]), { :bypass => true })
+    sign_in(:trainee, Trainee.find(params[:id]), { bypass: true })
     redirect_to "/trainee/trainees/#{params[:id]}/portal"
   end
 
   def end_observe
     sign_out(:trainee)
-    redirect_to "/trainees" # or user_root_url
+    redirect_to '/trainees' # or user_root_url
   end
 
   private
 
   def valid_password
     return true if params[:user][:password].length >= 8
+
     @user.errors.add(:password, 'required. minimum 8 characters.')
     false
   end
 
   def password_params
     params.require(:user)
-      .permit(:password, :password_confirmation)
+          .permit(:password, :password_confirmation)
   end
 
   def preferences_params
     params.require(:user)
-      .permit(:pref_copy_jobshares)
+          .permit(:pref_copy_jobshares)
   end
 
   def user_params
     params.require(:user)
-      .permit(:first, :last, :location, :role, :acts_as_admin,
-              :status, :land_no, :ext, :mobile_no,
-              :email, :password, :comments, county_ids: [], grant_ids: [])
+          .permit(:first, :last, :location, :role, :acts_as_admin,
+                  :status, :land_no, :ext, :mobile_no,
+                  :email, :password, :comments, county_ids: [], grant_ids: [])
   end
 end

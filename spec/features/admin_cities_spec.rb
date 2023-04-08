@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Administration' do
 #   describe 'cities' do
 #     before(:each) do
 #       signin_opero_admin
-# 
+#
 #       @filepath = "#{Rails.root}/spec/fixtures/cities.xlsx"
 #       allow(Amazon).to receive(:store_file).and_return('thisisawsfilename')
 #       allow(Amazon).to receive(:file_url).and_return(@filepath)
@@ -30,7 +31,7 @@
 #         expect(page).to have_text 'not found in state'
 #         expect(page).to have_text 'city already exists'
 #         expect(page).to have_text 'county bad not found in state NH'
-# 
+#
 #         expect(page).to have_text 'Groveton'
 #         expect(page).to have_text '03582'
 #       end

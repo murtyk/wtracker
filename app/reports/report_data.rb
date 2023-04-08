@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for sending report data in excel file format
 class ReportData
   attr_accessor :account_id, :grant_id, :user_id, :params
@@ -27,6 +29,6 @@ class ReportData
   end
 
   def log_info(msg)
-    Rails.logger.info "ReportData: #{Time.now}  " +  msg
+    Rails.logger.info "ReportData: #{Time.now}  " + msg
   end
 end

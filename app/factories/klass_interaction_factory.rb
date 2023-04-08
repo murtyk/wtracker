@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # for creation and update of interactions between
 # a class and an employer
@@ -21,9 +23,7 @@ class KlassInteractionFactory
     status      = params[:status]
     saved       = save_objects(employer, klass_event, status)
 
-    if saved && new_event
-      UserMailer.send_event_invite(klass_event, user).deliver_now
-    end
+    UserMailer.send_event_invite(klass_event, user).deliver_now if saved && new_event
 
     klass_interaction = KlassInteraction.new(status: status)
     klass_interaction.employer = employer
@@ -52,9 +52,8 @@ class KlassInteractionFactory
   end
 
   def self.find_or_build_event(params)
-    if params[:klass_event][:name].blank?
-      return KlassEvent.find(params[:klass_event_id])
-    end
+    return KlassEvent.find(params[:klass_event_id]) if params[:klass_event][:name].blank?
+
     klass_id  = params[:klass_id]
     klass     = Klass.find(klass_id)
 
@@ -71,7 +70,7 @@ class KlassInteractionFactory
         klass_event.save! if klass_event.new_record?
         update_or_create_klass_interaction(klass_event, employer, status)
       end
-    rescue
+    rescue StandardError
       return false
     end
     true
@@ -79,7 +78,7 @@ class KlassInteractionFactory
 
   def self.update_or_create_klass_interaction(klass_event, employer, status)
     ki = klass_event.klass_interactions
-         .find_or_initialize_by(employer_id: employer.id)
+                    .find_or_initialize_by(employer_id: employer.id)
     ki.status = status
     ki.save!
   end
@@ -113,13 +112,13 @@ class KlassInteractionFactory
   end
 
   def self.event_chaged?(klass_event, ke, event_date)
-    f_same = klass_event.event_date  == event_date
-    [:name, :notes, :start_ampm, :end_ampm].each do |attr|
+    f_same = klass_event.event_date == event_date
+    %i[name notes start_ampm end_ampm].each do |attr|
       f_same &= (klass_event.send(attr.to_s) == ke[attr])
     end
 
-    [:start_time_hr, :start_time_min,
-     :end_time_hr, :end_time_min].each do |attr|
+    %i[start_time_hr start_time_min
+       end_time_hr end_time_min].each do |attr|
       f_same &= (klass_event.send(attr.to_s).to_i == ke[attr].to_i)
     end
     !f_same

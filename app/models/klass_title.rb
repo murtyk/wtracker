@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # job titles and/or skill key words for
 # searching jobs relevant to a class
 class KlassTitle < ApplicationRecord
@@ -12,9 +14,11 @@ class KlassTitle < ApplicationRecord
 
   def get_job_search(refresh = false)
     return job_search if !refresh && valid_job_search_count?
+
     address = klass.address
     count = JobBoard.job_count(title, address.city, address.state, 25, 30)
     return create_job_search(count) unless job_search
+
     job_search.update_attributes(count: count)
     job_search
   end
@@ -31,6 +35,7 @@ class KlassTitle < ApplicationRecord
     self.job_search = JobSearch.create(
       klass_title_id: id, keywords: title,
       location: "#{city},#{state}",
-      distance: 25, days: 30, count: count)
+      distance: 25, days: 30, count: count
+    )
   end
 end

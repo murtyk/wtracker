@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 # builds rows and headers for excel
 class TraineesNearByEmployersViewBuilder
   include Enumerable
   attr_reader :data, :max_contacts
+
   def initialize(data, max_contacts = 3)
     @data = data
     @max_contacts = max_contacts
@@ -9,8 +12,7 @@ class TraineesNearByEmployersViewBuilder
 
   def header
     ['Class', 'Trainee', 'Email', 'Phone', 'Address', 'Employer', 'Address',
-     max_contacts.times.map { |n| "Contact #{n + 1}" }
-    ].flatten
+     max_contacts.times.map { |n| "Contact #{n + 1}" }].flatten
   end
 
   def build_row(trainee, employer, contacts)
@@ -18,7 +20,8 @@ class TraineesNearByEmployersViewBuilder
            trainee_data(trainee),
            employer_data(employer, contacts)].flatten
 
-    return row unless  max_contacts > contacts.count
+    return row unless max_contacts > contacts.count
+
     row + [''] * (max_contacts - contacts.count)
   end
 
@@ -41,7 +44,7 @@ class TraineesNearByEmployersViewBuilder
 
   def employer_data(employer, contacts)
     l_br = "\x0A"
-    [employer.name + l_br + 'Source: ' + employer.employer_source_name,
+    ["#{employer.name}#{l_br}Source: #{employer.employer_source_name}",
      excel_format(employer.address.to_s_for_view),
      format_contacts(contacts)]
   end

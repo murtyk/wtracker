@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # grant specific setting - user defined
 # applicant selects one
 class ApplicantSource < ApplicationRecord

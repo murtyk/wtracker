@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Programs' do
 #   describe 'all rest actions except destroy' do
 #     before(:each) do
@@ -34,10 +35,10 @@
 #       fill_in 'Name', with: 'Test Program'
 #       fill_in 'Hours', with: '300'
 #       select('health', from: 'Sector')
-# 
+#
 #       click_button 'Add'
 #       expect(page).to have_text 'Test Program'
-# 
+#
 #       href_link('programs').click
 #       account = Account.first
 #       Account.current_id = account.id

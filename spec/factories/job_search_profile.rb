@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :job_search_profile do |f|
     f.skills { 'java,ruby,ajax' }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveFkOnUserEmployerSources < ActiveRecord::Migration
   def change
     remove_foreign_key :employer_files, :accounts

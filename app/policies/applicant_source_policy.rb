@@ -1,4 +1,6 @@
-class ApplicantSourcePolicy < Struct.new(:user, :applicant_source)
+# frozen_string_literal: true
+
+ApplicantSourcePolicy = Struct.new(:user, :applicant_source) do
   def new?
     user.director?
   end

@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 # 1. create from a job search
 # 2. user entered on browser
 class EmployerFactory
-  ADDR_ATTR_LIST = [:line1, :city, :zip, :county, :latitude, :longitude]
+  ADDR_ATTR_LIST = %i[line1 city zip county latitude longitude].freeze
 
   def self.create_from_job_search(current_user, params)
     sector_ids, employer_source_id, opero_company_id =
-                          parse_js_params(current_user, params)
+      parse_js_params(current_user, params)
 
     employer, exists, error =
-            if opero_company_id > 0
-              create_from_opero(opero_company_id, employer_source_id, sector_ids)
-            else
-              create_from_gi(params[:info].clone, employer_source_id, sector_ids)
-            end
+      if opero_company_id.positive?
+        create_from_opero(opero_company_id, employer_source_id, sector_ids)
+      else
+        create_from_gi(params[:info].clone, employer_source_id, sector_ids)
+      end
 
     job_search = JobSearch.find(params[:job_search_id])
     job_search.analyzer(current_user).update_company_employer(employer) unless error
@@ -96,6 +98,7 @@ class EmployerFactory
 
   def self.save_if_not_duplicate(employer)
     return save_employer(employer) unless employer.duplicate?
+
     employer.errors.add(:name, "duplicate employer #{employer.name}")
     false
   end
@@ -140,6 +143,7 @@ class EmployerFactory
 
   def self.clean_address(params)
     return nil unless params[:address_attributes][:city].blank?
+
     params.delete(:address_attributes)
     true
   end
@@ -159,7 +163,7 @@ class EmployerFactory
         employer.address.destroy if no_address && employer.address
         if employer.duplicate?(no_address)
           employer.errors[:name] = 'duplicate'
-          fail "duplicate employer #{params[:name]}"
+          raise "duplicate employer #{params[:name]}"
         end
         saved = true
       end

@@ -1,8 +1,10 @@
-class ProgramPolicy < Struct.new(:user, :program)
+# frozen_string_literal: true
+
+ProgramPolicy = Struct.new(:user, :program) do
   def new?
     user.admin_access? ||
-    user.grant_admin? ||
-    (user.navigator? && Grant.current_grant.navigators_can_create_klasses)
+      user.grant_admin? ||
+      (user.navigator? && Grant.current_grant.navigators_can_create_klasses)
   end
 
   def create?

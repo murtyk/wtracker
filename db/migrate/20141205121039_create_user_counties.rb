@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUserCounties < ActiveRecord::Migration
   def change
     create_table :user_counties do |t|

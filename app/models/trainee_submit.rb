@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # either trainee directly applied for a job
 # or navigator forwarded resume
 class TraineeSubmit < ApplicationRecord

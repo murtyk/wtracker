@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # User's starting page depends on the grant(s) and user role
 #
 # Action: Starting Page (sign in)
@@ -25,8 +27,8 @@
 #   Navigator               --> Classes
 #   Instructor              --> Classes
 class StartingPage
-  attr_reader :grant, :user
-  attr_reader :template, :path
+  attr_reader :grant, :user, :template, :path
+
   def initialize(user, g = nil)
     @user  = user
     @grant = g || set_grant_context
@@ -36,12 +38,14 @@ class StartingPage
   def determine_action
     return dashboard_action if user.admin? || user.director?
     return nav_action if user.navigator?
+
     instructor_action
   end
 
   def set_grant_context
     grants = user.active_grants
     return grants.first if grants.count == 1
+
     @action = grants.empty? ? :not_assigned : :select_grant
     nil
   end
@@ -55,6 +59,7 @@ class StartingPage
   def nav_action
     return applicant_analysis_action if grant.trainee_applications?
     return dashboard_action if user.admin_access?
+
     klasses_page
   end
 

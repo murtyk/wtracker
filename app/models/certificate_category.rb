@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CertificateCategory < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
@@ -18,6 +20,6 @@ class CertificateCategory < ApplicationRecord
   has_many :klasses, through: :klass_certificates
 
   def destroyable?
-    !klass_certificates.any?
+    klass_certificates.none?
   end
 end

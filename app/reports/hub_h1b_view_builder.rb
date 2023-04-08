@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # for grants where applicants can register
 # Federal govt specifies the report format
-# rubocop:disable ClassLength
+# rubocop:disable Metrics/ClassLength
 class HubH1bViewBuilder
   attr_reader :start_date, :end_date, :prev_quarter_start_date, :prev_quarter_end_date
 
@@ -173,8 +175,8 @@ class HubH1bViewBuilder
     headers['400s'].keys
   end
 
-  # rubocop:disable MethodLength
-  # rubocop:disable AbcSize
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def data_400s(t)
     # training_dates = date_receiving_class_or_job_training(t)
     # end_dates = training_end_dates(t)
@@ -257,18 +259,20 @@ class HubH1bViewBuilder
       certs.try(:[], 1).try(:[], 0), # 611
       certs.try(:[], 1).try(:[], 1),
       certs.try(:[], 2).try(:[], 0),
-      "'" + certs.try(:[], 2).try(:[], 1).to_s # special ' for 622
+      "'#{certs.try(:[], 2).try(:[], 1)}" # special ' for 622
     ]
   end
 
   # 101
   def trainee_id(t)
     return '999999999' if t.trainee_id.blank?
+
     t.trainee_id.gsub(/\D/, '')
   end
 
   def trainee_dob(t)
     return '19900101' unless t.dob
+
     f_date(t.dob)
   end
 
@@ -321,12 +325,14 @@ class HubH1bViewBuilder
   # 202
   def under_employed(ap)
     return 0 if incumbent_worker(ap.trainee) == 1
+
     ap.current_employment_status.index('Underemployed') ? 1 : 0
   end
 
   # 204
   def longterm_unemployed(ap)
     return 0 if incumbent_worker(ap.trainee) == 1
+
     ap.current_employment_status == 'Unemployed - 6 Months or more' ? 1 : 2
   end
 
@@ -339,9 +345,9 @@ class HubH1bViewBuilder
     dates << ojt_start_date(t) if ojt_start_date(t)
     dates << hired_start_date(t) if hired_start_date(t) && !ojt_start_date(t)
     f_date(dates.compact.min)
-  rescue StandardError => error
-    Rails.logger.error("registered_date: trainee_id: #{t.id} error: #{error}")
-    error.to_s
+  rescue StandardError => e
+    Rails.logger.error("registered_date: trainee_id: #{t.id} error: #{e}")
+    e.to_s
   end
 
   # 302
@@ -370,9 +376,9 @@ class HubH1bViewBuilder
     dates += non_ws_completed_klasses(t).map(&:end_date)
     max_date = dates.compact.select { |d| d <= end_date }.max
     max_date && f_date(max_date)
-  rescue StandardError => error
-    Rails.logger.error("program_completion_date: trainee_id: #{t.id} error: #{error}")
-    error.to_s
+  rescue StandardError => e
+    Rails.logger.error("program_completion_date: trainee_id: #{t.id} error: #{e}")
+    e.to_s
   end
 
   # 320
@@ -380,9 +386,9 @@ class HubH1bViewBuilder
   def assessment_date(t)
     dates = t.trainee_assessments.map(&:date).compact
     f_date(dates.max)
-  rescue StandardError => error
-    Rails.logger.error("assessment_date: trainee_id: #{t.id} error: #{error}")
-    error.to_s
+  rescue StandardError => e
+    Rails.logger.error("assessment_date: trainee_id: #{t.id} error: #{e}")
+    e.to_s
   end
 
   # 321     1 (Yes)  or    0 (No)
@@ -403,10 +409,11 @@ class HubH1bViewBuilder
     dates << t.edp_date if t.edp_date
     max_date = dates.compact.select { |d| d <= end_date }.max
     return f_date(max_date) if max_date
+
     active?(t) ? quarter_end_date : ''
-  rescue StandardError => error
-    Rails.logger.error("recent_service_date: trainee_id: #{t.id} error: #{error}")
-    error.to_s
+  rescue StandardError => e
+    Rails.logger.error("recent_service_date: trainee_id: #{t.id} error: #{e}")
+    e.to_s
   end
 
   # 341 '', 1 or 0
@@ -422,13 +429,14 @@ class HubH1bViewBuilder
     0
   end
 
-  # rubocop:disable CyclomaticComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity
   # 350
   def recent_work_exp_data(t)
     dt = ojt_completed_date(t)
     dt ||= t.termination_date if t.terminated? && t.termination_interaction.ojt_enrolled?
 
     return f_date(dt) if dt && dt <= end_date
+
     dt || t.ojt_enrolled? ? quarter_end_date : ''
   end
 
@@ -443,6 +451,7 @@ class HubH1bViewBuilder
     return 1 if dt &&
                 dt >= prev_quarter_start_date &&
                 dt <= prev_quarter_end_date
+
     0
   end
 
@@ -600,6 +609,7 @@ class HubH1bViewBuilder
     if t.ojt_completed? && t.completion_date.try('<=', end_date)
       return f_date(t.completion_date)
     end
+
     t.hired? && t.start_date && t.start_date <= end_date ? f_date(t.start_date) : ''
   end
 
@@ -612,15 +622,14 @@ class HubH1bViewBuilder
 
     return 1 if ojt_completed?(t)
 
-    result = case t.uses_trained_skills
-             when 'Yes'
-               1
-             when 'No'
-               0
-             else
-               9 # dont know
-             end
-    result
+    case t.uses_trained_skills
+    when 'Yes'
+      1
+    when 'No'
+      0
+    else
+      9 # dont know
+    end
   end
 
   # 600s
@@ -738,24 +747,28 @@ class HubH1bViewBuilder
   def ojt_completed_date(t)
     hi = ojt_interaction(t)
     return unless hi && hi.status == 6
+
     hi.completion_date
   end
 
   def any_ojt_completed_date(t)
     hi = any_ojt_interaction(t)
     return unless hi && hi.status == 6 && hi.completion_date.try('<=', end_date)
+
     hi.completion_date.blank? ? nil : hi.completion_date
   end
 
   def ojt_completed?(t)
     hi = ojt_interaction(t)
     return unless hi && hi.status == 6 && hi.completion_date.try('<=', end_date)
+
     1
   end
 
   def hired_start_date(t)
     return nil unless t.hired?
     return nil unless (start_date..end_date).cover?(t.start_date)
+
     t.start_date
   end
 
@@ -773,6 +786,6 @@ class HubH1bViewBuilder
   end
 
   def yml_path
-    Rails.root.join('config', 'locales', 'reports').to_s + '/hubh1b.yml'
+    "#{Rails.root.join('config', 'locales', 'reports')}/hubh1b.yml"
   end
 end

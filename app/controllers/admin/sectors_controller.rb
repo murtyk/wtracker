@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin
   # for opero admin to manage sectors (alias industries)
   class SectorsController < ApplicationController
@@ -57,7 +59,7 @@ class Admin
 
     def sector_params
       params.require(:sector)
-        .permit(:name)
+            .permit(:name)
     end
   end
 end

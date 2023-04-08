@@ -1,5 +1,6 @@
-namespace :testprep do
+# frozen_string_literal: true
 
+namespace :testprep do
   # for running parallel tests, do the following
   # rake parallel:drop
   # rake parallel:create
@@ -58,7 +59,8 @@ namespace :testprep do
 
   def create_opero_admin
     pwd = 'adminpassword'
-    Admin.create(email: 'admin@opero.com', password: pwd, password_confirmation: pwd, auth_token: nil)
+    Admin.create(email: 'admin@opero.com', password: pwd, password_confirmation: pwd,
+                 auth_token: nil)
   end
 
   def set_up_operoapi_account
@@ -93,7 +95,7 @@ namespace :testprep do
 
     p11  = create_program('Big program 1', 'description of program11',
                           manufacturing.id, 400)
-    c111 = create_klass(p11, 'CNC 101', '', 'June 27, 2012',  'Aug 17, 2012',
+    c111 = create_klass(p11, 'CNC 101', '', 'June 27, 2012', 'Aug 17, 2012',
                         3, 272, college1.id)
 
     address = ['10 Copland', 'East Windsor', 'NJ', '08520', 40.25, -74.54]
@@ -132,7 +134,7 @@ namespace :testprep do
 
     create_assessments
 
-    p11  = create_program('Program 1', 'description of program 1', manufacturing.id, 400)
+    p11 = create_program('Program 1', 'description of program 1', manufacturing.id, 400)
     create_klass(p11, 'CNC 101', '', 'March 1, 2014', 'Aug 17, 2015', 3, 272, college.id)
     create_funding_sources
   end
@@ -157,7 +159,7 @@ namespace :testprep do
     jl.save
 
     jl = grant.build_profile_request_content(account_id: account.id)
-    jl.content =  "Please enter your job search profile.
+    jl.content = "Please enter your job search profile.
                    Please contact $DIRECTOR$ if you have any questions."
     jl.save
 
@@ -193,7 +195,6 @@ namespace :testprep do
                          272, college.id)
 
     klass.trainees << Trainee.create(first: 'first', last: 'last', email: 'name@mail.com')
-
   end
 
   def set_up_apple_account
@@ -203,10 +204,10 @@ namespace :testprep do
     grant = create_grant('Right To Work', 'Jan 1, 2014', 'Dec 31, 2016',
                          2, 0, 0, trainee_applications: true)
 
-    grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
+    grant.unemployment_proof_text = '$EMPLOYMENT_STATUS$'
 
-    grant.email_password_subject = "Here is your password"
-    grant.email_password_body = "Hello $FIRST_NAME$, password is $PASSWORD$"
+    grant.email_password_subject = 'Here is your password'
+    grant.email_password_body = 'Hello $FIRST_NAME$, password is $PASSWORD$'
 
     grant.save
 
@@ -242,10 +243,10 @@ namespace :testprep do
 
     nav3 = create_user('Cameron', 'Diaze', 'Camden', 1, 3, 'cameron@nomail.net')
     p1 = create_program('program 1', 'description of program11',
-                          Sector.last.id, 400)
+                        Sector.last.id, 400)
 
-    k1 = create_klass(p1, 'CNC 101', '', 'June 27, 2012',  'Aug 17, 2018',
-                        3, 272, c1.id)
+    k1 = create_klass(p1, 'CNC 101', '', 'June 27, 2012', 'Aug 17, 2018',
+                      3, 272, c1.id)
     KlassNavigator.create(klass_id: k1.id, user_id: nav3.id)
   end
 
@@ -276,10 +277,8 @@ namespace :testprep do
                                email_body: '$FIRSTNAME$ $LASTNAME$, HELLO')
     end
     EmploymentStatus.create!(status: 'Employed Full Time', action: 'Declined',
-                               email_subject: 'rtw application',
-                               email_body: '$FIRSTNAME$ $LASTNAME$, NOPE')
-
-
+                             email_subject: 'rtw application',
+                             email_body: '$FIRSTNAME$ $LASTNAME$, NOPE')
   end
 
   def create_assessments
@@ -297,7 +296,6 @@ namespace :testprep do
   end
 
   def create_races
-
     ['American Indian/Alaska Native',
      'Asian',
      'Black or African American',
@@ -317,8 +315,8 @@ namespace :testprep do
      'High School Diploma',
      'Some college',
      'Post Secondary Credential or Certificate',
-     "Associate’s Degree",
-     "Bachelor’s Degree",
+     'Associate’s Degree',
+     'Bachelor’s Degree',
      'Graduate Degree or above'].each do |e|
       Education.create!(position: n, name: e)
       n += 1
@@ -326,9 +324,12 @@ namespace :testprep do
   end
 
   def create_states
-    [ ['NJ', 'New Jersey'], ['NH', 'New Hampshire'], ['NM', 'New Mexico'],
-      ['PA', 'Pennsylvania'], ['DE', 'Delaware'], ['TX', 'Texas']
-      ].each { |code, name| State.create(code: code, name: name) }
+    [['NJ', 'New Jersey'], ['NH', 'New Hampshire'], ['NM', 'New Mexico'],
+     %w[PA Pennsylvania], %w[DE Delaware], %w[TX Texas]].each do |code, name|
+      State.create(
+        code: code, name: name
+      )
+    end
     create_counties
   end
 
@@ -347,8 +348,8 @@ namespace :testprep do
 
   def create_nh_counties
     s = State.find_by(code: 'NH')
-    %w(Belknap Carroll Cheshire Coos Grafton Hillsborough Merrimack Rockingham Strafford
-       Sullivan).each { |c| s.counties.create(name: c) }
+    %w[Belknap Carroll Cheshire Coos Grafton Hillsborough Merrimack Rockingham Strafford
+       Sullivan].each { |c| s.counties.create(name: c) }
   end
 
   def create_nm_counties
@@ -368,21 +369,21 @@ namespace :testprep do
   end
 
   def create_pa_counties
-    %w(Adams Allegheny Armstrong Beaver Bedford Berks Blair Bradford Bucks Butler
+    %w[Adams Allegheny Armstrong Beaver Bedford Berks Blair Bradford Bucks Butler
        Cambria Cameron Carbon Centre Chester Clarion Clearfield Clinton Columbia
        Crawford Cumberland Dauphin Delaware Elk Erie Fayette Forest Franklin Fulton
        Greene Huntingdon Indiana Jefferson Juniata Lackawanna Lancaster Lawrence Lebanon
        Lehigh Luzerne Lycoming McKean Mercer Mifflin Monroe Montgomery Montour
        Northampton Northumberland Perry Philadelphia Pike Potter Schuylkill Snyder
        Somerset Sullivan Susquehanna Tioga Union Venango Warren Washington Wayne
-       Westmoreland Wyoming York).each { |c| pa_state.counties.create(name: c) }
+       Westmoreland Wyoming York].each { |c| pa_state.counties.create(name: c) }
   end
 
   def create_tx_counties
-    %w(Anderson Andrews Angelina Aransas Archer Armstrong Atascosa Austin Bailey Bandera
+    %w[Anderson Andrews Angelina Aransas Archer Armstrong Atascosa Austin Bailey Bandera
        Bastrop Baylor Bee Bell Bexar Blanco Borden Bosque Bowie Brazoria Brazos Brewster
        Williamson Wilson Winkler Wise Wood Yoakum Young Zapata
-       Zavala).each { |c| tx_state.counties.create(name: c) }
+       Zavala].each { |c| tx_state.counties.create(name: c) }
   end
 
   def create_cities
@@ -404,7 +405,7 @@ namespace :testprep do
     nj_state.cities.create(c_a)
 
     c_a = city_hash('Edison', '', middlesex.id, -74.41, 40.52)
-    nj_state.cities.create(c_a)    
+    nj_state.cities.create(c_a)
 
     create_cities_for_companies_search_spec
   end
@@ -448,7 +449,7 @@ namespace :testprep do
     attrs = { name: a[0], start_date: a[1], end_date: a[2],
               status: a[3], spots: a[4], amount: a[5] }
 
-    a[6].each { |k, v| attrs[k]  = v } if a[6]
+    a[6]&.each { |k, v| attrs[k] = v }
     grant = Grant.create!(attrs)
     Grant.current_id = grant.id
     puts "created grant #{grant.name}"
@@ -478,7 +479,8 @@ namespace :testprep do
                       credits: a[5], training_hours: a[6], college_id: a[7])
   end
 
-  def create_trainee(*a) # first, last, email, address_attrs, klass
+  # first, last, email, address_attrs, klass
+  def create_trainee(*a)
     attrs = { first: a[0], last: a[1], email: a[2] }
     attrs[:home_address_attributes] = address_hash(a[3]) if a[3]
     t = Trainee.create(attrs)
@@ -495,8 +497,8 @@ namespace :testprep do
 
   def create_employer(*a)
     Employer.create!(name: a[0],
-      employer_source_id: EmployerSource.first.id,
-      address_attributes: address_hash(a[1]))
+                     employer_source_id: EmployerSource.first.id,
+                     address_attributes: address_hash(a[1]))
   end
 
   def de_state

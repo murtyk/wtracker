@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 include CacheHelper
 # searches for jobs
 # filters in state jobs
 class JobSearchServices
   attr_reader :jobs, :jobs_count, :pages, :job_search
+
   delegate :in_state, :keywords, :location, :zip, :city, :state,
            :distance, :days, to: :job_search
 
@@ -58,10 +61,9 @@ class JobSearchServices
   #
   # if name or location is missing then we will have title and url
   def self.company_and_jobs_from_cache(job_ids)
-
     job_search_id, company_name, location, _job_no = job_ids[0].split('::')
-    location && location.gsub!('---', ',')
-    company_name && company_name.gsub!('---', ',')
+    location&.gsub!('---', ',')
+    company_name&.gsub!('---', ',')
 
     if company_name.blank? || location.blank?
       return build_blank_company(company_name, location, job_ids)
@@ -139,11 +141,11 @@ class JobSearchServices
   def search_and_process(job_board, page)
     job_board.search_jobs(job_search_args.merge(page: page))
 
-    @jobs_count = job_board.accessible_count.to_i unless page == 1 && jobs_count > 0
+    @jobs_count = job_board.accessible_count.to_i unless page == 1 && jobs_count.positive?
 
     update_count
 
-    @jobs  = job_board.jobs
+    @jobs = job_board.jobs
     determine_page_count
   end
 
@@ -182,7 +184,6 @@ class JobSearchServices
       city: city,
       state: state,
       distance: distance,
-      days: days
-    }
+      days: days }
   end
 end

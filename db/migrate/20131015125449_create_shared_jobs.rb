@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateSharedJobs < ActiveRecord::Migration
   def change
     create_table :shared_jobs do |t|

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # builds and creates job share, shared jobs, job shared tos
 # also sends emails
 class JobShareFactory
   def self.new_multiple(s_ids, current_user)
-    job_ids    = s_ids.split(',')
-    company     = JobSearchServices.company_and_jobs_from_cache(job_ids)
-    job_share  = JobShare.new(company: company.name, location: company.city_state)
+    job_ids = s_ids.split(',')
+    company = JobSearchServices.company_and_jobs_from_cache(job_ids)
+    job_share = JobShare.new(company: company.name, location: company.city_state)
 
     job_share.job_ids    = job_ids
     job_share.js_company = company
@@ -51,7 +53,7 @@ class JobShareFactory
   def self.build_job_share(job_share_params, job_ids, current_user)
     job_share = new_job_share(job_share_params, job_ids)
 
-    titles    = job_titles(job_share_params, job_ids)
+    titles = job_titles(job_share_params, job_ids)
     build_shared_jobs(job_share, titles)
     job_share.from_id = current_user.id
 
@@ -80,9 +82,11 @@ class JobShareFactory
 
   def self.job_titles(job_share, job_ids)
     # 1 job before analyze
-    return [[job_share[:title],
-             job_share[:details_url],
-             job_share[:date_posted]]] if job_ids.blank?
+    if job_ids.blank?
+      return [[job_share[:title],
+               job_share[:details_url],
+               job_share[:date_posted]]]
+    end
     # 1 or more after analyze
     company = JobSearchServices.company_and_jobs_from_cache(job_ids)
     company.titles
@@ -90,11 +94,11 @@ class JobShareFactory
 
   def self.build_shared_jobs(job_share, titles)
     titles.each do |title_url|
-      if title_url[2].is_a? String
-        date_posted = opero_str_to_date(title_url[2])
-      else
-        date_posted = title_url[2]
-      end
+      date_posted = if title_url[2].is_a? String
+                      opero_str_to_date(title_url[2])
+                    else
+                      title_url[2]
+                    end
       job_share.shared_jobs.build(title: title_url[0], details_url: title_url[1],
                                   date_posted: date_posted)
     end
@@ -104,6 +108,7 @@ class JobShareFactory
     to_ids = job_share[:to_ids] || []
     to_ids.delete('')
     return to_ids unless to_ids.include?('0')
+
     klass_id  = job_share[:klass_id]
     klass     = Klass.find(klass_id)
     klass.trainees_for_job_leads.pluck(:trainee_id)

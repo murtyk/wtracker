@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AutoLeadsTraineeMetrics
   attr_reader :trainee_ids
 
@@ -7,7 +9,7 @@ class AutoLeadsTraineeMetrics
 
   def metrics(trainees_list)
     trainees_list.map do |id, first, last|
-      trainee_metric(id, first + ' ' + last)
+      trainee_metric(id, "#{first} #{last}")
     end
   end
 
@@ -15,10 +17,10 @@ class AutoLeadsTraineeMetrics
     {
       id: id,
       name: name,
-      valid_profile:        valid_profile?(id),
-      leads_count:          job_leads_count(id),
-      viewed_count:         jobs_viewed_count(id),
-      applied_count:        jobs_applied_count(id),
+      valid_profile: valid_profile?(id),
+      leads_count: job_leads_count(id),
+      viewed_count: jobs_viewed_count(id),
+      applied_count: jobs_applied_count(id),
       not_interested_count: not_interested_count(id)
     }
   end
@@ -27,9 +29,9 @@ class AutoLeadsTraineeMetrics
     return @trainee_valid if @trainees_valid
 
     t_ids = JobSearchProfile
-             .where(trainee_id: trainee_ids)
-             .where('skills is not null')
-             .pluck(:trainee_id)
+            .where(trainee_id: trainee_ids)
+            .where('skills is not null')
+            .pluck(:trainee_id)
 
     yeses = [true] * t_ids.size
 

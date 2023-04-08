@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGooglePlacesSearches < ActiveRecord::Migration
   def change
     create_table :google_places_searches do |t|
@@ -8,7 +10,7 @@ class CreateGooglePlacesSearches < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :google_places_searches, [:name, :city_id]
+    add_index :google_places_searches, %i[name city_id]
     add_index :google_places_searches, :opero_company_id
   end
 end

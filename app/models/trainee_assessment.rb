@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # reference data for trainee assessment
 class TraineeAssessment < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

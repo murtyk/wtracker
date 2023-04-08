@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTraineeServices < ActiveRecord::Migration
   def change
     create_table :trainee_services do |t|
@@ -14,6 +16,7 @@ class CreateTraineeServices < ActiveRecord::Migration
     add_foreign_key :trainee_services, :accounts
     add_foreign_key :trainee_services, :grants
 
-    add_index :trainee_services, [:account_id, :grant_id, :trainee_id], name: :trainee_services_scope
+    add_index :trainee_services, %i[account_id grant_id trainee_id],
+              name: :trainee_services_scope
   end
 end

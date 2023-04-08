@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Only Director, Admin and L1 Navs have access
-class GrantPolicy < Struct.new(:user, :grant)
+GrantPolicy = Struct.new(:user, :grant) do
   def edit?
     user.director?
   end

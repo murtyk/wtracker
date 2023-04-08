@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # decorator for klass
 class KlassDecorator < Draper::Decorator
   delegate_all
@@ -36,7 +38,7 @@ class KlassDecorator < Draper::Decorator
 
   def accordion_fields(event_type, count)
     group_id = "accordion-group-#{event_type}s"
-    href     = '#' + "#{event_type.gsub(' ', '_')}_events"
+    href     = "##{event_type.gsub(' ', '_')}_events"
     heading  = "#{event_type.pluralize} (#{count})"
     body_id  = "#{event_type.gsub(' ', '_')}_events"
 
@@ -46,7 +48,7 @@ class KlassDecorator < Draper::Decorator
                    accoridon_body_id: body_id)
   end
 
-  NOT_OTHER_EVENTS = ['class visit', 'site visit', 'information session']
+  NOT_OTHER_EVENTS = ['class visit', 'site visit', 'information session'].freeze
   def events_by_type(event_type)
     @kes ||= klass_events
              .includes(klass_interactions: :employer)
@@ -56,7 +58,7 @@ class KlassDecorator < Draper::Decorator
 
     return @kes.select { |ke| ke.name.downcase == et } unless et == 'other'
 
-    @kes.select { |ke| !NOT_OTHER_EVENTS.index(ke.name.downcase) }
+    @kes.reject { |ke| NOT_OTHER_EVENTS.index(ke.name.downcase) }
   end
 
   def certificate_names
@@ -69,8 +71,8 @@ class KlassDecorator < Draper::Decorator
   def trainees_status_counts
     status_counts = {}
     klass_trainees.select('count(*), status')
-      .group(:status)
-      .each { |kts| status_counts[kts.status] = kts.count.to_i }
+                  .group(:status)
+                  .each { |kts| status_counts[kts.status] = kts.count.to_i }
     status_counts
   end
 
@@ -102,7 +104,7 @@ class KlassDecorator < Draper::Decorator
   def placement_rate
     # completed and placed together is our target for placement
     divisor = not_placed_count + placed_count + continuing_education_count
-    divisor > 0 ? (dividend.to_f * 100 / divisor).round(0).to_s + '%' : ''
+    divisor.positive? ? "#{(dividend.to_f * 100 / divisor).round(0)}%" : ''
   end
 
   def dividend
@@ -111,8 +113,8 @@ class KlassDecorator < Draper::Decorator
 
   def klass_trainees_sorted
     klass_trainees.includes(trainee: :trainee_notes)
-      .order('klass_trainees.status, trainees.first, trainees.last')
-      .references(:trainees)
+                  .order('klass_trainees.status, trainees.first, trainees.last')
+                  .references(:trainees)
   end
 
   def klass_trainees_by_status(status)

@@ -1,16 +1,17 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Importer' do
 #   describe 'imports' do
 #     before(:each) do
 #       signin_admin
-# 
+#
 #       @filepath = "#{Rails.root}/spec/fixtures/classes.xlsx"
-# 
+#
 #       allow(Amazon).to receive(:store_file).and_return('thisisawsfilename')
 #       allow(Amazon).to receive(:file_url).and_return(@filepath)
 #     end
-# 
+#
 #     it 'classes', js: true do
 #       Delayed::Worker.delay_jobs = false
 #       visit '/import_statuses/new?resource=klasses'

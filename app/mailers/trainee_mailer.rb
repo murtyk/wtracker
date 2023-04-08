@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # For sending login credentials to trainee when job search profile is created
 #   Specifically designed for Amazon grant
 class TraineeMailer < ActionMailer::Base
@@ -9,7 +11,7 @@ class TraineeMailer < ActionMailer::Base
     inline_email(from_tapo, trainee.email, subject, body_text)
 
     msg = "credentials sent to #{trainee.email} #{trainee.name} #{trainee.id}"
-    Rails.logger.info('TraineeMailer: ' + msg)
+    Rails.logger.info("TraineeMailer: #{msg}")
   end
 
   def inline_email(f_email, t_email, subject, body)

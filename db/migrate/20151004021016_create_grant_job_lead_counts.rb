@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGrantJobLeadCounts < ActiveRecord::Migration
   def change
     create_table :grant_job_lead_counts do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # when a klass ends, set the trainee status to complete
 class DailyKlassTraineeStatus
   class << self

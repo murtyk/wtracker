@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # performs search and build excel file
 # can also email it to the user
 class ApplicantSearch
@@ -12,6 +14,7 @@ class ApplicantSearch
   def perform(params)
     @filters = params
     return [] if filters.empty?
+
     search
   end
 
@@ -48,7 +51,7 @@ class ApplicantSearch
   def query_applicants
     @applicants = Applicant
                   .includes(:county, :sector)
-                  .includes(trainee: [:assessments, :klasses, :unemployment_proof_file])
+                  .includes(trainee: %i[assessments klasses unemployment_proof_file])
                   .where(predicate)
                   .order(created_at: :desc)
   end
@@ -74,7 +77,8 @@ class ApplicantSearch
   end
 
   def apply_funding_source
-    return unless funding_source_id > 0
+    return unless funding_source_id.positive?
+
     filter_on_trainee_ids Trainee
       .where(funding_source_id: funding_source_id)
       .pluck(:id)
@@ -82,16 +86,19 @@ class ApplicantSearch
 
   def apply_assessments
     return unless assessments
+
     filter_on_trainee_ids Trainee.with_assessments.pluck(:id)
   end
 
   def apply_in_klass
     return unless in_klass
+
     filter_on_trainee_ids Trainee.in_klass.pluck(:id)
   end
 
   def apply_name
-    return unless name.size > 0
+    return unless name.size.positive?
+
     qry = 'applicants.first_name ilike ? or applicants.last_name ilike ?'
     @applicants = applicants.where(qry, "#{name}%", "#{name}%")
   end
@@ -113,15 +120,15 @@ class ApplicantSearch
   end
 
   def edp
-    filters[:edp].to_i > 0
+    filters[:edp].to_i.positive?
   end
 
   def assessments
-    filters[:assessments].to_i > 0
+    filters[:assessments].to_i.positive?
   end
 
   def in_klass
-    filters[:in_klass].to_i > 0
+    filters[:in_klass].to_i.positive?
   end
 
   def name

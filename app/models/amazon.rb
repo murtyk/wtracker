@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 
 # wrapper for S3
@@ -21,7 +23,6 @@ class Amazon
       check_trash_bucket
       o = bucket.object(aws_file)
       o.move_to(key: o.key, bucket: aws_bucket_deleted)
-
     rescue StandardError => e
       Rails.logger.error "AWS Delete failed for #{aws_bucket}/#{aws_file} #{e}"
     end

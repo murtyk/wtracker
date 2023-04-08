@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAutoLeadEmailsTextToGrants < ActiveRecord::Migration
   def change
     add_column :grants, :profile_request_text, :text

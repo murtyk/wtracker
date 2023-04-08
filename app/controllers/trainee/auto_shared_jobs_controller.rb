@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Trainee
   # trainee can edit/update notes
   # can update status
@@ -20,7 +22,8 @@ class Trainee
     private
 
     def init_auto_shared_job
-      return unless params[:id].to_i > 0
+      return unless params[:id].to_i.positive?
+
       @auto_shared_job = AutoSharedJob.find(params[:id])
     end
 

@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 # provides search services on Employer
 # for searching employers, contacts
 # or interested in trainees
 class EmployerServices
   attr_reader :filters, :user
+
   def initialize(user, search_filters = {})
     @user = user
     @filters = search_filters
@@ -10,6 +13,7 @@ class EmployerServices
 
   def employers_for_trainee_interaction
     return [] if name.blank?
+
     employers = search_by_name - employers_currently_interested_in_trainee
     employers.map do |employer|
       { id: employer.id,
@@ -28,26 +32,25 @@ class EmployerServices
   def apply_filters(no_includes)
     employers = all_employers(no_includes)
     employers = employers.in_counties(county_ids) unless county_ids.empty?
-    employers = employers.in_sector(sector_id) if sector_id > 0
-    unless employer_source_id.blank?
-      employers = employers.from_source(employer_source_id)
-    end
+    employers = employers.in_sector(sector_id) if sector_id.positive?
+    employers = employers.from_source(employer_source_id) unless employer_source_id.blank?
 
     employers
   end
 
   def search_contacts
     return [] unless search_parameters?
+
     employer_ids = search(true).pluck(:id)
 
     user.employers.joins(:contacts)
-      .select("contacts.id as id,
+        .select("contacts.id as id,
                     first || ' ' || last || '(' || employers.name || ')' as name,
                     employers.name as employer_name")
-      .where("not contacts.email = '' and
+        .where("not contacts.email = '' and
                     not contacts.email is null and
                     employers.id in (?)", employer_ids)
-      .order('employer_name, name')
+        .order('employer_name, name')
   end
 
   private
@@ -62,8 +65,8 @@ class EmployerServices
 
   def grant_employers
     Employer
-    .joins(:employer_source)
-    .where(employer_sources: { grant_id: Grant.current_id })
+      .joins(:employer_source)
+      .where(employer_sources: { grant_id: Grant.current_id })
   end
 
   def grant_not_scoped_employers
@@ -74,15 +77,17 @@ class EmployerServices
     employers = grant_scoped? ? grant_employers : grant_not_scoped_employers
 
     return employers.order_by_name if no_includes
-    employers.includes(:address, :sectors, :employer_notes, :contacts, :employer_source).order_by_name
+
+    employers.includes(:address, :sectors, :employer_notes, :contacts,
+                       :employer_source).order_by_name
   end
 
   def search_by_name
-    all_employers.includes(:address).where('employers.name ilike ?', name + '%')
+    all_employers.includes(:address).where('employers.name ilike ?', "#{name}%")
   end
 
   def employers_currently_interested_in_trainee
-    (trainee && trainee.interested_employers) || []
+    trainee&.interested_employers || []
   end
 
   def search_parameters?
@@ -90,7 +95,7 @@ class EmployerServices
   end
 
   def trainee
-    trainee_id > 0 && Trainee.find(trainee_id)
+    trainee_id.positive? && Trainee.find(trainee_id)
   end
 
   def trainee_id

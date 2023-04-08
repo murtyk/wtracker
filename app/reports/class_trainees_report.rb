@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # trainees info in ONE selected class
 class ClassTraineesReport < TraineesDetailsReport
   # Report class expects klass_ids where as for this report we get :klass_id
@@ -11,6 +13,7 @@ class ClassTraineesReport < TraineesDetailsReport
 
   def trainees
     return [] unless klass_id
+
     klass.trainees.includes(:funding_source, :home_address)
   end
 

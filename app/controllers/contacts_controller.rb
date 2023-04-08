@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContactsController < ApplicationController
   before_filter :authenticate_user!
 
@@ -51,10 +53,8 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.update_attributes(contact_params)
-        format.js
-      else
-        format.js
       end
+      format.js
     end
   end
 
@@ -77,7 +77,7 @@ class ContactsController < ApplicationController
 
   def contact_params
     params.require(:contact)
-      .permit(:email, :first, :last, :land_no, :ext, :mobile_no, :title)
+          .permit(:email, :first, :last, :land_no, :ext, :mobile_no, :title)
   end
 
   def contactable

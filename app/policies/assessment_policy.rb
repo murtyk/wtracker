@@ -1,4 +1,6 @@
-class AssessmentPolicy < Struct.new(:user, :assessment)
+# frozen_string_literal: true
+
+AssessmentPolicy = Struct.new(:user, :assessment) do
   def new?
     user.director?
   end

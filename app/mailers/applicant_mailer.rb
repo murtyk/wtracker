@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # for sending applicant registration process messages
 class ApplicantMailer < ActionMailer::Base
-  PLACEHOLDERS = %w($PROFILELINK$ $DIRECTOR$ $TRAINEEFIRSTNAME$
+  PLACEHOLDERS = %w[$PROFILELINK$ $DIRECTOR$ $TRAINEEFIRSTNAME$
                     $JOBLEADS$ $VIEWJOBSLINK$ $OPTOUTLINK$ $APPLICANT_NAME$
-                    $TRAINEE_SIGNIN_LINK$ $PASSWORD$)
+                    $TRAINEE_SIGNIN_LINK$ $PASSWORD$].freeze
 
   def notify_applicant_status(applicant)
     to_email,
     reply_to_email,
     subject,
     body_text = ApplicantEmailTextBuilder.new(applicant)
-                .email_attrs_for_notify
+                                         .email_attrs_for_notify
 
     inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 
@@ -21,7 +23,7 @@ class ApplicantMailer < ActionMailer::Base
     reply_to_email,
     subject,
     body_text = ApplicantEmailTextBuilder.new(applicant)
-                .email_attrs_for_password(password)
+                                         .email_attrs_for_password(password)
 
     inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 
@@ -33,7 +35,7 @@ class ApplicantMailer < ActionMailer::Base
     reply_to_email,
     subject,
     body_text = ApplicantEmailTextBuilder.new(applicant)
-                .email_attrs_for_reapply
+                                         .email_attrs_for_reapply
 
     inline_email(from_job_leads, to_email, reply_to_email, subject, body_text)
 

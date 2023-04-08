@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :auto_job_leads do
   desc <<-DESC
     Finds job leads and sends them to trainees
@@ -15,9 +17,7 @@ namespace :auto_job_leads do
 
   task schedule: :environment do
     s = "object:AutoJobLeads\n  statuses: []\nmethod_name: :perform"
-    if Delayed::Job.where("handler like '%#{s}%'").any?
-      abort 'Jobs already exist.'
-    end
+    abort 'Jobs already exist.' if Delayed::Job.where("handler like '%#{s}%'").any?
 
     time = Date.today.to_time + 6.hours
     count = (ENV['AUTO_LEADS_SCHEDULE_COUNT'] || 1000).to_i

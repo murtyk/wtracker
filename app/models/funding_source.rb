@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # reference data. trainee funding.
 class FundingSource < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

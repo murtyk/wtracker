@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateApplicantReapplies < ActiveRecord::Migration
   def change
     create_table :applicant_reapplies do |t|

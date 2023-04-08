@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # captures the information of jobs sent to trainees
 class JobShare < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
@@ -25,10 +27,12 @@ class JobShare < ApplicationRecord
 
   def self.search(filters)
     return [] unless filters
+
     klass_id = filters[:klass_id].to_i
     trainee_id = filters[:trainee_id].to_i
-    return [] unless trainee_id > 0 || klass_id > 0
-    return search_by_trainee_id(trainee_id) if trainee_id > 0
+    return [] unless trainee_id.positive? || klass_id.positive?
+    return search_by_trainee_id(trainee_id) if trainee_id.positive?
+
     search_by_klass_id(klass_id)
   end
 

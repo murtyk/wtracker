@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # cleans up temp files. ex: imported data files saved on s3
 class CleanUp
   def perform

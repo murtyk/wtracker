@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Report' do
 #   describe 'Employers' do
 #     before :each do
 #       signin_admin
 #     end
-# 
+#
 #     it 'lists only placed trainees' do
 #       Account.current_id = 1
 #       Grant.current_id = Grant.first.id
@@ -18,23 +19,23 @@
 #         t
 #       end
 #       company = Employer.create(name: 'Good Company 1')
-# 
+#
 #       trainees[0].trainee_interactions.create(employer_id: company.id,
 #                                               status: 4,
 #                                               start_date: Date.tomorrow,
 #                                               hire_salary: '11.50',
 #                                               hire_title: 'Title 1234',
 #                                               comment: 'This employer hired')
-# 
+#
 #       visit_report Report::EMPLOYERS_HIRED
 #       select 'All', from: 'Class'
 #       click_on 'Find'
-# 
+#
 #       expect(page).to have_text 'First1 Last1'
 #       expect(page).to have_text 'Title 1234'
 #       expect(page).to have_text '11.50'
 #       expect(page).to have_text 'This employer hired'
-# 
+#
 #       expect(page).to_not have_text 'First2 Last2'
 #       expect(page).to_not have_text 'First3 Last3'
 #     end

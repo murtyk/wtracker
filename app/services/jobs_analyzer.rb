@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # analyzes jobs found through job search
 # analyzes one slice at a time and aggregates them
 # at the end, we will a companies collection which gets cached
@@ -105,7 +107,7 @@ class JobsAnalyzer
   # end
 
   def counties_for_selection
-    county_collection = county_counts.map { |k, v| [k.to_s + ' ' + v.to_s, k] }
+    county_collection = county_counts.map { |k, v| ["#{k} #{v}", k] }
     county_collection.sort! { |a, b| a[0] <=> b[0] }
   end
 
@@ -160,6 +162,7 @@ class JobsAnalyzer
   def init_name_locations
     @name_locations = read_cache(cache_id_name_locations)
     return if @name_locations
+
     @name_locations = []
 
     companies.each do |company|
@@ -175,7 +178,7 @@ class JobsAnalyzer
 
     @companies.sort! do |company1, company2|
       sort_order = company2.score <=> company1.score
-      sort_order = (company1.name || '') <=> (company2.name || '')  if sort_order == 0
+      sort_order = (company1.name || '') <=> (company2.name || '') if sort_order.zero?
       sort_order
     end
 
@@ -222,7 +225,8 @@ class JobsAnalyzer
   # end
 
   def slices
-    return 0 if jobs_count < 0
+    return 0 if jobs_count.negative?
+
     1 + (jobs_count - 1) / JobSearch::JOBS_SLICE_SIZE
   end
 

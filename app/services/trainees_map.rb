@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # wrapper for rendering trainee(s) and near by employers
 class TraineesMap < MapService
   attr_reader :employers, :trainee_address, :error, :user
@@ -42,11 +44,11 @@ class TraineesMap < MapService
   end
 
   def klass_trainees
-    (klass && klass.trainees.includes(:home_address)) || []
+    klass&.trainees&.includes(:home_address) || []
   end
 
   def trainees
-    trainee_id.to_i > 0 ? Trainee.where(id: trainee_id) : klass_trainees
+    trainee_id.to_i.positive? ? Trainee.where(id: trainee_id) : klass_trainees
   end
 
   def near_by_employers?
@@ -64,7 +66,8 @@ class TraineesMap < MapService
   def map
     return nil if near_by_employers? && error
     return super unless near_by_employers?
-    super.merge(circles: { data:  circles.to_json })
+
+    super.merge(circles: { data: circles.to_json })
   end
 
   private
@@ -95,13 +98,11 @@ class TraineesMap < MapService
     @employers = Employer.includes(:address, :employer_notes).where(id: e_ids)
   end
 
-  private
-
   def employers_ids
     user.employers.select(:id)
-      .joins(:sectors)
-      .where(sectors: { id: sector_id })
-      .pluck(:id)
+        .joins(:sectors)
+        .where(sectors: { id: sector_id })
+        .pluck(:id)
   end
 
   # since @trainee_address is HOME_ADDRESS,
@@ -112,8 +113,8 @@ class TraineesMap < MapService
                     longitude: trainee_address.longitude)
     a.id = trainee_address.id
     e_addresses = a.nearbys(radius)
-                  .includes(addressable: [:sectors, :employer_source])
-                  .where(addressable_type: 'Employer', addressable_id: employers_ids)
+                   .includes(addressable: %i[sectors employer_source])
+                   .where(addressable_type: 'Employer', addressable_id: employers_ids)
     a.id = nil
     a.delete
     e_addresses

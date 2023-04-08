@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # taacct 3 attributes for trainee
 class TactThree < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

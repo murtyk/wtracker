@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   resources :applicants, except: [:destroy] do
     collection do
@@ -6,13 +8,14 @@ Rails.application.routes.draw do
       post :assign_navigator
     end
   end
-  resources :applicant_reapplies, only: [:new, :create, :index]
+  resources :applicant_reapplies, only: %i[new create index]
 
-  resources :trainee_placements, only: [:new, :create, :index]
+  resources :trainee_placements, only: %i[new create index]
 
-  resources :auto_shared_jobs, only: [:edit, :update, :index]
+  resources :auto_shared_jobs, only: %i[edit update index]
 
-  resources :job_search_profiles, path: '/profiles', only: [:show, :edit, :update, :index] do
+  resources :job_search_profiles, path: '/profiles',
+                                  only: %i[show edit update index] do
     collection do
       get :remind
     end
@@ -25,7 +28,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :grants, only: [:show, :index, :edit, :update] do
+  resources :grants, only: %i[show index edit update] do
     collection do
       get :reapply_message
       get :password_message
@@ -39,51 +42,51 @@ Rails.application.routes.draw do
   resources :klasses do
     member do
       get :events
-      get :trainees  # for job leads
+      get :trainees # for job leads
       get :trainees_with_email # for bulk emails
       get :visits_calendar
     end
   end
 
-  resources :klass_events,        except: [:index, :show]
-  resources :klass_interactions,  except: [:index, :show]
-  resources :klass_trainees,      except: [:index, :show] do
+  resources :klass_events,        except: %i[index show]
+  resources :klass_interactions,  except: %i[index show]
+  resources :klass_trainees,      except: %i[index show] do
     member do
       get :ojt_enrolled
     end
   end
 
-  resources :assessments,         only: [:new, :create, :destroy, :index]
+  resources :assessments,         only: %i[new create destroy index]
 
-  resources :klass_certificates,  except: [:index, :show]
-  resources :klass_navigators,    only: [:new, :create, :destroy]
-  resources :klass_instructors,   only: [:new, :create, :destroy]
-  resources :klass_titles,        only: [:new, :create, :destroy] do
+  resources :klass_certificates,  except: %i[index show]
+  resources :klass_navigators,    only: %i[new create destroy]
+  resources :klass_instructors,   only: %i[new create destroy]
+  resources :klass_titles,        only: %i[new create destroy] do
     member do
       get :job_search_count
     end
   end
 
-  resources :applicant_sources,      only: [:new, :create, :destroy, :index]
-  resources :certificate_categories, only: [:new, :create, :destroy, :index]
+  resources :applicant_sources,      only: %i[new create destroy index]
+  resources :certificate_categories, only: %i[new create destroy index]
   resources :employment_statuses
-  resources :funding_sources,        only: [:new, :create, :destroy, :index]
-  resources :klass_categories,       only: [:new, :create, :destroy, :index]
-  resources :special_services,       only: [:new, :create, :destroy, :index]
-  resources :grant_trainee_statuses, only: [:new, :create, :destroy, :index]
-  resources :unemployment_proofs,    only: [:new, :create, :destroy, :index]
+  resources :funding_sources,        only: %i[new create destroy index]
+  resources :klass_categories,       only: %i[new create destroy index]
+  resources :special_services,       only: %i[new create destroy index]
+  resources :grant_trainee_statuses, only: %i[new create destroy index]
+  resources :unemployment_proofs,    only: %i[new create destroy index]
 
-  resources :trainee_files,       only: [:new, :show, :create, :destroy]
-  resources :trainee_submits,     only: [:new, :create]
-  resources :trainee_assessments, only: [:new, :create, :destroy]
-  resources :trainee_emails,      except: [:edit, :update]
-  resources :trainee_notes,       except: [:index, :show]
-  resources :ui_verified_notes,   except: [:index, :show, :edit, :update]
-  resources :trainee_services,    except: [:index, :show]
-  resources :trainee_statuses,    except: [:index, :show]
-  resources :mentors,             except: [:index, :show]
+  resources :trainee_files,       only: %i[new show create destroy]
+  resources :trainee_submits,     only: %i[new create]
+  resources :trainee_assessments, only: %i[new create destroy]
+  resources :trainee_emails,      except: %i[edit update]
+  resources :trainee_notes,       except: %i[index show]
+  resources :ui_verified_notes,   except: %i[index show edit update]
+  resources :trainee_services,    except: %i[index show]
+  resources :trainee_statuses,    except: %i[index show]
+  resources :mentors,             except: %i[index show]
 
-  resources :job_searches, only: [:new, :show, :create] do
+  resources :job_searches, only: %i[new show create] do
     member do
       # get :details
       get :analyze
@@ -99,7 +102,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :job_shares, only: [:new, :show, :create, :index] do
+  resources :job_shares, only: %i[new show create index] do
     collection do
       get :new_multiple
       get :company_status
@@ -107,7 +110,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :shared_job_statuses, path: '/sjs', only: [:show, :update, :index] do
+  resources :shared_job_statuses, path: '/sjs', only: %i[show update index] do
     member do
       get :clicked
       get :enquire
@@ -130,17 +133,17 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :contacts,          except: [:index, :show]
-  resources :employer_files,    only: [:new, :show, :create, :destroy]
-  resources :employer_notes,    except: [:index, :show]
-  resources :job_openings,      only: [:new, :create]
+  resources :contacts,          except: %i[index show]
+  resources :employer_files,    only: %i[new show create destroy]
+  resources :employer_notes,    except: %i[index show]
+  resources :job_openings,      only: %i[new create]
   resources :hot_jobs
-  resources :employer_sectors,  only: [:new, :create, :destroy]
-  resources :employer_sources,  only: [:new, :create, :destroy]
+  resources :employer_sectors,  only: %i[new create destroy]
+  resources :employer_sources,  only: %i[new create destroy]
 
-  resources :user_employer_sources,  only: [:new, :create, :destroy]
+  resources :user_employer_sources,  only: %i[new create destroy]
 
-  resources :emails, except: [:edit, :update] do
+  resources :emails, except: %i[edit update] do
     collection do
       get :new_attachment
     end
@@ -148,7 +151,7 @@ Rails.application.routes.draw do
 
   resources :trainee_interactions, except: [:index]
 
-  resources :import_statuses, only: [:new, :create, :show] do
+  resources :import_statuses, only: %i[new create show] do
     member do
       get :status
     end
@@ -157,16 +160,16 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :google_companies, only: [:create, :index]
+  resources :google_companies, only: %i[create index]
 
-  resource :companies_finder, only: [:new, :create, :show] do
+  resource :companies_finder, only: %i[new create show] do
     collection do
       get :status
       post :add_employer
     end
   end
 
-  resources :reports, only: [:new, :create, :show] do
+  resources :reports, only: %i[new create show] do
     collection do
       get :process_next
       get :by_email
@@ -175,7 +178,7 @@ Rails.application.routes.draw do
 
   devise_for :trainees, skip: [:registrations]
   devise_for :admins,   skip: [:registrations]
-  devise_for :users,    skip: [:registrations, :sessions]
+  devise_for :users,    skip: %i[registrations sessions]
   as :user do
     get '/login'     => 'devise/sessions#new',     as: :new_user_session
     post '/login'    => 'devise/sessions#create',  as: :user_session
@@ -188,7 +191,8 @@ Rails.application.routes.draw do
       get :near_by_colleges
       get :docs_for_selection
       get :search_by_skills
-      match 'advanced_search' => 'trainees#advanced_search', via: [:get, :post], as: :advanced_search
+      match 'advanced_search' => 'trainees#advanced_search', via: %i[get post],
+            as: :advanced_search
     end
     member do
       get :disable
@@ -221,7 +225,7 @@ Rails.application.routes.draw do
         get :stats
       end
     end
-    resources :grants,          except: [:destroy, :index]
+    resources :grants,          except: %i[destroy index]
     resources :users,           only: [:index]
     resources :trainees,        only: [:index] do
       member do
@@ -229,16 +233,16 @@ Rails.application.routes.draw do
         patch :update_bounce
       end
     end
-    resources :sectors,         only: [:new, :show, :create, :index]
-    resources :account_states,  only: [:new, :create, :destroy]
-    resources :import_statuses, only: [:new, :create, :show, :index, :destroy] do
+    resources :sectors,         only: %i[new show create index]
+    resources :account_states,  only: %i[new create destroy]
+    resources :import_statuses, only: %i[new create show index destroy] do
       member do
         get :status
       end
     end
-    resources :counties,        only: [:show, :index]
-    resources :cities,          only: [:show, :index]
-    resources :aws_s3s,         only: [:show, :index] do
+    resources :counties,        only: %i[show index]
+    resources :cities,          only: %i[show index]
+    resources :aws_s3s,         only: %i[show index] do
       collection do
         get :recycle_bin
         get :empty_recycle_bin
@@ -247,15 +251,15 @@ Rails.application.routes.draw do
   end
 
   namespace :trainee do
-    resources :trainees, only: [:edit, :update, :show] do
+    resources :trainees, only: %i[edit update show] do
       member do
         get :portal
       end
     end
-    resources :job_search_profiles, only: [:show, :edit, :update]
-    resources :trainee_files, only: [:new, :create, :index]
-    resources :trainee_placements, only: [:new, :create, :index]
-    resources :auto_shared_jobs, only: [:edit, :update]
+    resources :job_search_profiles, only: %i[show edit update]
+    resources :trainee_files, only: %i[new create index]
+    resources :trainee_placements, only: %i[new create index]
+    resources :auto_shared_jobs, only: %i[edit update]
   end
 
   get 'static_pages/home'
@@ -273,11 +277,11 @@ Rails.application.routes.draw do
 
   # Api definition
   namespace :api, defaults: { format: :json },
-                              constraints: { subdomain: 'operoapi' }, path: '/' do
+                  constraints: { subdomain: 'operoapi' }, path: '/' do
     scope module: :v1,
-              constraints: ApiConstraints.new(version: 1, default: true) do
-      resources :sessions, only: [:create, :destroy]
-      resources :leads_queues, only: [:show, :update]
+          constraints: ApiConstraints.new(version: 1, default: true) do
+      resources :sessions, only: %i[create destroy]
+      resources :leads_queues, only: %i[show update]
     end
   end
 end

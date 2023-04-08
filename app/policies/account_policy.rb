@@ -1,4 +1,6 @@
-class AccountPolicy < Struct.new(:user, :account)
+# frozen_string_literal: true
+
+AccountPolicy = Struct.new(:user, :account) do
   def new?
     false
   end

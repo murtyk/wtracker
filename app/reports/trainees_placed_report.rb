@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # placement information about placed trainees
 class TraineesPlacedReport < Report
   def post_initialize(params)
@@ -38,8 +40,8 @@ class TraineesPlacedReport < Report
 
   def find_trainees_placed_no_employer(trainee_ids)
     KlassTrainee.includes(:trainee, klass: :college)
-      .where(status: 4)
-      .where(klass_id: klass_ids)
-      .where.not(trainee_id: trainee_ids)
+                .where(status: 4)
+                .where(klass_id: klass_ids)
+                .where.not(trainee_id: trainee_ids)
   end
 end

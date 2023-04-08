@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TraineeAssessmentsController < ApplicationController
   before_filter :authenticate_user!
 
@@ -32,8 +34,8 @@ class TraineeAssessmentsController < ApplicationController
 
   def ta_params
     para = params.require(:trainee_assessment)
-           .permit(:pass, :score, :assessment_id, :trainee_id, :date)
-           .clone
+                 .permit(:pass, :score, :assessment_id, :trainee_id, :date)
+                 .clone
     para[:date] = opero_str_to_date(para[:date])
     para
   end

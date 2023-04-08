@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 class CreateKlassSchedules < ActiveRecord::Migration
   def change
     create_table :klass_schedules do |t|
-
-      t.references :account,  :null => false
+      t.references :account, null: false
       t.references :klass
       t.boolean :scheduled
       t.integer :dayoftheweek
@@ -15,6 +16,6 @@ class CreateKlassSchedules < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :klass_schedules, [:account_id, :klass_id]
+    add_index :klass_schedules, %i[account_id klass_id]
   end
 end

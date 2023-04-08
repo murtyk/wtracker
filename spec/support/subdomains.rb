@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Support for Rspec / Capybara subdomain integration testing
 # Make sure this file is required by spec_helper.rb
 # (e.g. save as spec/support/subdomains.rb)

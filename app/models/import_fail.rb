@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # track failed records in import of a file
 class ImportFail < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

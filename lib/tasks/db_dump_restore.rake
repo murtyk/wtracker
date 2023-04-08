@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 namespace :db do
   desc 'dump and restore for development db'
 
   task :dump do
     dev = Rails.application.config.database_configuration['development']
-    dest = "tmp/dev_db.dump"
+    dest = 'tmp/dev_db.dump'
     db = dev['database']
     user = dev['username']
     pwd = dev['password']
@@ -19,7 +21,7 @@ namespace :db do
 
   task :restore do
     dev = Rails.application.config.database_configuration['development']
-    dump = "tmp/latest.dump"
+    dump = 'tmp/latest.dump'
     db = dev['database']
     user = dev['username']
     pwd = dev['password']

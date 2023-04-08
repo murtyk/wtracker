@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 require 'faker'
 FactoryBot.define do
   factory :applicant do
-
     trait :acceptable do
-      current_employment_status { "Employed Part Time" }
+      current_employment_status { 'Employed Part Time' }
     end
 
     trait :not_acceptable do
-      current_employment_status { "Employed Full Time" }
+      current_employment_status { 'Employed Full Time' }
     end
 
     first_name    { Faker::Name.first_name }
@@ -21,7 +22,9 @@ FactoryBot.define do
     address_city  { 'Edison' }
     address_zip   { '08817' }
 
-    county_id     { County.find_by(state_id: State.find_by(code: 'NJ'), name: 'Middlesex').id }
+    county_id     do
+      County.find_by(state_id: State.find_by(code: 'NJ'), name: 'Middlesex').id
+    end
 
     mobile_phone_no { Faker::PhoneNumber.cell_phone }
     sector_id       { Sector.all.sample.id }

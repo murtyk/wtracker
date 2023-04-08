@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe OperoCompany do
@@ -36,7 +38,7 @@ describe OperoCompany do
     Account.current_id = 1
     oc = OperoCompany.last
     source_id = User.first.default_employer_source_id
-    expect { EmployerFactory.create_from_opero(oc.id, source_id, 1) }.to change{
+    expect { EmployerFactory.create_from_opero(oc.id, source_id, 1) }.to change {
       Employer.count
     }.by(1)
   end

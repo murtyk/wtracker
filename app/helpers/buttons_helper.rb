@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 # helper for creating buttons with icons
 module ButtonsHelper
   def show_button(resource)
     return nil unless policy(resource).show?
+
     link_to(polymorphic_path(resource),
             id: button_id(resource),
             class: 'btn btn-flat btn-mini btn-info',
@@ -13,7 +16,7 @@ module ButtonsHelper
   def add_button(btn_class, name, resource, params = {}, tip = nil)
     return nil unless policy(resource).create?
 
-    name     = name.nil? ? '' : ' ' + name.to_s.squish
+    name     = name.nil? ? '' : " #{name.to_s.squish}"
     title    = tip || "New #{resource.name}"
     params ||= {}
 
@@ -26,22 +29,25 @@ module ButtonsHelper
   end
 
   def build_add_button_id(resource)
-    'new_' + resource.name.underscore.downcase + '_link'
+    "new_#{resource.name.underscore.downcase}_link"
   end
 
-  def plus_button(resource, params = {}, tip = nil) # resource is Class
+  # resource is Class
+  def plus_button(resource, params = {}, tip = nil)
     btn_class = 'btn btn-flat btn-mini btn-info'
     add_button(btn_class, nil, resource, params, tip)
   end
 
-  def new_button(resource, params = {}, tip = nil) # resource is Class
+  # resource is Class
+  def new_button(resource, params = {}, tip = nil)
     btn_class = 'btn btn-flat btn-small btn-primary pull-right'
     add_button(btn_class, 'New', resource, params, tip)
   end
 
   def edit_button(resource)
     return nil unless policy(resource).edit?
-    id = 'edit_' + button_id(resource)
+
+    id = "edit_#{button_id(resource)}"
     link_to(edit_polymorphic_path(resource),
             id: id,
             class: 'btn btn-flat btn-mini btn-warning',
@@ -78,7 +84,7 @@ module ButtonsHelper
   def cancel_button(f, label = nil)
     label ||= 'Cancel'
 
-    btn_id = "cancel_" + f.object.class.name.downcase
+    btn_id = "cancel_#{f.object.class.name.downcase}"
 
     "<button id='#{btn_id}' class='btn btn-flat btn-small btn-danger'>
     #{label}
@@ -90,7 +96,7 @@ module ButtonsHelper
     # f.button :submit, label, class: 'btn btn-flat btn-medium btn-primary'
     icon_class = label == 'Find' ? 'icon-search' : 'icon-ok'
 
-    btn_id = "submit_" + f.object.class.name.downcase
+    btn_id = "submit_#{f.object.class.name.downcase}"
 
     "<button id='#{btn_id}' class='btn btn-flat btn-small btn-primary' type='submit'>
     <i class='#{icon_class}'></i> #{label}
@@ -98,10 +104,10 @@ module ButtonsHelper
   end
 
   def import_button
-    btn_html =  "<button type='submit' id='submit-button' "
-    btn_html +=  "class= 'btn btn-flat btn-primary btn-spinner'"
+    btn_html = "<button type='submit' id='submit-button' "
+    btn_html += "class= 'btn btn-flat btn-primary btn-spinner'"
     btn_html += ' data-loading-text="'
-    btn_html += "<i class='icon-spinner icon-spin icon-large'></i> Processing..." + '">'
+    btn_html += "<i class='icon-spinner icon-spin icon-large'></i> Processing...\">"
     btn_html += "<i class='icon-upload icon-white'></i> Import</button>"
     btn_html.html_safe
   end

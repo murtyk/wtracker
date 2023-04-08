@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # helper methods to manage sessions
 module SessionsHelper
   # def redirect_back_or_default(default = root_path, *options)

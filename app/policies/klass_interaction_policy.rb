@@ -1,4 +1,6 @@
-class KlassInteractionPolicy < Struct.new(:user, :klass_interaction)
+# frozen_string_literal: true
+
+KlassInteractionPolicy = Struct.new(:user, :klass_interaction) do
   def new?
     user.admin_or_director? || user.navigator?
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include AjaxHelper
 # for generation and destruction of employers
 module EmployersHelper
@@ -50,7 +52,6 @@ module EmployersHelper
   def destroy_one_employer
     AlertConfirmer.accept_confirm_from do
       find('a.btn-danger', match: :first).click
-
     end
     wait_for_ajax
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for building messages during applicant registration process
 class ApplicantEmailTextBuilder
   include ActionDispatch::Routing::PolymorphicRoutes
@@ -78,7 +80,7 @@ class ApplicantEmailTextBuilder
 
   def parse_applicant_identity(s)
     msg = s.gsub('$FIRSTNAME$', applicant.first_name)
-          .gsub('$LASTNAME$',  applicant.last_name)
+           .gsub('$LASTNAME$', applicant.last_name)
 
     return msg unless applicant.accepted?
 
@@ -92,8 +94,8 @@ class ApplicantEmailTextBuilder
                                salt: applicant.grant.salt,
                                key: applicant.reapply_key)
 
-    link =  "<a href= '#{url}'>Click here</a>"
-    s.gsub('$REAPPLY_LINK$',  link)
+    link = "<a href= '#{url}'>Click here</a>"
+    s.gsub('$REAPPLY_LINK$', link)
   end
 
   def host

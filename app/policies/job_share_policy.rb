@@ -1,4 +1,6 @@
-class JobSharePolicy < Struct.new(:user, :job_share)
+# frozen_string_literal: true
+
+JobSharePolicy = Struct.new(:user, :job_share) do
   def new?
     user.navigator? || user.admin_or_director?
   end

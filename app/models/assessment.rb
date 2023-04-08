@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # reference list of assessments of a class
 class Assessment < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # builds rows and headers for excel
 class TraineesBouncedEmailsViewBuilder
   include Enumerable

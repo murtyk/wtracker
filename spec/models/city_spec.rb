@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe City do
@@ -14,6 +16,6 @@ describe City do
     city = FactoryBot.create(:city, state_id: nj.id, county_id: county.id)
     expect(city.county_name).to eq(county.name)
     expect(city.state_code).to eq('NJ')
-    expect(city.city_state).to eq(city.name + ',NJ')
+    expect(city.city_state).to eq("#{city.name},NJ")
   end
 end

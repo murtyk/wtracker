@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class KlassCertificatesController < ApplicationController
   before_filter :authenticate_user!
 
@@ -34,11 +36,10 @@ class KlassCertificatesController < ApplicationController
 
     respond_to do |format|
       if @klass_certificate.save
-        format.js
       else
         format.html { render :new }
-        format.js
       end
+      format.js
     end
   end
 
@@ -53,6 +54,6 @@ class KlassCertificatesController < ApplicationController
 
   def klass_certificate_params
     params.require(:klass_certificate)
-      .permit(:description, :name, :klass_id, :certificate_category_id)
+          .permit(:description, :name, :klass_id, :certificate_category_id)
   end
 end

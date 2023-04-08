@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateContacts < ActiveRecord::Migration
   def change
     create_table :contacts do |t|
@@ -10,10 +12,11 @@ class CreateContacts < ActiveRecord::Migration
       t.string :ext
       t.string :mobile_no
       t.string :email
-      t.references :account,  :null => false
+      t.references :account, null: false
 
       t.timestamps
     end
-    add_index :contacts, [:account_id, :contactable_type, :contactable_id], name: "contacts_index"
+    add_index :contacts, %i[account_id contactable_type contactable_id],
+              name: 'contacts_index'
   end
 end

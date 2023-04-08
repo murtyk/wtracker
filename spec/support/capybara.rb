@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'capybara'
 require 'capybara/rails'
 require 'capybara/rspec'
@@ -35,7 +37,7 @@ def wait_for_ajax
   while page.evaluate_script('$.active').to_i > 0
     counter += 1
     sleep(0.1)
-    fail 'AJAX request took longer than 5 seconds.' if counter >= 50
+    raise 'AJAX request took longer than 5 seconds.' if counter >= 50
   end
 end
 

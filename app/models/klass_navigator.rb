@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # navigator assigned to a class
 class KlassNavigator < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # an account can have 1 or more grants
 # several programs in a grant
 # grant has end date after which it should become read only
 class Grant < ApplicationRecord
   STATUSES = { 1 => 'Planning', 2 => 'Started', 3 => 'Closed' }.freeze
-  OTHER_PLEASE_SPECIFY = 'Other, Please specify'.freeze
+  OTHER_PLEASE_SPECIFY = 'Other, Please specify'
 
   default_scope { where(account_id: Account.current_id) }
 
@@ -126,7 +128,7 @@ class Grant < ApplicationRecord
   end
 
   def has_trainee_employment_statuses?
-    trainee_employment_statuses && trainee_employment_statuses.any?
+    trainee_employment_statuses&.any?
   end
 
   def trainee_employment_statuses_collection
@@ -165,7 +167,7 @@ class Grant < ApplicationRecord
   end
 
   def valid_email_message?(msg)
-    msg && msg.content && !msg.content.blank?
+    msg&.content && !msg.content.blank?
   end
 
   def active?
@@ -198,8 +200,8 @@ class Grant < ApplicationRecord
     user_ids = User.joins(klass_navigators: :klass)
                    .where(users: { role: 3, status: 1 }).pluck(:id) +
                User.joins(:grant_admins)
-               .where(grant_admins: { grant_id: id })
-               .where(users: { role: 3, status: 1 }).pluck(:id)
+                   .where(grant_admins: { grant_id: id })
+                   .where(users: { role: 3, status: 1 }).pluck(:id)
     nav_ids = navs_assigned_to_trainees
     User.where(id: user_ids + nav_ids).order(:first, :last)
   end
@@ -218,7 +220,7 @@ class Grant < ApplicationRecord
 
   def salt
     atoz = ('a'..'z').to_a
-    atoz.sample(4).join + '0000' + atoz.sample(4).join + id.to_s
+    "#{atoz.sample(4).join}0000#{atoz.sample(4).join}#{id}"
   end
 
   def capture_optout_reason?
@@ -240,14 +242,14 @@ class Grant < ApplicationRecord
     return unless @auto_job_leads.is_a? String
 
     ajl = @auto_job_leads.to_i
-    @auto_job_leads = ajl > 0
+    @auto_job_leads = ajl.positive?
   end
 
   def trainee_applications_setting
     return unless @trainee_applications.is_a? String
 
     @trainee_applications = @trainee_applications.to_i
-    @trainee_applications = @trainee_applications > 0
+    @trainee_applications = @trainee_applications.positive?
   end
 
   def options_hash

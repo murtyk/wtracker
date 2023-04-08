@@ -1,4 +1,6 @@
-class CollegePolicy < Struct.new(:user, :college)
+# frozen_string_literal: true
+
+CollegePolicy = Struct.new(:user, :college) do
   def new?
     user.admin_access?
   end

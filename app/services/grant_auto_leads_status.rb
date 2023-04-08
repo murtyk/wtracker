@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Compiles status for a job leads
 class GrantAutoLeadsStatus
   attr_reader :grant, :lead_counts, :total_leads
@@ -24,14 +26,13 @@ class GrantAutoLeadsStatus
     clear_cache
   end
 
-  # rubocop:disable AbcSize
   def build_lead_counts
     result_set.each do |record|
       key = "g#{grant.id}_#{record['id']}"
       count = Rails.cache.read(key)
       next unless count
 
-      lead_counts << record['first'] + ' ' + record['last'] + ' - ' + count.to_s
+      lead_counts << "#{record['first']} #{record['last']} - #{count}"
       @total_leads += count
     end
   end

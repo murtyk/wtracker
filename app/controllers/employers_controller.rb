@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # An employer belogs to an account and source
 # REFACTOR: too many custom routes
 # how about moving add_google_company and get_google_company
@@ -108,11 +110,10 @@ class EmployersController < ApplicationController
       if saved
         notice = 'Employer was successfully created.'
         format.html { redirect_to @employer, notice: notice }
-        format.js
       else
         format.html { render :new }
-        format.js
       end
+      format.js
     end
   end
 

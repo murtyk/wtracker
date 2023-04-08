@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 class CompaniesFindersController < ApplicationController
   before_filter :authenticate_user!
-  def new
-  end
+  def new; end
 
   def create
     @companies_finder = CompanyListFinder.new(params, current_user)
@@ -26,7 +27,7 @@ class CompaniesFindersController < ApplicationController
 
     unless @status
       render 'invalid_process_id'
-      return
+      nil
     end
   end
 

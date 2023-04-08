@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class AddDeviseColumnsToTrainees < ActiveRecord::Migration
   def change
-    add_column :trainees, :encrypted_password, :string, null:  false, default: ""
+    add_column :trainees, :encrypted_password, :string, null: false, default: ''
 
     ## Recoverable
     add_column :trainees, :reset_password_token,   :string
@@ -10,7 +12,7 @@ class AddDeviseColumnsToTrainees < ActiveRecord::Migration
     add_column :trainees, :remember_created_at, :datetime
 
     ## Trackable
-    add_column :trainees, :sign_in_count,      :integer,  default: 0
+    add_column :trainees, :sign_in_count,      :integer, default: 0
     add_column :trainees, :current_sign_in_at, :datetime
     add_column :trainees, :last_sign_in_at,    :datetime
     add_column :trainees, :current_sign_in_ip, :string

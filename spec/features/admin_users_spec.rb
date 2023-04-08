@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 # require 'rails_helper'
-# 
+#
 # describe 'Administration' do
 #   describe 'users' do
 #     before(:each) do

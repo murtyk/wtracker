@@ -1,4 +1,6 @@
-class KlassCertificatePolicy < Struct.new(:user, :klass_certificate)
+# frozen_string_literal: true
+
+KlassCertificatePolicy = Struct.new(:user, :klass_certificate) do
   def new?
     user.admin_access? || user.navigator?
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for generating klasses
 module KlassesHelper
   def create_klasses(n = 1, trainees_per_klass = 0)
@@ -26,11 +28,9 @@ module KlassesHelper
 
     sleep 0.2
 
-
     get_klasses_ids.each do |klass_id|
       AlertConfirmer.accept_confirm_from do
         click_link "destroy_klass_#{klass_id}_link"
-
       end
       wait_for_ajax
     end

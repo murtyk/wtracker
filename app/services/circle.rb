@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # represents a circle on google map
 class Circle
   attr_accessor :radius, :lng, :lat
+
   def initialize(radius, lng, lat)
     @radius = radius
     @lng = lng

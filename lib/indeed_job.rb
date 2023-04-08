@@ -1,20 +1,19 @@
+# frozen_string_literal: true
+
 # a job posting from indeed.com
 class IndeedJob
   include JobMixins
-  attr_reader :title, :company, :date_posted, :excerpt, :location,
-              :source, :details_url, :details_url_type,
-              :city, :state, :zip, :county, :country, :city_state,
-              :details, :destination_url
-  attr_reader :job_json
+  attr_reader :title, :company, :date_posted, :excerpt, :location, :source, :details_url,
+              :details_url_type, :city, :state, :zip, :county, :country, :city_state, :details, :destination_url, :job_json
 
   def initialize(json)
     @job_json = json
 
     if json[:company]
       encoding_options = {
-        invalid:          :replace,  # Replace invalid byte sequences
-        undef:            :replace,  # Replace anything not defined in ASCII
-        replace:          '',        # Use a blank for those replacements
+        invalid: :replace, # Replace invalid byte sequences
+        undef: :replace, # Replace anything not defined in ASCII
+        replace: '', # Use a blank for those replacements
         universal_newline: true       # Always break lines with \n
       }
       name = json[:company].encode Encoding.find('ASCII'), encoding_options
@@ -29,7 +28,7 @@ class IndeedJob
     @city_state       = json[:location]
     @location         = json[:formattedLocation]
 
-    @indeed_apply      = json[:indeedApply]
+    @indeed_apply = json[:indeedApply]
   end
 
   def title

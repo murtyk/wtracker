@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # For sending login credentials to trainee when job search profile is created
 #   Specifically designed for Amazon grant
 class TraineeCredentialsEmailTextBuilder

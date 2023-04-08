@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddActionToEmploymentStatus < ActiveRecord::Migration
   def change
     add_column :employment_statuses, :action, :string

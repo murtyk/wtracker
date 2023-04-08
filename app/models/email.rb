@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # email to employers
 # trianee documents can be attached
 # additional documents can be attached
@@ -34,6 +36,7 @@ class Email < ApplicationRecord
 
   def contact_names_for_selection
     return [] unless contact_ids
+
     Contact.where(id: contact_ids).map { |c| [c.name_for_selection, c.id] }
   end
 end

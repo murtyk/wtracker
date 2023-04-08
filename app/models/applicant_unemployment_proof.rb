@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # grant specific
 class ApplicantUnemploymentProof < ApplicationRecord
   belongs_to :account

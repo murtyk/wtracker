@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # new, save, update, trainee file
 class TraineeFactory
@@ -78,7 +80,7 @@ class TraineeFactory
   # in case of applicants grant, a trainee also can add a file
   def self.add_trainee_file(params, user)
     if user.is_a? Trainee
-      trainee  = user
+      trainee = user
       return [false, 'invalid file type', nil] unless valid_file?(params)
     end
 
@@ -99,7 +101,8 @@ class TraineeFactory
   def self.valid_file?(params)
     filename = params[:file].try(:original_filename)
     return unless filename
-    %w(doc docx pdf).include?(filename.split('.')[-1])
+
+    %w[doc docx pdf].include?(filename.split('.')[-1])
   end
 
   def self.build_addresses_and_tact3(trainee)
@@ -110,6 +113,7 @@ class TraineeFactory
 
   def self.valid_address_attributes(a)
     return false if a.blank?
+
     !a[:line1].blank?
   end
 
@@ -205,7 +209,7 @@ class TraineeFactory
   # end
 
   def valid_file_suffix(filename)
-    %w(doc docs pdf).include? filename.split('.')[-1]
+    %w[doc docs pdf].include? filename.split('.')[-1]
   end
 
   # def self.geocode_applicant(a)

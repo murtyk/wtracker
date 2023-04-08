@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class KlassInteractionsController < ApplicationController
   before_filter :authenticate_user!
 
@@ -54,7 +56,7 @@ class KlassInteractionsController < ApplicationController
     respond_to do |format|
       if saved
         notice = 'Class Interaction successfully created.'
-        format.html { redirect_to @employer, notice:  notice }
+        format.html { redirect_to @employer, notice: notice }
         kis = @klass_event.klass_interactions
         format.json { render json: kis, status: :created, location: @klass_interaction }
       else
@@ -91,22 +93,22 @@ class KlassInteractionsController < ApplicationController
 
   def ki_params
     kip = params.require(:klass_interaction)
-          .permit(:status, :klass_event_id, :employer_id, :klass_id)
+                .permit(:status, :klass_event_id, :employer_id, :klass_id)
 
     if params[:employer]
       kip[:employer] = params.require(:employer)
-                       .permit(:name,
-                               :phone_no,
-                               sector_ids: [],
-                               address_attributes: [:line1, :line2,
-                                                    :city, :state, :zip])
+                             .permit(:name,
+                                     :phone_no,
+                                     sector_ids: [],
+                                     address_attributes: %i[line1 line2
+                                                            city state zip])
     end
 
     if params[:klass_event]
       kip[:klass_event] = params.require(:klass_event)
-                          .permit(:event_date, :name, :klass_id, :notes,
-                                  :start_ampm, :start_time_hr, :start_time_min,
-                                  :end_ampm, :end_time_hr, :end_time_min)
+                                .permit(:event_date, :name, :klass_id, :notes,
+                                        :start_ampm, :start_time_hr, :start_time_min,
+                                        :end_ampm, :end_time_hr, :end_time_min)
     end
 
     kip
@@ -114,9 +116,9 @@ class KlassInteractionsController < ApplicationController
 
   def ki_params_for_update
     params.require(:klass_interaction)
-      .permit(:status, :klass_event_id, :employer_id, :klass_id,
-              klass_event: [:event_date, :name, :notes,
-                            :start_ampm, :start_time_hr, :start_time_min,
-                            :end_ampm, :end_time_hr, :end_time_min])
+          .permit(:status, :klass_event_id, :employer_id, :klass_id,
+                  klass_event: %i[event_date name notes
+                                  start_ampm start_time_hr start_time_min
+                                  end_ampm end_time_hr end_time_min])
   end
 end

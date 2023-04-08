@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # applicant
 class Applicant < ApplicationRecord
@@ -11,9 +13,8 @@ class Applicant < ApplicationRecord
                  :skip_resume,
                  :unique_id
 
-  attr_accessor :salt, :bypass_humanizer, :email_confirmation
-  attr_accessor :latitude, :longitude
-  attr_accessor :reapply_key
+  attr_accessor :salt, :bypass_humanizer, :email_confirmation, :latitude, :longitude,
+                :reapply_key
 
   require_human_on :create, unless: :bypass_humanizer
 
@@ -57,7 +58,7 @@ class Applicant < ApplicationRecord
             length: { is: 5,
                       wrong_length: 'is the wrong length (should be 5 digits)' }
 
-  validates :grant,  presence: true
+  validates :grant, presence: true
   validates_uniqueness_of :email, scope: :grant_id, case_sensitive: false
   validate :validate_applicant_data
 
@@ -73,8 +74,9 @@ class Applicant < ApplicationRecord
 
   def employment_status_pre_selected?
     return false unless current_employment_status
+
     es = EmploymentStatus.where(status: current_employment_status).first
-    es && es.pre_selected
+    es&.pre_selected
   end
 
   def week
@@ -82,7 +84,7 @@ class Applicant < ApplicationRecord
   end
 
   def name
-    first_name + ' ' + last_name
+    "#{first_name} #{last_name}"
   end
 
   def mobile_phone_number
@@ -103,7 +105,7 @@ class Applicant < ApplicationRecord
   end
 
   def address_city_state_zip
-    address_city + ', ' + address_state + ' ' + address_zip
+    "#{address_city}, #{address_state} #{address_zip}"
   end
 
   def gender_text
@@ -123,11 +125,11 @@ class Applicant < ApplicationRecord
   end
 
   def self.statuses
-    %w(Accepted Declined None)
+    %w[Accepted Declined None]
   end
 
   def self.employment_statuses
-    [%w(Accept Accepted), %w(Decline Declined), %w(None None)]
+    [%w[Accept Accepted], %w[Decline Declined], %w[None None]]
   end
 
   belongs_to :navigator, class_name: 'User', foreign_key: 'navigator_id'
@@ -138,16 +140,13 @@ class Applicant < ApplicationRecord
 
   def last_employer_address
     street = last_employer_line1
-    street += last_employer_line2.blank? ? '' : ('<br>' + last_employer_line2)
+    street += last_employer_line2.blank? ? '' : "<br>#{last_employer_line2}"
     [street, last_employer_city,
-     last_employer_state + ' ' + last_employer_zip].join('<br>').html_safe
+     "#{last_employer_state} #{last_employer_zip}"].join('<br>').html_safe
   end
 
   def last_employer_contact
-    (last_employer_manager_name + '<br>' +
-     last_emp_formatted_phone + '<br>' +
-     last_emp_email +
-     last_employer_address).html_safe
+    "#{last_employer_manager_name}<br>#{last_emp_formatted_phone}<br>#{last_emp_email}#{last_employer_address}".html_safe
   end
 
   def last_emp_formatted_phone
@@ -156,7 +155,8 @@ class Applicant < ApplicationRecord
 
   def last_emp_email
     return '' unless last_employer_manager_email
-    last_employer_manager_email.to_s + '<br>'
+
+    "#{last_employer_manager_email}<br>"
   end
 
   def special_services_requested
@@ -203,6 +203,7 @@ class Applicant < ApplicationRecord
 
   def void_reapplication
     return unless recent_ra
+
     recent_ra.update(used: true)
     update(applied_on: recent_ra.updated_at.to_date)
   end
@@ -211,10 +212,11 @@ class Applicant < ApplicationRecord
 
   private
 
-  def allowed_blank_attrs # also includes false values ex: veteran true or false
-    %w(id trainee_id navigator_id comments status type address_line2
+  # also includes false values ex: veteran true or false
+  def allowed_blank_attrs
+    %w[id trainee_id navigator_id comments status type address_line2
        transportation computer_access veteran applied_on
-       created_at updated_at last_employer_line2 last_employer_manager_email)
+       created_at updated_at last_employer_line2 last_employer_manager_email]
   end
 
   def non_bool_attributes
@@ -249,7 +251,7 @@ class Applicant < ApplicationRecord
   end
 
   def validate_boolean_attributes
-    %w(transportation computer_access veteran).each do |at|
+    %w[transportation computer_access veteran].each do |at|
       errors.add(at, "can't be blank") if send(at).nil?
     end
   end
@@ -279,8 +281,10 @@ class Applicant < ApplicationRecord
 
   def validate_mobile_phone_no
     return if mobile_phone_no.blank?
+
     phone = mobile_phone_no.delete('^0-9')
     return unless phone.size < 10
+
     errors.add(:mobile_phone_no, 'Should contain minimum 10 digits')
   end
 
@@ -288,18 +292,22 @@ class Applicant < ApplicationRecord
     return if last_employer_manager_phone_no.blank?
 
     phone = last_employer_manager_phone_no.delete('^0-9')
-    errors.add(:last_employer_manager_phone_no,
-               'Should contain minimum 10 digits') if phone.size < 10
+    if phone.size < 10
+      errors.add(:last_employer_manager_phone_no,
+                 'Should contain minimum 10 digits')
+    end
   end
 
   def validate_self_services
     return unless applicant_special_services.empty?
+
     errors.add('special_services', 'You have to select at least 1 option')
   end
 
   def validate_skills
     size = skills.to_s.size
-    return true if size > 0 && size < 421
+    return true if size.positive? && size < 421
+
     errors.add(:skills, "can't be blank") if skills.blank?
     errors.add(:skills, "size(#{size}) exceeds 420 characters.") if size > 420
     false

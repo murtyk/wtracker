@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # this setting is available for grants where applicants can apply
 # an applicant might be accepted or declined based on employment status
 class EmploymentStatusesController < ApplicationController
@@ -68,6 +70,6 @@ class EmploymentStatusesController < ApplicationController
 
   def employment_status_params
     params.require(:employment_status)
-      .permit(:status, :action, :email_subject, :email_body, :pre_selected)
+          .permit(:status, :action, :email_subject, :email_body, :pre_selected)
   end
 end

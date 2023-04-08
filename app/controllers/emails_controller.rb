@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 
 class EmailsController < ApplicationController
@@ -8,7 +10,7 @@ class EmailsController < ApplicationController
     emails = current_user.emails unless current_user.admin_access?
 
     @emails = emails.order('created_at desc')
-              .paginate(page: params[:page], per_page: 15)
+                    .paginate(page: params[:page], per_page: 15)
   end
 
   def show
@@ -62,8 +64,8 @@ class EmailsController < ApplicationController
 
   def email_params
     params.require(:email)
-      .permit(:content, :subject, :klass_id, :trainee_file_ids,
-              contact_ids: [],
-              attachments: [:name, :file])
+          .permit(:content, :subject, :klass_id, :trainee_file_ids,
+                  contact_ids: [],
+                  attachments: %i[name file])
   end
 end

@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class Trainee
   # Trainee signed in
   # can enter/update job search data
   # can opt out
   class JobSearchProfilesController < TraineePortalController
-    def edit
-    end
+    def edit; end
 
     def update
       if @job_search_profile.update_attributes(jsp_params)
@@ -26,7 +27,7 @@ class Trainee
 
     def jsp_params
       params.require(:job_search_profile)
-        .permit(:key, :skills, :location, :zip, :distance, :opted_out)
+            .permit(:key, :skills, :location, :zip, :distance, :opted_out)
     end
   end
 end

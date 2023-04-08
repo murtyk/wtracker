@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 # an user typically sends emails to 1 or more trainees in a class
 class TraineeEmailsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_trainee_email, only: [:show, :destroy]
+  before_action :set_trainee_email, only: %i[show destroy]
 
   # GET /trainee_emails
   def index
@@ -9,8 +11,7 @@ class TraineeEmailsController < ApplicationController
   end
 
   # GET /trainee_emails/1
-  def show
-  end
+  def show; end
 
   # GET /trainee_emails/new
   def new

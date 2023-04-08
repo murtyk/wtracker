@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # User can send remiders to trainees for updating their profile
 # trainee can update profile including opt out
 class JobSearchProfilesController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :remind]
-  before_action :init_profile, only: [:show, :edit, :update]
-  before_action :valid_key!, only: [:show, :edit, :update]
+  before_action :authenticate_user!, only: %i[index remind]
+  before_action :init_profile, only: %i[show edit update]
+  before_action :valid_key!, only: %i[show edit update]
 
   def remind
     ajl = AutoJobLeads.new
@@ -31,6 +33,7 @@ class JobSearchProfilesController < ApplicationController
   def update
     if @job_search_profile.update_attributes(profile_params)
       return if request.format.js?
+
       redirect_to @job_search_profile.trainee if current_user
       render 'update' unless current_user
     else
@@ -42,9 +45,9 @@ class JobSearchProfilesController < ApplicationController
 
   def profile_params
     p_params = params.require(:job_search_profile)
-               .permit(:skills, :location, :distance, :zip, :key,
-                       :opted_out, :opt_out_reason_code, :opt_out_reason,
-                       :company_name, :start_date, :title, :salary).clone
+                     .permit(:skills, :location, :distance, :zip, :key,
+                             :opted_out, :opt_out_reason_code, :opt_out_reason,
+                             :company_name, :start_date, :title, :salary).clone
     start_date = p_params[:start_date]
     p_params[:start_date] = opero_str_to_date(start_date) if start_date
     p_params
@@ -63,7 +66,8 @@ class JobSearchProfilesController < ApplicationController
     return if @job_search_profile.key == params[:key]
     return if params[:job_search_profile] &&
               @job_search_profile.key == params[:job_search_profile][:key]
-    fail 'invalid key for job_search_profile'
+
+    raise 'invalid key for job_search_profile'
   end
 
   def capture_trainee_agent
@@ -74,18 +78,18 @@ class JobSearchProfilesController < ApplicationController
     location_data = request_location_data(trainee.id)
     return unless location_data
 
-    trainee.agent.destroy if trainee.agent
+    trainee.agent&.destroy
     trainee.create_agent(info: location_data)
   end
 
   def request_location_data(trainee_id)
     request.location.data
-  rescue StandardError => error
-    Rails.logger.info "request location error #{error} for trainee id #{trainee_id}"
+  rescue StandardError => e
+    Rails.logger.info "request location error #{e} for trainee id #{trainee_id}"
     nil
   end
 
   def permission_denied
-    render :file => "public/401.html", :status => :unauthorized
+    render file: 'public/401.html', status: :unauthorized
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe AdminMailer do
@@ -14,7 +16,7 @@ describe AdminMailer do
 
       allow_any_instance_of(Applicant).to receive(:humanizer_questions)
         .and_return([{ 'question' => 'Two plus two?',
-                       'answers' => %w(4 four) }])
+                       'answers' => %w[4 four] }])
 
       generate_applicants(1)
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # serves several factory methods
 # 1. Update klass trainee
@@ -41,7 +43,8 @@ class KlassTraineeFactory
 
   def self.init_trainee_interaction(trainee, params)
     id = params[:employer_id].to_i
-    return nil unless id > 0
+    return nil unless id.positive?
+
     ti = trainee.trainee_interactions.find_or_initialize_by(employer_id: id)
     assign_ti_attributes(ti, params)
     ti
@@ -49,8 +52,8 @@ class KlassTraineeFactory
 
   def self.assign_ti_attributes(ei, params)
     title = params[:hire_title]
-    ei.start_date  = opero_str_to_date(params[:start_date])
-    ei.completion_date  = opero_str_to_date(params[:completion_date])
+    ei.start_date = opero_str_to_date(params[:start_date])
+    ei.completion_date = opero_str_to_date(params[:completion_date])
     ei.hire_title  = title.blank? ? 'missing' : title
     ei.hire_salary = params[:hire_salary]
     ei.comment     = params[:comment]
@@ -70,8 +73,8 @@ class KlassTraineeFactory
       update_klass_trainees_to_placed(t_i.trainee) if saved && t_i.placed?
     end
     true
-  rescue StandardError => error
-    klass_trainee.errors.add(:base, error)
+  rescue StandardError => e
+    klass_trainee.errors.add(:base, e)
     false
   end
 
@@ -96,9 +99,9 @@ class KlassTraineeFactory
   end
 
   def self.open_klasses
-    klasses  = Klass.where('start_date > ?', Date.today).order(:start_date)
+    klasses = Klass.where('start_date > ?', Date.today).order(:start_date)
     klasses.map do |k|
-      [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id]
+      ["#{k.to_label}-#{k.start_date} (#{k.trainees.count})", k.id]
     end
   end
 

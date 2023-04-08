@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # trainee and full status information
 class KlassTraineeStatus < DelegateClass(KlassTrainee)
   attr_reader :hired_employer, :hired
@@ -10,6 +12,7 @@ class KlassTraineeStatus < DelegateClass(KlassTrainee)
     super(obj)
     @hired_interaction = trainee.hired_employer_interaction
     return unless @hired_interaction
+
     @hired = true
     @hired_employer = @hired_interaction.employer
   end
@@ -31,15 +34,15 @@ class KlassTraineeStatus < DelegateClass(KlassTrainee)
   end
 
   def hire_title
-    @hired_interaction.hire_title if @hired_interaction
+    @hired_interaction&.hire_title
   end
 
   def hire_salary
-    @hired_interaction.hire_salary if @hired_interaction
+    @hired_interaction&.hire_salary
   end
 
   def employer_location
-    hired_employer.location if hired_employer
+    hired_employer&.location
   end
 
   def student_id

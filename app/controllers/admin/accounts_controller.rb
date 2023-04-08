@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin
   # for opero admin to manage accounts
   class AccountsController < ApplicationController
@@ -46,8 +48,10 @@ class Admin
 
       if @account.save
         notice = 'Account was successfully created.'
-        notice += ' Please wait for a minute to generate ' \
-                  'data for this demo account' if @account.demo
+        if @account.demo
+          notice += ' Please wait for a minute to generate ' \
+                    'data for this demo account'
+        end
         redirect_to admin_account_path(@account), notice: notice
       else
         render :new
@@ -99,10 +103,10 @@ class Admin
 
     def account_params
       params.require(:account)
-        .permit(:options, :description, :name, :status, :client_type,
-                :subdomain, :logo_file, :demo,
-                users_attributes: [:first, :last, :email, :password,
-                                   :password_confirmation, :role, :status, :location])
+            .permit(:options, :description, :name, :status, :client_type,
+                    :subdomain, :logo_file, :demo,
+                    users_attributes: %i[first last email password
+                                         password_confirmation role status location])
     end
   end
 end

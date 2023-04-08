@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # To process registered applicant
 # Meant as a background process so that applicant gets fast response
 # Trainee and other objects are created in background a notification
@@ -79,7 +81,7 @@ class ApplicantRegistration
   def job_search_attrs
     return {} unless applicant.valid_address?
 
-    location = applicant.address_city + ',' + applicant.address_state
+    location = "#{applicant.address_city},#{applicant.address_state}"
 
     { skills: applicant.skills,
       location: location,
@@ -91,9 +93,7 @@ class ApplicantRegistration
     attrs = trainee_attrs
     attrs[:tact_three_attributes] = build_tact3_attrs
 
-    if applicant.valid_address?
-      attrs[:home_address_attributes] = build_address_attrs
-    end
+    attrs[:home_address_attributes] = build_address_attrs if applicant.valid_address?
     attrs
   end
 
@@ -111,21 +111,19 @@ class ApplicantRegistration
   end
 
   def build_address_attrs
-    { line1:     applicant.address_line1,
-      line2:     applicant.address_line2,
-      city:      applicant.address_city,
-      state:     applicant.address_state,
-      zip:       applicant.address_zip,
+    { line1: applicant.address_line1,
+      line2: applicant.address_line2,
+      city: applicant.address_city,
+      state: applicant.address_state,
+      zip: applicant.address_zip,
       longitude: applicant.longitude,
-      latitude:  applicant.latitude
-    }
+      latitude: applicant.latitude }
   end
 
   def build_tact3_attrs
     { education_level: applicant.education_level,
       recent_employer: applicant.last_employer_name,
-      job_title:       applicant.last_job_title
-    }
+      job_title: applicant.last_job_title }
   end
 
   def credentials_attrs
@@ -135,15 +133,16 @@ class ApplicantRegistration
   end
 
   def password
-    (applicant.first_name[0..2] + '00000000')[0..7]
+    ("#{applicant.first_name[0..2]}00000000")[0..7]
   end
 
   def login_id
-    id    = login_id_name
+    id = login_id_name
     n = 0
     loop do
       count = Trainee.unscoped.where(login_id: id).count
-      break unless count > 0
+      break unless count.positive?
+
       n += 1
       id += n.to_s
     end
@@ -153,7 +152,7 @@ class ApplicantRegistration
   def login_id_name
     first = applicant.first_name.delete('^a-zA-Z')
     last  = applicant.last_name.delete('^a-zA-Z')
-    first + '_' + last
+    "#{first}_#{last}"
   end
 
   def geocode_applicant

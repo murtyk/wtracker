@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # notes on a trainee
 class TraineeNote < ApplicationRecord
   belongs_to :trainee

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class TraineeFilesController < ApplicationController
   before_filter :authenticate_user!, only: [:destroy]
-  before_action :authenticate, only: [:show, :new, :create]
+  before_action :authenticate, only: %i[show new create]
 
   # GET /trainee_files/1
   # GET /trainee_files/1.json
@@ -27,14 +29,10 @@ class TraineeFilesController < ApplicationController
 
     if saved
       notice = 'file was successfully saved.'
-      if current_trainee
-        redirect_to(portal_trainees_path, notice: notice)
-      end
-    else
-      if current_trainee
-        redirect_to(portal_trainees_path(error_message: @error_message),
-                    alert: 'error saving file')
-      end
+      redirect_to(portal_trainees_path, notice: notice) if current_trainee
+    elsif current_trainee
+      redirect_to(portal_trainees_path(error_message: @error_message),
+                  alert: 'error saving file')
     end
   end
 
@@ -59,6 +57,6 @@ class TraineeFilesController < ApplicationController
 
   def trainee_file_params
     params.require(:trainee_file)
-      .permit(:file, :notes, :uploaded_by, :trainee_id)
+          .permit(:file, :notes, :uploaded_by, :trainee_id)
   end
 end

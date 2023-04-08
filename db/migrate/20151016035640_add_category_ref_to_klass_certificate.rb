@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCategoryRefToKlassCertificate < ActiveRecord::Migration
   def change
     add_reference :klass_certificates, :certificate_category, index: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddOptOutToJobSearchProfile < ActiveRecord::Migration
   def change
     add_column :job_search_profiles, :opted_out, :boolean

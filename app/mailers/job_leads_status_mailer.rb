@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for sending grant level daily job leads notification
 class JobLeadsStatusMailer < ActionMailer::Base
   def notify(grant, leads)
@@ -16,17 +18,15 @@ class JobLeadsStatusMailer < ActionMailer::Base
   end
 
   def to_emails(grant)
-    grant.account.director.email +
-      ';' +
-      grant.account.admins.map(&:email).join(';')
+    "#{grant.account.director.email};#{grant.account.admins.map(&:email).join(';')}"
   end
 
   def build_body(leads)
-    body = '<p>Job Leads Sent To:</p>' + '<ol>'
+    body = '<p>Job Leads Sent To:</p><ol>'
     leads.each do |lead|
       body += "<li>#{lead}</li>"
     end
-    body + '</ol><hr>'
+    "#{body}</ol><hr>"
   end
 
   def from_job_leads
