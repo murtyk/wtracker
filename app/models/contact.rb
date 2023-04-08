@@ -1,7 +1,7 @@
 # an Employer can have contacts.
 # Contact provides contactable interface
 # so can be used for contacts at other entities
-class Contact < ActiveRecord::Base
+class Contact < ApplicationRecord
   include ValidationsMixins
   default_scope { where(account_id: Account.current_id) }
 

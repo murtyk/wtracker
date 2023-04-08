@@ -1,5 +1,5 @@
 # captures trainees to whom a job is forwarded
-class JobSharedTo < ActiveRecord::Base
+class JobSharedTo < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   belongs_to :job_share
   belongs_to :trainee

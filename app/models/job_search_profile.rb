@@ -1,5 +1,5 @@
 # trainee enters job search parameters
-class JobSearchProfile < ActiveRecord::Base
+class JobSearchProfile < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_skills,
                   against: :skills,

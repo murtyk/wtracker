@@ -1,4 +1,4 @@
-class Mentor < ActiveRecord::Base
+class Mentor < ApplicationRecord
   has_one :trainee
 
   validates :name, presence: true

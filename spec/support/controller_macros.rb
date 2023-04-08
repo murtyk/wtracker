@@ -2,7 +2,7 @@ module ControllerMacros
   def login_opero_admin
     before(:each) do
       @request.env['devise.mapping'] = Devise.mappings[:admin]
-      # sign_in FactoryGirl.create(:admin) # Using factory girl as an example
+      # sign_in FactoryBot.create(:admin) # Using factory girl as an example
       sign_in Admin.first # Using factory girl as an example
     end
   end

@@ -59,7 +59,7 @@ module ButtonsHelper
 
   def download_button(para = {}, name = '')
     para ||= {}
-    link_to(url_for(params.merge(para).merge(format: 'xls')),
+    link_to(url_for(params.permit!.merge(para).merge(format: 'xls')),
             class: 'btn btn-flat btn-small btn-primary btn-download pull-right',
             title: 'Download') do
       "<i class='icon-cloud-download icon-2x'></i>&nbsp #{name}".html_safe
@@ -67,7 +67,7 @@ module ButtonsHelper
   end
 
   def email_download_button(para = {}, name = '')
-    link_to(url_for(params.merge(para)),
+    link_to(url_for(params.permit!.merge(para)),
             remote: true,
             class: 'btn btn-flat btn-small btn-primary btn-email-download pull-right',
             title: 'Send Data by Email') do

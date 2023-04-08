@@ -1,5 +1,5 @@
 # captures the certificates a class issues on completion
-class KlassCertificate < ActiveRecord::Base
+class KlassCertificate < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   belongs_to :klass
   belongs_to :certificate_category

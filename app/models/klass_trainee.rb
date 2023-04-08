@@ -1,6 +1,6 @@
 # a trainee assigned to a class
 # trainee has a status in a class
-class KlassTrainee < ActiveRecord::Base
+class KlassTrainee < ApplicationRecord
   STATUSES = { 1 => 'Enrolled', 2 => 'Completed',
                3 => 'Dropped', 4 => 'Placed', 5 => 'Continuing Education' }
 

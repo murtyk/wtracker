@@ -9,7 +9,7 @@ describe Authenticable, type: :controller do
 
   describe '#current_admin' do
     before do
-      @admin = FactoryGirl.create :admin
+      @admin = FactoryBot.create :admin
       request.headers['Authorization'] = @admin.auth_token
       allow(authentication).to receive(:request).and_return(request)
     end
@@ -39,7 +39,7 @@ describe Authenticable, type: :controller do
   describe '#admin_signed_in?' do
     context "when there is a admin on 'session'" do
       before do
-        @admin = FactoryGirl.create :admin
+        @admin = FactoryBot.create :admin
         allow(authentication).to receive(:current_admin).and_return(@admin)
       end
 
@@ -48,7 +48,7 @@ describe Authenticable, type: :controller do
 
     context "when there is no admin on 'session'" do
       before do
-        @admin = FactoryGirl.create :admin
+        @admin = FactoryBot.create :admin
         allow(authentication).to receive(:current_admin).and_return(nil)
       end
 

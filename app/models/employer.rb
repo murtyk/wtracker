@@ -2,7 +2,7 @@
 # through job search.
 # typical search is on one or more of
 # sector, county and/or source
-class Employer < ActiveRecord::Base
+class Employer < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   include InteractionsMixins
 

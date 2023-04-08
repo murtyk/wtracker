@@ -1,5 +1,5 @@
 # for building company database overtime based on user searches
-class OperoCompany < ActiveRecord::Base
+class OperoCompany < ApplicationRecord
   alias_attribute(:phone_no, :phone)
 
   has_many :google_places_searches, dependent: :destroy

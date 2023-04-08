@@ -1,5 +1,5 @@
 # user settings for applicant grant
-class EmploymentStatus < ActiveRecord::Base
+class EmploymentStatus < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
   default_scope { order(:created_at) }

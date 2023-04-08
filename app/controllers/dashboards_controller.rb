@@ -25,7 +25,7 @@ class DashboardsController < ApplicationController
   end
 
   def index
-    @data = DashboardMetrics.generate(current_grant, params)
+    @data = DashboardMetrics.generate(current_grant, params.permit!)
 
     return unless @data.template
     render @data.template

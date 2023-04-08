@@ -1,7 +1,7 @@
 # a county in USA.
 # belongs to a state
 # has polygon(s) for rendering on map
-class County < ActiveRecord::Base
+class County < ApplicationRecord
   belongs_to :state
   has_many :cities
 

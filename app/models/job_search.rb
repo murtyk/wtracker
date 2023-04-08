@@ -1,6 +1,6 @@
 # captures search criteria and results
 # searched jobs are not persisted
-class JobSearch < ActiveRecord::Base
+class JobSearch < ApplicationRecord
   JOBSEARCH_DAYS     = { 'Last 24 hours' => 1,
                          'Last 7 days' => 7,
                          'Last 14 days' => 14,

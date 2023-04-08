@@ -1,6 +1,6 @@
 # user defined grant specific special services
 # applicant selects one or more
-class SpecialService < ActiveRecord::Base
+class SpecialService < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
   default_scope { order(:created_at) }

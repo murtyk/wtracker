@@ -1,5 +1,5 @@
 #
-class LeadsQueue < ActiveRecord::Base
+class LeadsQueue < ApplicationRecord
   enum status: [:inactive, :pending, :wip, :processed]
 
   scope :pending, -> { where(status: 1) }

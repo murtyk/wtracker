@@ -1,6 +1,6 @@
 # a city in usa.
 # part of a county and a state
-class City < ActiveRecord::Base
+class City < ApplicationRecord
   belongs_to :state
   belongs_to :county
   delegate :name, to: :county, prefix: true, allow_nil: true

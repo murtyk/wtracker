@@ -1,6 +1,6 @@
 # after a job is forwarded to a trainee, status can be tracked
 # has trainee viewed the job? applied? etc.
-class SharedJobStatus < ActiveRecord::Base
+class SharedJobStatus < ApplicationRecord
   STATUSES = { VIEWED: 1, APPLIED: 2, NOT_APPLIED: 3, NO_MATCH: 4 }
 
   default_scope { where(account_id: Account.current_id) }

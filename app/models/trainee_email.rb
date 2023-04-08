@@ -1,5 +1,5 @@
 # emails sent to trainees
-class TraineeEmail < ActiveRecord::Base
+class TraineeEmail < ApplicationRecord
   serialize :trainee_ids
   serialize :trainee_names
   default_scope { where(account_id: Account.current_id) }

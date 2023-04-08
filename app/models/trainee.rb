@@ -3,7 +3,7 @@
 # trainee can be assigned to any number of classes
 # status defines placement status and it is updated by TI
 # rubocop:disable Metrics/ClassLength
-class Trainee < ActiveRecord::Base
+class Trainee < ApplicationRecord
   LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }.freeze
   STATUSES = { 0 => 'Not Placed', 4 => 'Placed', 5 => 'OJT Enrolled' }.freeze
   include Encryption
@@ -28,9 +28,9 @@ class Trainee < ActiveRecord::Base
 
   devise :database_authenticatable, authentication_keys: [:login_id]
   devise :recoverable, :rememberable, :trackable
-  extend DeviseOverrides
+  extend ::DeviseOverrides
 
-  attr_encrypted :trainee_id, key: :encryption_key
+  attr_encrypted :trainee_id, key: :encryption_key #, v2_gcm_iv: proc { |t| t.decrypting?(:trainee_id) }
 
   validates :first, presence: true, length: { minimum: 2, maximum: 20 }
   validates :last,  presence: true, length: { minimum: 2, maximum: 20 }
@@ -38,6 +38,10 @@ class Trainee < ActiveRecord::Base
 
   validates_uniqueness_of :email, scope: :grant_id, allow_blank: true
   validates_uniqueness_of :login_id, allow_nil: true
+
+  def decrypting?(attribute)
+    encrypted_attributes[attribute][:operation] == :decrypting
+  end
 
   def active_for_authentication?
     # remember to call the super
@@ -153,7 +157,8 @@ class Trainee < ActiveRecord::Base
     if Rails.env.development? || Rails.env.test?
       begin
         self.trainee_id ||= ''
-      rescue StandardError
+      rescue StandardError => e
+        puts e.message
         self.trainee_id = ''
       end
     else

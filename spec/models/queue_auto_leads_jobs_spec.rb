@@ -14,10 +14,14 @@ describe QueueAutoLeadsJobs do
 
   let(:t5) { create(:trainee, status: 0) } # not placed
 
+  let(:city) { create(:city, name: 'Edison', state_code: 'NJ') }
+
   before :each do
     account = Account.find_by(subdomain: 'njit')
     Account.current_id = account.id
     Grant.current_id = Grant.first.id
+
+    allow(GeoServices).to receive(:findcity).and_return(city)
 
     t1
     jsp2

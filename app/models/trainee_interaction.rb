@@ -1,5 +1,5 @@
 # an employer hires a trainee or terminates employment
-class TraineeInteraction < ActiveRecord::Base
+class TraineeInteraction < ApplicationRecord
   STATUSES = { 4 => 'No OJT', 5 => 'OJT Enrolled', 6 => 'OJT Completed' }
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }

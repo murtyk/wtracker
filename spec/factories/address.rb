@@ -1,6 +1,6 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :address do |f|
     f.line1      { Faker::Address.street_address }
     f.city       { Faker::Address.city }

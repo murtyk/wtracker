@@ -1,5 +1,5 @@
 # captures one employer particiaption in one class event
-class KlassInteraction < ActiveRecord::Base
+class KlassInteraction < ApplicationRecord
   STATUSES = { 1 => 'Interested', 2 => 'Confirmed', 3 => 'Attended',
                4 => 'Cancelled', 5 => 'Rescheduling' }
 

@@ -1,5 +1,5 @@
 # s3 file name
-class TraineeFile < ActiveRecord::Base
+class TraineeFile < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :trainee

@@ -65,7 +65,7 @@ class KlassesController < ApplicationController
     @klass = Klass
              .includes(:klass_titles,
                        klass_trainees: { trainee: [:trainee_notes,
-                                                   hired_interaction: :employer] })
+                                                   { hired_interaction: :employer }] })
              .find(params[:id])
              .decorate
     authorize @klass

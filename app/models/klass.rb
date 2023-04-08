@@ -2,7 +2,7 @@
 # navigators and instructors get assigned to a call
 # class also has events and interactions with employers
 # and of course many trainees
-class Klass < ActiveRecord::Base
+class Klass < ApplicationRecord
   DEFAULT_EVENTS = ['Information Session', 'Prescreening', 'Class Visit',
                     'Site Visit', 'Graduation'].freeze
 
@@ -55,18 +55,18 @@ class Klass < ActiveRecord::Base
   delegate :name, :code, to: :klass_category, prefix: true, allow_nil: true
 
   def valid_year
-   if start_date.present?  
-     start_date_year = start_date.strftime("%Y").to_i 
+   if start_date.present?
+     start_date_year = start_date.strftime("%Y").to_i
      if start_date_year < 2000
        errors.add(:start_date, "Year can't be less than 2000")
      end
-   end  
+   end
    if end_date.present?
      end_date_year = end_date.strftime("%Y").to_i
      if end_date_year < 2000
        errors.add(:end_date, "Year can't be less than 2000")
      end
-   end  
+   end
   end
 
   def college_name_location
@@ -118,8 +118,8 @@ class Klass < ActiveRecord::Base
 
   def klass_instructors_sorted
     klass_instructors.includes(:user)
-      .where(users: { status: 1 })
-      .order('users.first, users.last')
+                     .where(users: { status: 1 })
+                     .order('users.first, users.last')
   end
 
   def klass_navigators_sorted

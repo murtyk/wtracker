@@ -1,6 +1,6 @@
 # email attachment which gets stored on s3
 # on delete, we should delete on s3 also
-class Attachment < ActiveRecord::Base
+class Attachment < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   before_destroy :cb_before_destroy
 

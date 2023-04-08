@@ -1,5 +1,5 @@
 # taacct 3 attributes for trainee
-class TactThree < ActiveRecord::Base
+class TactThree < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :trainee

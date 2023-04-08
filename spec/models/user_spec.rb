@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   before do
-    @user_attributes = FactoryGirl.attributes_for(:user)
-    @invalid_attributes = FactoryGirl.attributes_for(:user, email: '')
+    @user_attributes = FactoryBot.attributes_for(:user)
+    @invalid_attributes = FactoryBot.attributes_for(:user, email: '')
 
     Account.current_id = 1
     Grant.current_id = nil

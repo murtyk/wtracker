@@ -1,5 +1,5 @@
 # grant specific
-class ApplicantUnemploymentProof < ActiveRecord::Base
+class ApplicantUnemploymentProof < ApplicationRecord
   belongs_to :account
   belongs_to :grant
   belongs_to :unemployment_proof

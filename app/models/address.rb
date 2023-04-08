@@ -2,7 +2,7 @@
 # provides addressable interface.
 # Trainee, College and Employers can have addresses
 # geocodes address
-class Address < ActiveRecord::Base
+class Address < ApplicationRecord
   include ValidationsMixins
 
   default_scope { where(account_id: Account.current_id) }

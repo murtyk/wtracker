@@ -1,5 +1,5 @@
 # reference list of assessments of a class
-class Assessment < ActiveRecord::Base
+class Assessment < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
   default_scope { order(:name) }

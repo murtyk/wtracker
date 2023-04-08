@@ -2,7 +2,7 @@
 # account_id is default scope for all the models specific to an account
 # account_id is based on the subdomain
 # rubocop:disable ClassLength
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   TYPES     = { 1 => 'Grant Recipient', 2 => 'College' }.freeze
   STATUSES  = { 1 => 'Active', 2 => 'Not Active', 3 => 'Readonly' }.freeze
   TRACK_TRAINEE_OPTIONS = { 0 => 'Do not track status',

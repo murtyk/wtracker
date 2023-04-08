@@ -1,5 +1,5 @@
 # states in USA
-class State < ActiveRecord::Base
+class State < ApplicationRecord
   default_scope { order(:name) }
   has_many :counties, -> { order(:name) }
   has_many :cities

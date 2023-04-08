@@ -1,4 +1,4 @@
-WTracker::Application.routes.draw do
+Rails.application.routes.draw do
   resources :applicants, except: [:destroy] do
     collection do
       get :analysis

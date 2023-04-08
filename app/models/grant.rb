@@ -1,7 +1,7 @@
 # an account can have 1 or more grants
 # several programs in a grant
 # grant has end date after which it should become read only
-class Grant < ActiveRecord::Base
+class Grant < ApplicationRecord
   STATUSES = { 1 => 'Planning', 2 => 'Started', 3 => 'Closed' }.freeze
   OTHER_PLEASE_SPECIFY = 'Other, Please specify'.freeze
 

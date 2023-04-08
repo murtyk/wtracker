@@ -1,5 +1,5 @@
 # a navigator might be given admin level access(class creattion) for some grants
-class GrantAdmin < ActiveRecord::Base
+class GrantAdmin < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :account

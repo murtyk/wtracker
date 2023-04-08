@@ -1,5 +1,5 @@
 # user can be director, admin, navigator or instructor
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include UserRoleMixins
 
   STATUSES       = { 1 => 'Active', 2 => 'Not Active' }

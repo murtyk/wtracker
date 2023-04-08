@@ -1,6 +1,6 @@
 include UtilitiesHelper
 # this is mainly designed for grant where applicants can apply
-class TraineePlacement < ActiveRecord::Base
+class TraineePlacement < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   # ex: .where("info @> (? => ?)", :job_title, 'Analyst')

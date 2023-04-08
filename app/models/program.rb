@@ -1,6 +1,6 @@
 # a Grant or College account can have multiple programs
 # and many classes in a program
-class Program < ActiveRecord::Base
+class Program < ApplicationRecord
   KLASSES_ORDER = 'colleges.name, start_date desc, end_date desc'
 
   default_scope { where(account_id: Account.current_id) }

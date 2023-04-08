@@ -1,5 +1,5 @@
 # for grant with applicants. User has to define through settings menu
-class ApplicantSpecialService < ActiveRecord::Base
+class ApplicantSpecialService < ApplicationRecord
   belongs_to :account
   belongs_to :grant
   belongs_to :special_service

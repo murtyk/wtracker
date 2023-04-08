@@ -1,5 +1,5 @@
 # an employer can be in many sectors
-class EmployerSector < ActiveRecord::Base
+class EmployerSector < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :account

@@ -1,4 +1,4 @@
 # to capture applicant browser and location information
-class Agent < ActiveRecord::Base
+class Agent < ApplicationRecord
   belongs_to :identifiable, polymorphic: true
 end

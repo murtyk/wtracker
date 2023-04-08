@@ -29,13 +29,11 @@ class TraineeFilesController < ApplicationController
       notice = 'file was successfully saved.'
       if current_trainee
         redirect_to(portal_trainees_path, notice: notice)
-        return
       end
     else
       if current_trainee
         redirect_to(portal_trainees_path(error_message: @error_message),
                     alert: 'error saving file')
-        return
       end
     end
   end

@@ -1,5 +1,5 @@
 # notes on a trainee
-class TraineeNote < ActiveRecord::Base
+class TraineeNote < ApplicationRecord
   belongs_to :trainee
   validates :notes, presence: true, length: { minimum: 3 }
   def date_and_notes

@@ -1,5 +1,5 @@
 # a job sent to trainee by auto leads
-class AutoSharedJob < ActiveRecord::Base
+class AutoSharedJob < ApplicationRecord
   belongs_to :account
 
   def trainee

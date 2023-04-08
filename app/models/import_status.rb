@@ -2,7 +2,7 @@
 # should be subclassed for each model imported
 # used by importer
 # failed rows get captured in import_fails
-class ImportStatus < ActiveRecord::Base
+class ImportStatus < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   serialize :params
   serialize :data

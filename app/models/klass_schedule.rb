@@ -1,6 +1,6 @@
 # schedule of a class
 # class may be there only on some week days
-class KlassSchedule < ActiveRecord::Base
+class KlassSchedule < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   belongs_to :klass
 

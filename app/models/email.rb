@@ -1,7 +1,7 @@
 # email to employers
 # trianee documents can be attached
 # additional documents can be attached
-class Email < ActiveRecord::Base
+class Email < ApplicationRecord
   serialize :trainee_file_ids
   default_scope { where(account_id: Account.current_id) }
 

@@ -1,4 +1,4 @@
-class TraineeAutoLeadStatus < ActiveRecord::Base
+class TraineeAutoLeadStatus < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
 

@@ -6,22 +6,22 @@ describe Trainee do
     Grant.current_id = 1
   end
   it 'has a valid factory' do
-    expect(FactoryGirl.create(:trainee)).to be_valid
+    expect(FactoryBot.create(:trainee)).to be_valid
   end
   it 'is invalid without a first name' do
-    expect(FactoryGirl.build(:trainee, first: nil)).to_not be_valid
+    expect(FactoryBot.build(:trainee, first: nil)).to_not be_valid
   end
   it 'is invalid without a last name' do
-    expect(FactoryGirl.build(:trainee, last: nil)).to_not be_valid
+    expect(FactoryBot.build(:trainee, last: nil)).to_not be_valid
   end
 
   it "returns a trainee's full name as a string" do
-    trainee = FactoryGirl.create(:trainee, first: 'John', last: 'Doe')
+    trainee = FactoryBot.create(:trainee, first: 'John', last: 'Doe')
     expect(trainee.name).to eq('John Doe')
   end
 
   describe "when email bounced" do
-    let(:trainee) { FactoryGirl.create(:trainee, bounced: true) }
+    let(:trainee) { FactoryBot.create(:trainee, bounced: true) }
     it "valid_email? returns false" do
       expect(trainee.valid_email?).not_to be_truthy
     end
