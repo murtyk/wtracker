@@ -435,6 +435,8 @@ GEM
     rspec-retry (0.6.2)
       rspec-core (> 3.3)
     rspec-support (3.5.0)
+    rspec_junit_formatter (0.6.0)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubocop (1.28.2)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -587,6 +589,7 @@ DEPENDENCIES
   roo (= 1.13.2)
   rspec-rails (= 3.5.2)
   rspec-retry
+  rspec_junit_formatter
   rubocop
   rubyzip (= 1.0.0)
   sass-rails (~> 5.0)
