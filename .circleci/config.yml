@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
-  ruby: circleci/ruby@1.1.0commands: # a reusable command with parameters
+  ruby: circleci/ruby@1.1.0
+commands: # a reusable command with parameters
   greeting:
     parameters:
       to:
@@ -8,6 +9,7 @@ orbs:
         type: string
     steps:
       - run: echo "Hello <<parameters.to>>"
+
 jobs:
   build:
     docker:
@@ -26,7 +28,9 @@ jobs:
       - checkout
       - ruby/install-deps
       # Run rspec in parallel
-      - ruby/rspec-testworkflows:
+      - ruby/rspec-test
+
+workflows:
   version: 2
   build_and_test:
     jobs:
