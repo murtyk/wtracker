@@ -15,22 +15,45 @@ Capybara.server do |app, port|
 end
 Capybara.save_path = ENV['CAPYBARA_PAGE_PATH'] || 'public/tmp'
 
-JS_DRIVER = :selenium_chrome_headless
+Capybara.register_driver :chrome_headless do |app|
+  options = ::Selenium::WebDriver::Chrome::Options.new
+
+  options.add_argument('--headless')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--disable-gpu')
+  options.add_argument('--disable-dev-shm-usage')
+  options.add_argument('--window-size=1366,720')
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
 Capybara.default_driver = :rack_test
-Capybara.javascript_driver = JS_DRIVER
+Capybara.javascript_driver = :chrome_headless
+
 Capybara.default_max_wait_time = 2
 
 RSpec.configure do |config|
-  config.before(:each) do |example|
-    Capybara.current_driver = JS_DRIVER if example.metadata[:js]
-    Capybara.current_driver = :selenium if example.metadata[:selenium]
-    Capybara.current_driver = :selenium_chrome if example.metadata[:selenium_chrome]
+  config.before(:each, type: :system) do
+    driven_by :rack_test
   end
 
-  config.after(:each) do
-    Capybara.use_default_driver
+  config.before(:each, type: :feature, js: true) do
+    driven_by :chrome_headless
   end
 end
+
+
+# RSpec.configure do |config|
+#   config.before(:each) do |example|
+#     Capybara.current_driver = :chrome_headless if example.metadata[:js]
+#     Capybara.current_driver = :selenium if example.metadata[:selenium]
+#     Capybara.current_driver = :selenium_chrome if example.metadata[:selenium_chrome]
+#   end
+
+#   config.after(:each) do
+#     Capybara.use_default_driver
+#   end
+# end
 
 def wait_for_ajax
   counter = 0

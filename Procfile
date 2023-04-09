@@ -1,4 +1,2 @@
-web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
+web: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}
 worker1:  QUEUE=online bundle exec rake jobs:work
-worker2:  QUEUE=daily bundle exec rake jobs:work
-
