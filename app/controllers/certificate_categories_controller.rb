@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CertificateCategoriesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def index
     @certificate_categories = CertificateCategory.all

@@ -3,7 +3,7 @@
 # searches jobs and analyzes
 # REFACTOR: It has too many custom routes
 class JobSearchesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # perhaps this should be on States routes
   def valid_state

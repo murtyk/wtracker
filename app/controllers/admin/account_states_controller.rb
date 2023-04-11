@@ -3,7 +3,7 @@
 class Admin
   # for opero admin to manage states assigned to an account
   class AccountStatesController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     # GET /account_states/new.js
     def new

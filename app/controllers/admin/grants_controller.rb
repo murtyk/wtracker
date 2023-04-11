@@ -4,7 +4,7 @@
 class Admin
   # Opero administrator maintains grant
   class GrantsController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     def new
       @grant = GrantFactory.new_grant(params[:account_id])

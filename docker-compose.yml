@@ -25,7 +25,7 @@ services:
     environment:
       - PG_HOST=db
     build: .
-    command: rails s -b 0.0.0.0
+    command: bundle exec rails s -b 0.0.0.0
     volumes:
       - .:/wtracker
     ports:

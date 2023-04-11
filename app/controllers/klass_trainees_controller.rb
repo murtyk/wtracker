@@ -4,7 +4,7 @@
 # class can be added on trainee page
 # multiple trainees can be added through near by colleges page
 class KlassTraineesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def ojt_enrolled
     kt = KlassTrainee.find(params[:id])

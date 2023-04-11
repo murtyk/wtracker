@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UiVerifiedNotesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /ui_verified_notes/new
   # GET /ui_verified_notes/new.json

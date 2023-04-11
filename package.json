@@ -9,7 +9,7 @@
     "?docker-ssh": "ssh into docker",
     "docker-ssh": "docker-compose run web /bin/bash",
     "?console": "runs web server",
-    "console": "docker-compose run web rails c",
+    "console": "docker-compose run web bundle exec rails c",
     "?dev": "runs web server",
     "dev": "docker-compose up"
   }

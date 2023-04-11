@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TraineeFilesController < ApplicationController
-  before_filter :authenticate_user!, only: [:destroy]
+  before_action :authenticate_user!, only: [:destroy]
   before_action :authenticate, only: %i[show new create]
 
   # GET /trainee_files/1

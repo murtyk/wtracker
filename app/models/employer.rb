@@ -36,7 +36,7 @@ class Employer < ApplicationRecord
   has_many :contacts, as: :contactable, dependent: :destroy
   has_many :klass_interactions, dependent: :destroy
   has_many :klass_events, through: :klass_interactions
-  has_many :klasses, -> { uniq }, through: :klass_events
+  has_many :klasses, -> { distinct }, through: :klass_events
 
   has_many :trainee_interactions, dependent: :destroy
   has_many :trainees, through: :trainee_interactions
@@ -47,7 +47,7 @@ class Employer < ApplicationRecord
 
   has_many :hot_jobs, dependent: :destroy
 
-  has_many :apprentices, class_name: Trainee
+  has_many :apprentices, class_name: 'Trainee'
 
   def formatted_address
     address ? address.gmaps4rails_address : ''

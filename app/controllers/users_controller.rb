@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def online
     @users = current_user.online_users

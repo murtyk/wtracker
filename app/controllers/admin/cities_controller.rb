@@ -3,7 +3,7 @@
 class Admin
   # for admin to search for a city or get it added
   class CitiesController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     def show
       @city = City.find(params[:id])

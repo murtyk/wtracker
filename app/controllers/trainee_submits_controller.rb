@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TraineeSubmitsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /trainee_submits/new
   # GET /trainee_submits/new.json

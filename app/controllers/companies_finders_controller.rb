@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CompaniesFindersController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   def new; end
 
   def create

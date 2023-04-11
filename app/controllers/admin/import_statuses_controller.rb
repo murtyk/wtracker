@@ -3,7 +3,7 @@
 class Admin
   # for opero admin to view and clean up the imports done by users
   class ImportStatusesController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     def new
       resource = params[:resource]

@@ -4,7 +4,7 @@
 # Some Klass events are created by default when a class is created
 # trainees are assigned to a class
 class KlassesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def events
     @klass = Klass.find(params[:id])

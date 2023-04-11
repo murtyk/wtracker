@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class KlassCertificatesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /klass_certificates/new
   # GET /klass_certificates/new.json

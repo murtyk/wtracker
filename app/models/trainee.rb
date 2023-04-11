@@ -32,7 +32,7 @@ class Trainee < ApplicationRecord
   devise :recoverable, :rememberable, :trackable
   extend ::DeviseOverrides
 
-  attr_encrypted :trainee_id, key: :encryption_key # , v2_gcm_iv: proc { |t| t.decrypting?(:trainee_id) }
+  attr_encrypted :trainee_id, key: :encryption_key, algorithm: 'aes-256-cbc', mode: :single_iv_and_salt, insecure_mode: true
 
   validates :first, presence: true, length: { minimum: 2, maximum: 20 }
   validates :last,  presence: true, length: { minimum: 2, maximum: 20 }
@@ -145,7 +145,7 @@ class Trainee < ApplicationRecord
   end
 
   def init
-    init_trainee_id
+    # init_trainee_id
 
     if new_record? && !(grant && grant.trainee_applications?)
       self.password              ||= 'password'

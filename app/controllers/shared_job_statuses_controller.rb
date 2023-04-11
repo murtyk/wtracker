@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class SharedJobStatusesController < ApplicationController
-  before_filter :authenticate_user!, only: %i[index enquire]
-  before_filter :init_current_grant, only: %i[show clicked update]
+  before_action :authenticate_user!, only: %i[index enquire]
+  before_action :init_current_grant, only: %i[show clicked update]
 
   def index
     @shared_job_statuses = SharedJobStatus.search(params[:filters])

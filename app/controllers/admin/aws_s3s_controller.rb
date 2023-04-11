@@ -3,7 +3,7 @@
 class Admin
   # for opero admin to view and clean s3 trash
   class AwsS3sController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     def show; end
 

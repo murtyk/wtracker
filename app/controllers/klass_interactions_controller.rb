@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class KlassInteractionsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /klass_interactions/new
   # GET /klass_interactions/new.json

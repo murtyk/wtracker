@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AdminsController < ApplicationController
-  before_filter :authenticate_admin!
+  before_action :authenticate_admin!
 
   def observe
     sign_in(:user, User.find(params[:id]), { bypass: true })

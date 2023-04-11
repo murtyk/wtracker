@@ -44,7 +44,7 @@
   <div class="form-actions">
     <%= ajax_cancel_and_submit_buttons(f) %>
   </div>
-  <%= ajax_form_cancel_script(klass_trainee) %>
+  <%= ajax_form_cancel_script(klass_trainee).html_safe %>
 
   <%=
     if js_asset_exists?("#{controller_name}/#{action_name}.js")

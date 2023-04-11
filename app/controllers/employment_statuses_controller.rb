@@ -3,7 +3,7 @@
 # this setting is available for grants where applicants can apply
 # an applicant might be accepted or declined based on employment status
 class EmploymentStatusesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /employment_statuses
   # GET /employment_statuses.json

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CollegesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   # GET /colleges
   def index
     @colleges_map = CollegesMap.new

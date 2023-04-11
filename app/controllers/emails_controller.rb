@@ -3,7 +3,7 @@
 require 'open-uri'
 
 class EmailsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def index
     emails = Email.includes(:user) if current_user.admin_access?

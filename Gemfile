@@ -15,9 +15,9 @@ gem 'mongo'
 gem 'mongoid'
 gem 'pg', '~> 0.20'
 gem 'puma', '~> 5.0'
-gem 'rails', '~> 5.0.2'
+gem 'rails', github: 'rails/rails', branch: '5-2-stable'
 
-gem 'attr_encrypted', '1.3.5'
+gem 'attr_encrypted'
 gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-ses', '~> 1'
 gem 'devise', '~> 4.4.0'
@@ -29,8 +29,8 @@ gem 'httparty'
 gem 'mechanize', '2.7.5'
 gem 'rest-client', '2.0.2'
 gem 'roo', '1.13.2'
-gem 'rubyzip', '1.0.0'
-gem 'simple_form', '3.4.0'
+gem 'rubyzip'
+gem 'simple_form'
 gem 'zip-zip'
 
 gem 'fuzzy-string-match_pure', '0.9.5'
@@ -40,7 +40,7 @@ gem 'will_paginate', '3.1.5'
 
 gem 'clockwork'
 gem 'dalli', '2.6.4'
-gem 'delayed_job_active_record', '4.1.2'
+gem 'delayed_job_active_record'
 gem 'humanizer'
 gem 'icalendar', '1.4.3'
 gem 'memcachier', '0.0.2'
@@ -66,8 +66,8 @@ group :development, :test do
 
   # rspec-rails is required here to get the mailer previews work
   gem 'rails-controller-testing'
-  gem 'rspec-rails', '3.5.2'
-  gem 'shoulda-matchers', '4.5.1'
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
 end
 
 group :development do
@@ -115,7 +115,7 @@ gem 'jquery.fileupload-rails'
 gem 'jquery-rails', '4.3.1'
 gem 'parallel_tests', group: :development
 
-gem 'axlsx', '2.0.1'
+gem 'axlsx'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby'

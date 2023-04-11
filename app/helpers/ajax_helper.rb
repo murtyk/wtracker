@@ -75,7 +75,7 @@ module AjaxHelper
 
   def ajax_cancel_and_submit_buttons(f, submit_label = nil)
     cancel_button = ajax_form_cancel_button(f.object)
-    "#{cancel_button} #{submit_button(f, submit_label)}"
+    "#{cancel_button} #{submit_button(f, submit_label)}".html_safe
   end
 
   def button_new_association(resource, **params_hash)

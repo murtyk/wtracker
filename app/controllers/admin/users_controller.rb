@@ -3,7 +3,7 @@
 class Admin
   # For admin to view all users
   class UsersController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     def index
       init_filters
