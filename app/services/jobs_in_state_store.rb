@@ -9,7 +9,7 @@ class JobsInStateStore
   field :s_c, as: :state_code, type: String
   field :f, as: :searched, type: Boolean
 
-  has_many :mongo_jobs, dependent: :delete
+  has_many :mongo_jobs, dependent: :destroy
 
   def jobs(page, page_size = 25)
     mongo_jobs[(page - 1) * page_size..(page_size * page) - 1]
