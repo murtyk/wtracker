@@ -78,7 +78,7 @@ GEM
     attr_encrypted (3.1.0)
       encryptor (~> 3.0.0)
     aws-eventstream (1.2.0)
-    aws-partitions (1.744.0)
+    aws-partitions (1.745.0)
     aws-sdk-core (3.171.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -382,10 +382,6 @@ GEM
       rack (>= 1.2.0)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rails-controller-testing (1.0.5)
-      actionpack (>= 5.0.1.rc1)
-      actionview (>= 5.0.1.rc1)
-      activesupport (>= 5.0.1.rc1)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -591,7 +587,6 @@ DEPENDENCIES
   pundit (= 1.1.0)
   rack-mini-profiler
   rails!
-  rails-controller-testing
   ransack
   rest-client (= 2.0.2)
   roo (= 1.13.2)
