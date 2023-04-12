@@ -276,12 +276,12 @@ Rails.application.routes.draw do
   root to: 'dashboards#starting_page'
 
   # Api definition
-  namespace :api, defaults: { format: :json },
-                  constraints: { subdomain: 'operoapi' }, path: '/' do
-    scope module: :v1,
-          constraints: ApiConstraints.new(version: 1, default: true) do
-      resources :sessions, only: %i[create destroy]
-      resources :leads_queues, only: %i[show update]
-    end
-  end
+  # namespace :api, defaults: { format: :json },
+  #                 constraints: { subdomain: 'operoapi' }, path: '/' do
+  #   scope module: :v1,
+  #         constraints: ApiConstraints.new(version: 1, default: true) do
+  #     resources :sessions, only: %i[create destroy]
+  #     resources :leads_queues, only: %i[show update]
+  #   end
+  # end
 end

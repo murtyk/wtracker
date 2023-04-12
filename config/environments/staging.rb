@@ -98,4 +98,6 @@ WTracker::Application.configure do
   config.consider_all_requests_local = ENV['CONSIDER_REQUESTS_LOCAL']
 
   config.x.mail_from = %(Info<info@operoinc.com>)
+
+  config.hosts.clear
 end

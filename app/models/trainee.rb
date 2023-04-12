@@ -5,6 +5,8 @@
 # trainee can be assigned to any number of classes
 # status defines placement status and it is updated by TI
 # rubocop:disable Metrics/ClassLength
+require './lib/devise_overrides'
+
 class Trainee < ApplicationRecord
   LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }.freeze
   STATUSES = { 0 => 'Not Placed', 4 => 'Placed', 5 => 'OJT Enrolled' }.freeze

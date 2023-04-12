@@ -28,8 +28,11 @@ class Amazon
     end
 
     def file_url(aws_file_name, secure: false)
-      o = bucket.objects[aws_file_name]
+      o = s3.client.get_object(bucket: aws_bucket, key: aws_file_name)
       o.url_for(:read, secure: secure)
+    rescue StandardError => e
+      Rails.logger.error "AWS file_url failed for #{aws_bucket}/#{aws_file_name} #{e}"
+      nil
     end
 
     def bucket
