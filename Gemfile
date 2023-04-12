@@ -65,7 +65,6 @@ group :development, :test do
   gem 'rubocop', require: false
 
   # rspec-rails is required here to get the mailer previews work
-  gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
 end
