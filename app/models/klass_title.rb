@@ -32,10 +32,14 @@ class KlassTitle < ApplicationRecord
   end
 
   def create_job_search(count)
-    self.job_search = JobSearch.create(
+    js = JobSearch.new(
       klass_title_id: id, keywords: title,
       location: "#{city},#{state}",
       distance: 25, days: 30, count: count
     )
+
+    js.save
+
+    self.job_search = js
   end
 end

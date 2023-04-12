@@ -20,6 +20,8 @@ module CacheHelper
 
   def read_cache(key)
     Rails.cache.read(key)
+  rescue StandardError => e
+    Rails.logger.error "Error reading cache: #{e.message}"
   end
 
   def write_cache(key, data, expires_in)

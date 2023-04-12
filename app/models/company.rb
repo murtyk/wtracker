@@ -138,7 +138,10 @@ class Company
   end
 
   def name_location_formatted
-    "#{poster_name}::#{poster_location}".gsub!(',', '---')
+    [
+      poster_name.gsub(',', '---').squish,
+      poster_location.gsub(',', '---').squish,
+    ].join('::')
   end
 
   def poster_name_location_id

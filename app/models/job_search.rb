@@ -14,9 +14,9 @@ class JobSearch < ApplicationRecord
 
   default_scope { where(account_id: Account.current_id) }
 
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :account
-  belongs_to :klass_title
+  belongs_to :klass_title, optional: true
 
   attr_accessor :college_id
   attr_reader :analyzer, :jobs, :jobs_count, :page, :pages

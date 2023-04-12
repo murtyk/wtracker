@@ -1,4 +1,4 @@
-FROM ruby:2.5.9
+FROM ruby:2.7.8
 RUN apt-get update -qq && apt-get install -y --force-yes nodejs
 RUN apt install -y --force-yes  nodejs npm
 
