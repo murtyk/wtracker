@@ -35,8 +35,8 @@ gem 'zip-zip'
 
 gem 'fuzzy-string-match_pure', '0.9.5'
 
-gem 'bootstrap-will_paginate', '0.0.6'
-gem 'will_paginate', '3.1.5'
+gem 'bootstrap-will_paginate'
+gem 'will_paginate'
 
 gem 'clockwork'
 gem 'dalli', '2.6.4'

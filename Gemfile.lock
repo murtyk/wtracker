@@ -108,7 +108,7 @@ GEM
       railties (>= 3.0)
     bootstrap-sass (2.3.0.1)
       sass (~> 3.2)
-    bootstrap-will_paginate (0.0.6)
+    bootstrap-will_paginate (1.0.0)
       will_paginate
     bson (4.15.0)
     bson_ext (1.5.1)
@@ -529,7 +529,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    will_paginate (3.1.5)
+    will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zip-zip (0.3)
@@ -546,7 +546,7 @@ DEPENDENCIES
   bcrypt-ruby
   bootstrap-datepicker-rails (= 1.1.1.6)
   bootstrap-sass (~> 2.3.0.0)
-  bootstrap-will_paginate (= 0.0.6)
+  bootstrap-will_paginate
   bson_ext
   byebug
   capybara
@@ -607,7 +607,7 @@ DEPENDENCIES
   vcr
   web-console (>= 3.3.0)
   webmock
-  will_paginate (= 3.1.5)
+  will_paginate
   zip-zip
 
 RUBY VERSION

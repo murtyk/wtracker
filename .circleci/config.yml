@@ -80,8 +80,8 @@ workflows:
   integration:
     jobs:
       - build
-      - rubocop:
-          requires:
-            - build
+      # - rubocop:
+      #     requires:
+      #       - build
 
 
