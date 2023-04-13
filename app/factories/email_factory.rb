@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # factory for sending bulk emails to trainees and employers
 class EmailFactory
   def self.create_trainee_email(params, current_user)
@@ -90,15 +92,13 @@ class EmailFactory
     attachments = {}
     attachments = trainee_file_attachments(trainee_file_ids) if trainee_file_ids
 
-    if file_attachments
-      file_attachments.each do |_key, attached_file|
-        name = attached_file.original_filename
-        s3file = Amazon.store_file(attached_file, 'attachments')
-        email.attachments.new(name: name, file: s3file)
-        url = Amazon.file_url(s3file)
+    file_attachments&.each do |_key, attached_file|
+      name = attached_file.original_filename
+      s3file = Amazon.store_file(attached_file, 'attachments')
+      email.attachments.new(name: name, file: s3file)
+      url = Amazon.file_url(s3file)
 
-        attachments[unique_name(attachments, name)] = open(url).read
-      end
+      attachments[unique_name(attachments, name)] = open(url).read
     end
     attachments
   end
@@ -119,7 +119,7 @@ class EmailFactory
     counter = 0
     while attachments[uname]
       counter += 1
-      uname = name + '-' + counter.to_s
+      uname = "#{name}-#{counter}"
     end
     uname
   end

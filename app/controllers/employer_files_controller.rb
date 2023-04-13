@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmployerFilesController < ApplicationController
   before_action :authenticate_user!
 
@@ -51,6 +53,6 @@ class EmployerFilesController < ApplicationController
   private
 
   def employer_file_params
-    params.require(:employer_file).permit(:employer_id, :file, :notice)
+    params.require(:employer_file).permit(:employer_id, :file, :notes)
   end
 end

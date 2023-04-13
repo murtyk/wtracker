@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # For applicants search.
 module ApplicantsHelper
   def applicant_counties_for_selection
@@ -18,13 +20,13 @@ module ApplicantsHelper
 
   def applicant_county_counts
     Applicant.joins(county: :state)
-      .group('counties.id', 'counties.name', 'states.code')
-      .count
+             .group('counties.id', 'counties.name', 'states.code')
+             .count
   end
 
   def applicant_sector_counts
     Applicant.joins(:sector)
-      .group('sectors.id', 'sectors.name')
-      .count
+             .group('sectors.id', 'sectors.name')
+             .count
   end
 end

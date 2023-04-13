@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'faker'
-FactoryGirl.define do
+FactoryBot.define do
   factory :employer do |f|
     f.name { Faker::Company.name }
   end

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # stores the status information for data imported from a file
 # should be subclassed for each model imported
 # used by importer
 # failed rows get captured in import_fails
-class ImportStatus < ActiveRecord::Base
+class ImportStatus < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   serialize :params
   serialize :data
@@ -17,7 +19,7 @@ class ImportStatus < ActiveRecord::Base
   before_destroy :delete_aws_file
 
   def user_name
-    return "no user id" unless user_id
+    return 'no user id' unless user_id
 
     u = User.unscoped.where(id: user_id).first
     return "no user found for id: #{user_id}" unless u
@@ -46,8 +48,8 @@ class ImportStatus < ActiveRecord::Base
     accounts = Account.all
     accounts.each do |account|
       statuses = ImportStatus.unscoped.includes(:user)
-                 .where(account_id: account.id)
-                 .order(created_at: :desc)
+                             .where(account_id: account.id)
+                             .order(created_at: :desc)
       account_import_statuses << [account, statuses] unless statuses.empty?
     end
     account_import_statuses
@@ -58,9 +60,9 @@ class ImportStatus < ActiveRecord::Base
   def delete_aws_file
     Amazon.delete_file(aws_file_name) if aws_file_name
     true
-  rescue => error
+  rescue StandardError => e
     logger.error "aws file, #{aws_file_name}, does not exist for delete," \
-                 " will ignore: #{error}"
-    return true
+                 " will ignore: #{e}"
+    true
   end
 end

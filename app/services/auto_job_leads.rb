@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # when a grant is set for auto job leads,
 #   the trainees in that grant get job leads daily
 # first check if trainee has updates job search profile. If not send an email
@@ -16,6 +18,7 @@ class AutoJobLeads
 
   def perform
     return if skip_lead_generation?
+
     log_info 'AutoJobLeads: performing'
 
     log_info 'AutoJobLeads: creating missing job search profiles'
@@ -112,9 +115,9 @@ class AutoJobLeads
     @grant_leads_count += leads_sent_count
     @trainee_job_leads << [trainee, leads_sent_count]
     sleep((1 + rand * 10).round)
-  rescue StandardError => error
+  rescue StandardError => e
     msg = "AutoJobLeads: Trainee #{trainee.name} " \
-          "ID: #{trainee.id} EXCEPTION: #{error}\n" + error.backtrace.join("\n")
+          "ID: #{trainee.id} EXCEPTION: #{e}\n" + e.backtrace.join("\n")
     Rails.logger.error msg
   end
 
@@ -132,6 +135,7 @@ class AutoJobLeads
     return :INCOMPLETE if trainee.job_search_profile
 
     return :SOLICIT_PROFILE if can_solicit_profile?(trainee.grant)
+
     nil
   end
 
@@ -188,9 +192,7 @@ class AutoJobLeads
       end
     end
 
-    if leads_to_be_sent.any?
-      AutoMailer.send_job_leads(leads_to_be_sent).deliver_now
-    end
+    AutoMailer.send_job_leads(leads_to_be_sent).deliver_now if leads_to_be_sent.any?
 
     leads_to_be_sent.count
   end
@@ -243,17 +245,19 @@ class AutoJobLeads
     attempts = 1
     3.times do
       count = search_by_city_zip(sp_by_city, sp_by_zip)
-      if count > 0 && attempts > 1
+      if count.positive? && attempts > 1
         log_info "AutoJobLeads: JSP id = #{jsp.id} attempts = #{attempts}"
       end
-      break if count > 0
+      break if count.positive?
+
       attempts += 1
     end
   end
 
   def search_by_city_zip(by_city, by_zip)
     count = job_board.search_jobs(by_city)
-    return count if count > 0
+    return count if count.positive?
+
     job_board.search_jobs(by_zip)
   end
 

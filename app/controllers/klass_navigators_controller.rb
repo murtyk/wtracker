@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class KlassNavigatorsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def new
     @klass = Klass.find(params[:klass_id])
@@ -36,6 +38,6 @@ class KlassNavigatorsController < ApplicationController
 
   def klass_navigator_params
     params.require(:klass_navigator)
-      .permit(:user_id, :klass_id)
+          .permit(:user_id, :klass_id)
   end
 end

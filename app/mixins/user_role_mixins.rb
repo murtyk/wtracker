@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # role related methods for user model
 module UserRoleMixins
-  ROLES = { 1 => 'Director', 2 => 'Admin', 3 => 'Navigator', 4 => 'Instructor' }
+  ROLES = { 1 => 'Director', 2 => 'Admin', 3 => 'Navigator', 4 => 'Instructor' }.freeze
 
   def admin_or_director?
     admin? || director?
@@ -38,6 +40,7 @@ module UserRoleMixins
 
   def grant_names
     return nil unless navigator?
+
     grants.map(&:name).join('<br>').html_safe
   end
 
@@ -50,15 +53,16 @@ module UserRoleMixins
         update_without_password params
         change_klass_roles(prev_role, new_role)
       end
-      return true
-    rescue # StandardError => e
-      return false
+      true
+    rescue StandardError # StandardError => e
+      false
     end
   end
 
   def change_klass_roles(prev_role, new_role)
     # find classes accross the grants
     return unless prev_role != new_role && [3, 4].include?(prev_role)
+
     klass_ids = klasses.map(&:id)
     klass_instructors.destroy_all
     klass_navigators.destroy_all
@@ -67,13 +71,11 @@ module UserRoleMixins
   end
 
   def trainees_for_search(q_params)
-    trainees = Trainee #.not_disabled
-    if navigator_through_klasses?
-      if q_params.nil? || q_params['klasses_id_eq'].blank?
-        klass_ids = klasses.pluck(:id)
-        trainee_ids = KlassTrainee.where(klass_id: klass_ids).pluck(:trainee_id)
-        return trainees.where(id: trainee_ids)
-      end
+    trainees = Trainee # .not_disabled
+    if navigator_through_klasses? && (q_params.nil? || q_params['klasses_id_eq'].blank?)
+      klass_ids = klasses.pluck(:id)
+      trainee_ids = KlassTrainee.where(klass_id: klass_ids).pluck(:trainee_id)
+      return trainees.where(id: trainee_ids)
     end
     trainees
   end

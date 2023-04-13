@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class CreateJobShares < ActiveRecord::Migration
   def change
     create_table :job_shares do |t|
-      t.references :account,  :null => false
+      t.references :account, null: false
       t.string :title
       t.string :company
       t.string :date_posted

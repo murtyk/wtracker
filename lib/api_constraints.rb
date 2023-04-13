@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # used in routes for api
 # api client has to set proper headers
 class ApiConstraints

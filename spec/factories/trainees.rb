@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'faker'
-FactoryGirl.define do
+FactoryBot.define do
   factory :trainee do |f|
     f.first { Faker::Name.first_name }
     f.last { Faker::Name.last_name }

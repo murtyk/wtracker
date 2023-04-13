@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # helper for menu bar
 module MenusHelper
   def profile_menu
@@ -36,6 +38,7 @@ module MenusHelper
 
   def dashboard_menu
     return unless current_user.admin_access?
+
     menu_link('Dashboard', dashboards_path)
   end
 
@@ -45,11 +48,12 @@ module MenusHelper
 
   def grants_menu
     return grants_grants_menu unless grants_dropdown_menu?
-    if current_user.admin_access?
-      items = grants_list_menu + grant_context_change_menu
-    else
-      items = grant_context_change_menu
-    end
+
+    items = if current_user.admin_access?
+              grants_list_menu + grant_context_change_menu
+            else
+              grant_context_change_menu
+            end
     build_dropdown_menu('Grants', items)
   end
 
@@ -60,6 +64,7 @@ module MenusHelper
 
   def grants_grants_menu
     return unless current_account.grant_recipient?
+
     policy(Grant).index? ? menu_link('Grants', grants_path) : nil
   end
 
@@ -73,6 +78,7 @@ module MenusHelper
 
   def settings_menu
     return unless settings_menu?
+
     build_dropdown_menu('Settings', settings_menu_items)
   end
 
@@ -93,6 +99,7 @@ module MenusHelper
 
   def applicant_sources_menu
     return '' unless ta_settings_menu?
+
     menu_link('Applicant Source', applicant_sources_path)
   end
 
@@ -118,6 +125,7 @@ module MenusHelper
 
   def trainee_password_message_menu
     return '' unless ta_settings_menu?
+
     menu_link('Trainee Password Email Messages', password_message_grants_path)
   end
 
@@ -127,6 +135,7 @@ module MenusHelper
 
   def notify_hot_jobs_message_menu
     return '' unless ta_settings_menu?
+
     menu_link('Hot Jobs Notification Messages', hot_jobs_notify_message_grants_path)
   end
 
@@ -161,11 +170,13 @@ module MenusHelper
 
   def klasses_import_menu
     return unless policy(Klass).create?
+
     menu_link('Import from a file', new_import_status_path(resource: 'klasses'))
   end
 
   def applicants_menu
     return unless current_grant.trainee_applications?
+
     items = applicants_menu_items
     build_dropdown_menu('Applicants', items)
   end
@@ -173,6 +184,7 @@ module MenusHelper
   def applicants_menu_items
     items = applicants_search_menu + applicants_analysis_menu
     return items unless current_user.director?
+
     items + divider_menu + applicants_change_navigator
   end
 
@@ -208,6 +220,7 @@ module MenusHelper
       menu = divider_menu + trainees_add_menu + trainees_import_menu
     end
     return menu unless policy(Trainee).import_updates?
+
     menu.html_safe +
       trainee_import_updates_menu +
       trainee_import_ui_claim_verified_on_menu
@@ -215,6 +228,7 @@ module MenusHelper
 
   def trainees_mapview_menu_items
     return unless policy(Trainee).mapview?
+
     divider_menu + trainees_map_view_menu + trainees_near_by_colleges_menu
   end
 
@@ -224,6 +238,7 @@ module MenusHelper
 
   def trainee_auto_leads_items
     return unless current_grant.auto_job_leads?
+
     items = divider_menu +
             trainees_search_by_skills_menu
     # return items unless trainee_applications?
@@ -240,6 +255,7 @@ module MenusHelper
 
   def trainees_advanced_search_menu
     return if current_user.instructor?
+
     menu_link('Advanced Search', advanced_search_trainees_path)
   end
 
@@ -249,6 +265,7 @@ module MenusHelper
 
   def trainees_import_menu
     return unless policy(Trainee).import?
+
     menu_link('Import from a file', new_import_status_path(resource: 'trainees'))
   end
 
@@ -268,6 +285,7 @@ module MenusHelper
 
   def trainees_near_by_colleges_menu
     return unless trainee_applications?
+
     menu_link('Near By Colleges', near_by_colleges_trainees_path)
   end
 
@@ -281,6 +299,7 @@ module MenusHelper
 
   def employers_menu
     return unless policy(Employer).index?
+
     items = employers_search_menu_items + employers_create_menu_items
     items += [
       divider_menu,
@@ -289,7 +308,8 @@ module MenusHelper
       divider_menu,
       employers_klass_interaction_menu,
       employers_send_email_menu,
-      employers_sent_emails_menu]
+      employers_sent_emails_menu
+    ]
 
     build_dropdown_menu('Employers', items.join)
   end
@@ -300,6 +320,7 @@ module MenusHelper
 
   def employers_create_menu_items
     return unless policy(Employer).create?
+
     [divider_menu, employers_add_menu, employers_import_menu]
   end
 
@@ -309,16 +330,19 @@ module MenusHelper
 
   def employers_add_menu
     return unless policy(Employer).create?
+
     menu_link('Add', new_employer_path)
   end
 
   def employers_import_menu
     return unless policy(Employer).import?
+
     menu_link('Import from a file', new_import_status_path(resource: 'employers'))
   end
 
   def companies_search_menu
     return unless current_user.admin_access? && policy(Employer).create?
+
     menu_link('Search for Companies in a File', new_companies_finder_path)
   end
 
@@ -332,6 +356,7 @@ module MenusHelper
 
   def google_companies_menu
     return if Rails.env.production?
+
     menu_link('Search Google', google_companies_path)
   end
 
@@ -349,6 +374,7 @@ module MenusHelper
 
   def reports_menu
     return unless policy(Report).new?
+
     (
       '<li class="dropdown">' \
       '<a class="dropdown-toggle" data-toggle="dropdown" href="#">' \
@@ -367,7 +393,7 @@ module MenusHelper
       '<li class="dropdown-submenu">' \
         '<a tabindex="-1" href="#">' + type + '</a>' \
         '<ul class="dropdown-menu">' +
-        reports.map { |report| '<li>' + report_link(report) + '</li>' }.join +
+        reports.map { |report| "<li>#{report_link(report)}</li>" }.join +
         '</ul>' \
         '</li>'
     end.join('')
@@ -375,8 +401,9 @@ module MenusHelper
 
   def jobs_menu
     return unless policy(JobSearch).new?
+
     items = search_jobs_menu + shared_jobs_list_menu + job_leads_status_menu
-            # + divider_menu + hot_jobs_menu
+    # + divider_menu + hot_jobs_menu
     build_dropdown_menu('Jobs', items)
   end
 
@@ -390,6 +417,7 @@ module MenusHelper
 
   def job_leads_status_menu
     return unless current_account.track_trainee_status?
+
     menu_link('Job Leads Status', shared_job_statuses_path)
   end
 
@@ -398,7 +426,7 @@ module MenusHelper
   end
 
   def menu_link(s, path)
-    ('<li>' + link_to(s, path) + '</li>').html_safe
+    "<li>#{link_to(s, path)}</li>".html_safe
   end
 
   def report_link(name, label = nil)
@@ -430,7 +458,7 @@ module MenusHelper
         items +
       '</ul>' \
     '</li>'
-    ).html_safe
+  ).html_safe
   end
 
   def divider_menu
@@ -478,9 +506,7 @@ module MenusHelper
   end
 
   def admin_sign_off_menu
-    '<li>' +
-      link_to('Sign Out', destroy_admin_session_path, method: :delete) +
-      '</li>'
+    "<li>#{link_to('Sign Out', destroy_admin_session_path, method: :delete)}</li>"
   end
 
   # following is for building menus for trainee portal

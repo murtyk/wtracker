@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # build subject and content for autl leads emails to trainees
 # works for all types of grants
 class TraineeEmailTextBuilder
@@ -98,7 +100,7 @@ class TraineeEmailTextBuilder
   def job_leads_raw_body
     raw_body = grant.job_leads_content.content.gsub(/\r\n/, '<br>')
 
-    closing_message = grant.closing ? (grant.closing_job_leads_message + '<br>') : ''
+    closing_message = grant.closing ? "#{grant.closing_job_leads_message}<br>" : ''
 
     raw_body.gsub('$CLOSINGMESSAGE$', closing_message)
   end

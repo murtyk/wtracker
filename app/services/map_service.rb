@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # generates markers and infowindows for addresses
 # this can be used in 2 ways
 # 1. subclassing
@@ -7,6 +9,7 @@ class MapService
 
   def initialize(p_addresses = nil)
     return unless p_addresses
+
     @addresses = p_addresses
     generate_markers_json
   end
@@ -40,7 +43,7 @@ class MapService
 
     return unless obj
 
-    color =  object_color(obj)
+    color = object_color(obj)
     source, sectors = build_source_and_sectors(obj)
 
     build_window_html(color, obj.name, address, source, sectors)
@@ -48,11 +51,13 @@ class MapService
 
   def object_color(obj)
     return 'lightsalmon' if obj.is_a?(Employer)
+
     obj.is_a?(Trainee) ? 'lightgreen' : 'lightgrey'
   end
 
   def build_source_and_sectors(obj)
     return nil unless obj.is_a?(Employer)
+
     source = "Source: #{obj.employer_source_name}<br>".html_safe
     sectors =  '<ol>' +
                obj.sectors.map { |sector| "<li>#{sector.name}</li>" }.join +
@@ -80,6 +85,7 @@ class MapService
 
   def build_circles(addr)
     return [] unless addr
+
     [10, 20].map do |radius|
       Circle.new(radius, addr.longitude, addr.latitude).marker
     end

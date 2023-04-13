@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # model for managing employer documents
-class EmployerFile < ActiveRecord::Base
+class EmployerFile < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   belongs_to :account
   belongs_to :employer

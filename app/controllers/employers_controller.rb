@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # An employer belogs to an account and source
 # REFACTOR: too many custom routes
 # how about moving add_google_company and get_google_company
@@ -11,8 +13,8 @@ class EmployersController < ApplicationController
     @employer,
     @employer_exists,
     @error = EmployerFactory.create_from_job_search(current_user, params)
-    @action_cell_id = '#' + params[:action_cell_id]
-    @add_company_id = '#' + params[:add_company_id]
+    @action_cell_id = ['#', params.permit![:action_cell_id]].join
+    @add_company_id = ['#', params.permit![:add_company_id]].join
   end
 
   # ajax request job search analyze function. calls for each company
@@ -26,14 +28,14 @@ class EmployersController < ApplicationController
   # for trainee interactions
   def list_for_trainee
     employers = EmployerServices.new(current_user, params)
-                .employers_for_trainee_interaction
+                                .employers_for_trainee_interaction
     render json: employers
   end
 
   # ajax request from klass events for adding employers to an event
   # REFACTOR: No need for this route. We can leverage index.
   def search
-    employers = EmployerServices.new(current_user, params[:filters]).search
+    employers = EmployerServices.new(current_user, filter_params).search
 
     respond_to do |format|
       format.json { render json: employers }
@@ -43,26 +45,29 @@ class EmployersController < ApplicationController
   # for sending emails
   # REFACTOR: should be handled by contacts controller. Why here?
   def contacts_search
-    contacts = EmployerServices.new(current_user, params[:filters]).search_contacts
+    contacts = EmployerServices.new(current_user, filter_params).search_contacts
     respond_to do |format|
       format.json { render json: contacts }
     end
   end
 
   def index
-    @employers = EmployerServices.new(current_user, params[:filters]).search
+    @employers = EmployerServices.new(current_user, filter_params).search
     @employers_count = @employers.count
+
     return if request.format.xls?
-    @employers = @employers.paginate(page: params[:page], per_page: 20)
+
+    @employers = @employers.paginate(page: params.permit![:page], per_page: 20)
   end
 
   def mapview
-    @employer_map = EmployersMap.new(current_user, params[:filters])
+    @employer_map = EmployersMap.new(current_user, filter_params)
   end
 
   def near_by_trainees
     @employer_map = EmployersMap.new(current_user, params.merge(near_by_trainees: true))
-    @trainee_email = current_user.trainee_emails
+    @trainee_email = current_user
+                     .trainee_emails
                      .new(trainee_ids: @employer_map.trainee_ids,
                           trainee_names: @employer_map.trainee_names,
                           klass_id: 0)
@@ -105,11 +110,10 @@ class EmployersController < ApplicationController
       if saved
         notice = 'Employer was successfully created.'
         format.html { redirect_to @employer, notice: notice }
-        format.js
       else
         format.html { render :new }
-        format.js
       end
+      format.js
     end
   end
 
@@ -141,8 +145,12 @@ class EmployersController < ApplicationController
 
   def employer_params
     params.require(:employer)
-      .permit(:name, :phone_no, :website, :trainee_ids, :employer_source_id,
-              sector_ids: [],
-              address_attributes: [:id, :line1, :line2, :city, :state, :zip])
+          .permit(:name, :phone_no, :website, :trainee_ids, :employer_source_id,
+                  sector_ids: [],
+                  address_attributes: %i[id line1 line2 city state zip])
+  end
+
+  def filter_params
+    params.permit![:filters]
   end
 end

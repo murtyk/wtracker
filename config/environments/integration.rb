@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 WTracker::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -71,11 +73,13 @@ WTracker::Application.configure do
   #   [u, p] == [ENV['SITE_USERNAME'], ENV['SITE_SECRET']]
   # end
 
-  config.log_tags = [:subdomain, :uuid, lambda { |req| Time.now }]
+  config.log_tags = [:subdomain, :uuid, ->(_req) { Time.now }]
 
   # Log detail is configurable on the server
-  config.log_level = ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].to_sym : ('info').to_sym
+  config.log_level = ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].to_sym : 'info'.to_sym
   config.consider_all_requests_local = ENV['CONSIDER_REQUESTS_LOCAL']
 
   config.x.mail_from = %(Info<info@operoinc.com>)
+
+  config.hosts.clear
 end

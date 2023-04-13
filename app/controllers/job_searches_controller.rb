@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 # searches jobs and analyzes
 # REFACTOR: It has too many custom routes
 class JobSearchesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # perhaps this should be on States routes
   def valid_state
@@ -21,7 +23,7 @@ class JobSearchesController < ApplicationController
     # debugger
     job_search_id = params[:job_search_id]
     cache_id_a = cache_id_analyzed(job_search_id)
-    cache_id_c =  cache_id_counties_analyzed(job_search_id)
+    cache_id_c = cache_id_counties_analyzed(job_search_id)
     present = cache_exist?(cache_id_a) && cache_exist?(cache_id_c)
     render json: present
   end
@@ -53,6 +55,7 @@ class JobSearchesController < ApplicationController
 
     @analyzer = @job_search.analyzer(current_user)
     return if @analyzer.analyze
+
     flash[:error] = @analyzer.error
     redirect_to @job_search
   end
@@ -124,9 +127,11 @@ class JobSearchesController < ApplicationController
   end
 
   def county_names(params)
-    return params[:county_ids] && params[:county_ids].split(',') unless params[:in_state]
+    return params[:county_ids]&.split(',') unless params[:in_state]
+
     state = current_account.states.first
     return nil unless state && state.code == @job_search.state
+
     state.county_names_with_state_prefex
   end
 
@@ -134,7 +139,9 @@ class JobSearchesController < ApplicationController
     params[:job_search].delete(:college_id)
     klass_title_id = params[:job_search][:klass_title_id].to_i
 
-    return current_user.job_searches.new(job_search_params) unless klass_title_id > 0
+    unless klass_title_id.positive?
+      return current_user.job_searches.new(job_search_params)
+    end
 
     klass_title = KlassTitle.find(klass_title_id)
     klass_title.get_job_search(true)
@@ -142,7 +149,7 @@ class JobSearchesController < ApplicationController
 
   def job_search_params
     params.require(:job_search)
-      .permit(:keywords, :location, :count, :distance,
-              :recruiters, :days, :klass_title_id, :in_state)
+          .permit(:keywords, :location, :count, :distance,
+                  :recruiters, :days, :klass_title_id, :in_state)
   end
 end

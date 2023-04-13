@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 # typically used for download
 class ExcelFile
-  STYLES = [:trainee_id]
+  STYLES = [:trainee_id].freeze
   attr_reader :user, :data_name, :sheet_name, :package, :sheet, :styles
+
   def initialize(user, data_name, sheet_name = nil)
     @user = user
     @data_name = data_name
@@ -37,7 +40,7 @@ class ExcelFile
 
   def save(col_styles = [])
     col_styles.each do |col, style|
-      sheet.col_style col, styles[style], :row_offset => 1 if styles[style]
+      sheet.col_style col, styles[style], row_offset: 1 if styles[style]
     end
 
     package.serialize file_path
@@ -53,6 +56,6 @@ class ExcelFile
 
   def generate_styles
     @styles = {}
-    styles[:trainee_id] = package.workbook.styles.add_style :format_code => "0########"
+    styles[:trainee_id] = package.workbook.styles.add_style format_code: '0########'
   end
 end

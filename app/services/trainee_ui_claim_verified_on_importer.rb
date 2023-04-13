@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 
 # imports trainee updates from a file
@@ -18,7 +20,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
   end
 
   def header_fields
-    %w(tapo_id ui_claim_verified_on funding_source disable)
+    %w[tapo_id ui_claim_verified_on funding_source disable]
   end
 
   def template_name
@@ -32,9 +34,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
 
     dt = row[:ui_claim_verified_on] && clean_date(row[:ui_claim_verified_on])
 
-    if dt
-      trainee.ui_claim_verified_on = dt
-    end
+    trainee.ui_claim_verified_on = dt if dt
 
     ui_notes = nil
     notes = row[:ui_verified_notes]
@@ -48,7 +48,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
     trainee.funding_source_id = fs_id if fs_id
 
     trainee.save!
-    ui_notes && ui_notes.save!
+    ui_notes&.save!
 
     trainee
   end
@@ -61,6 +61,7 @@ class TraineeUiClaimVerifiedOnImporter < Importer
 
   def funding_source_id(fs_name)
     return nil if fs_name.blank?
+
     FundingSource.find_by(name: fs_name).try(:id)
   end
 end

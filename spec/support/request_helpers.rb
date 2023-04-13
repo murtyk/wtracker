@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Request
   module JsonHelpers
     def json_response
@@ -22,7 +24,7 @@ module Request
     end
 
     def api_authorization_header(token)
-      request.headers['Authorization'] =  token
+      request.headers['Authorization'] = token
     end
   end
 end

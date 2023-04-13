@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # Help is building metrics from group by queries
 class ArrayMatrix
   attr_accessor :data, :row_ids, :col_ids, :n_cols, :n_rows
+
   def initialize(counts, row_keys, col_keys)
     return unless row_keys && counts
 

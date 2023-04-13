@@ -1,6 +1,9 @@
-class TraineePolicy < Struct.new(:user, :trainee)
+# frozen_string_literal: true
+
+TraineePolicy = Struct.new(:user, :trainee) do
   def new?
     return false if grant.trainee_applications?
+
     user.admin_access? || (user.navigator? && user.grants.include?(grant))
   end
 

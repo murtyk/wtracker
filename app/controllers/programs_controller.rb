@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ProgramsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /programs
   def index
@@ -52,6 +54,6 @@ class ProgramsController < ApplicationController
 
   def programs_params
     params.require(:program)
-      .permit(:description, :name, :hours, :sector_id, :klass_category_id)
+          .permit(:description, :name, :hours, :sector_id, :klass_category_id)
   end
 end

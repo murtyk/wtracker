@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # navigator captures number of job openings at an employer
-class JobOpening < ActiveRecord::Base
+class JobOpening < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :employer

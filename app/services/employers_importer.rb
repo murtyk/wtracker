@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 
 EMPLOYER_FIELDS = ['company:name', 'address:line1', 'address:city', 'address:state',
                    'address:zip',  'contact1:first_name', 'contact1:last_name',
-                   'contact1:land_no', 'contact1:ext', 'contact1:email']
+                   'contact1:land_no', 'contact1:ext', 'contact1:email'].freeze
 # imports employers from a file
 class EmployersImporter < Importer
   attr_reader :employers
@@ -11,7 +13,7 @@ class EmployersImporter < Importer
     return unless current_user && all_params
 
     @employer_source_id = all_params[:employer_source_id]
-    fail 'source required for employers import' if @employer_source_id.blank?
+    raise 'source required for employers import' if @employer_source_id.blank?
 
     init_sectors(all_params[:sector_ids])
 
@@ -46,8 +48,7 @@ class EmployersImporter < Importer
         import_status.save
         import_fail.destroy
       end
-
-    rescue
+    rescue StandardError
       return nil
     end
 
@@ -66,7 +67,7 @@ class EmployersImporter < Importer
 
     sectors = Sector.where(id: @sector_ids)
 
-    fail 'sectors required for employers import' if sectors.empty?
+    raise 'sectors required for employers import' if sectors.empty?
   end
 
   def import_row(row)
@@ -88,18 +89,20 @@ class EmployersImporter < Importer
 
   def check_duplicate(employer)
     return unless employer.duplicate?
+
     dup_bad_address = "duplicate - #{employer.name} - with missing or invalid address"
-    fail dup_bad_address if employer.address.nil?
-    fail "duplicate - #{employer.name} - #{employer.city} - #{employer.state}"
+    raise dup_bad_address if employer.address.nil?
+
+    raise "duplicate - #{employer.name} - #{employer.city} - #{employer.state}"
   end
 
   def build_contacts(employer, row)
     cn = 1
 
-    while row["contact#{cn}" + ':first_name']
+    while row["contact#{cn}:first_name"]
       cprefix = "contact#{cn}"
       # break unless row["contact#{cn}" + ':first_name']
-      c  = employer.contacts.new
+      c = employer.contacts.new
       assign_contact_attributes(c, cprefix, row)
       cn += 1
     end
@@ -111,22 +114,22 @@ class EmployersImporter < Importer
 
   def assign_contact_attributes(c, cprefix, row)
     c.first, c.last = contact_name_parts(row, cprefix)
-    c.title     = row[cprefix + ':title']
-    c.email     = row[cprefix + ':email']
+    c.title     = row["#{cprefix}:title"]
+    c.email     = row["#{cprefix}:email"]
     c.land_no,
     c.ext,
     c.mobile_no = contact_phone_numbers(row, cprefix)
   end
 
   def contact_name_parts(row, cprefix)
-    [row[cprefix + ':first_name'], row[cprefix + ':last_name']]
+    [row["#{cprefix}:first_name"], row["#{cprefix}:last_name"]]
   end
 
   def contact_phone_numbers(row, cprefix)
     [
-      clean_phone_no(row[cprefix + ':land_no'] || ''),
-      row[cprefix + ':ext'],
-      clean_phone_no(row[cprefix + ':mobile_no'] || '')
+      clean_phone_no(row["#{cprefix}:land_no"] || ''),
+      row["#{cprefix}:ext"],
+      clean_phone_no(row["#{cprefix}:mobile_no"] || '')
     ]
   end
 end

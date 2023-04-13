@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # schedule of a class
 # class may be there only on some week days
-class KlassSchedule < ActiveRecord::Base
+class KlassSchedule < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
-  belongs_to :klass
+  belongs_to :klass, optional: true
 
   validates :start_time_hr,
             numericality: { greater_than_or_equal_to: 0,

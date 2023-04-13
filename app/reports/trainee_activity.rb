@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # any trainee activities in the date range?
 class TraineeActivity < DelegateClass(Trainee)
   attr_reader :start_date, :end_date
+
   def initialize(obj, start_date = nil, end_date = nil)
     super(obj)
     @start_date = start_date
@@ -21,11 +24,12 @@ class TraineeActivity < DelegateClass(Trainee)
   end
 
   def college_name_location
-    klass && klass.college_name_location
+    klass&.college_name_location
   end
 
   def status
     return '' unless klass
+
     klass_trainee = KlassTrainee.where(trainee_id: id,
                                        klass_id: klass.id).first
     klass_trainee.nil? ? '' : KlassTrainee::STATUSES[klass_trainee.status]
@@ -49,12 +53,14 @@ class TraineeActivity < DelegateClass(Trainee)
 
   def filter_by_create_date(objects)
     return objects unless valid_dates?
+
     objects.where('DATE(created_at) >= ? AND DATE(created_at) <= ? ',
                   start_date, end_date)
   end
 
   def filter_by_update_date(objects)
     return objects unless valid_dates?
+
     objects.where('DATE(updated_at) >= ? AND DATE(updated_at) <= ?',
                   start_date, end_date)
   end

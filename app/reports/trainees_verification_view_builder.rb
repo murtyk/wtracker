@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 # builds rows and headers for excel
 class TraineesVerificationViewBuilder
   include Enumerable
 
   def header
-    ['Name', 'Trainee ID', 'Email', 'Mobile', 'Street', 'City', 'Zip', 'TAPO ID','Funding Source', 'Navigator', 'Placement Status',
+    ['Name', 'Trainee ID', 'Email', 'Mobile', 'Street', 'City', 'Zip', 'TAPO ID', 'Funding Source', 'Navigator', 'Placement Status',
      'UI Claim Verified On', 'UI Verification Notes', 'Disabled On', 'Disabled Notes', 'DOB', 'State',
-     'County', 'Registration Date' ]
+     'County', 'Registration Date']
   end
 
   def build_row(trainee)
     [trainee.name,
      trainee.trainee_id,
-     trainee.email ? trainee.email.remove("<br>") : nil,
-     trainee.mobile_no ? trainee.mobile_no.remove("<br>") : nil,
+     trainee.email ? trainee.email.remove('<br>') : nil,
+     trainee.mobile_no ? trainee.mobile_no.remove('<br>') : nil,
      trainee.line1,
      trainee.city,
      trainee.zip,
@@ -27,6 +29,6 @@ class TraineesVerificationViewBuilder
      trainee.dob,
      trainee.state,
      trainee.county_name,
-     trainee.applicant ? trainee.applicant.applied_on : ""]
+     trainee.applicant ? trainee.applicant.applied_on : '']
   end
 end

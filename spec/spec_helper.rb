@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 
@@ -5,57 +7,38 @@ require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'
 require 'shoulda/matchers'
 # require 'rspec/autorun'
-require 'capybara/rspec'
-require 'support/subdomains.rb'
-require 'capybara-screenshot'
-require 'capybara-screenshot/rspec'
+require 'support/subdomains'
 
-require 'capybara'
-require 'capybara/poltergeist'
-
-require 'simplecov'
-require 'simplecov-csv'
+# require 'simplecov'
+# require 'simplecov-csv'
 # require 'headless'
 require 'rspec/retry'
 # require 'webmock/rspec'
 # WebMock.allow_net_connect!
 
 # SimpleCov.formatter = SimpleCov::Formatter::CSVFormatter
-SimpleCov.coverage_dir(ENV['COVERAGE_REPORTS'] || 'coverage')
+# SimpleCov.coverage_dir(ENV['COVERAGE_REPORTS'] || 'coverage')
 
-SimpleCov.start do
-  add_group 'Models', '/app/models/'
-  add_group 'Controllers', '/app/controllers/'
-  add_group 'Factories', '/app/factories/'
-  add_group 'Services', '/app/services/'
-  add_group 'Reports', '/app/reports/'
-  add_group 'Imports', '/app/imports/'
-  add_group 'Helpers', '/app/helpers/'
-  add_group 'Policies', '/app/policies/'
-  add_group 'Views', '/app/views/'
-end
+# SimpleCov.start do
+#   add_group 'Models', '/app/models/'
+#   add_group 'Controllers', '/app/controllers/'
+#   add_group 'Factories', '/app/factories/'
+#   add_group 'Services', '/app/services/'
+#   add_group 'Reports', '/app/reports/'
+#   add_group 'Imports', '/app/imports/'
+#   add_group 'Helpers', '/app/helpers/'
+#   add_group 'Policies', '/app/policies/'
+#   add_group 'Views', '/app/views/'
+# end
 
-require 'codecov'
-SimpleCov.formatter = SimpleCov::Formatter::Codecov
+# require 'codecov'
+# SimpleCov.formatter = SimpleCov::Formatter::Codecov
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
-require 'phantomjs'
-Capybara.register_driver(:poltergeist) do |app|
-  options = {
-    debug: ENV['JS_DEBUG'],
-    js_errors: false,
-    window_size: [2400, 2000],
-    inspector: true,
-    phantomjs: Phantomjs.path,
-    phantomjs_logger: File.open("#{Rails.root}/log/test_phantomjs.log", 'a')
-    # phantomjs_options: ['--web-security=no']
-  }
-  Capybara::Poltergeist::Driver.new(app, options)
-end
-Capybara.javascript_driver = :poltergeist
+require 'selenium-webdriver'
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -86,7 +69,6 @@ RSpec.configure do |config|
   config.order = 'random'
   # config.order = "default"
 
-  Capybara.server_port = 7171 + ENV['TEST_ENV_NUMBER'].to_i
   # Capybara.use_own_port = true
   # Capybara.app_host = "http://www.localhost.com:7171"
   config.include Capybara::DSL
@@ -105,13 +87,18 @@ RSpec.configure do |config|
   config.include Request::JsonHelpers,    type: :controller
   config.include Request::HeadersHelpers, type: :controller
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.include Devise::TestHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
 
   # config.raise_errors_for_deprecations!
 
+  # config.filter_run_excluding js: true
+
+  config.filter_run_excluding(skip_on_ci: true) if ENV['RAILS_CI']
+
   config.before(:suite) do
+    DatabaseCleaner.allow_remote_database_url = true
     DatabaseCleaner.strategy = :transaction
   end
 
@@ -126,21 +113,6 @@ RSpec.configure do |config|
 
   config.verbose_retry = true # show retry status in spec process
 
-  # puts ENV['TEST_ENV_NUMBER']
-  # display =  100 + ENV['TEST_ENV_NUMBER'].to_i
-  # headless = Headless.new(display: display)
-
-  # config.before(:each, js: true) do |ex|
-  #   headless.start unless ex.metadata[:noheadless]
-  # end
-
-  # config.after(:each, js: true) do |ex|
-  #  headless.stop unless ex.metadata[:noheadless]
-  # end
-
-  # at_exit do
-  #   headless.destroy unless ENV['TEST_ENV_NUMBER'].to_i > 0
-  # end
   config.reporter.register_listener SpecListener.new, :example_passed
 end
 

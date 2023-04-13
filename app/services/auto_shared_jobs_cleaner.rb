@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AutoSharedJobsCleaner
   class << self
     def clean(all = false)
@@ -6,7 +8,7 @@ class AutoSharedJobsCleaner
       if all
         AutoSharedJob.delete_all
       else
-        AutoSharedJob.where("created_at < ?", 1.month.ago).delete_all
+        AutoSharedJob.where('created_at < ?', 1.month.ago).delete_all
       end
 
       Rails.logger.info "Current jobs count = #{AutoSharedJob.count}"

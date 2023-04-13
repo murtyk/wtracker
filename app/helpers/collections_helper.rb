@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # collections for selection
 module CollectionsHelper
   def accounts_collection
@@ -25,7 +27,7 @@ module CollectionsHelper
   end
 
   def applicant_filter_statuses
-    %w(Accepted Declined)
+    %w[Accepted Declined]
   end
 
   def applicant_sources
@@ -71,6 +73,7 @@ module CollectionsHelper
   def employer_sources_collection
     return grant_scoped_employers_sources if current_grant.scoped_employers
     return EmployerSource.order(:name) if current_user.admin_access?
+
     current_user.employer_sources.order(:name)
   end
 
@@ -96,7 +99,7 @@ module CollectionsHelper
   end
 
   def options_for_ampm_select(default_value)
-    options_for_select([%w(am am), %w(pm pm)], default_value)
+    options_for_select([%w[am am], %w[pm pm]], default_value)
   end
 
   def trainee_legal_statues

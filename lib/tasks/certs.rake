@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 namespace :certs do
   desc 'push generated certificates to heroku'
   task :push do
-    dir = "./tmp/certs-#{Date.today.strftime("%m%d%y")}"
+    dir = "./tmp/certs-#{Date.today.strftime('%m%d%y')}"
     Dir.mkdir(dir)
 
     `sudo cp /etc/letsencrypt/live/managee2e.com/cert.pem #{dir}`
@@ -10,11 +12,11 @@ namespace :certs do
     `sudo cp /etc/letsencrypt/live/managee2e.com/privkey.pem #{dir}`
     `sudo cp /etc/letsencrypt/live/managee2e.com/README #{dir}`
 
-    puts "Files copied:"
+    puts 'Files copied:'
     `ls #{dir}`
 
     command = "heroku certs:update #{dir}/fullchain.pem #{dir}/privkey.pem -r production"
-    puts "running:"
+    puts 'running:'
     puts command
     `#{command}`
   end

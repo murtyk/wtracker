@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # data from demo account
 class DemoData
   def generate(account_id)
@@ -24,7 +26,7 @@ class DemoData
   end
 
   def generate_grant
-    grant_params = { account_id: "#{@account_id}", name: 'MFG Workforce',
+    grant_params = { account_id: @account_id.to_s, name: 'MFG Workforce',
                      start_date: (Date.today - 2.years).to_s,
                      end_date: (Date.today + 2.years).to_s,
                      status: '2', spots: '', amount: '',
@@ -91,9 +93,9 @@ class DemoData
   end
 
   def generate_colleges
-    address =  { line1: '200 N Broadway', city: 'Camden', state: 'NJ', zip: '08102',
-                 county_id: @camden.id, county: 'Camden',
-                 longitude: -75.1179, latitude: 39.946686 }
+    address = { line1: '200 N Broadway', city: 'Camden', state: 'NJ', zip: '08102',
+                county_id: @camden.id, county: 'Camden',
+                longitude: -75.1179, latitude: 39.946686 }
     @camden_college = College.create(name: 'Camden County College',
                                      address_attributes: address)
 
@@ -191,8 +193,8 @@ class DemoData
   end
 
   TITLES = ['Machinist', 'Welder', 'CNC Operator',
-            'Mechanic', 'CNC Machinist', 'Fabricator']
-  SALARIES = ['$13/hr', '$14/hr', '$15/hr', '$13.50/hr', '$18/hr', '$25/hr']
+            'Mechanic', 'CNC Machinist', 'Fabricator'].freeze
+  SALARIES = ['$13/hr', '$14/hr', '$15/hr', '$13.50/hr', '$18/hr', '$25/hr'].freeze
 
   def generate_students
     generate_camden_students
@@ -258,6 +260,7 @@ class DemoData
   def generate_admin_email
     exists = User.unscoped.where(email: 'aandrola@gmail.com').any?
     return 'aandrola@gmail.com' unless exists
+
     n = 1
     n += 1 while User.unscoped.where(email: "aandrola#{n}@gmail.com").any?
     "aandrola#{n}@gmail.com"
@@ -312,7 +315,7 @@ class DemoData
      40.199136, -74.642453],
     ['Synerfac Inc', '3023249400', 'www.synerfac.com',
      '2 Reads Way', 'New Castle', 'New Castle', 315, 'DE', '19720', 39.687631, -75.609367]
-  ]
+  ].freeze
   BERGEN_COMPANIES = [
     ['Arlington Machine & Tool Co', '9732761377', 'http://www.arlingtonmachine.com/',
      '90 New Dutch Ln', 'Fairfield', 'Essex', 1776, 'NJ', '07004', 40.881664, -74.278388],
@@ -362,7 +365,7 @@ class DemoData
      'Rockleigh', 'Bergen', 1771, 'NJ', '07647', 41.010516, -73.936852],
     ['M C Machinery Systems Inc', '9732441501', 'www.mcmachinery.com', '16 Chapin Road',
      'Montville', 'Morris', 1783, 'NJ', '07058', 40.857402, -74.339845]
-  ]
+  ].freeze
 
   CONTACTS = [
     ['Lulu', 'Wilkinson', 'lulu_wilkinson@lueilwitzchristiansen.net',
@@ -386,7 +389,7 @@ class DemoData
     ['Josefa', 'Gorczany', 'josefa.gorczany@mcdermott.name', '1-639-211-6275'],
     ['Milford', 'Kemmer', 'kemmer_milford@ward.net', '6701116487 x85745'],
     ['Daisha', 'Bergnaum', 'daisha.bergnaum@moen.info', '6386750985']
-  ]
+  ].freeze
 
   CAMDEN = 'Camden'
   BERGEN = 'Bergen'
@@ -399,7 +402,7 @@ class DemoData
                      ['Heaven', 'Bergstrom', 'heaven.bergstrom@heller.com'],
                      ['Torrance', 'Denesik', 'torrance.denesik@dietrich.biz'],
                      ['Esteban', 'Konopelski', 'konopelski_esteban@crona.info'],
-                     ['Tad', 'Jakubowski', 'tad_jakubowski@ferryankunding.org']]
+                     ['Tad', 'Jakubowski', 'tad_jakubowski@ferryankunding.org']].freeze
 
   CAMDEN_ADDRESSES = [
     ['103 Borlow Ave', 'Cherry Hill', '08002', -75.0337349, 39.947992],
@@ -427,7 +430,7 @@ class DemoData
     ['8947 Harvey Avenue', 'Pennsauken', 'NH', '08110', -75.023947, 39.970888],
     ['622 Abertson Rd', 'Winslow', '08095', -74.865777, 39.653692],
     ['622 Abertson Rd', 'Winslow', '08095', -74.865777, 39.653692]
-  ]
+  ].freeze
 
   BERGEN_STUDENTS = [['Alana', 'Cummings', 'cummings_alana@tromp.com'],
                      ['Norris', 'Bahringer', 'bahringer_norris@reilly.name'],
@@ -438,7 +441,7 @@ class DemoData
                      ['Alexandre', 'Cruickshank', 'cruickshank.alexandre@howe.info'],
                      ['Fabiola', 'Kreiger', 'fabiola.kreiger@becker.org'],
                      ['Vernon', 'Schimmel', 'schimmel.vernon@glover.biz'],
-                     ['Marianna', 'Lind', 'lind_marianna@jacobi.name']]
+                     ['Marianna', 'Lind', 'lind_marianna@jacobi.name']].freeze
 
   BERGEN_ADDRESSES = [
     ['136 Evans Place', 'Saddle Brook', '07663', -74.1012978, 40.9177056],
@@ -465,7 +468,7 @@ class DemoData
     ['289 Washington Street', 'Saddle Brook', '07663', -74.086342, 40.903981],
     ['334 Pond Court', 'Township of Washington', '07676', -74.066687, 40.9775644],
     ['334 Palisade ave', 'Cliffside park', '07010', -73.9905653, 40.815962]
-  ]
+  ].freeze
 
   MIDDLESEX_STUDENTS = [['Winnifred', 'Jast', 'winnifred_jast@sawayn.org'],
                         ['Ella', 'Brakus', 'brakus_ella@reillybalistreri.name'],
@@ -476,5 +479,5 @@ class DemoData
                         ['Pietro', 'Jerde', 'pietro.jerde@blick.com'],
                         ['Sheldon', 'Dare', 'dare_sheldon@bahringer.info'],
                         ['Darwin', 'Zulauf', 'darwin.zulauf@barrows.name'],
-                        ['Kaylie', 'Hodkiewicz', 'hodkiewicz.kaylie@cain.biz']]
+                        ['Kaylie', 'Hodkiewicz', 'hodkiewicz.kaylie@cain.biz']].freeze
 end

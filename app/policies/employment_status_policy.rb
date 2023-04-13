@@ -1,4 +1,6 @@
-class EmploymentStatusPolicy < Struct.new(:user, :employment_status)
+# frozen_string_literal: true
+
+EmploymentStatusPolicy = Struct.new(:user, :employment_status) do
   def new?
     user.director?
   end

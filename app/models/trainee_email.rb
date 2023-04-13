@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # emails sent to trainees
-class TraineeEmail < ActiveRecord::Base
+class TraineeEmail < ApplicationRecord
   serialize :trainee_ids
   serialize :trainee_names
   default_scope { where(account_id: Account.current_id) }
@@ -22,6 +24,6 @@ class TraineeEmail < ActiveRecord::Base
   end
 
   def klass_name
-    klass && klass.name
+    klass&.name
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if Rails.env.development? || Rails.env.test?
   require 'faker'
   namespace :data do
@@ -7,7 +9,8 @@ if Rails.env.development? || Rails.env.test?
 
       file_path = "./tmp/trainees_#{Time.now.strftime('%Y%m%d_%H%M%S')}"
 
-      header = %w(first_name last_name middle_name dob gender veteran land_no mobile_no email trainee_id education ethnicity home_address:line1 home_address:city home_address:state home_address:zip mail_address:line1 mail_address:city mail_address:state mail_address:zip recent_employer job_title years certifications current_employment_status last_employed_on last_wages legal_status funding_source registration_date)
+      header = %w[first_name last_name middle_name dob gender veteran land_no mobile_no
+                  email trainee_id education ethnicity home_address:line1 home_address:city home_address:state home_address:zip mail_address:line1 mail_address:city mail_address:state mail_address:zip recent_employer job_title years certifications current_employment_status last_employed_on last_wages legal_status funding_source registration_date]
 
       csv_data = CSV.generate do |csv|
         csv << header
@@ -31,7 +34,7 @@ if Rails.env.development? || Rails.env.test?
       addresses.map do |a|
         [
           Faker::Name.first_name, Faker::Name.last_name, '', data_dob,
-          %w(M F).sample, data_veteran, a[:phone], a[:phone], Faker::Internet.email,
+          %w[M F].sample, data_veteran, a[:phone], a[:phone], Faker::Internet.email,
           Faker::Number.number(9), data_education, data_ethnicity,
           a[:line1], a[:city], a[:state], a[:zip],
           a[:line1], a[:city], a[:state], a[:zip],
@@ -80,7 +83,9 @@ if Rails.env.development? || Rails.env.test?
 
         next if ref['formatted_phone_number'].nil?
 
-        phone = ref['formatted_phone_number'].split('').select { |c| c >= '0' && c <= '9' }.join('')
+        phone = ref['formatted_phone_number'].split('').select do |c|
+          c >= '0' && c <= '9'
+        end.join('')
 
         addresses << {
           line1: parts[0],

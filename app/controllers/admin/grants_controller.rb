@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # Opero administrator maintains grant
 class Admin
   # Opero administrator maintains grant
   class GrantsController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     def new
       @grant = GrantFactory.new_grant(params[:account_id])
@@ -56,22 +58,23 @@ class Admin
 
     def grant_params
       return params.permit(:delete_applicant_logo) if params[:delete_applicant_logo]
+
       params.require(:grant)
-        .permit(:account_id, :end_date, :name, :start_date, :status, :spots, :amount,
-                :auto_job_leads, :trainee_applications, :applicant_logo_file,
-                :assessments_include_score, :assessments_include_pass,
-                :reply_to_email, :reapply_subject, :reapply_body,
-                :reapply_instructions, :reapply_email_not_found_message,
-                :reapply_already_accepted_message,
-                :reapply_confirmation_message,
-                :hot_jobs_notification_subject, :hot_jobs_notification_body,
-                profile_request_subject_attributes: [:content],
-                profile_request_content_attributes: [:content],
-                job_leads_subject_attributes: [:content],
-                job_leads_content_attributes: [:content],
-                optout_message_one_attributes: [:content],
-                optout_message_two_attributes: [:content],
-                optout_message_three_attributes: [:content])
+            .permit(:account_id, :end_date, :name, :start_date, :status, :spots, :amount,
+                    :auto_job_leads, :trainee_applications, :applicant_logo_file,
+                    :assessments_include_score, :assessments_include_pass,
+                    :reply_to_email, :reapply_subject, :reapply_body,
+                    :reapply_instructions, :reapply_email_not_found_message,
+                    :reapply_already_accepted_message,
+                    :reapply_confirmation_message,
+                    :hot_jobs_notification_subject, :hot_jobs_notification_body,
+                    profile_request_subject_attributes: [:content],
+                    profile_request_content_attributes: [:content],
+                    job_leads_subject_attributes: [:content],
+                    job_leads_content_attributes: [:content],
+                    optout_message_one_attributes: [:content],
+                    optout_message_two_attributes: [:content],
+                    optout_message_three_attributes: [:content])
     end
   end
 end

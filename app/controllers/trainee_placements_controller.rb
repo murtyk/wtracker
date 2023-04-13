@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class TraineePlacementsController < ApplicationController
-  before_action :authenticate_trainee!, only: [:new, :create]
+  before_action :authenticate_trainee!, only: %i[new create]
   before_action :authenticate, only: [:index]
 
   def new
@@ -27,13 +29,14 @@ class TraineePlacementsController < ApplicationController
 
   def authenticate
     return true if current_user || current_trainee
-    fail 'unauthorized access'
+
+    raise 'unauthorized access'
   end
 
   def trainee_placement_params
     params.require(:trainee_placement)
-      .permit(:company_name, :address_line1, :address_line2, :city,
-              :state, :zip, :phone_no, :salary, :job_title, :start_date,
-              :reported_date, :placement_type)
+          .permit(:company_name, :address_line1, :address_line2, :city,
+                  :state, :zip, :phone_no, :salary, :job_title, :start_date,
+                  :reported_date, :placement_type)
   end
 end

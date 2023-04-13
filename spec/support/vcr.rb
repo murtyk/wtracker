@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mechanize'
 require 'webmock/rspec'
 WebMock.disable_net_connect!
@@ -7,7 +9,7 @@ VCR.configure do |c|
   c.hook_into :webmock # or :fakeweb
   c.default_cassette_options = { record: :new_episodes }
   c.ignore_localhost = true
-  c.allow_http_connections_when_no_cassette = false
+  c.allow_http_connections_when_no_cassette = true
 
   c.filter_sensitive_data('<simplyhired_auth>') do
     ENV['SH_AUTH']

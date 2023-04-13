@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # mainly for finding trainees with specific skills
 class TraineeSearchService
   # returns array of objects and new email
@@ -20,7 +22,7 @@ class TraineeSearchService
       name     = params[:filters][:name]
       klass_id = params[:filters][:klass_id].to_i
 
-      return [] if klass_id == 0 && name.blank?
+      return [] if klass_id.zero? && name.blank?
 
       return search_by_name(user, name) unless name.blank?
 
@@ -32,6 +34,7 @@ class TraineeSearchService
     def search_profiles(keywords)
       jsps = JobSearchProfile.includes(:trainee).where(trainee_id: trainee_ids)
       return jsps if keywords.blank?
+
       jsps.search_skills(keywords)
     end
 
@@ -40,13 +43,13 @@ class TraineeSearchService
     def search_by_name(user, name)
       if user.admin_access?
         return Trainee.search_by_name(name)
-          .order(:first, :last)
+                      .order(:first, :last)
       end
 
       Trainee.joins(:klass_trainees)
-        .where(klass_trainees: { klass_id: user.klasses.pluck(:id) })
-        .search_by_name(name)
-        .order(:first, :last)
+             .where(klass_trainees: { klass_id: user.klasses.pluck(:id) })
+             .search_by_name(name)
+             .order(:first, :last)
     end
 
     def build_email(user, results)

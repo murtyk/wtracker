@@ -9,7 +9,7 @@ development:
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - localhost:27017
+        - mongo_db:27017
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:
@@ -36,7 +36,7 @@ development:
         # Change the default authentication mechanism. Valid options are: :scram,
         # :mongodb_cr, :mongodb_x509, and :plain. (default on 3.0 is :scram, default
         # on 2.4 and 2.6 is :plain)
-        # auth_mech: :scram
+        # auth_mech: :plain
 
         # The database or source to authenticate the user against. (default: admin)
         # auth_source: admin
@@ -135,7 +135,7 @@ test:
     default:
       database: wtracker_test
       hosts:
-        - localhost:27017
+        - mongo_db:27017
       options:
         read:
           mode: :primary

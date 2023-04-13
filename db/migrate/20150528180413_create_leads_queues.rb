@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateLeadsQueues < ActiveRecord::Migration
   def change
     create_table :leads_queues do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for reading data records from excel file
 class ImportFileReader
   attr_reader :header
@@ -20,7 +22,7 @@ class ImportFileReader
   def next_row
     if @file_type == :CSV
       r = @csv.shift
-      return r && r.to_hash
+      return r&.to_hash
     elsif @next_row <= @spreadsheet.last_row
       row = Hash[[@header, @spreadsheet.row(@next_row)].transpose]
       @next_row += 1
@@ -33,7 +35,7 @@ class ImportFileReader
     case File.extname(file_name)
     when '.xls' then Roo::Excel.new(file.to_s, nil, :ignore)
     when '.xlsx' then Roo::Excelx.new(file.to_s, packed: nil, file_warning: :ignore)
-    else fail "Invalid file type: #{file_name}"
+    else raise "Invalid file type: #{file_name}"
     end
   end
 end

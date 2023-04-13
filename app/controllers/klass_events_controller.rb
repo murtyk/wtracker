@@ -1,6 +1,7 @@
-#
+# frozen_string_literal: true
+
 class KlassEventsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /klass_events/new
   # GET /klass_events/new.json
@@ -46,11 +47,10 @@ class KlassEventsController < ApplicationController
     respond_to do |format|
       if @klass_event.errors.empty?
         format.html { redirect_to @klass_event.klass, notice: notice_updated }
-        format.js
       else
         format.html { render :edit }
-        format.js
       end
+      format.js
     end
   end
 
@@ -74,10 +74,10 @@ class KlassEventsController < ApplicationController
 
   def klass_event_params
     params.require(:klass_event)
-      .permit(:event_date, :name, :klass_id, :notes,
-              :start_ampm, :start_time_hr, :start_time_min,
-              :end_ampm, :end_time_hr, :end_time_min,
-              employer_ids: [])
+          .permit(:event_date, :name, :klass_id, :notes,
+                  :start_ampm, :start_time_hr, :start_time_min,
+                  :end_ampm, :end_time_hr, :end_time_min,
+                  employer_ids: [])
   end
 
   def find_and_update_from_factory

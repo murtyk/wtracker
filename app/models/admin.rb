@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # application addministrator.
 # Opero Admin.
-class Admin < ActiveRecord::Base
+class Admin < ApplicationRecord
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # user settings for applicant grant
-class EmploymentStatus < ActiveRecord::Base
+class EmploymentStatus < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
   default_scope { order(:created_at) }
@@ -9,7 +11,7 @@ class EmploymentStatus < ActiveRecord::Base
   before_save :correct_other
 
   def form_title
-    (new_record? ? 'Enter' : 'Edit') +  ' Employment Status'
+    "#{new_record? ? 'Enter' : 'Edit'} Employment Status"
   end
 
   private

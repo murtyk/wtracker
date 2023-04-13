@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # A class has many attributes and relationships
 # navigators and instructors get assigned to a call
 # class also has events and interactions with employers
 # and of course many trainees
-class Klass < ActiveRecord::Base
+class Klass < ApplicationRecord
   DEFAULT_EVENTS = ['Information Session', 'Prescreening', 'Class Visit',
                     'Site Visit', 'Graduation'].freeze
 
@@ -16,9 +18,9 @@ class Klass < ActiveRecord::Base
 
   belongs_to :account
   belongs_to :grant
-  belongs_to :program
-  belongs_to :college
-  belongs_to :klass_category
+  belongs_to :program, optional: true
+  belongs_to :college, optional: true
+  belongs_to :klass_category, optional: true
 
   delegate :line1, :city, :county, :state, :zip, to: :college
   delegate :address, to: :college
@@ -55,18 +57,14 @@ class Klass < ActiveRecord::Base
   delegate :name, :code, to: :klass_category, prefix: true, allow_nil: true
 
   def valid_year
-   if start_date.present?  
-     start_date_year = start_date.strftime("%Y").to_i 
-     if start_date_year < 2000
-       errors.add(:start_date, "Year can't be less than 2000")
-     end
-   end  
-   if end_date.present?
-     end_date_year = end_date.strftime("%Y").to_i
-     if end_date_year < 2000
-       errors.add(:end_date, "Year can't be less than 2000")
-     end
-   end  
+    if start_date.present?
+      start_date_year = start_date.strftime('%Y').to_i
+      errors.add(:start_date, "Year can't be less than 2000") if start_date_year < 2000
+    end
+    if end_date.present?
+      end_date_year = end_date.strftime('%Y').to_i
+      errors.add(:end_date, "Year can't be less than 2000") if end_date_year < 2000
+    end
   end
 
   def college_name_location
@@ -93,20 +91,22 @@ class Klass < ActiveRecord::Base
   def trainees_markers_for_job_leads
     t_ids = trainees_for_job_leads.pluck(:id)
     addresses = HomeAddress.includes(:addressable)
-                .where(addressable_type: 'Trainee', addressable_id: t_ids)
+                           .where(addressable_type: 'Trainee', addressable_id: t_ids)
     MapService.new(addresses).markers_json
   end
 
   def to_label
     label = "#{college.name} - #{name}"
     return label unless start_date
+
     label += " - #{start_date}"
     return label unless end_date
+
     label + " - #{end_date}"
   end
 
   def label_for_trainees_advanced_search
-    [id.to_s,name,college.name,start_date.to_s,end_date.to_s].join(" - ")
+    [id.to_s, name, college.name, start_date.to_s, end_date.to_s].join(' - ')
   end
 
   def trainees_for_selection
@@ -118,14 +118,14 @@ class Klass < ActiveRecord::Base
 
   def klass_instructors_sorted
     klass_instructors.includes(:user)
-      .where(users: { status: 1 })
-      .order('users.first, users.last')
+                     .where(users: { status: 1 })
+                     .order('users.first, users.last')
   end
 
   def klass_navigators_sorted
     klass_navigators.includes(:user)
-      .where(users: { status: 1 })
-      .order('users.first, users.last')
+                    .where(users: { status: 1 })
+                    .order('users.first, users.last')
   end
 
   def instructors_for_selection

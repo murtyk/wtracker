@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 # trainees status report show hired details for placed trainees
 class TraineesStatusReport < Report
   attr_accessor :trainee_statuses
+
   def post_initialize(_params)
     @trainee_statuses = []
     return if klasses.blank?
+
     kts = klass_trainees
     trainee_ids = kts.map(&:trainee_id)
     init_placements_data(trainee_ids)
@@ -46,7 +50,7 @@ class TraineesStatusReport < Report
   def klass_trainees
     KlassTrainee
       .includes({ klass: { college: :address } },
-                trainee: [:trainee_interactions, :trainee_notes])
+                trainee: %i[trainee_interactions trainee_notes])
       .where(klasses: { id: klass_ids })
       .order('trainees.first, trainees.last')
   end

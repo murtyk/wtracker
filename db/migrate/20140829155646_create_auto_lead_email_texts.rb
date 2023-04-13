@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAutoLeadEmailTexts < ActiveRecord::Migration
   def change
     create_table :auto_lead_email_texts do |t|

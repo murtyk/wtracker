@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for building header or row for klasses list
 # returns row as an array
 class KlassesListViewBuilder
@@ -8,8 +10,8 @@ class KlassesListViewBuilder
   end
 
   def header
-    %w(Program Class College Category Certificates) +
-      %w(Enrolled Placed Dropped) + ['% Placed'] +
+    %w[Program Class College Category Certificates] +
+      %w[Enrolled Placed Dropped] + ['% Placed'] +
       ks.funding_sources_names +
       ['Training hours', 'Credits', 'Start date', 'End date']
   end
@@ -38,7 +40,8 @@ class KlassesListViewBuilder
     ec = enrolled_count.to_i
     pc = placed_count.to_i
 
-    return '' unless ec > 0 && pc > 0
-    format('%.2f', pc * 100.0 / ec) + '%'
+    return '' unless ec.positive? && pc.positive?
+
+    "#{format('%.2f', pc * 100.0 / ec)}%"
   end
 end

@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 # standard dashboard for grants such as Manufacturing
 # No Applicants.
 # Show programs, classes grouped by status, trainee counts by status
 class StandardMetrics < DashboardMetrics
   # need this for link_to
   include ActionView::Helpers::UrlHelper
-  attr_reader :programs, :buttons, :button_class, :enrolled_counts, :kt_status_counts, :xls
+  attr_reader :programs, :buttons, :button_class, :enrolled_counts, :kt_status_counts,
+              :xls
 
   def initialize
     generate_buttons
@@ -32,20 +35,20 @@ class StandardMetrics < DashboardMetrics
 
   def init_counts
     @enrolled_counts = KlassTrainee
-                         .where(klass_id: Klass.select(:id))
-                         .group(:klass_id)
-                         .count
+                       .where(klass_id: Klass.select(:id))
+                       .group(:klass_id)
+                       .count
 
     @kt_status_counts = KlassTrainee
-                          .where(klass_id: Klass.select(:id))
-                          .group(:klass_id, :status)
-                          .count
+                        .where(klass_id: Klass.select(:id))
+                        .group(:klass_id, :status)
+                        .count
   end
 
   def klass_counts(k_id)
     {
-      enrolled:  enrolled_count(k_id),
-      dropped:   dropped_count(k_id),
+      enrolled: enrolled_count(k_id),
+      dropped: dropped_count(k_id),
       completed: completed_count(k_id),
       continuing_education: continuing_education_count(k_id),
       not_placed: not_placed_count(k_id),
@@ -83,7 +86,7 @@ class StandardMetrics < DashboardMetrics
     # continuing education and placed together is our target for placement
     dividend = placed_count(k_id) + continuing_education_count(k_id)
     divisor = not_placed_count(k_id) + placed_count(k_id) + continuing_education_count(k_id)
-    divisor > 0 ? (dividend.to_f * 100 / divisor).round(0).to_s + '%' : ''
+    divisor.positive? ? "#{(dividend.to_f * 100 / divisor).round(0)}%" : ''
   end
 
   def klass_ids
@@ -95,8 +98,8 @@ class StandardMetrics < DashboardMetrics
     k_ids = program.send(klass_state).map(&:id)
 
     counts = {
-      enrolled:  program_enrolled_count(k_ids),
-      dropped:   program_dropped_count(k_ids),
+      enrolled: program_enrolled_count(k_ids),
+      dropped: program_dropped_count(k_ids),
       completed: program_completed_count(k_ids),
       continuing_education: program_continuing_education_count(k_ids),
       not_placed: program_not_placed_count(k_ids),
@@ -105,34 +108,33 @@ class StandardMetrics < DashboardMetrics
 
     dividend = counts[:placed] + counts[:continuing_education]
     divisor = counts[:not_placed] + counts[:placed] + counts[:continuing_education]
-    rate = divisor > 0 ? (dividend.to_f * 100 / divisor).round(0).to_s + '%' : ''
+    rate = divisor.positive? ? "#{(dividend.to_f * 100 / divisor).round(0)}%" : ''
 
     counts.merge(placement_rate: rate)
   end
 
-
   def program_enrolled_count(k_ids)
-    k_ids.map{|k_id| enrolled_count(k_id)}.inject(:+)
+    k_ids.map { |k_id| enrolled_count(k_id) }.inject(:+)
   end
 
   def program_dropped_count(k_ids)
-    k_ids.map{|k_id| dropped_count(k_id)}.inject(:+)
+    k_ids.map { |k_id| dropped_count(k_id) }.inject(:+)
   end
 
   def program_completed_count(k_ids)
-    k_ids.map{|k_id| completed_count(k_id)}.inject(:+)
+    k_ids.map { |k_id| completed_count(k_id) }.inject(:+)
   end
 
   def program_continuing_education_count(k_ids)
-    k_ids.map{|k_id| continuing_education_count(k_id)}.inject(:+)
+    k_ids.map { |k_id| continuing_education_count(k_id) }.inject(:+)
   end
 
   def program_not_placed_count(k_ids)
-    k_ids.map{|k_id| not_placed_count(k_id)}.inject(:+)
+    k_ids.map { |k_id| not_placed_count(k_id) }.inject(:+)
   end
 
   def program_placed_count(k_ids)
-    k_ids.map{|k_id| placed_count(k_id)}.inject(:+)
+    k_ids.map { |k_id| placed_count(k_id) }.inject(:+)
   end
 
   def download_button?

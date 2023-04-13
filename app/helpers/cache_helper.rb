@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for accessing cache
 module CacheHelper
   def cache_id_sorted_by_score(job_search_id)
@@ -18,6 +20,8 @@ module CacheHelper
 
   def read_cache(key)
     Rails.cache.read(key)
+  rescue StandardError => e
+    Rails.logger.error "Error reading cache: #{e.message}"
   end
 
   def write_cache(key, data, expires_in)

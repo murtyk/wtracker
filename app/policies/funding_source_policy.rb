@@ -1,4 +1,6 @@
-class FundingSourcePolicy < Struct.new(:user, :funding_source)
+# frozen_string_literal: true
+
+FundingSourcePolicy = Struct.new(:user, :funding_source) do
   def new?
     user.director?
   end

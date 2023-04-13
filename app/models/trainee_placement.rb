@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # this is mainly designed for grant where applicants can apply
-class TraineePlacement < ActiveRecord::Base
+class TraineePlacement < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   # ex: .where("info @> (? => ?)", :job_title, 'Analyst')
-  FIELDS = %w(company_name address_line1 address_line2 city state zip phone_no
-              salary job_title start_date reported_date placement_type)
+  FIELDS = %w[company_name address_line1 address_line2 city state zip phone_no
+              salary job_title start_date reported_date placement_type].freeze
 
   validate :validate_data
 
@@ -20,7 +22,7 @@ class TraineePlacement < ActiveRecord::Base
   end
 
   def collection_field?(field)
-    [:state_code, :placement_type_code].include? FIELD_TYPES[field.to_sym]
+    %i[state_code placement_type_code].include? FIELD_TYPES[field.to_sym]
   end
 
   def field_collection(field)
@@ -34,6 +36,7 @@ class TraineePlacement < ActiveRecord::Base
 
   def default_value(field)
     return unless FIELD_TYPES[field.to_sym] == :placement_type_code
+
     0
   end
 
@@ -74,17 +77,18 @@ class TraineePlacement < ActiveRecord::Base
 
   private
 
-  FIELD_TYPES = { state:         :state_code,
-                  phone_no:      :phone_number,
-                  start_date:    :date,
+  FIELD_TYPES = { state: :state_code,
+                  phone_no: :phone_number,
+                  start_date: :date,
                   reported_date: :date,
-                  placement_type: :placement_type_code }
+                  placement_type: :placement_type_code }.freeze
 
   def init_fields
     FIELDS.each do |field|
       self.class.send(:store_accessor, :info, field)
       field_type = FIELD_TYPES[field.to_sym]
       next unless field_type
+
       case field_type
       when :boolean
         create_boolean_method(field)
@@ -92,6 +96,7 @@ class TraineePlacement < ActiveRecord::Base
         create_method(field) do
           value = info[field]
           return nil unless value
+
           opero_str_to_date(value)
         end
       end
@@ -101,7 +106,8 @@ class TraineePlacement < ActiveRecord::Base
   def create_boolean_method(field)
     create_method(field) do
       value = info[field]
-      return (value == 'true') if %w(true false).include? value
+      return (value == 'true') if %w[true false].include? value
+
       value
     end
   end

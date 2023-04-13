@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :auto_shared_jobs do
   desc <<-DESC
     deletes auto shared jobs older than 2 months

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddEmployerSourceToEmployer < ActiveRecord::Migration
   def change
     add_reference :employers, :employer_source, index: true

@@ -1,19 +1,18 @@
+# frozen_string_literal: true
+
 # represents a job in job search
 class ShJob
   include JobMixins
-  attr_reader :title, :company, :date_posted, :excerpt, :location,
-              :source, :details_url, :details_url_type,
-              :city, :state, :zip, :county, :country, :city_state,
-              :details, :destination_url
-  attr_reader :job_json
+  attr_reader :title, :company, :date_posted, :excerpt, :location, :source, :details_url,
+              :details_url_type, :city, :state, :zip, :county, :country, :city_state, :details, :destination_url, :job_json
 
   def initialize(json)
     @job_json = json
     if job_json['cn']['__content__']
       encoding_options = {
-        invalid:          :replace,  # Replace invalid byte sequences
-        undef:            :replace,  # Replace anything not defined in ASCII
-        replace:          '',        # Use a blank for those replacements
+        invalid: :replace, # Replace invalid byte sequences
+        undef: :replace, # Replace anything not defined in ASCII
+        replace: '', # Use a blank for those replacements
         universal_newline: true       # Always break lines with \n
       }
       name = job_json['cn']['__content__'].encode Encoding.find('ASCII'), encoding_options

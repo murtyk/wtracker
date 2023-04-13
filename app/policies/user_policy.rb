@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # authorizations for user object
-class UserPolicy < Struct.new(:user, :otheruser)
+UserPolicy = Struct.new(:user, :otheruser) do
   def new?
     user.admin_access?
   end
@@ -11,6 +13,7 @@ class UserPolicy < Struct.new(:user, :otheruser)
   def edit?
     return true if user.director? || user == otheruser
     return false if otheruser.director?
+
     can_edit_other?
   end
 
@@ -38,6 +41,6 @@ class UserPolicy < Struct.new(:user, :otheruser)
 
   def can_edit_other?
     (user.admin? && !otheruser.admin?) ||
-      (user.admin_access?  && !otheruser.admin_or_director?)
+      (user.admin_access? && !otheruser.admin_or_director?)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # this is designed specifically for Amazon grant
 #   Any grant that has an option auto_profiles_1_week_before_klass
 #     any klass ending within a week or sooner
@@ -9,6 +11,7 @@ class AutoProfileGenerator
         Account.current_id = account.id
         account.grants.each do |grant|
           next unless grant.auto_profiles_1_week_before_klass
+
           Grant.current_id = grant.id
           perform_for_grant(grant)
         end
@@ -33,6 +36,7 @@ class AutoProfileGenerator
 
       klass.trainees.each do |trainee|
         next unless trainee.home_address
+
         add_profile_to_trainee(trainee, profile_attrs)
       end
     end
@@ -49,7 +53,7 @@ class AutoProfileGenerator
       return if jsp.skills.include?(profile_attrs[:skills])
 
       log_info("updating profile for trainee #{trainee.name} #{trainee.id}")
-      jsp.skills = jsp.skills + ',' + profile_attrs[:skills]
+      jsp.skills = "#{jsp.skills},#{profile_attrs[:skills]}"
       jsp.save
     end
 
@@ -91,6 +95,7 @@ class AutoProfileGenerator
       n = 0
       loop do
         break unless Trainee.unscoped.where(login_id: id).any?
+
         n += 1
         id += n.to_s
       end
@@ -100,11 +105,11 @@ class AutoProfileGenerator
     def login_id_name(trainee)
       first = trainee.first.delete('^a-zA-Z')
       last  = trainee.last.delete('^a-zA-Z')
-      first + '_' + last
+      "#{first}_#{last}"
     end
 
     def password(trainee)
-      (trainee.first[0..2] + '00000000')[0..7]
+      ("#{trainee.first[0..2]}00000000")[0..7]
     end
 
     def log_info(msg)

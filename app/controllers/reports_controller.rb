@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ReportsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def new
     @report = Report.new_report(current_user, params)

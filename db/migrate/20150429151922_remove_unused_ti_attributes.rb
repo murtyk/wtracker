@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveUnusedTiAttributes < ActiveRecord::Migration
   def change
     remove_column :trainee_interactions, :interview_date

@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 class CreateJobOpenings < ActiveRecord::Migration
   def change
     create_table :job_openings do |t|
       t.integer :jobs_no
       t.string :skills
-      t.references :employer,  :null => false
-      t.references :account,  :null => false
+      t.references :employer, null: false
+      t.references :account, null: false
 
       t.timestamps
     end
-    add_index :job_openings, [:account_id, :employer_id]
+    add_index :job_openings, %i[account_id employer_id]
   end
 end

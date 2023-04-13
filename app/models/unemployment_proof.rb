@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # grant specific managed through settings
 # used for applicant grant
-class UnemploymentProof < ActiveRecord::Base
+class UnemploymentProof < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
   default_scope { order(:created_at) }

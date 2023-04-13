@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # a class event.
 # many employers can participate
-class KlassEvent < ActiveRecord::Base
+class KlassEvent < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   belongs_to :account
   belongs_to :klass
@@ -61,7 +63,7 @@ class KlassEvent < ActiveRecord::Base
   end
 
   def generate_uid
-    last_ke = KlassEvent.unscoped.where('uid ilike ?', uid_prefix + '%').last
+    last_ke = KlassEvent.unscoped.where('uid ilike ?', "#{uid_prefix}%").last
     suffix = last_ke.uid.split('-')[-1].to_i + 1 if last_ke
     suffix ||= 1
 
@@ -69,7 +71,8 @@ class KlassEvent < ActiveRecord::Base
   end
 
   def uid_prefix
-    return account.subdomain + '-' unless event_date
-    account.subdomain + event_date.strftime('%Y%m%d') + '-'
+    return "#{account.subdomain}-" unless event_date
+
+    "#{account.subdomain}#{event_date.strftime('%Y%m%d')}-"
   end
 end

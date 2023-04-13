@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # notes captured on an employer
-class EmployerNote < ActiveRecord::Base
+class EmployerNote < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :employer

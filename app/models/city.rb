@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # a city in usa.
 # part of a county and a state
-class City < ActiveRecord::Base
-  belongs_to :state
-  belongs_to :county
+class City < ApplicationRecord
+  belongs_to :state, optional: true
+  belongs_to :county, optional: true
   delegate :name, to: :county, prefix: true, allow_nil: true
 
   validates :latitude, presence: true
@@ -20,16 +22,18 @@ class City < ActiveRecord::Base
   end
 
   def self.search(name, state_id)
-    return [] if state_id.to_i == 0 && name.blank?
+    return [] if state_id.to_i.zero? && name.blank?
+
     cities = City
-    cities = cities.where(state_id: state_id) if state_id.to_i > 0
-    name.blank? ? cities : cities.where("name ilike ?", name + '%')
+    cities = cities.where(state_id: state_id) if state_id.to_i.positive?
+    name.blank? ? cities : cities.where('name ilike ?', "#{name}%")
   end
 
   def self.find_by_citystate(city_comma_state)
     city_name, st_code = city_comma_state.split(',')
     return nil unless city_name && st_code
-    find_by('city_state ilike ?', city_name.squish + ',' + st_code.squish)
+
+    find_by('city_state ilike ?', "#{city_name.squish},#{st_code.squish}")
   end
 
   # find_by_zip might be useful in future. For now, we do not
@@ -58,11 +62,12 @@ class City < ActiveRecord::Base
 
   def determine_city_state
     self.state_code ||= state.code
-    self.city_state ||= name + ',' + state_code
+    self.city_state ||= "#{name},#{state_code}"
   end
 
   def validate_state
     return false unless state_id
+
     s = State.where(id: state_id).first
     errors.add(:state_id, 'invalid state id') unless s
     s
@@ -70,6 +75,7 @@ class City < ActiveRecord::Base
 
   def validate_county
     return false unless county_id
+
     c = County.where(id: county_id).first
     errors.add(:county_id, 'invalid county id') unless c
     unless c && c.state.id == state_id

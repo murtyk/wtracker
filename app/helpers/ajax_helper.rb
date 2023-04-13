@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # layout: for list of associations (ex: contacts)
 #       Contacts  [New]
 #       <div id = 'contacts'>
@@ -33,15 +35,15 @@
 module AjaxHelper
   def ajax_form_cancel_script(resource, id_prefix = '')
     resource_name = link_name(resource)
-    if resource.new_record?
-      link_id = '#' + "#{id_prefix}new_#{resource_name}_link"
-    else
-      link_id = '#' + div_id_for(resource)
-    end
+    link_id = if resource.new_record?
+                "##{id_prefix}new_#{resource_name}_link"
+              else
+                "##{div_id_for(resource)}"
+              end
 
-    form_id = '#' + ajax_form_id(resource)
+    form_id = "##{ajax_form_id(resource)}"
 
-    cancel_id = '#' + cancel_button_id(resource)
+    cancel_id = "##{cancel_button_id(resource)}"
 
     script = "$('#{cancel_id}').click(function() {
     $('#{form_id}').remove();
@@ -61,6 +63,7 @@ module AjaxHelper
   def ajax_form_id(resource)
     resource_name = link_name(resource)
     return "new_#{resource_name}" if resource.new_record?
+
     "edit_#{resource_name}_#{resource.id}"
   end
 
@@ -72,7 +75,7 @@ module AjaxHelper
 
   def ajax_cancel_and_submit_buttons(f, submit_label = nil)
     cancel_button = ajax_form_cancel_button(f.object)
-    cancel_button + ' ' + submit_button(f, submit_label)
+    "#{cancel_button} #{submit_button(f, submit_label)}".html_safe
   end
 
   def button_new_association(resource, **params_hash)
@@ -80,7 +83,7 @@ module AjaxHelper
     return nil unless skip_policy_check || policy(resource).new?
 
     resource_name = class_name(resource)
-    tip = params_hash.delete(:title) || ('New ' + resource_name.humanize.capitalize)
+    tip = params_hash.delete(:title) || "New #{resource_name.humanize.capitalize}"
     id_prefix = params_hash.delete(:id_prefix)
     id = new_link_id(resource_name, id_prefix)
 
@@ -139,6 +142,7 @@ module AjaxHelper
   def cancel_button_id(resource)
     resource_name = link_name(resource)
     return "cancel_new_#{resource_name}" if resource.new_record?
+
     "cancel_#{resource_name}_#{resource.id}"
   end
 

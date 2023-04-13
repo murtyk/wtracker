@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class KlassInstructorsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def new
     @klass = Klass.find(params[:klass_id])
@@ -36,6 +38,6 @@ class KlassInstructorsController < ApplicationController
 
   def klass_instructor_params
     params.require(:klass_instructor)
-      .permit(:user_id, :klass_id)
+          .permit(:user_id, :klass_id)
   end
 end

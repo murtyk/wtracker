@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGrantTraineeStatuses < ActiveRecord::Migration
   def change
     create_table :grant_trainee_statuses do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # helper methods
 module ApplicationHelper
   def asset_exists?(filename, extension)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTrainees < ActiveRecord::Migration
   def change
     create_table :trainees do |t|
@@ -15,11 +17,11 @@ class CreateTrainees < ActiveRecord::Migration
       t.string :mobile_no
       t.string :email
       t.string :skills_experience
-      t.references :account,     :null => false
-      t.references :grant, :null => false
+      t.references :account,     null: false
+      t.references :grant, null: false
 
       t.timestamps
     end
-    add_index :trainees, [:account_id, :grant_id]
+    add_index :trainees, %i[account_id grant_id]
   end
 end

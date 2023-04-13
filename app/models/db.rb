@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Might not be using now. Keep it anyway.
 class DB
   def self.query(sql)

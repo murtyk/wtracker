@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for each employer, show the classes where the employer is active
 class ActiveEmployersReport < Report
   attr_reader :employers_klasses, :total_employers, :trainees_hired,
@@ -30,6 +32,7 @@ class ActiveEmployersReport < Report
   def render_employer_klass_interactions(klass, employer_id)
     employer_interactions.map do |ki|
       next unless ki.employer_id == employer_id && ki.for_klass?(klass)
+
       if ki.status == 4
         "<p style='color: red'>#{ki.event_date} #{ki.event_name}</p>"
       else
@@ -66,24 +69,25 @@ class ActiveEmployersReport < Report
 
   def employers_any_interest_ids(klass)
     Employer.joins(klass_interactions: { klass_event: :klass })
-      .where(klasses: { id: klass.id })
-      .pluck('employers.id').uniq
+            .where(klasses: { id: klass.id })
+            .pluck('employers.id').uniq
   end
 
   def employers_hired_ids(klass)
     Employer.joins(trainee_interactions: { trainee: :klasses })
-      .where(trainee_interactions: { status: [4, 6], termination_date: nil })
-      .where(klasses: { id: klass.id })
-      .pluck('employers.id').uniq
+            .where(trainee_interactions: { status: [4, 6], termination_date: nil })
+            .where(klasses: { id: klass.id })
+            .pluck('employers.id').uniq
   end
 
   def build_trainees_hired
     @trainees_hired =
       TraineeInteraction.joins(trainee: :klasses)
-      .select('trainee_interactions.employer_id, klasses.id as klass_id,
+                        .select('trainee_interactions.employer_id, klasses.id as klass_id,
                                  trainee_interactions.trainee_id')
-      .where(trainee_interactions: { status: [4, 6], termination_date: nil })
-      .where(klasses: { id: klasses.map(&:id) })
+                        .where(trainee_interactions: { status: [4, 6],
+                                                       termination_date: nil })
+                        .where(klasses: { id: klasses.map(&:id) })
     @trainees_hired.first
   end
 

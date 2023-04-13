@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # hired trainee interactions tell us which employers hired
 class EmployersHiredReport < Report
   attr_accessor :all_trainees, :status
@@ -36,16 +38,17 @@ class EmployersHiredReport < Report
     if all_trainees
 
       ti_ids = TraineeInteraction.joins(:trainee)
-        .includes(employer: :address)
-        .where(status: status_ids).pluck(:id)
+                                 .includes(employer: :address)
+                                 .where(status: status_ids).pluck(:id)
     else
       ti_ids = TraineeInteraction.joins(trainee: :klasses)
-        .includes(employer: :address)
-        .where(status: status_ids, klasses: { id: klass_ids }).pluck(:id)
+                                 .includes(employer: :address)
+                                 .where(status: status_ids, klasses: { id: klass_ids }).pluck(:id)
     end
 
     TraineeInteraction
-      .includes(trainee: [{klasses: :college}, {applicant: :navigator}, :funding_source])
+      .includes(trainee: [{ klasses: :college }, { applicant: :navigator },
+                          :funding_source])
       .includes(employer: :address)
       .where(id: ti_ids).to_a
   end

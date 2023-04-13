@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUnemploymentProofs < ActiveRecord::Migration
   def change
     create_table :unemployment_proofs do |t|

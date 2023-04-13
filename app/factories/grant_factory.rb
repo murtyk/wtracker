@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 # for building email content assiciations
 class GrantFactory
-  EMAIL_MESSAGE_ATTRS = [:profile_request_subject_attributes,
-                         :profile_request_content_attributes,
-                         :job_leads_subject_attributes,
-                         :job_leads_content_attributes,
-                         :optout_message_one_attributes,
-                         :optout_message_two_attributes,
-                         :optout_message_three_attributes
-                        ]
+  EMAIL_MESSAGE_ATTRS = %i[profile_request_subject_attributes
+                           profile_request_content_attributes
+                           job_leads_subject_attributes
+                           job_leads_content_attributes
+                           optout_message_one_attributes
+                           optout_message_two_attributes
+                           optout_message_three_attributes].freeze
   # for new action
   def self.new_grant(account_id)
     grant = Grant.unscoped.new(account_id: account_id)

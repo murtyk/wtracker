@@ -1,4 +1,6 @@
-class EmailPolicy < Struct.new(:user, :email)
+# frozen_string_literal: true
+
+EmailPolicy = Struct.new(:user, :email) do
   def new?
     user.admin_or_director? || user.grant_admin?
   end

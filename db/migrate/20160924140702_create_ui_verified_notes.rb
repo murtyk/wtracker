@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUiVerifiedNotes < ActiveRecord::Migration
   def change
     create_table :ui_verified_notes do |t|

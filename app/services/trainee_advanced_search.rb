@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # performs advanced search and build excel file
 # can also email it to the user
 class TraineeAdvancedSearch
   attr_accessor :account_id, :grant_id, :user_id, :q
 
-  GRANT_TYPES = ['RTW', 'GAINS'].freeze
-  GRANT_ATTRIBUTES = { 
+  GRANT_TYPES = %w[RTW GAINS].freeze
+  GRANT_ATTRIBUTES = {
     'RTW' => ['EDP_Date', 'Class Categories'],
     'GAINS' => ['Mentor Info', 'Employed At']
   }.freeze
@@ -33,10 +35,10 @@ class TraineeAdvancedSearch
       :ui_verified_notes,
       :trainee_services,
       :job_search_profile,
-      klasses: [:college, :klass_category],
+      klasses: %i[college klass_category],
       trainee_interactions: [:employer],
       tact_three: [:education],
-      applicant: [:navigator, :sector]
+      applicant: %i[navigator sector]
     )
   end
 
@@ -51,7 +53,7 @@ class TraineeAdvancedSearch
       :trainee_files,
       :ui_verified_notes,
       :trainee_services,
-      klasses: [:college, :klass_category],
+      klasses: %i[college klass_category],
       trainee_interactions: [:employer],
       tact_three: [:education]
     )
@@ -67,7 +69,6 @@ class TraineeAdvancedSearch
     Rails.logger.info "TAS file sent by email to #{user.name}"
   end
 
-  # rubocop:disable AbcSize
   def build_document(q_params)
     trainees = search(q_params)
     excel_file.add_row header

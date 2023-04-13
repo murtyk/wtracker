@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -15,7 +17,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     wtracker.vm.synced_folder '.', '/home/vagrant/wtracker'
     config.vm.provision 'shell', path: 'vagrantprovision.sh'
   end
-
 
   config.vm.provider 'virtualbox' do |v|
     v.memory = 4096

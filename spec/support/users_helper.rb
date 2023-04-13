@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # for user sign in and sign out
-module  UserHelper
+module UserHelper
   def signin_opero_admin
     visit '/admins/sign_in'
     fill_in 'admin_email', with: 'admin@opero.com'

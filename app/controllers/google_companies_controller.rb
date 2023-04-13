@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class GoogleCompaniesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # google search menu.
   def index

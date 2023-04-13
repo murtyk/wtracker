@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 # trainees verification for unemployment
 class TraineesVerificationReport < Report
   attr_reader :trainees, :trainees_count
-  def post_initialize(params)
+
+  def post_initialize(_params)
     build_trainees
   end
 

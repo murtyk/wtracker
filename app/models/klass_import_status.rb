@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # captures status of import from a file
 class KlassImportStatus < ImportStatus
   def importer
@@ -10,6 +12,7 @@ class KlassImportStatus < ImportStatus
 
   def klasses
     return [] if data.blank?
+
     Klass.unscoped.where(id: data)
   end
 end

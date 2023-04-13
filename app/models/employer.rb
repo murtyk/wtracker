@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # Employer can be added through add menu, imported or
 # through job search.
 # typical search is on one or more of
 # sector, county and/or source
-class Employer < ActiveRecord::Base
+class Employer < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   include InteractionsMixins
 
@@ -21,7 +23,7 @@ class Employer < ActiveRecord::Base
   before_save :cb_before_save
 
   belongs_to :account
-  belongs_to :employer_source
+  belongs_to :employer_source, optional: true
   delegate :name, to: :employer_source, prefix: true
 
   has_one :address, as: :addressable, dependent: :destroy
@@ -34,7 +36,7 @@ class Employer < ActiveRecord::Base
   has_many :contacts, as: :contactable, dependent: :destroy
   has_many :klass_interactions, dependent: :destroy
   has_many :klass_events, through: :klass_interactions
-  has_many :klasses, -> { uniq }, through: :klass_events
+  has_many :klasses, -> { distinct }, through: :klass_events
 
   has_many :trainee_interactions, dependent: :destroy
   has_many :trainees, through: :trainee_interactions
@@ -45,7 +47,7 @@ class Employer < ActiveRecord::Base
 
   has_many :hot_jobs, dependent: :destroy
 
-  has_many :apprentices, class_name: Trainee
+  has_many :apprentices, class_name: 'Trainee'
 
   def formatted_address
     address ? address.gmaps4rails_address : ''
@@ -73,7 +75,7 @@ class Employer < ActiveRecord::Base
 
   def self.existing_employer_id(name, employer_source_id, lat, lng)
     emp = existing_employer(name, employer_source_id, lat, lng)
-    emp && emp.id
+    emp&.id
   end
 
   def self.existing_employer(name, employer_source_id, lat, lng)

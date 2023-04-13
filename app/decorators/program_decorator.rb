@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # decorator for program
 class ProgramDecorator < Draper::Decorator
   delegate_all
@@ -16,6 +18,7 @@ class ProgramDecorator < Draper::Decorator
 
   def user_klasses(user)
     return program_klasses if user.admin_access? || user.grants.include?(grant)
+
     assigned_klasses(user)
   end
 
@@ -28,10 +31,10 @@ class ProgramDecorator < Draper::Decorator
 
   def assigned_klasses(user)
     user.klasses
-      .includes(:college, :klass_certificates)
-      .where(program_id: id)
-      .order(klasses_order)
-      .decorate
+        .includes(:college, :klass_certificates)
+        .where(program_id: id)
+        .order(klasses_order)
+        .decorate
   end
 
   # below are for dashboard
@@ -49,9 +52,9 @@ class ProgramDecorator < Draper::Decorator
 
   def query_classes(predicate)
     klasses.joins(:college)
-      .where(predicate)
-      .order('colleges.name, start_date desc, end_date desc')
-      .decorate
+           .where(predicate)
+           .order('colleges.name, start_date desc, end_date desc')
+           .decorate
   end
 
   def classes_by_status
@@ -97,7 +100,7 @@ class ProgramDecorator < Draper::Decorator
 
     dividend = placed_count(klass_status) + continuing_education_count(klass_status)
     divider  = divisor(klass_status)
-    divider > 0 ? (dividend.to_f * 100 / divider).round(0).to_s + '%' : ''
+    divider.positive? ? "#{(dividend.to_f * 100 / divider).round(0)}%" : ''
   end
 
   def divisor(klass_status)

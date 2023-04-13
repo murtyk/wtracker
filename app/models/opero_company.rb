@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # for building company database overtime based on user searches
-class OperoCompany < ActiveRecord::Base
+class OperoCompany < ApplicationRecord
   alias_attribute(:phone_no, :phone)
 
   has_many :google_places_searches, dependent: :destroy
@@ -11,8 +13,8 @@ class OperoCompany < ActiveRecord::Base
 
   def self.create_from_gc(gc)
     oc = new
-    attrs = %w(city line1 state_code zip state_id county_id
-               latitude longitude name phone_no source website)
+    attrs = %w[city line1 state_code zip state_id county_id
+               latitude longitude name phone_no source website]
     attrs.each { |attr| oc.send("#{attr}=", gc.send(attr)) }
     oc.source = 'GP'
     oc.save
@@ -20,6 +22,6 @@ class OperoCompany < ActiveRecord::Base
   end
 
   def formatted_address
-    line1 + '<br>' + city + ',' + state_code + ' ' + zip
+    "#{line1}<br>#{city},#{state_code} #{zip}"
   end
 end

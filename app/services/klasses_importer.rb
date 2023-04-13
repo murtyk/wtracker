@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 
-KLASS_FIELDS =  %w(name description start_date end_date credits training_hours)
+KLASS_FIELDS = %w[name description start_date end_date credits training_hours].freeze
 # imports klasses from a file
 class KlassesImporter < Importer
   attr_reader :klasses, :program_id, :college_id
@@ -10,7 +12,7 @@ class KlassesImporter < Importer
 
     init_program_college(all_params)
 
-    fail 'program and college required for trainees import' unless college && program
+    raise 'program and college required for trainees import' unless college && program
 
     params = { program_id: @program_id, college_id: @college_id }
     file_name = all_params[:file].original_filename
@@ -26,11 +28,11 @@ class KlassesImporter < Importer
   end
 
   def program
-    Program.find(@program_id) if @program_id > 0
+    Program.find(@program_id) if @program_id.positive?
   end
 
   def college
-    College.find(@college_id) if @college_id > 0
+    College.find(@college_id) if @college_id.positive?
   end
 
   def header_fields

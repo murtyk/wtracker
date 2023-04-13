@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 # an Employer can have contacts.
 # Contact provides contactable interface
 # so can be used for contacts at other entities
-class Contact < ActiveRecord::Base
+class Contact < ApplicationRecord
   include ValidationsMixins
   default_scope { where(account_id: Account.current_id) }
 
   before_save :cb_before_save
 
   belongs_to :account
-  belongs_to :contactable, polymorphic: true
+  belongs_to :contactable, polymorphic: true, optional: true
 
   has_many :contact_emails, dependent: :destroy
 
@@ -21,7 +23,7 @@ class Contact < ActiveRecord::Base
   end
 
   def name
-    (first || '') + ' ' + (last || '')
+    "#{first || ''} #{last || ''}"
   end
 
   # def self.new_with_contactable(params)

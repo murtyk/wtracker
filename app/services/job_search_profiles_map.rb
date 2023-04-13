@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # wrapper for rendering trainees based on job search profile
 class JobSearchProfilesMap < MapService
   attr_reader :error
@@ -5,6 +7,7 @@ class JobSearchProfilesMap < MapService
   def initialize(trainees)
     @trainees = trainees
     return unless trainees
+
     generate_markers_json
   end
 

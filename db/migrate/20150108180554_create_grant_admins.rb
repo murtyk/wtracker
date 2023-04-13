@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGrantAdmins < ActiveRecord::Migration
   def change
     create_table :grant_admins do |t|

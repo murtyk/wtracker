@@ -1,4 +1,6 @@
-class KlassTitlePolicy < Struct.new(:user, :klass_title)
+# frozen_string_literal: true
+
+KlassTitlePolicy = Struct.new(:user, :klass_title) do
   def new?
     user.admin_or_director? || user.grant_admin?
   end

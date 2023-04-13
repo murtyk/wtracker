@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # when user adds new hot jobs, trainees will be notified
 class HotJobsNotifier
   attr_accessor :notifications
+
   def initialize
     @notifications = []
   end
@@ -22,10 +25,12 @@ class HotJobsNotifier
     Account.all.each do |account|
       Account.current_id = account.id
       next unless any_new_hot_jobs?
+
       Grant.all.each do |grant|
         Grant.current_id = grant.id
         @grant = grant
         next unless allow_notifications?
+
         @notifications << notification
       end
     end

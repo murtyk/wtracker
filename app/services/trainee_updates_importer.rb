@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 include UtilitiesHelper
 
-TRAINEE_FIELDS = %w(id dob_date edp_date assessment_name assessment_date trainee_id)
+TRAINEE_FIELDS = %w[id dob_date edp_date assessment_name assessment_date
+                    trainee_id].freeze
 
 # imports trainee updates from a file
 class TraineeUpdatesImporter < Importer
@@ -35,9 +38,7 @@ class TraineeUpdatesImporter < Importer
 
     trainee.trainee_id = row[:trainee_id] if row[:trainee_id]
 
-    if row[:assessment_name] && row[:assessment_date]
-      init_assessement(trainee, row)
-    end
+    init_assessement(trainee, row) if row[:assessment_name] && row[:assessment_date]
 
     trainee.save!
 
@@ -46,7 +47,8 @@ class TraineeUpdatesImporter < Importer
 
   def init_assessement(trainee, row)
     assessment = Assessment.find_by(name: row[:assessment_name])
-    fail "assessment #{row[:assessment_name]} not found" unless assessment
+    raise "assessment #{row[:assessment_name]} not found" unless assessment
+
     dt = clean_date(row[:assessment_date])
     trainee
       .trainee_assessments

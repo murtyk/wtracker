@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # a trainee assigned to a class
 # trainee has a status in a class
-class KlassTrainee < ActiveRecord::Base
+class KlassTrainee < ApplicationRecord
   STATUSES = { 1 => 'Enrolled', 2 => 'Completed',
-               3 => 'Dropped', 4 => 'Placed', 5 => 'Continuing Education' }
+               3 => 'Dropped', 4 => 'Placed', 5 => 'Continuing Education' }.freeze
 
   default_scope { where(account_id: Account.current_id) }
 
@@ -40,12 +42,14 @@ class KlassTrainee < ActiveRecord::Base
 
   private
 
-  EMP_ATTRS = %w(employer_id employer_name hire_title
-                 hire_salary start_date comment)
+  EMP_ATTRS = %w[employer_id employer_name hire_title
+                 hire_salary start_date comment].freeze
   def copy_employer_interaction_details
     return unless id && hired? && trainee
+
     ei = trainee.hired_employer_interaction
     return unless ei
+
     EMP_ATTRS.each { |attr| send("#{attr}=", ei.send(attr)) }
   end
 
@@ -55,6 +59,6 @@ class KlassTrainee < ActiveRecord::Base
   end
 
   def determine_status
-    self.status = 4 if trainee && trainee.hired?
+    self.status = 4 if trainee&.hired?
   end
 end

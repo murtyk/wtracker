@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class SpecListener
-  def start(notification)
-    puts "**Running before the entire suite**"
+  def start(_notification)
+    puts '**Running before the entire suite**'
   end
 
-  def example_started(notification)
-    puts "**Running before each example**"
+  def example_started(_notification)
+    puts '**Running before each example**'
   end
 
   # for profiling specs
@@ -12,7 +14,7 @@ class SpecListener
     # puts n.example.full_description + ":   " + n.example.execution_result.run_time.to_s
   end
 
-  def example_failed(notification)
-    puts "**This example failed :(**"
+  def example_failed(_notification)
+    puts '**This example failed :(**'
   end
 end

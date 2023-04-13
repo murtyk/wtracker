@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # decorator for Contact
 class ContactDecorator < Draper::Decorator
   delegate_all
@@ -12,21 +14,25 @@ class ContactDecorator < Draper::Decorator
   #   end
   def title
     return nil if object.title.blank?
+
     '<br>'.html_safe + object.title
   end
 
   def land_no
     return nil if object.land_no.blank?
-    '<br>'.html_safe + h.format_phone_no(object.land_no, ext) + '(w)'
+
+    "#{'<br>'.html_safe}#{h.format_phone_no(object.land_no, ext)}(w)"
   end
 
   def mobile_no
     return nil if object.mobile_no.blank?
-    '<br>'.html_safe + h.format_phone_no(object.mobile_no) + '(m)'
+
+    "#{'<br>'.html_safe}#{h.format_phone_no(object.mobile_no)}(m)"
   end
 
   def email
     return nil if object.email.blank?
+
     '<br>'.html_safe + object.email
   end
 

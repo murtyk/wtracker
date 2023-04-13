@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 # trainee dashboard metrics for a grant with auto job leads
 class AutoLeadsMetrics < DashboardMetrics
   attr_reader :trainees, :map, :skill_metrics
 
-  METHOD_MAP =  { PENDING:     'trainees_pending_job_search_profiles',
-                  NOT_PENDING: 'trainees_with_valid_job_search_profiles',
-                  VIEWED:      'trainees_viewed_auto_leads',
-                  NOT_VIEWED:  'trainees_not_viewed_auto_leads',
-                  APPLIED:     'trainees_applied_auto_leads',
-                  NOT_APPLIED: 'trainees_not_applied_auto_leads',
-                  OPTED_OUT:   'trainees_opted_out' }
+  METHOD_MAP = { PENDING: 'trainees_pending_job_search_profiles',
+                 NOT_PENDING: 'trainees_with_valid_job_search_profiles',
+                 VIEWED: 'trainees_viewed_auto_leads',
+                 NOT_VIEWED: 'trainees_not_viewed_auto_leads',
+                 APPLIED: 'trainees_applied_auto_leads',
+                 NOT_APPLIED: 'trainees_not_applied_auto_leads',
+                 OPTED_OUT: 'trainees_opted_out' }.freeze
 
   def initialize(params)
     @page = params[:page]
-    @template = path_dir + 'index'
+    @template = "#{path_dir}index"
     init_by_status(params) if params[:status]
     init_skill_metrics if params[:skill_metrics]
   end
@@ -30,7 +32,7 @@ class AutoLeadsMetrics < DashboardMetrics
   # link from dashboard
   def init_skill_metrics
     @skill_metrics = SkillMetrics.new.generate
-    @template = path_dir + 'skill_metrics'
+    @template = "#{path_dir}skill_metrics"
   end
 
   # link from dashboard
@@ -38,6 +40,7 @@ class AutoLeadsMetrics < DashboardMetrics
     by_status(params[:status])
 
     return unless params[:map]
+
     jsp_map = JobSearchProfilesMap.new(trainees)
     @map = jsp_map.map
     @template += '_map'
@@ -49,9 +52,9 @@ class AutoLeadsMetrics < DashboardMetrics
     @template = path_dir + status_method
     ids = send(status_method)
     @trainees = Trainee.includes(:job_search_profile)
-                .where(id: ids)
-                .order(:first, :last)
-                .paginate(page: @page, per_page: 40)
+                       .where(id: ids)
+                       .order(:first, :last)
+                       .paginate(page: @page, per_page: 40)
   end
 
   def trainee_job_counts
@@ -84,7 +87,7 @@ class AutoLeadsMetrics < DashboardMetrics
 
   def trainees_with_valid_job_search_profiles
     JobSearchProfile.where(trainee_id: trainee_ids)
-      .where('skills is not null').pluck(:trainee_id)
+                    .where('skills is not null').pluck(:trainee_id)
   end
 
   def trainees_pending_job_search_profiles

@@ -1,4 +1,6 @@
-class MentorPolicy < Struct.new(:user, :trainee_service)
+# frozen_string_literal: true
+
+MentorPolicy = Struct.new(:user, :trainee_service) do
   def new?
     user.admin_or_director? || user.navigator?
   end

@@ -1,4 +1,6 @@
-class EmployerSourcePolicy < Struct.new(:user, :employer_sector)
+# frozen_string_literal: true
+
+EmployerSourcePolicy = Struct.new(:user, :employer_sector) do
   def new?
     user.admin_access?
   end

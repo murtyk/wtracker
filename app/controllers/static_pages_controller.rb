@@ -1,6 +1,7 @@
-class StaticPagesController < ApplicationController
-  before_filter :authenticate_user!
+# frozen_string_literal: true
 
-  def home
-  end
+class StaticPagesController < ApplicationController
+  before_action :authenticate_user!
+
+  def home; end
 end

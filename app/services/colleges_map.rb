@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # wrapper for rendering colleges on a map
 class CollegesMap < MapService
   attr_reader :colleges
+
   def initialize
     init_addresses
     init_klasses_counts
@@ -8,7 +11,7 @@ class CollegesMap < MapService
   end
 
   def init_addresses
-    @colleges  = College.includes(:address)
+    @colleges = College.includes(:address)
     college_ids = @colleges.pluck(:id)
     @addresses = Address
                  .includes(:addressable)

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 # email attachment which gets stored on s3
 # on delete, we should delete on s3 also
-class Attachment < ActiveRecord::Base
+class Attachment < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   before_destroy :cb_before_destroy
 
   belongs_to :account
-  belongs_to :email
+  belongs_to :email, optional: true
 
   private
 

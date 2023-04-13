@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddEmpoyerIdToTrainee < ActiveRecord::Migration
   def change
     add_reference :trainees, :employer, index: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AssessmentsController < ApplicationController
   before_action :authenticate_user!
 
@@ -14,7 +16,7 @@ class AssessmentsController < ApplicationController
       render json: assessment.errors, status: 422
     end
 
-    return
+    nil
   end
 
   def index

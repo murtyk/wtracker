@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEmployerFiles < ActiveRecord::Migration
   def change
     create_table :employer_files do |t|

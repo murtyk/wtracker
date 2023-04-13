@@ -1,19 +1,21 @@
+# frozen_string_literal: true
+
 # trainee enters job search parameters
-class JobSearchProfile < ActiveRecord::Base
+class JobSearchProfile < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_skills,
                   against: :skills,
                   using: { tsearch: { any_word: true } }
 
-  belongs_to :account
-  belongs_to :trainee
+  belongs_to :account, optional: true
+  belongs_to :trainee, optional: true
 
   validate :validate_search_params, :validate_opt_out_params
   before_save :cb_before_save
 
   OPT_OUT_REASONS = { 1 => 'Found Employment',
                       2 => 'No longer looking for work',
-                      3 => 'Moved out of the area' }
+                      3 => 'Moved out of the area' }.freeze
 
   def trainee
     Trainee.unscoped.find(trainee_id)
@@ -63,6 +65,7 @@ class JobSearchProfile < ActiveRecord::Base
     grant = Grant.unscoped.find(trainee.grant_id)
     return grant.optout_message_one.content if opt_out_reason_code == 1
     return grant.optout_message_two.content if opt_out_reason_code == 2
+
     grant.optout_message_three.content
   end
 
@@ -70,11 +73,13 @@ class JobSearchProfile < ActiveRecord::Base
     jobs = jobs_with_status(status)
 
     return jobs unless !show_all && recent_job_lead
+
     jobs.where('created_at >= :sd', sd: recent_job_lead.created_at.to_date)
   end
 
   def jobs_with_status(status)
     return trainee.auto_shared_jobs.order(date_posted: :desc) unless status
+
     status_codes = AutoSharedJob.status_codes(status)
     trainee
       .auto_shared_jobs
@@ -99,8 +104,8 @@ class JobSearchProfile < ActiveRecord::Base
   def location_error_messages
     msgs = [errors[:location][0], errors[:zip][0]].compact
     msgs.map { |m| "<br><span style='color: #B94A48'>#{m}</span>" }
-      .join('')
-      .html_safe
+        .join('')
+        .html_safe
   end
 
   private
@@ -143,6 +148,7 @@ class JobSearchProfile < ActiveRecord::Base
   def validate_zip(zip)
     return false unless zip
     return false unless zip.to_s.delete('^0-9').size > 4
+
     city = City.find_by(zip: zip) || GeoServices.findcity('', zip)
     # errors.add(:zip, 'location not found for this zip code') unless city
     !city.blank?
@@ -161,7 +167,8 @@ class JobSearchProfile < ActiveRecord::Base
 
   def validate_skills
     size = skills.to_s.size
-    return true if size > 0 && size < 421
+    return true if size.positive? && size < 421
+
     errors.add(:skills, "can't be blank") if skills.blank? || trimmed_skills.blank?
     errors.add(:skills, "size(#{size}) exceeds 420 characters.") if size > 420
     false
@@ -176,11 +183,12 @@ class JobSearchProfile < ActiveRecord::Base
       .split(',')
       .map { |kw| kw.blank? ? nil : kw.squish }
       .compact
-      .join(",")
+      .join(',')
   end
 
   def validate_distance
     return true unless distance.blank?
+
     errors.add(:distance, "can't be blank")
     false
   end
@@ -194,21 +202,24 @@ class JobSearchProfile < ActiveRecord::Base
   def validate_optout_data
     return true unless opt_out_reason_code == 1
 
-    [:company_name, :title, :start_date].each do |attr|
+    %i[company_name title start_date].each do |attr|
       errors.add(attr, "can't be blank") if send(attr).blank?
     end
   end
 
   def validate_optout_reason_text
     return true unless opt_out_reason && opt_out_reason.length > 254
+
     errors.add(:opt_out_reason, 'please limit to 255 characters')
   end
 
   def cb_before_save
     return true if zip.blank? && location.blank?
+
     city = find_city
     unless city
-      errors.add(:zip, "city not found for zip:#{zip} location: #{location} trainee_id: #{trainee_id}")
+      errors.add(:zip,
+                 "city not found for zip:#{zip} location: #{location} trainee_id: #{trainee_id}")
       return false
     end
     self.location = "#{city.name},#{city.state_code}"
@@ -216,8 +227,9 @@ class JobSearchProfile < ActiveRecord::Base
 
   def find_city
     return GeoServices.findcity(location, '') if zip.blank?
+
     City.find_by(zip: zip) ||
-    GeoServices.findcity('', zip) ||
-    GeoServices.findcity(location, '')
+      GeoServices.findcity('', zip) ||
+      GeoServices.findcity(location, '')
   end
 end

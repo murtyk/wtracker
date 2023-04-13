@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 class Admin
   # for admin to search for a city or get it added
   class CitiesController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     def show
       @city = City.find(params[:id])
     end
 
     def index
-      if params[:filters]
-        @cities = find_cities.paginate(page: params[:page], per_page: 30)
-      else
-        @cities = []
-      end
+      @cities = if params[:filters]
+                  find_cities.paginate(page: params[:page], per_page: 30)
+                else
+                  []
+                end
     end
 
     private

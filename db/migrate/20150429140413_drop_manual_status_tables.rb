@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropManualStatusTables < ActiveRecord::Migration
   def change
     remove_column :trainees, :gts_id

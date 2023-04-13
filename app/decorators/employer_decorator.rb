@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # decorator for employer
 # mainly used in show action
 class EmployerDecorator < Draper::Decorator
@@ -14,6 +16,7 @@ class EmployerDecorator < Draper::Decorator
 
   def website_link
     return nil unless website?
+
     h.link_to(website, class: 'btn btn-flat btn-mini btn-info',
                        rel: 'tooltip', title: 'Visit Website', target: '_blank') do
       '<i class="icon-external-link white"></i>'.html_safe
@@ -22,6 +25,7 @@ class EmployerDecorator < Draper::Decorator
 
   def phone_no
     return nil unless policy.show_contacts?
+
     "Main Phone No:#{h.format_phone_no(object.phone_no)}"
   end
 
@@ -31,6 +35,7 @@ class EmployerDecorator < Draper::Decorator
 
   def created_date
     return nil unless policy.show_source?
+
     "<b>Create Date:</b>#{object.created_at.to_date}".html_safe
   end
 
@@ -45,6 +50,7 @@ class EmployerDecorator < Draper::Decorator
 
   def contacts_header
     return unless policy.show_contacts?
+
     "<h4>
     Contacts
     #{h.button_new_association(Contact, contactable_id: id,
@@ -56,6 +62,7 @@ class EmployerDecorator < Draper::Decorator
 
   def contacts
     return [] unless policy.show_contacts?
+
     object.contacts.decorate
   end
 
@@ -65,6 +72,7 @@ class EmployerDecorator < Draper::Decorator
 
   def trainee_interactions_header
     return nil unless TraineeInteractionPolicy.new(h.current_user).index?
+
     html = '<h4>' \
            'Trainees Hired' \
            '</h4>'
@@ -73,16 +81,19 @@ class EmployerDecorator < Draper::Decorator
 
   def trainee_submits_header
     return nil unless policy.show_trainee_submits?
+
     '<h4>Trainees Applied For Jobs</h4>'.html_safe
   end
 
   def trainee_submits
     return [] unless policy.show_trainee_submits?
+
     object.trainee_submits
   end
 
   def hot_jobs_header
     return unless policy.show_hot_jobs?
+
     "<h4>
     Hot Jobs
     #{h.button_new_association(HotJob, employer_id: employer.id)}
@@ -91,6 +102,7 @@ class EmployerDecorator < Draper::Decorator
 
   def job_openings_header
     return unless policy.show_job_openings?
+
     "<h4>
     Job Openings
     #{h.button_new_association(JobOpening, employer_id: employer.id)}
@@ -99,11 +111,13 @@ class EmployerDecorator < Draper::Decorator
 
   def job_openings
     return [] unless policy.show_job_openings?
+
     object.job_openings
   end
 
   def notes_header
     return unless policy.show_notes?
+
     btn_class = 'btn btn-flat btn-small btn-primary pull-right'
     "<h4>
     Notes
@@ -118,11 +132,13 @@ class EmployerDecorator < Draper::Decorator
 
   def employer_notes
     return [] unless policy.show_notes?
+
     object.employer_notes
   end
 
   def klass_interactions_header
     return unless policy.show_klass_interactions?
+
     "<h4>
     Class Interactions
     #{ h.plus_button(KlassInteraction,

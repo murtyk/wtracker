@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # user can be director, admin, navigator or instructor
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include UserRoleMixins
 
-  STATUSES       = { 1 => 'Active', 2 => 'Not Active' }
-  COPY_JOB_LEADS_OPTIONS = { 0 => 'Do not copy', 1 => 'Copy me' }
+  STATUSES = { 1 => 'Active', 2 => 'Not Active' }.freeze
+  COPY_JOB_LEADS_OPTIONS = { 0 => 'Do not copy', 1 => 'Copy me' }.freeze
 
   serialize :options
 
@@ -46,7 +48,7 @@ class User < ActiveRecord::Base
 
   has_many :job_searches, -> { order 'id DESC' }, dependent: :destroy
   has_many :job_shares, -> { order 'created_at DESC' },
-           foreign_key: 'from_id',  dependent: :destroy
+           foreign_key: 'from_id', dependent: :destroy
 
   has_many :klass_navigators, dependent: :destroy
   has_many :navigator_klasses, through: :klass_navigators, source: :klass
@@ -58,8 +60,8 @@ class User < ActiveRecord::Base
   has_many :grants, through: :grant_admins
   accepts_nested_attributes_for :grants
 
-  has_many :emails, dependent: :destroy   # sent emails
-  has_many :trainee_emails, dependent: :destroy   # sent emails
+  has_many :emails, dependent: :destroy # sent emails
+  has_many :trainee_emails, dependent: :destroy # sent emails
 
   has_many :user_counties, dependent: :destroy
   accepts_nested_attributes_for :user_counties
@@ -84,7 +86,8 @@ class User < ActiveRecord::Base
 
   def copy_job_shares?
     return true unless options[:copy_job_shares]
-    options[:copy_job_shares] > 0 # 0 means do not forward
+
+    options[:copy_job_shares].positive? # 0 means do not forward
   end
 
   def copy_job_shares=(pref)
@@ -115,7 +118,7 @@ class User < ActiveRecord::Base
     "#{first} #{last}"
   end
 
-  alias_method :user_name, :name
+  alias user_name name
 
   def online?
     # debugger
@@ -129,13 +132,14 @@ class User < ActiveRecord::Base
   end
 
   def acts_as_admin?
-    acts_as_admin.to_i > 0
+    acts_as_admin.to_i.positive?
   end
 
   def active_grants
     # debugger
     return Grant.order(:name) if admin_or_director?
     return active_grants_of_navigator if navigator?
+
     active_grants_of_instructor
   end
 
@@ -151,6 +155,7 @@ class User < ActiveRecord::Base
 
     ks = klasses.includes(:college).order(order).map { |k| [k.to_label, k.id] }
     return [['All', 0]] + ks if ks.any? && all_option
+
     ks
   end
 
@@ -163,9 +168,9 @@ class User < ActiveRecord::Base
   end
 
   def deletable?
-    KlassNavigator.unscoped.where(user_id: id).count == 0 &&
-    GrantAdmin.unscoped.where(user_id: id).count == 0 &&
-    Applicant.unscoped.where(navigator_id: id).count == 0
+    KlassNavigator.unscoped.where(user_id: id).count.zero? &&
+      GrantAdmin.unscoped.where(user_id: id).count.zero? &&
+      Applicant.unscoped.where(navigator_id: id).count.zero?
   end
 
   private

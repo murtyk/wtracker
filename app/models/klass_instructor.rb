@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # instructors assigned to a class
-class KlassInstructor < ActiveRecord::Base
+class KlassInstructor < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   belongs_to :klass
   belongs_to :user

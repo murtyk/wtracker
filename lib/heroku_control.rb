@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'platform-api'
 
 # Simple class to interact with Heroku's platform API, allowing
 # you to start and stop worker dynos.
 class HerokuControl
-
   API_TOKEN     = ENV['HEROKU_OAUTH_TOKEN']
   WORKERS_COUNT = ENV['TAPO_WORKERS_COUNT']
   WORKERS_NAME_PREFIX = ENV['TAPO_WORKERS_PREFIX']
@@ -25,12 +26,12 @@ class HerokuControl
 
   def self.set_auto_leads_workers(quantity)
     1.upto(WORKERS_COUNT.to_i) do |n|
-      app_name = WORKERS_NAME_PREFIX + '-' + n.to_s
-      self.worker_set_quantity(app_name, quantity)
+      app_name = "#{WORKERS_NAME_PREFIX}-#{n}"
+      worker_set_quantity(app_name, quantity)
     end
   end
 
   def self.worker_set_quantity(app_name, quantity)
-    heroku.formation.update(app_name, 'worker', {"quantity" => quantity.to_s})
+    heroku.formation.update(app_name, 'worker', { 'quantity' => quantity.to_s })
   end
 end

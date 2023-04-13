@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'httparty'
 require 'mechanize'
+require 'random_ip'
 
 # Struct.new('Jd', :details_url_type, :destination_url, :details)
 # wrapper for indeed api
@@ -32,10 +35,10 @@ class Indeed
 
     @page_size    = args[:page_size] || 25
     @distance     = args[:distance] || 10
-    @distance     = 5 if @distance == 0
+    @distance     = 5 if @distance.zero?
     @days         = args[:days] || 0
     @current_page = args[:page] || 1
-    @keywords     = args[:keywords].join(',').gsub(" ", "+")
+    @keywords     = args[:keywords].join(',').gsub(' ', '+')
 
     @url = ''
     @jobs = nil
@@ -43,7 +46,7 @@ class Indeed
   end
 
   def init_location
-    @location = [city.to_s,state.to_s].join(",")
+    @location = [city.to_s, state.to_s].join(',')
     @location = zip if location.blank?
     @location.sub! ' ', '+'
   end
@@ -52,12 +55,12 @@ class Indeed
     @city  = args[:city]
     @state = args[:state]
     @zip = args[:zip]
-    fail 'indeed - search jobs - missing keywords' if args[:keywords].blank?
+    raise 'indeed - search jobs - missing keywords' if args[:keywords].blank?
 
     init_location
     location_present = !zip.blank? || !location.blank?
 
-    fail "Indeed location missing" unless location_present
+    raise 'Indeed location missing' unless location_present
   end
 
   def next
@@ -85,8 +88,7 @@ class Indeed
              city: city,
              state: state,
              distance: distance,
-             days: days
-            }
+             days: days }
     indeed = Indeed.new
     indeed.search_jobs(args)
     indeed.count
@@ -114,11 +116,11 @@ class Indeed
   private
 
   def self.parse_details(page)
-    doc   = page.parser
-    nx  = doc.css('.summary') # Nokogiri::XML::NodeSet
+    doc = page.parser
+    nx = doc.css('.summary') # Nokogiri::XML::NodeSet
     details = build_details(nx[0])
     encode(details)
-  rescue
+  rescue StandardError
     ''
   end
 
@@ -130,7 +132,7 @@ class Indeed
 
   def build_details_list(nodes)
     '<ul>' +
-      nodes.map { |node| '<li>' + node.text + '</li>' }.join +
+      nodes.map { |node| "<li>#{node.text}</li>" }.join +
       '</ul>'
   end
 
@@ -139,11 +141,11 @@ class Indeed
 
     begin
       response        = HTTParty.get(@url)
-      parsed_response =  symbolize response.parsed_response
+      parsed_response = symbolize response.parsed_response
       parse_header(parsed_response)
       @jobs = parse_jobs(parsed_response[:results])
     rescue StandardError => e
-      @error = 'Indeed Error - ' + e.to_s
+      @error = "Indeed Error - #{e}"
       @jobs = []
       @count = 0
     end
@@ -164,15 +166,15 @@ class Indeed
   end
 
   def q_start
-    '&start=' + ((@current_page - 1) * @page_size).to_s
+    "&start=#{(@current_page - 1) * @page_size}"
   end
 
   def q_limit
-    '&limit=' + @page_size.to_s
+    "&limit=#{@page_size}"
   end
 
   def q_fromage
-    '&fromage=' + @days.to_s
+    "&fromage=#{@days}"
   end
 
   def q_user_info
@@ -189,21 +191,21 @@ class Indeed
 
   def symbolize(obj)
     if obj.is_a? Hash
-      return obj.each_with_object({}) { |(k, v), memo| memo[k.to_sym] =  symbolize(v) }
+      return obj.each_with_object({}) { |(k, v), memo| memo[k.to_sym] = symbolize(v) }
     end
-    if obj.is_a? Array
-      return obj.each_with_object([]) { |v, memo| memo << symbolize(v) }
-    end
+    return obj.each_with_object([]) { |v, memo| memo << symbolize(v) } if obj.is_a? Array
+
     obj
   end
 
-  ENCODING_OPTIONS = {
-    invalid:          :replace,  # Replace invalid byte sequences
-    undef:            :replace,  # Replace anything not defined in ASCII
-    replace:          '',        # Use a blank for those replacements
-    universal_newline: true       # Always break lines with \n
-  }
   def encode(s)
-    s.encode Encoding.find('ASCII'), ENCODING_OPTIONS
+    options = {
+      invalid: :replace, # Replace invalid byte sequences
+      undef: :replace, # Replace anything not defined in ASCII
+      replace: '', # Use a blank for those replacements
+      universal_newline: true       # Always break lines with \n
+    }
+
+    s.encode(Encoding.find('ASCII'), **options)
   end
 end

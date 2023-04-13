@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # a Grant or College account can have multiple programs
 # and many classes in a program
-class Program < ActiveRecord::Base
+class Program < ApplicationRecord
   KLASSES_ORDER = 'colleges.name, start_date desc, end_date desc'
 
   default_scope { where(account_id: Account.current_id) }
@@ -10,14 +12,16 @@ class Program < ActiveRecord::Base
 
   belongs_to :grant
   belongs_to :account
-  belongs_to :sector
-  belongs_to :klass_category
+  belongs_to :sector, optional: true
+  belongs_to :klass_category, optional: true
 
   has_many :klasses, dependent: :destroy
   has_many :klass_interactions, through: :klasses
 
   has_many :scheduled_classes,
-           -> { includes(:college).where('start_date > ?', Date.today).order(KLASSES_ORDER) },
+           lambda {
+             includes(:college).where('start_date > ?', Date.today).order(KLASSES_ORDER)
+           },
            class_name: 'Klass'
 
   has_many :ongoing_classes,
@@ -45,6 +49,7 @@ class Program < ActiveRecord::Base
   def program_klasses
     Klass.unscoped.where(program_id: id)
   end
+
   # need this for grants list
   def trainees_count
     KlassTrainee.unscoped.where(klass_id: program_klasses.pluck(:id)).count
@@ -52,9 +57,10 @@ class Program < ActiveRecord::Base
 
   def trainee_ids
     return @trainee_ids if @trainee_ids
+
     klass_ids = klasses.pluck(:id)
     @trainee_ids = KlassTrainee.unscoped.select(:trainee_id)
-                   .where(klass_id: klass_ids).pluck(:trainee_id).uniq
+                               .where(klass_id: klass_ids).pluck(:trainee_id).uniq
     @trainee_ids
   end
 end

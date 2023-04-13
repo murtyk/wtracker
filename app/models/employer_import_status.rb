@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # state of employers file import
 class EmployerImportStatus < ImportStatus
   def importer
@@ -10,6 +12,7 @@ class EmployerImportStatus < ImportStatus
 
   def employers
     return [] if data.blank?
+
     Employer.unscoped.where(id: data)
   end
 end

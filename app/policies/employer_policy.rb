@@ -1,4 +1,6 @@
-class EmployerPolicy < Struct.new(:user, :employer)
+# frozen_string_literal: true
+
+EmployerPolicy = Struct.new(:user, :employer) do
   def new?
     user.admin_or_director? || user.navigator?
   end
@@ -15,7 +17,8 @@ class EmployerPolicy < Struct.new(:user, :employer)
   def edit?
     return true if user.admin_access?
     return true if Grant.current_grant.scoped_employers
-    user.employer_sources.include? (employer.employer_source)
+
+    user.employer_sources.include?(employer.employer_source)
   end
 
   def update?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # typically gets instantiated in a job search analysis
 # might correspond to an existing employer hence employer_id
 # or might correspond to an opero company - hence opero_company_id
@@ -6,13 +8,8 @@
 class Company
   include CacheHelper
 
-  attr_reader :poster_name, :poster_location, :poster_city_id,
-              :employer_source_id,
-              :poster_city_name, :poster_county_name, :poster_state_code
-
-  attr_reader :titles, :duplicate, :found, :searched, :circles
-
-  attr_reader :google_company, :score, :gps_id, :opero_company_id
+  attr_reader :poster_name, :poster_location, :poster_city_id, :employer_source_id,
+              :poster_city_name, :poster_county_name, :poster_state_code, :titles, :duplicate, :found, :searched, :circles, :google_company, :score, :gps_id, :opero_company_id
   attr_accessor :employer_id
 
   def initialize(p_name, p_location, user)
@@ -64,6 +61,7 @@ class Company
     @searched = true
 
     return unless @found
+
     @employer_id      = cache[:employer_id]
     @opero_company_id = cache[:opero_company_id]
     @gps_id           = cache[:gps_id]
@@ -74,6 +72,7 @@ class Company
   def info_for_add
     return nil unless found
     return { opero_company_id: opero_company_id } if opero_company_id
+
     google_company.info_for_add
   end
 
@@ -81,7 +80,8 @@ class Company
     return -1 if poster_name.blank? || poster_location.blank?
     return  0 unless searched
     return  1 unless found
-    employer_id.to_i == 0 ? 2 : 3
+
+    employer_id.to_i.zero? ? 2 : 3
     # 3: searched, found and employer_id > 0
   end
 
@@ -94,7 +94,7 @@ class Company
   end
 
   def county
-    poster_state_code.to_s  + ' - ' + poster_county_name.to_s
+    "#{poster_state_code} - #{poster_county_name}"
   end
 
   def add_title(title_and_url)
@@ -121,6 +121,7 @@ class Company
     return 'success' if score > 95
     return 'info'    if score > 75
     return 'warning' if score > 65
+
     'error-row'
   end
 
@@ -137,7 +138,10 @@ class Company
   end
 
   def name_location_formatted
-    "#{poster_name}::#{poster_location}".gsub!(',', '---')
+    [
+      poster_name.gsub(',', '---').squish,
+      poster_location.gsub(',', '---').squish,
+    ].join('::')
   end
 
   def poster_name_location_id
@@ -153,11 +157,11 @@ class Company
   end
 
   def cache_key
-    good_key(poster_name.to_s + '::' + poster_city_id.to_s)
+    good_key("#{poster_name}::#{poster_city_id}")
   end
 
   def good_key(key)
-    key.gsub(/[*'`&]/,  '*' => '-s-', "'" => '-q-', '`' => '-a-', '&' => '-m-')
+    key.gsub(/[*'`&]/, '*' => '-s-', "'" => '-q-', '`' => '-a-', '&' => '-m-')
   end
 
   def found_employer(employer, score)
@@ -195,6 +199,7 @@ class Company
 
   def object
     return @object if @object
+
     @object   = Employer.find(employer_id) if employer_id
     @object ||= OperoCompany.find(opero_company_id) if opero_company_id
     @object ||= google_company

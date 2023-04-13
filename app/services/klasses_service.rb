@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # for klasses index action
 class KlassesService
   attr_reader :programs_data, :user_id, :account_id, :grant_id
@@ -113,11 +115,12 @@ class KlassesService
   end
 
   def klass_fs_counts(klass_id)
-    funding_sources.map{ |fs| fs_trainees_count(klass_id, fs.id) }
+    funding_sources.map { |fs| fs_trainees_count(klass_id, fs.id) }
   end
 
   def fs_trainees_count(klass_id, fs_id)
-    @fs_counts ||= KlassTrainee.joins(:trainee, :klass).group(:klass_id, :funding_source_id).count
+    @fs_counts ||= KlassTrainee.joins(:trainee, :klass).group(:klass_id,
+                                                              :funding_source_id).count
 
     @fs_counts[[klass_id, fs_id]]
   end

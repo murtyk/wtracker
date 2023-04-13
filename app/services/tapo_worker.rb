@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TapoWorker
   include HTTParty
   attr_reader :id
@@ -23,7 +25,7 @@ class TapoWorker
   end
 
   def api_authorization_header
-    api_headers.merge('Authorization' =>  @auth_token)
+    api_headers.merge('Authorization' => @auth_token)
   end
 
   def sign_in

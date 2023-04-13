@@ -1,11 +1,12 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 # for finding valid address, city, county or latlong
 class GeoServices
   ADMIN_LVL2 = 'administrative_area_level_2'
   def self.parse(location)
     # debugger
     searchres = perform_search location
-    fail "Geocoding failed for address #{location}" if searchres.size == 0
+    raise "Geocoding failed for address #{location}" if searchres.size.zero?
 
     result = searchres[0]
     addr = build_address_object_from_result(result)
@@ -32,12 +33,12 @@ class GeoServices
   def self.build_address_object_from_result(result)
     addr = Address.new
 
-    address_attributes = %w(street_address city postal_code state_code latitude longitude)
+    address_attributes = %w[street_address city postal_code state_code latitude longitude]
     address_attributes.each { |attr| addr.send("#{attr}=", result.send(attr)) }
 
     county_components = result.address_components_of_type(ADMIN_LVL2)
     addr.county = county_components &&
-      county_components[0] && county_components[0]['long_name']
+                  county_components[0] && county_components[0]['long_name']
 
     addr
   end
@@ -83,6 +84,7 @@ class GeoServices
 
   def self.search_for_city_state(location)
     return [] if location.downcase == 'nationwide'
+
     results = perform_search(location)
     return [] if results.empty?
 
@@ -110,6 +112,7 @@ class GeoServices
       results = perform_search([data.latitude, data.longitude])
       c_component = results && results[0].address_components_of_type(ADMIN_LVL2)[0]
       return nil unless c_component
+
       county_name = c_component['short_name']
     end
 
@@ -152,17 +155,19 @@ class GeoServices
   def self.latlong(location)
     r = perform_search(location)
     return nil if r.blank?
+
     [r[0].latitude, r[0].longitude]
   end
 
   def self.perform_search(location)
     result = Geocoder.search(location)
     return result unless result.blank?
+
     # try one more time
     sleep 1
     Geocoder.search(location)
-  rescue StandardError => error
-    Rails.logger.error("GeoServices: location: #{location} error: #{error}")
+  rescue StandardError => e
+    Rails.logger.error("GeoServices: location: #{location} error: #{e}")
     []
   end
 end

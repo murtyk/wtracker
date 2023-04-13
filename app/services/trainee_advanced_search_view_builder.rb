@@ -1,15 +1,18 @@
+# frozen_string_literal: true
+
 # for building header or row for advanced search trainees
 # includes columns based on grant type
 # returns row as an array
 class TraineeAdvancedSearchViewBuilder
   attr_accessor :grant, :tas, :for_xml
+
   def initialize(grant, tas, for_excel = true)
     @grant = grant
     @tas = tas
     @for_excel = for_excel
   end
 
-  # rubocop:disable AbcSize
+  # rubocop:disable Metrics/AbcSize
   def header
     ['First Name', 'Last Name', 'TAPO No'] +
       h_applied_on +
@@ -17,7 +20,7 @@ class TraineeAdvancedSearchViewBuilder
       header_part_1 +
       ['Funding Source', 'Education', 'Veteran'] +
       header_part_2 +
-      %w(Classes Assessment) + ['Assessment Date'] + header_hire_details +
+      %w[Classes Assessment] + ['Assessment Date'] + header_hire_details +
       h_trainee_service + tas.grant_specific_headers
   end
 
@@ -27,6 +30,7 @@ class TraineeAdvancedSearchViewBuilder
 
   def h_applied_on
     return [] unless applicant?
+
     ['Applied On',
      'Unemployment Status',
      'UI Claim Verified On',
@@ -37,11 +41,13 @@ class TraineeAdvancedSearchViewBuilder
 
   def header_part_1
     return [] unless applicant?
+
     ['Last Job Title', 'Last Salary', 'Industry']
   end
 
   def header_part_2
     return [] unless applicant?
+
     ['Skills', 'Trainee Source', 'Navigator']
   end
 
@@ -67,11 +73,13 @@ class TraineeAdvancedSearchViewBuilder
   def trainee_service(t)
     ts = t.trainee_services.first
     return [0, '', '', ''] unless ts
+
     [t.trainee_services.count, ts.name, ts.start_date.to_s, ts.end_date.to_s]
   end
 
   def applied_on(t)
     return [] unless applicant?
+
     [t.applied_on, t.applicant.current_employment_status,
      t.ui_claim_verified_on, t.ui_verified_notes.map(&:notes).join(';'),
      t.disabled_date, t.disabled_notes]
@@ -79,7 +87,7 @@ class TraineeAdvancedSearchViewBuilder
 
   def details_1(t)
     notes = t.trainee_notes.map do |n|
-      n.created_at.to_date.to_s + ': ' + n.notes
+      "#{n.created_at.to_date}: #{n.notes}"
     end.join(';')
     [t.placement_status, t.email, t.mobile_no, t.county_name, notes]
   end
@@ -116,6 +124,7 @@ class TraineeAdvancedSearchViewBuilder
   def hire_details(t)
     ti = t.trainee_interactions.find(&:hired?)
     return [''] * 4 unless ti
+
     [ti.employer_name, ti.hire_title, ti.start_date.to_s, ti.hire_salary]
   end
 end

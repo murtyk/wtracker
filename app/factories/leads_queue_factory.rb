@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # when a grant is set for auto job leads, the trainees in that grant get job leads daily
 # first check if trainee has updated job search profile. If not send an email
 # find matching jobs for each trainee and send them in an email
@@ -44,6 +46,7 @@ class LeadsQueueFactory
     # trainee did not update with skills etc.
     return :INCOMPLETE if trainee.job_search_profile
     return :SOLICIT_PROFILE if trainee.valid_email? # no profile
+
     @error_messages << "missing or invalid email for trainee #{trainee.name}"
     nil
   end
@@ -52,7 +55,7 @@ class LeadsQueueFactory
     q_params = build_q_params(trainee, :pending)
     q = trainee.leads_queue
 
-    q.update(q_params) if q
+    q&.update(q_params)
     trainee.create_leads_queue(q_params) unless q
   end
 
@@ -67,6 +70,7 @@ class LeadsQueueFactory
   def skip_trainee_for_leads(trainee)
     q = trainee.leads_queue
     return unless q
+
     q.update(status: :inactive)
   end
 
@@ -76,7 +80,7 @@ class LeadsQueueFactory
     {
       trainee_ip: trainee_ip(trainee),
       status: status,
-      last_date_posted: last_lead && last_lead.date_posted,
+      last_date_posted: last_lead&.date_posted,
       jsp_id: jsp.id,
       skills: jsp.skills,
       distance: jsp.distance,
@@ -87,7 +91,8 @@ class LeadsQueueFactory
 
   def trainee_ip(trainee)
     agent = trainee.agent
-    return unless agent && agent.info
+    return unless agent&.info
+
     agent.info['ip']
   end
 
@@ -97,9 +102,9 @@ class LeadsQueueFactory
 
   def init_grant_data(grant)
     @email_attributes = {
-      email_from:     "JobLeads<#{ENV['JOB_LEADS_EMAIL']}>",
+      email_from: "JobLeads<#{ENV['JOB_LEADS_EMAIL']}>",
       email_reply_to: grant.reply_to_email || grant.account.director.email,
-      email_subject:  grant.job_leads_subject.content
+      email_subject: grant.job_leads_subject.content
     }
   end
 

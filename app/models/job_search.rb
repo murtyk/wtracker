@@ -1,20 +1,22 @@
+# frozen_string_literal: true
+
 # captures search criteria and results
 # searched jobs are not persisted
-class JobSearch < ActiveRecord::Base
+class JobSearch < ApplicationRecord
   JOBSEARCH_DAYS     = { 'Last 24 hours' => 1,
                          'Last 7 days' => 7,
                          'Last 14 days' => 14,
                          'Last 30 days' => 30,
-                         'Anytime' => 0 }
+                         'Anytime' => 0 }.freeze
   JOBSEARCH_DISTANCE = { 5 => 5, 10 => 10, 15 => 15, 25 => 25, 50 => 50,
-                         'Exact Location' => 0 }
-  JOBS_SLICE_SIZE     = 100
+                         'Exact Location' => 0 }.freeze
+  JOBS_SLICE_SIZE = 100
 
   default_scope { where(account_id: Account.current_id) }
 
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :account
-  belongs_to :klass_title
+  belongs_to :klass_title, optional: true
 
   attr_accessor :college_id
   attr_reader :analyzer, :jobs, :jobs_count, :page, :pages
@@ -51,14 +53,14 @@ class JobSearch < ActiveRecord::Base
   end
 
   def search_criteria
-    days_suffix = days > 0 ? "in last #{days} days" : 'anytime'
+    days_suffix = days.positive? ? "in last #{days} days" : 'anytime'
     "#{keywords} - #{location} - #{distance} miles - posted " + days_suffix
   end
 
   def new_search
     JobSearch.new(location: location,
                   keywords: keywords,
-                  days:     days,
+                  days: days,
                   in_state: in_state,
                   distance: distance)
   end
@@ -91,6 +93,7 @@ class JobSearch < ActiveRecord::Base
 
   def page_position
     return 'first' if page == 1
+
     page == pages ? 'last' : 'middle'
   end
 
@@ -103,11 +106,12 @@ class JobSearch < ActiveRecord::Base
   end
 
   def slices
-    return 0 if jobs_count == 0
+    return 0 if jobs_count.zero?
+
     1 + ((jobs_count - 1) / JOBS_SLICE_SIZE)
   end
 
   def process_in_state_jobs?
-    in_state && jobs.nil? && slices > 0
+    in_state && jobs.nil? && slices.positive?
   end
 end

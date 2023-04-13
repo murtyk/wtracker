@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # user can browse the job leads for a trainee
 # Trainee can view and update status on a job lead
 class AutoSharedJobsController < ApplicationController
@@ -9,7 +11,7 @@ class AutoSharedJobsController < ApplicationController
     @trainee = Trainee.find params[:trainee_id]
 
     @auto_shared_jobs = AutoSharedJob.where(build_filters)
-                        .order(created_at: :desc)
+                                     .order(created_at: :desc)
     @count = @auto_shared_jobs.count
     @auto_shared_jobs = @auto_shared_jobs
                         .paginate(page: params[:page], per_page: 25)
@@ -22,18 +24,20 @@ class AutoSharedJobsController < ApplicationController
   private
 
   def init_auto_shared_job
-    return unless params[:id].to_i > 0
+    return unless params[:id].to_i.positive?
+
     @auto_shared_job = AutoSharedJob.find(params[:id])
   end
 
   def validate_key!
     valid_key = @auto_shared_job.valid_key?(params[:key])
-    fail 'invalid key for auto job lead' unless valid_key
+    raise 'invalid key for auto job lead' unless valid_key
   end
 
   def build_filters
-    filters  =  { trainee_id: params[:trainee_id] }
+    filters = { trainee_id: params[:trainee_id] }
     return filters unless params[:status]
+
     status_codes = AutoSharedJob.status_codes(params[:status])
     filters.merge(status: status_codes)
   end

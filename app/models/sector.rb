@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # industry sector
 # an employer can be in multiple sectors
-class Sector < ActiveRecord::Base
+class Sector < ApplicationRecord
   default_scope { order(:name) }
 
   has_many :employer_sectors, dependent: :destroy

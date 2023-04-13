@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 namespace :cities do
   def clean_zip(z)
     return z.to_s if z.to_s.length == 5
+
     part = z.to_s.split(' ').first
-    ('0000' + part)[-4..-1]
+    ("0000#{part}")[-4..-1]
   end
 
-  # rubocop:disable AbcSize
-  # rubocop:disable MethodLength
-  # rubocop:disable CyclomaticComplexity
-  # rubocop:disable PerceivedComplexity
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def import_cities(file)
     csv = CSV.open(open(file), 'rb', headers: true, return_headers: true, row_sep: :auto)
 
@@ -38,7 +39,7 @@ namespace :cities do
       city = county.cities.where('name ilike ?', r['city']).first
       next if city
 
-      city_state = r['city'] + ',' + state.code
+      city_state = "#{r['city']},#{state.code}"
 
       city = county.cities.new(
         state_id: state.id,

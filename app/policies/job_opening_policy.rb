@@ -1,4 +1,6 @@
-class JobOpeningPolicy < Struct.new(:user, :job_opening)
+# frozen_string_literal: true
+
+JobOpeningPolicy = Struct.new(:user, :job_opening) do
   def new?
     user.admin_or_director? || user.navigator?
   end

@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 require 'fusion_tables'
 require 'rest_client'
 require 'json'
@@ -33,7 +34,7 @@ class FusionTable
   end
 
   def self.find_county_geometry(county)
-    state_county = county.state_code.upcase + '-' + county.name
+    state_county = "#{county.state_code.upcase}-#{county.name}"
     data = search_county_polygon(state_county)
 
     if data.empty? && state_county.include?(' ')

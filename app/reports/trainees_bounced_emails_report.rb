@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # trainees bounced emails
 class TraineesBouncedEmailsReport < Report
   attr_reader :trainees, :trainees_count
+
   def post_initialize(_params)
     build_trainees
   end

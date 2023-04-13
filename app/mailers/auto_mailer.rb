@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include ActionView::Helpers::NumberHelper
 include UtilitiesHelper
 
@@ -84,9 +86,7 @@ class AutoMailer < ActionMailer::Base
   private
 
   def grant_status_to_emails(grant)
-    grant.account.director.email +
-      ';' +
-      grant.account.admins.map(&:email).join(';')
+    "#{grant.account.director.email};#{grant.account.admins.map(&:email).join(';')}"
   end
 
   def grant_status_body(status)
@@ -110,25 +110,25 @@ class AutoMailer < ActionMailer::Base
   def html_for_status_error_messages(error_messages)
     return '' if error_messages.blank?
 
-    body = "<p style='color: red'>Errors:</p>" + "<ol style='color: red'>"
+    body = "<p style='color: red'>Errors:</p><ol style='color: red'>"
     error_messages.each { |msg| body += "<li>#{msg}</li>" }
-    body + '</ol><hr>'
+    "#{body}</ol><hr>"
   end
 
   def html_for_jsps(jsps)
     return '' if jsps.blank?
 
-    body = '<p>Profile Requests Sent To:</p>' + '<ol>'
+    body = '<p>Profile Requests Sent To:</p><ol>'
     jsps.each { |profile| body += "<li>#{profile.name}</li>" }
-    body + '</ol><hr>'
+    "#{body}</ol><hr>"
   end
 
   def html_for_trainee_job_leads(trainee_job_leads)
-    body = '<p>Job Leads Sent To:</p>' + '<ol>'
+    body = '<p>Job Leads Sent To:</p><ol>'
     trainee_job_leads.each do |trainee_count|
       body += "<li>#{trainee_count[0].name} - #{trainee_count[1]}</li>"
     end
-    body + '</ol><hr>'
+    "#{body}</ol><hr>"
   end
 
   def wait_a_bit

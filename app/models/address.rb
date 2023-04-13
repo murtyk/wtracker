@@ -1,8 +1,9 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 # provides addressable interface.
 # Trainee, College and Employers can have addresses
 # geocodes address
-class Address < ActiveRecord::Base
+class Address < ApplicationRecord
   include ValidationsMixins
 
   default_scope { where(account_id: Account.current_id) }
@@ -17,7 +18,7 @@ class Address < ActiveRecord::Base
   validates :state, presence: true, length: { minimum: 2, maximum: 2 }
   validate :validate_state_code
 
-  belongs_to :addressable, polymorphic: true
+  belongs_to :addressable, polymorphic: true, optional: true
 
   # acts_as_gmappable check_process: false # very careful. revisit?
   acts_as_gmappable process_geocoding: false
@@ -31,17 +32,17 @@ class Address < ActiveRecord::Base
   before_save :cb_before_save
 
   after_validation(on: :update) do
-    if self.changed?
+    if changed?
       self.longitude = nil
       self.latitude = nil
     end
   end
 
   def to_s_for_view
-    ['' + line1,
+    [line1.to_s,
      city,
      "#{state} #{zip}",
-     'county: <b>' + county_name + '</b>'].join('<br>')
+     "county: <b>#{county_name}</b>"].join('<br>')
   end
 
   private
@@ -54,23 +55,30 @@ class Address < ActiveRecord::Base
 
   def set_county_before_save
     return if county && county_id
-    xcity = GeoServices.findcity("#{city},#{state}", zip)
-    if xcity
-      self.county = xcity.county_name
-      self.county_id = xcity.county_id
-    else
-      fail "address error: city not found - #{gmaps4rails_address}"
+
+    if county_id.present? && county.blank?
+      self.county = County.find(county_id).name
+      return
     end
+
+    xcity = GeoServices.findcity("#{city},#{state}", zip)
+
+    raise "address error: city not found - #{gmaps4rails_address}" unless xcity
+
+    self.county = xcity.county_name
+    self.county_id = xcity.county_id
   end
 
   def set_latlong_before_save
+    return if ENV['RAILS_CI']
     return if latitude? && longitude?
+
     latlong = GeoServices.latlong(gmaps4rails_address)
     if latlong
       self.latitude = latlong[0]
       self.longitude = latlong[1]
     else
-      fail "address error: Geocoding failed - #{gmaps4rails_address}"
+      raise "address error: Geocoding failed - #{gmaps4rails_address}"
     end
   end
 

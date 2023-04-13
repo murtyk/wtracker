@@ -1,4 +1,6 @@
-class Mentor < ActiveRecord::Base
+# frozen_string_literal: true
+
+class Mentor < ApplicationRecord
   has_one :trainee
 
   validates :name, presence: true

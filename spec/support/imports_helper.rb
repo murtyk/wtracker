@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Importer spec guidelines
 #   Just focus on testing the Importer Class for the resource
 #   Take a look at ui_claim_verification_spec
@@ -12,6 +14,7 @@ module ImportsHelper
 
   class MockFileReader
     attr_reader :header, :rows, :index, :count
+
     def initialize(header, rows)
       @header = header
       @rows = rows
@@ -22,6 +25,7 @@ module ImportsHelper
     def next_row
       @index += 1
       return nil unless index < count
+
       row = Hash[[header, rows[index]].transpose]
       row.with_indifferent_access
     end
@@ -29,7 +33,9 @@ module ImportsHelper
 
   def stub_importer_file_reader(header, rows)
     allow(Amazon).to receive(:store_file).and_return('aws_file_name')
-    allow_any_instance_of(Importer).to receive(:open_reader).and_return(MockFileReader.new(header, rows))
+    allow_any_instance_of(Importer).to receive(:open_reader).and_return(MockFileReader.new(
+                                                                          header, rows
+                                                                        ))
   end
 
   def build_importer_params(resource, arg)
@@ -45,6 +51,6 @@ module ImportsHelper
   end
 
   def visit_show_import_status
-    visit '/import_statuses/' + ImportStatus.unscoped.last.id.to_s
+    visit "/import_statuses/#{ImportStatus.unscoped.last.id}"
   end
 end

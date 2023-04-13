@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddTimeToKlassEvents < ActiveRecord::Migration
   def change
     add_column :klass_events, :start_ampm, :string

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCategoryToKlasses < ActiveRecord::Migration
   def change
     add_reference :klasses, :klass_category, index: true

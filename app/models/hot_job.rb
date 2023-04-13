@@ -1,11 +1,12 @@
-#
-class HotJob < ActiveRecord::Base
+# frozen_string_literal: true
+
+class HotJob < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   scope :open_jobs, -> { where('closing_date > ?', Date.today) }
 
   belongs_to :account
-  belongs_to :user
-  belongs_to :employer
+  belongs_to :user, optional: true
+  belongs_to :employer, optional: true
 
   validates :date_posted, presence: true
   validates :closing_date, presence: true
@@ -28,6 +29,6 @@ class HotJob < ActiveRecord::Base
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    super & %w(title location)
+    super & %w[title location]
   end
 end

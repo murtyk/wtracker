@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
 # to capture applicant browser and location information
-class Agent < ActiveRecord::Base
-  belongs_to :identifiable, polymorphic: true
+class Agent < ApplicationRecord
+  belongs_to :identifiable, polymorphic: true, optional: true
 end

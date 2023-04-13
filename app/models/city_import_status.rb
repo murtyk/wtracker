@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # status of cities file import
 class CityImportStatus < ImportStatus
   def importer
@@ -10,6 +12,7 @@ class CityImportStatus < ImportStatus
 
   def cities
     return [] if data.blank?
+
     City.where(id: data)
   end
 end

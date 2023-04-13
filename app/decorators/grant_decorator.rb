@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # decorator for grant
 class GrantDecorator < Draper::Decorator
   delegate_all

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
-  around_filter :scope_current_account
+  around_action :scope_current_account
   # after_filter :user_activity
 
   include Pundit
 
   protect_from_forgery with: :exception
-  skip_before_filter :verify_authenticity_token,
+  skip_before_action :verify_authenticity_token,
                      if: proc { |c| c.request.format == 'application/json' }
 
   include SessionsHelper
@@ -14,9 +16,10 @@ class ApplicationController < ActionController::Base
   include EmployersHelper
 
   def after_sign_in_path_for(resource)
-    if resource.is_a? Admin
+    case resource
+    when Admin
       admin_accounts_path
-    elsif resource.is_a? Trainee
+    when Trainee
       portal_trainee_trainee_path(resource)
     else
       starting_page_dashboards_path
@@ -24,9 +27,10 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(resource_or_scope)
-    if resource_or_scope == :trainee
+    case resource_or_scope
+    when :trainee
       new_trainee_session_path
-    elsif resource_or_scope == :admin
+    when :admin
       new_admin_session_path
     else
       new_user_session_path
@@ -79,8 +83,10 @@ class ApplicationController < ActionController::Base
 
   def grant_for_trainee_sign_in
     return unless request.path == '/trainees/sign_in'
+
     grant = Grant.all.select(&:trainee_applications?).first
     return unless grant
+
     session[:grant_id] = grant.id
   end
 

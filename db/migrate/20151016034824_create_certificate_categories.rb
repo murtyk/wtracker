@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCertificateCategories < ActiveRecord::Migration
   def change
     create_table :certificate_categories do |t|

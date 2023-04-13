@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 # Applicant registration and analysis
 class ApplicantsController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :show, :analysis]
-  before_action :set_grant,          only: [:new, :create, :edit]
-  before_action :set_applicant,      only: [:show, :edit, :update]
+  before_action :authenticate_user!, only: %i[index show analysis]
+  before_action :set_grant,          only: %i[new create edit]
+  before_action :set_applicant,      only: %i[show edit update]
   before_action :user_or_key,        only: [:update]
 
-  def change_navigator
-  end
+  def change_navigator; end
 
   def assign_navigator
     input_params = params.require(:applicants).permit(:from_nav_id, :to_nav_id)
@@ -40,8 +41,7 @@ class ApplicantsController < ApplicationController
   end
 
   # GET /applicants/1
-  def show
-  end
+  def show; end
 
   # GET /applicants/new
   def new
@@ -56,7 +56,7 @@ class ApplicantsController < ApplicationController
     if @applicant.errors.any?
       flash[:error] = @applicant.errors[:trainee_id][0]
       render 'new'
-      return
+      nil
     else
       flash[:error] = nil
     end
@@ -95,6 +95,7 @@ class ApplicantsController < ApplicationController
 
   def reapply_action
     return render('new') if @applicant.errors.any?
+
     render 'create'
   end
 
@@ -105,6 +106,7 @@ class ApplicantsController < ApplicationController
 
   def new_applicant_params
     return {} unless params[:employment_status]
+
     { current_employment_status: params[:employment_status] }
   end
 
@@ -134,16 +136,19 @@ class ApplicantsController < ApplicationController
 
   def set_grant
     @grant = grant_from_salt(salt_from_params)
-    fail 'Not Authorized' unless @grant
+    raise 'Not Authorized' unless @grant
+
     Grant.current_id = @grant.id
     session[:grant_id] = @grant.id
-    fail 'Can not add applicants for this grant' unless @grant.trainee_applications?
+    raise 'Can not add applicants for this grant' unless @grant.trainee_applications?
   end
 
   def grant_from_salt(salt)
     return nil unless salt
+
     grant_id = grant_id_from_salt(salt)
     return nil if grant_id.zero?
+
     Grant.where(id: grant_id).first
   end
 
@@ -152,11 +157,12 @@ class ApplicantsController < ApplicationController
   end
 
   def validate_key
-    fail 'invalid key or expired link' unless @applicant.reapply_key == param_key
+    raise 'invalid key or expired link' unless @applicant.reapply_key == param_key
   end
 
   def user_or_key
     return true if current_user
+
     validate_key
   end
 
@@ -179,6 +185,7 @@ class ApplicantsController < ApplicationController
   def perform_search
     @applicants = @as.perform(search_params)
     return unless @applicants.any?
+
     @applicants = @applicants.paginate(page: params[:page], per_page: 20).decorate
   end
 
@@ -198,7 +205,8 @@ class ApplicantsController < ApplicationController
   end
 
   def next_applicant
-    return @applicant unless current_user && current_user.navigator?
+    return @applicant unless current_user&.navigator?
+
     id = @applicant.id
     nav_applicants = Applicant.where(status: 'Accepted', navigator_id: current_user.id)
 

@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 # a company found through google places search
 class GoogleCompany
   alias_attribute(:city, :city_name)
   attr_reader :name, :website, :types, :score, :formatted_address,
               :line1, :city_name, :sublocality, :state_code, :zip, :county,
               :latitude, :longitude, :phone_no, :source
+
   def initialize(json)
     @souce              = 'GP'
     @name               = json['name']
@@ -32,15 +35,15 @@ class GoogleCompany
 
   def info_for_add
     {
-      name:        @name,
-      latitude:    @latitude,
-      longitude:   @longitude,
-      phone_no:    @phone_no,
-      website:     @website,
-      line1:       @line1,
-      city:        @city_name,
-      state_code:  @state_code,
-      zip:         @zip
+      name: @name,
+      latitude: @latitude,
+      longitude: @longitude,
+      phone_no: @phone_no,
+      website: @website,
+      line1: @line1,
+      city: @city_name,
+      state_code: @state_code,
+      zip: @zip
     }
   end
 

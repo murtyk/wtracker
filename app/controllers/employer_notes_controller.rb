@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class EmployerNotesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /employer_notes/new
   # GET /employer_notes/new.json

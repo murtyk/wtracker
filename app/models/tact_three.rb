@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # taacct 3 attributes for trainee
-class TactThree < ActiveRecord::Base
+class TactThree < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :trainee
@@ -9,5 +11,5 @@ class TactThree < ActiveRecord::Base
     # education_level? ? Education.find(education_level).name : ''
   end
 
-  belongs_to :education, foreign_key: :education_level
+  belongs_to :education, foreign_key: :education_level, optional: true
 end

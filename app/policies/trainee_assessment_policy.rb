@@ -1,4 +1,6 @@
-class TraineeAssessmentPolicy < Struct.new(:user, :trainee_assessment)
+# frozen_string_literal: true
+
+TraineeAssessmentPolicy = Struct.new(:user, :trainee_assessment) do
   def new?
     user.admin_or_director? || user.navigator?
   end

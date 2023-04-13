@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddFieldsToApplicant < ActiveRecord::Migration
   def change
     add_column :applicants, :gender, :string

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # decorator for klass event
 class KlassEventDecorator < Draper::Decorator
   delegate_all
@@ -15,9 +17,11 @@ class KlassEventDecorator < Draper::Decorator
   def date_and_name
     event_date_name = "#{event_date} - #{name}"
 
-    return "<p style='margin-left: 10px'>".html_safe +
-      event_date_name +
-      '</p>'.html_safe unless cancelled?
+    unless cancelled?
+      return "<p style='margin-left: 10px'>".html_safe +
+             event_date_name +
+             '</p>'.html_safe
+    end
 
     "<p style='margin-left: 10px; color: red'>".html_safe +
       event_date_name +
@@ -39,9 +43,9 @@ class KlassEventDecorator < Draper::Decorator
   def time
     return 'All Day' unless start_time_hr
 
-    format('%s:%02d%s', start_time_hr, start_time_min.to_i, start_ampm) +
-      ' to ' +
-      format('%s:%02d%s', end_time_hr, end_time_min.to_i, end_ampm)
+    "#{format('%s:%02d%s', start_time_hr, start_time_min.to_i,
+              start_ampm)} to #{format('%s:%02d%s', end_time_hr, end_time_min.to_i,
+                                       end_ampm)}"
   end
 
   def edit_link_id
@@ -55,6 +59,7 @@ class KlassEventDecorator < Draper::Decorator
   def other_name
     return '' if ['class visit', 'site visit',
                   'information session'].include?(name.downcase)
+
     "<p>#{name}</p>".html_safe
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicantsHelper
   def build_applicant_data(acceptable = true)
     os = OpenStruct.new
@@ -7,7 +9,7 @@ module ApplicantsHelper
     os.dob           = '01/14/1991'
     os.email         = 'adaline_schuster@shields.biz'
 
-    os.name = os.first_name + ' ' + os.last_name
+    os.name = "#{os.first_name} #{os.last_name}"
 
     os.address_line1 = '120 Wood Ave S'
     os.address_city  = 'Iselin'
@@ -26,7 +28,7 @@ module ApplicantsHelper
     os.last_employed_on    = '10/17/2014'
     os.last_employer_name  = 'ABC Inc'
     os.last_employer_line1 = '1 Metroplex Dr'
-    os.last_employer_city  =  'Edison'
+    os.last_employer_city = 'Edison'
     os.last_employer_state = 'NJ'
     os.last_employer_zip   = '08817'
 
@@ -44,7 +46,7 @@ module ApplicantsHelper
     os.computer_access    = 'No'
     os.source             = 'One Stop'
 
-    os.resume =  'I am an excellent software developer with 10 years' \
+    os.resume = 'I am an excellent software developer with 10 years' \
                   ' of experience in java, ajax, xml, oracle'
     os.skills = 'accounting finance'
     os.humanizer_answer = '4'
@@ -62,7 +64,7 @@ module ApplicantsHelper
 
     fill_in_last_employer_info(a)
 
-    fill_in 'applicant_salary_expected',    with: a.salary_expected
+    fill_in 'applicant_salary_expected', with: a.salary_expected
 
     make_selections_2(a)
 
@@ -89,13 +91,13 @@ module ApplicantsHelper
     fill_in 'applicant_address_line1',   with: a.address_line1
     fill_in 'applicant_address_city',    with: a.address_city
     fill_in 'applicant_address_zip',     with: a.address_zip
-    select a.county,                    from: 'applicant_county_id'
+    select a.county, from: 'applicant_county_id'
   end
 
   def fill_in_contact_details(a, re_apply)
     fill_in_address(a)
     unless re_apply
-      fill_in 'applicant_email',           with: a.email
+      fill_in 'applicant_email', with: a.email
       fill_in 'applicant_email_confirmation', with: a.email
     end
     fill_in 'applicant_mobile_phone_no', with: a.mobile_phone_no
@@ -127,8 +129,8 @@ module ApplicantsHelper
   def fill_in_last_employer_address(a)
     fill_in 'applicant_last_employer_line1', with: a.last_employer_line1
     fill_in 'applicant_last_employer_city',  with: a.last_employer_city
-    select a.last_employer_state,   from: 'applicant_last_employer_state'
-    fill_in 'applicant_last_employer_zip',   with: a.last_employer_zip
+    select a.last_employer_state, from: 'applicant_last_employer_state'
+    fill_in 'applicant_last_employer_zip', with: a.last_employer_zip
   end
 
   def make_selections_2(a)
@@ -159,10 +161,10 @@ module ApplicantsHelper
 
     grant = apple_grant
 
-    grant.unemployment_proof_text = "$EMPLOYMENT_STATUS$"
+    grant.unemployment_proof_text = '$EMPLOYMENT_STATUS$'
 
-    grant.email_password_subject = "Here is your password"
-    grant.email_password_body = "Hello $FIRST_NAME$, password is $PASSWORD$"
+    grant.email_password_subject = 'Here is your password'
+    grant.email_password_body = 'Hello $FIRST_NAME$, password is $PASSWORD$'
 
     grant.save
 
@@ -173,5 +175,4 @@ module ApplicantsHelper
     end
     Applicant.all
   end
-
 end

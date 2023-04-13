@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 # same person can be in more than 1 grants
 # one trainee record for each gran
 # trainee can be assigned to any number of classes
 # status defines placement status and it is updated by TI
 # rubocop:disable Metrics/ClassLength
-class Trainee < ActiveRecord::Base
+require './lib/devise_overrides'
+
+class Trainee < ApplicationRecord
   LEGAL_STATUSES = { 1 => 'US Citizen', 2 => 'Resident Alien' }.freeze
   STATUSES = { 0 => 'Not Placed', 4 => 'Placed', 5 => 'OJT Enrolled' }.freeze
   include Encryption
@@ -28,9 +32,9 @@ class Trainee < ActiveRecord::Base
 
   devise :database_authenticatable, authentication_keys: [:login_id]
   devise :recoverable, :rememberable, :trackable
-  extend DeviseOverrides
+  extend ::DeviseOverrides
 
-  attr_encrypted :trainee_id, key: :encryption_key
+  attr_encrypted :trainee_id, key: :encryption_key, algorithm: 'aes-256-cbc', mode: :single_iv_and_salt, insecure_mode: true
 
   validates :first, presence: true, length: { minimum: 2, maximum: 20 }
   validates :last,  presence: true, length: { minimum: 2, maximum: 20 }
@@ -38,6 +42,10 @@ class Trainee < ActiveRecord::Base
 
   validates_uniqueness_of :email, scope: :grant_id, allow_blank: true
   validates_uniqueness_of :login_id, allow_nil: true
+
+  def decrypting?(attribute)
+    encrypted_attributes[attribute][:operation] == :decrypting
+  end
 
   def active_for_authentication?
     # remember to call the super
@@ -70,8 +78,8 @@ class Trainee < ActiveRecord::Base
 
   belongs_to :account
   belongs_to :grant
-  belongs_to :funding_source
-  belongs_to :race
+  belongs_to :funding_source, optional: true
+  belongs_to :race, optional: true
 
   delegate :name, to: :funding_source, prefix: true, allow_nil: true
 
@@ -114,7 +122,7 @@ class Trainee < ActiveRecord::Base
 
   has_one :job_search_profile, dependent: :destroy
   has_many :auto_shared_jobs, dependent: :destroy
-  delegate :skills, to: :job_search_profile, allow_nil: :true
+  delegate :skills, to: :job_search_profile, allow_nil: true
 
   has_one :applicant, dependent: :destroy
   delegate :applied_on, :last_wages, :last_job_title,
@@ -129,8 +137,8 @@ class Trainee < ActiveRecord::Base
 
   has_many :trainee_services
 
-  belongs_to :mentor
-  belongs_to :employer
+  belongs_to :mentor, optional: true
+  belongs_to :employer, optional: true
 
   after_initialize :init
 
@@ -139,7 +147,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def init
-    init_trainee_id
+    # init_trainee_id
 
     if new_record? && !(grant && grant.trainee_applications?)
       self.password              ||= 'password'
@@ -153,7 +161,8 @@ class Trainee < ActiveRecord::Base
     if Rails.env.development? || Rails.env.test?
       begin
         self.trainee_id ||= ''
-      rescue StandardError
+      rescue StandardError => e
+        puts e.message
         self.trainee_id = ''
       end
     else
@@ -166,7 +175,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def name_fs
-    name + ' -- ' + funding_source_name
+    "#{name} -- #{funding_source_name}"
   end
 
   def not_disabled?
@@ -239,7 +248,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def valid_profile?
-    job_search_profile && job_search_profile.valid_profile?
+    job_search_profile&.valid_profile?
   end
 
   def assessed?
@@ -255,7 +264,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def opted_out_from_auto_leads?
-    job_search_profile && job_search_profile.opted_out
+    job_search_profile&.opted_out
   end
 
   def not_viewed_job_leads_count
@@ -321,7 +330,7 @@ class Trainee < ActiveRecord::Base
   def klasses_for_selection
     ks = Klass.where('start_date > ?', Date.today) - klasses
     ks.map do |k|
-      [k.to_label + '-' + k.start_date.to_s + " (#{k.trainees.count})", k.id]
+      ["#{k.to_label}-#{k.start_date} (#{k.trainees.count})", k.id]
     end
   end
 
@@ -338,7 +347,7 @@ class Trainee < ActiveRecord::Base
   end
 
   def employed_at
-    employer && employer.name
+    employer&.name
   end
 
   def self.ransackable_attributes(auth_object = nil)

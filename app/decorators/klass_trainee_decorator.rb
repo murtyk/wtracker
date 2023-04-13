@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # decorator for klass trainee
 class KlassTraineeDecorator < Draper::Decorator
   delegate_all
@@ -14,6 +16,7 @@ class KlassTraineeDecorator < Draper::Decorator
 
   def updated_with_ojt_enrolled?
     return false unless trainee_interaction
+
     trainee_interaction.ojt_enrolled?
   end
 

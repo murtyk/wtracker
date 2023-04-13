@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 class CreateEmployers < ActiveRecord::Migration
   def change
     create_table :employers do |t|
       t.string :name
       t.string :source
-      t.references :account, :null => false
+      t.references :account, null: false
 
       t.timestamps
     end
     add_index :employers, :account_id
-    add_index :employers, [:account_id, :source]
-
+    add_index :employers, %i[account_id source]
   end
 end

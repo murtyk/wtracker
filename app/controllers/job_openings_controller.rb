@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # captures job openings at an employer
 class JobOpeningsController < ApplicationController
   before_action :authenticate_user!

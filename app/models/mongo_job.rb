@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # used for filtering in state job search results
 class MongoJob
   include Mongoid::Document

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # grant specific setting - user defined
 # applicant selects one
-class ApplicantSource < ActiveRecord::Base
+class ApplicantSource < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   default_scope { where(grant_id: Grant.current_id) }
   default_scope { order(:created_at) }

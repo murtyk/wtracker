@@ -1,4 +1,6 @@
-class HotJobPolicy < Struct.new(:user, :hot_job)
+# frozen_string_literal: true
+
+HotJobPolicy = Struct.new(:user, :hot_job) do
   def new?
     true
   end

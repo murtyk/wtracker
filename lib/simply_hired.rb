@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'httparty'
 require 'mechanize'
 
@@ -13,19 +15,20 @@ class SimplyHired
   SH_SITE = 'http://api.simplyhired.com/a/jobs-api/xml-v2/q-'
 
   def initialize(ip = nil)
-    ip  ||= RandomIp.fetch
+    ip ||= RandomIp.fetch
     build_credentials(ip)
   end
 
   def user_ip(ip)
     return unless ip
+
     build_credentials(ip)
   end
 
   def build_credentials(ip)
     ssty  = '2'
     cflg  = 'r'
-    pshid =  ENV['PSHID']
+    pshid = ENV['PSHID']
     auth  = ENV['SH_AUTH']
 
     @credentials = "?pshid=#{pshid}&ssty=#{ssty}&cflg=#{cflg}&auth=#{auth}&clip=#{ip}"
@@ -59,7 +62,7 @@ class SimplyHired
   end
 
   def build_location
-    loc = zip.to_s.size == 0 ? "#{city},#{state}" : zip
+    loc = zip.to_s.size.zero? ? "#{city},#{state}" : zip
     loc = loc.split(',').map(&:squish).join(',')
     loc.sub(' ', '+')
   end
@@ -87,8 +90,7 @@ class SimplyHired
              city: city,
              state: state,
              distance: distance,
-             days: days
-            }
+             days: days }
 
     simplyhired.search_jobs(args)
     simplyhired.accessible_count
@@ -101,7 +103,6 @@ class SimplyHired
   #   details = ''
   #   destination_url  = url
 
-
   #   if page.uri.to_s.include? SH_HOME
   #     # find details and destination get_destination_url
   #     begin
@@ -113,7 +114,6 @@ class SimplyHired
   #       details = ''
   #     end
   #   end
-
 
   #   Struct::Jd.new(details_url_type, destination_url, details)
   # end
@@ -130,7 +130,7 @@ class SimplyHired
       parse_header response.parsed_response['shrs']['rq']
       parse_response response.parsed_response['shrs']['rs']['r']
     rescue StandardError => e
-      @error = 'SimlyHired Error - ' + e.to_s
+      @error = "SimlyHired Error - #{e}"
       @jobs = []
       @total_count = 0
       @accessible_count = 0
@@ -157,20 +157,20 @@ class SimplyHired
   end
 
   def q_location
-    '/l-' + location
+    "/l-#{location}"
   end
 
   def q_pn(p)
-    p > 0 ? "/pn-#{p}" : ''
+    p.positive? ? "/pn-#{p}" : ''
   end
 
   def q_distance
-    dist = distance == 0 ? 'exact' : distance
+    dist = distance.zero? ? 'exact' : distance
     "/mi-#{dist}"
   end
 
   def q_days
-    days > 0 ? "/fdb-#{days}" : ''
+    days.positive? ? "/fdb-#{days}" : ''
   end
 
   def q_page_size
@@ -183,7 +183,7 @@ class SimplyHired
   end
 
   def parse_response(json)
-    #works for both Hash (one job) and Array inputs
+    # works for both Hash (one job) and Array inputs
     @jobs = [json].flatten.map { |j| ShJob.new(j) }
   end
 end

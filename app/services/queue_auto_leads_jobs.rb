@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # queues one job for each trainee for auto leads
 class QueueAutoLeadsJobs
   include ActiveSupport
@@ -10,6 +12,7 @@ class QueueAutoLeadsJobs
 
   def perform
     return if skip_lead_generation?
+
     log_info 'AutoJobLeads: performing'
 
     log_info 'AutoJobLeads: creating missing job search profiles'
@@ -63,7 +66,6 @@ class QueueAutoLeadsJobs
       .perform(trainee.account_id, trainee.grant_id, trainee.id)
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
   def action_for_trainee(trainee)
     return :SKIP unless trainee.valid_email?
 
@@ -75,6 +77,7 @@ class QueueAutoLeadsJobs
     return :INCOMPLETE if trainee.job_search_profile
 
     return :SOLICIT_PROFILE if can_solicit_profile?(trainee.grant)
+
     nil
   end
 

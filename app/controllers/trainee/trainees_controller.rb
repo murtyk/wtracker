@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class Trainee
   # A trainee has signed in.
   # workflow: 1. update dob and ssn -> edit
   #           2. Resume File -> Perform Portal Action
   class TraineesController < TraineePortalController
-    def edit
-    end
+    def edit; end
 
     def update
       if @trainee.update_attributes(trainee_params)
