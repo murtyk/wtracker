@@ -2,6 +2,7 @@
 
 require 'httparty'
 require 'mechanize'
+require 'random_ip'
 
 # Struct.new('Jd', :details_url_type, :destination_url, :details)
 # wrapper for indeed api
