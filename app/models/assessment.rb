@@ -9,12 +9,10 @@ class Assessment < ApplicationRecord
   belongs_to :account
   belongs_to :grant
 
-  has_many :trainee_assessments
+  has_many :trainee_assessments, dependent: :destroy
   has_many :trainees, through: :trainee_assessments
 
   validates :name,
             presence: true,
             length: { minimum: 3, maximum: 50 }
-
-  has_many :trainee_assessments, dependent: :destroy
 end
