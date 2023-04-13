@@ -3,6 +3,9 @@
 # Helps to switch between SimplyHired and Indeed at run time
 # Defaults to SimplyHired
 # we need to set ENV['JOB_BOARD'] to 'Indeed' to switch
+require './lib/simply_hired'
+require './lib/indeed'
+
 class JobBoard
   extend Forwardable
   extend SingleForwardable
