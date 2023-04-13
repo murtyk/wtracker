@@ -197,13 +197,14 @@ class Indeed
     obj
   end
 
-  ENCODING_OPTIONS = {
-    invalid: :replace, # Replace invalid byte sequences
-    undef: :replace, # Replace anything not defined in ASCII
-    replace: '', # Use a blank for those replacements
-    universal_newline: true       # Always break lines with \n
-  }.freeze
   def encode(s)
-    s.encode Encoding.find('ASCII'), ENCODING_OPTIONS
+    options = {
+      invalid: :replace, # Replace invalid byte sequences
+      undef: :replace, # Replace anything not defined in ASCII
+      replace: '', # Use a blank for those replacements
+      universal_newline: true       # Always break lines with \n
+    }
+
+    s.encode(Encoding.find('ASCII'), **options)
   end
 end
