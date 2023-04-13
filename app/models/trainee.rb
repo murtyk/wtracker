@@ -78,8 +78,8 @@ class Trainee < ApplicationRecord
 
   belongs_to :account
   belongs_to :grant
-  belongs_to :funding_source
-  belongs_to :race
+  belongs_to :funding_source, optional: true
+  belongs_to :race, optional: true
 
   delegate :name, to: :funding_source, prefix: true, allow_nil: true
 
@@ -137,8 +137,8 @@ class Trainee < ApplicationRecord
 
   has_many :trainee_services
 
-  belongs_to :mentor
-  belongs_to :employer
+  belongs_to :mentor, optional: true
+  belongs_to :employer, optional: true
 
   after_initialize :init
 
