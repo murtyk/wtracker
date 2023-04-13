@@ -12,8 +12,8 @@ class Program < ApplicationRecord
 
   belongs_to :grant
   belongs_to :account
-  belongs_to :sector
-  belongs_to :klass_category
+  belongs_to :sector, optional: true
+  belongs_to :klass_category, optional: true
 
   has_many :klasses, dependent: :destroy
   has_many :klass_interactions, through: :klasses

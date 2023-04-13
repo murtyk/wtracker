@@ -18,9 +18,9 @@ class Klass < ApplicationRecord
 
   belongs_to :account
   belongs_to :grant
-  belongs_to :program
-  belongs_to :college
-  belongs_to :klass_category
+  belongs_to :program, optional: true
+  belongs_to :college, optional: true
+  belongs_to :klass_category, optional: true
 
   delegate :line1, :city, :county, :state, :zip, to: :college
   delegate :address, to: :college

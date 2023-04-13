@@ -6,7 +6,7 @@ class UserEmployerSource < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
 
   belongs_to :account
-  belongs_to :employer_source
+  belongs_to :employer_source, optional: true
   belongs_to :user
 
   delegate :name, to: :employer_source

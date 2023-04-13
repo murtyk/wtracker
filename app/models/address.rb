@@ -18,7 +18,7 @@ class Address < ApplicationRecord
   validates :state, presence: true, length: { minimum: 2, maximum: 2 }
   validate :validate_state_code
 
-  belongs_to :addressable, polymorphic: true
+  belongs_to :addressable, polymorphic: true, optional: true
 
   # acts_as_gmappable check_process: false # very careful. revisit?
   acts_as_gmappable process_geocoding: false

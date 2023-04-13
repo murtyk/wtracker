@@ -7,7 +7,7 @@ class Attachment < ApplicationRecord
   before_destroy :cb_before_destroy
 
   belongs_to :account
-  belongs_to :email
+  belongs_to :email, optional: true
 
   private
 

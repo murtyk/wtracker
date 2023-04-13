@@ -28,12 +28,12 @@ class Applicant < ApplicationRecord
   has_many :applicant_reapplies, dependent: :destroy
 
   belongs_to :account
-  belongs_to :county
+  belongs_to :county, optional: true
   belongs_to :education, foreign_key: :education_level
   belongs_to :grant
-  belongs_to :race
-  belongs_to :sector
-  belongs_to :trainee
+  belongs_to :race, optional: true
+  belongs_to :sector, optional: true
+  belongs_to :trainee, optional: true
 
   delegate :dob, :edp_date, :assessed?, :assigned_to_klass?,
            to: :trainee, prefix: true, allow_nil: true
