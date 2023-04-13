@@ -4,8 +4,8 @@
 
 FactoryBot.define do
   factory :klass do
-    name            { Faker::Lorem.sentence(3) }
-    description     { Faker::Lorem.sentence(5) }
+    name            { Faker::Lorem.sentence(word_count: 3) }
+    description     { Faker::Lorem.sentence(word_count: 5) }
     training_hours { 1 }
     credits { 1 }
     start_date { Date.tomorrow }

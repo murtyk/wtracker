@@ -5,8 +5,8 @@ class HotJob < ApplicationRecord
   scope :open_jobs, -> { where('closing_date > ?', Date.today) }
 
   belongs_to :account
-  belongs_to :user
-  belongs_to :employer
+  belongs_to :user, optional: true
+  belongs_to :employer, optional: true
 
   validates :date_posted, presence: true
   validates :closing_date, presence: true

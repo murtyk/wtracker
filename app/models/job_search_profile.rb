@@ -7,8 +7,8 @@ class JobSearchProfile < ApplicationRecord
                   against: :skills,
                   using: { tsearch: { any_word: true } }
 
-  belongs_to :account
-  belongs_to :trainee
+  belongs_to :account, optional: true
+  belongs_to :trainee, optional: true
 
   validate :validate_search_params, :validate_opt_out_params
   before_save :cb_before_save

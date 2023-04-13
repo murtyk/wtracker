@@ -10,7 +10,7 @@ class Contact < ApplicationRecord
   before_save :cb_before_save
 
   belongs_to :account
-  belongs_to :contactable, polymorphic: true
+  belongs_to :contactable, polymorphic: true, optional: true
 
   has_many :contact_emails, dependent: :destroy
 

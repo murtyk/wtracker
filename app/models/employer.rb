@@ -23,7 +23,7 @@ class Employer < ApplicationRecord
   before_save :cb_before_save
 
   belongs_to :account
-  belongs_to :employer_source
+  belongs_to :employer_source, optional: true
   delegate :name, to: :employer_source, prefix: true
 
   has_one :address, as: :addressable, dependent: :destroy

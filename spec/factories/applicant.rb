@@ -54,8 +54,8 @@ FactoryBot.define do
     computer_access      { [true, false].sample }
     source               { ApplicantSource.unscoped.all.sample.source }
 
-    resume  { Faker::Lorem.paragraph(5) }
-    skills  { Faker::Lorem.paragraph(2) }
+    resume  { Faker::Lorem.paragraph(sentence_count: 5) }
+    skills  { Faker::Lorem.paragraph(sentence_count: 2) }
     humanizer_answer { '4' }
     signature { '1' }
 
