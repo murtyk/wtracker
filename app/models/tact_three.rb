@@ -11,5 +11,5 @@ class TactThree < ApplicationRecord
     # education_level? ? Education.find(education_level).name : ''
   end
 
-  belongs_to :education, foreign_key: :education_level
+  belongs_to :education, foreign_key: :education_level, optional: true
 end
