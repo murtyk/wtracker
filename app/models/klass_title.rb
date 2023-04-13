@@ -2,6 +2,8 @@
 
 # job titles and/or skill key words for
 # searching jobs relevant to a class
+require './lib/job_board'
+
 class KlassTitle < ApplicationRecord
   default_scope { where(account_id: Account.current_id) }
   belongs_to :account
