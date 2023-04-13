@@ -1136,7 +1136,6 @@ ActiveRecord::Schema.define(version: 2023_04_12_192320) do
   add_foreign_key "trainee_services", "grants"
   add_foreign_key "trainee_services", "trainees"
   add_foreign_key "trainees", "employers"
-  add_foreign_key "trainees", "employers"
   add_foreign_key "ui_verified_notes", "trainees"
   add_foreign_key "ui_verified_notes", "users"
 end
