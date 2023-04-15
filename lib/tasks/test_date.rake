@@ -180,13 +180,11 @@ namespace :testprep do
     jl.save
 
     jl = grant.build_optout_message_two(account_id: account.id)
-    jl.content = "Thank you for your participation in upSKILL.
-                  Good luck in your future job searches."
+    jl.content = 'Thank you for your participation in upSKILL. Good luck in your future job searches.'
     jl.save
 
     jl = grant.build_optout_message_three(account_id: account.id)
-    jl.content = "Thank you for your participation in upSKILL.
-                  Good luck in your future job searches."
+    jl.content = 'Thank you for your participation in upSKILL. Good luck in your future job searches.'
     jl.save
 
     program = create_program('AutoProgram ', 'description of program 1',
