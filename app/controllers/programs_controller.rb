@@ -43,7 +43,7 @@ class ProgramsController < ApplicationController
     @program = Program.find(params[:id])
     authorize @program
 
-    if @program.update_attributes(programs_params)
+    if @program.update(programs_params)
       redirect_to @program, notice: 'Program was successfully updated.'
     else
       render :edit

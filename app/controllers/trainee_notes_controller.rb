@@ -32,7 +32,7 @@ class TraineeNotesController < ApplicationController
     @trainee_note = TraineeNote.find(params[:id])
     authorize @trainee_note
 
-    @trainee_note.update_attributes(traiee_note_params)
+    @trainee_note.update(traiee_note_params)
   end
 
   # DELETE /trainee_notes/1

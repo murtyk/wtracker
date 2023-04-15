@@ -26,7 +26,7 @@ class EmployerNotesController < ApplicationController
   def update
     @employer_note = EmployerNote.find(params[:id])
     authorize @employer_note
-    @employer_note.update_attributes(note: params[:employer_note][:note])
+    @employer_note.update(note: params[:employer_note][:note])
   end
 
   # DELETE /employer_notes/1

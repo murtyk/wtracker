@@ -47,7 +47,7 @@ class EmploymentStatusesController < ApplicationController
   def update
     @employment_status = EmploymentStatus.find(params[:id])
     authorize @employment_status
-    if @employment_status.update_attributes(employment_status_params)
+    if @employment_status.update(employment_status_params)
       redirect_to(@employment_status,
                   notice: 'Employment Status was successfully updated.')
     else

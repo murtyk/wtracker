@@ -40,7 +40,7 @@ class TraineeFactory
     params[:edp_date] = opero_str_to_date(params[:edp_date])
 
     trainee = Trainee.find(id)
-    trainee.update_attributes(params)
+    trainee.update(params)
     trainee
   end
 
@@ -49,7 +49,7 @@ class TraineeFactory
     params[:disabled_date] = opero_str_to_date(disable_params[:disabled_date])
 
     trainee = Trainee.find(id)
-    trainee.update_attributes(params)
+    trainee.update(params)
     trainee
   end
 

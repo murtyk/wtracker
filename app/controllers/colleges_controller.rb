@@ -48,7 +48,7 @@ class CollegesController < ApplicationController
     @college = College.find(params[:id])
     authorize @college
 
-    if @college.update_attributes(college_params)
+    if @college.update(college_params)
       redirect_to @college, notice: 'College was successfully updated.'
     else
       render :edit

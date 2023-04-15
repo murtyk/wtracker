@@ -42,7 +42,7 @@ class HotJobsController < ApplicationController
     @hot_job = HotJob.find(params[:id])
     authorize @hot_job
 
-    @hot_job.update_attributes(params[:hot_job])
+    @hot_job.update(params[:hot_job])
   end
 
   def destroy

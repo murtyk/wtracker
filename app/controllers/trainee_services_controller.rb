@@ -32,7 +32,7 @@ class TraineeServicesController < ApplicationController
     @trainee_service = TraineeService.find(params[:id])
     authorize @trainee_service
 
-    @trainee_service.update_attributes(trainee_service_params)
+    @trainee_service.update(trainee_service_params)
   end
 
   # DELETE /trainee_services/1

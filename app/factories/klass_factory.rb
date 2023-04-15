@@ -19,7 +19,7 @@ class KlassFactory
     klass_params = params.clone
     format_dates klass_params
     klass = Klass.find(id)
-    klass.update_attributes(klass_params)
+    klass.update(klass_params)
     klass
   end
 

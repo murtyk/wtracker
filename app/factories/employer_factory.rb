@@ -159,7 +159,7 @@ class EmployerFactory
     saved = false
     begin
       ActiveRecord::Base.transaction do
-        employer.update_attributes(params)
+        employer.update(params)
         employer.address.destroy if no_address && employer.address
         if employer.duplicate?(no_address)
           employer.errors[:name] = 'duplicate'

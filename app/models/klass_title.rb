@@ -21,7 +21,7 @@ class KlassTitle < ApplicationRecord
     count = JobBoard.job_count(title, address.city, address.state, 25, 30)
     return create_job_search(count) unless job_search
 
-    job_search.update_attributes(count: count)
+    job_search.update(count: count)
     job_search
   end
 

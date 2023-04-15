@@ -98,7 +98,7 @@ class KlassInteractionFactory
       update_event(klass_event, ki_params[:klass_event], user)
     end
 
-    klass_interaction.update_attributes(ki_params.except(:employer_id, :klass_event))
+    klass_interaction.update(ki_params.except(:employer_id, :klass_event))
     klass_interaction
   end
 
@@ -106,7 +106,7 @@ class KlassInteractionFactory
     event_date = opero_str_to_date(ke[:event_date])
     if event_chaged?(klass_event, ke, event_date)
       ke[:event_date] = event_date
-      klass_event.update_attributes(ke)
+      klass_event.update(ke)
       UserMailer.send_event_invite(klass_event, user).deliver_now
     end
   end

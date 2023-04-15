@@ -25,7 +25,7 @@ class MentorsController < ApplicationController
     @mentor = Mentor.find(params[:id])
     authorize @mentor
 
-    @mentor.update_attributes(mentor_params)
+    @mentor.update(mentor_params)
   end
 
   def destroy

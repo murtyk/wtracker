@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
   def update_password
     @user = current_user
-    if @user.update_attributes(password_params)
+    if @user.update(password_params)
       # Sign in the user by passing validation in case his password changed
       sign_in @user, bypass: true
       flash[:notice] = 'Password successfully updated'
