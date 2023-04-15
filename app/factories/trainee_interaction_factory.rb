@@ -34,7 +34,7 @@ class TraineeInteractionFactory
     params[:start_date] = opero_str_to_date(params[:start_date])
     params[:completion_date] = opero_str_to_date(params[:completion_date])
     params[:termination_date] = opero_str_to_date(params[:termination_date])
-    trainee_interaction.update_attributes(params)
+    trainee_interaction.update(params)
 
     change_klass_statuses(trainee_interaction)
     trainee_interaction

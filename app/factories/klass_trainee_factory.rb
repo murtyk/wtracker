@@ -67,7 +67,7 @@ class KlassTraineeFactory
   end
 
   def self.update(klass_trainee, params, t_i)
-    klass_trainee.update_attributes(params)
+    klass_trainee.update(params)
     if t_i
       saved = t_i.save
       update_klass_trainees_to_placed(t_i.trainee) if saved && t_i.placed?

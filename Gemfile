@@ -13,9 +13,9 @@ end
 gem 'bson_ext'
 gem 'mongo'
 gem 'mongoid'
-gem 'pg', '~> 0.20'
+gem 'pg'
 gem 'puma', '~> 5.0'
-gem 'rails', '~> 6.0.3'
+gem 'rails', '~> 6.1.0'
 
 gem 'attr_encrypted'
 gem 'aws-sdk-s3', '~> 1'
@@ -86,18 +86,13 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 group :test do
   gem 'factory_bot_rails'
   gem 'rspec-retry'
-  # gem 'poltergeist'
-  # gem 'phantomjs', :require => 'phantomjs/poltergeist'
 
-  gem 'selenium-webdriver'
-  # gem 'webdrivers'
-  # gem 'capybara-selenium'
   gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
   gem 'capybara-screenshot'
-  gem 'database_cleaner'
   gem 'faker'
   gem 'guard-rspec'
-  gem 'headless'
   gem 'launchy'
   gem 'vcr'
   gem 'webmock'
@@ -106,7 +101,6 @@ group :test do
   # gem 'simplecov-csv'
   # gem 'codecov', :require => false, :group => :test
 
-  gem 'rspec_junit_formatter'
   gem 'shog'
 end
 

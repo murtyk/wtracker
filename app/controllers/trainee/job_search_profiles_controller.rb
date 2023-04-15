@@ -8,7 +8,7 @@ class Trainee
     def edit; end
 
     def update
-      if @job_search_profile.update_attributes(jsp_params)
+      if @job_search_profile.update(jsp_params)
         if params[:job_search_profile][:opted_out]
           render 'opted_out'
         else

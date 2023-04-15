@@ -39,7 +39,7 @@ class GrantFactory
     end
     store_logo_file(params) if params[:applicant_logo_file]
     attrs = clean_attributes(params)
-    if grant.update_attributes(attrs)
+    if grant.update(attrs)
       [grant, 'Grant was successfully updated.']
     else
       [grant, 'Grant Update failed!']

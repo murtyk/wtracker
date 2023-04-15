@@ -25,7 +25,7 @@ class KlassCertificatesController < ApplicationController
     @klass_certificate = KlassCertificate.find(params[:id])
     authorize @klass_certificate
 
-    @klass_certificate.update_attributes(klass_certificate_params)
+    @klass_certificate.update(klass_certificate_params)
   end
 
   # POST /klass_certificates

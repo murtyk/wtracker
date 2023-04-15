@@ -8,7 +8,7 @@ class Trainee
     def edit; end
 
     def update
-      if @trainee.update_attributes(trainee_params)
+      if @trainee.update(trainee_params)
         perform_portal_action
       else
         render 'edit'

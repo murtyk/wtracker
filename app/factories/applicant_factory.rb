@@ -45,7 +45,7 @@ class ApplicantFactory
 
   def self.update_trainee(applicant, t_params)
     trainee = applicant.trainee
-    trainee.update_attributes(t_params) if t_params
+    trainee.update(t_params) if t_params
 
     return unless trainee.errors.any?
 
@@ -67,7 +67,7 @@ class ApplicantFactory
 
   def self.process_reapply(applicant, params)
     Applicant.transaction do
-      applicant.update_attributes(params)
+      applicant.update(params)
       return applicant if applicant.errors.any?
 
       applicant.navigator_id = navigator_id(applicant)

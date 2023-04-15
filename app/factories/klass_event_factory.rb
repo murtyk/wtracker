@@ -47,7 +47,7 @@ class KlassEventFactory
     params = ke_params.except(:event_date, :employer_ids).clone
     params[:event_date] = opero_str_to_date(ke_params[:event_date])
 
-    if ke.update_attributes(params)
+    if ke.update(params)
       interactions_to_del = ke.klass_interactions.where(employer_id: del_ids)
       ke.klass_interactions.destroy(interactions_to_del)
       add_ids.each do |id|

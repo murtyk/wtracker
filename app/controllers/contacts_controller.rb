@@ -52,7 +52,7 @@ class ContactsController < ApplicationController
     authorize @contact
 
     respond_to do |format|
-      if @contact.update_attributes(contact_params)
+      if @contact.update(contact_params)
       end
       format.js
     end

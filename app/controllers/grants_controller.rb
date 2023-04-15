@@ -26,7 +26,7 @@ class GrantsController < ApplicationController
     authorize @grant
 
     respond_to do |format|
-      if @grant.update_attributes(grant_params)
+      if @grant.update(grant_params)
         format.html { redirect_to @grant, notice: update_notice }
       else
         format.html { render :edit }
