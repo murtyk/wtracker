@@ -355,6 +355,10 @@ class Trainee < ApplicationRecord
     super & %w[first last email funding_source_id mobile_no veteran status]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["account", "agent", "applicant", "assessments", "auto_shared_jobs", "completed_klass_trainees", "completed_klasses", "employer", "funding_source", "grant", "hired_interaction", "home_address", "interested_employers", "job_search_profile", "job_shared_tos", "job_shares", "klass_trainees", "klasses", "leads_queue", "mailing_address", "mentor", "race", "tact_three", "trainee_assessments", "trainee_auto_lead_status", "trainee_files", "trainee_interactions", "trainee_notes", "trainee_placements", "trainee_services", "trainee_submits", "ui_verified_notes", "unemployment_proof_file"]
+  end
+
   private
 
   def cb_before_save

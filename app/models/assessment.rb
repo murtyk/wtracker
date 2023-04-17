@@ -15,4 +15,8 @@ class Assessment < ApplicationRecord
   validates :name,
             presence: true,
             length: { minimum: 3, maximum: 50 }
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["account_id", "administered_by", "created_at", "grant_id", "id", "name", "updated_at"]
+  end
 end

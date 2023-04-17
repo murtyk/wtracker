@@ -68,6 +68,10 @@ class Applicant < ApplicationRecord
 
   after_initialize :init
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["account_id", "address_city", "address_line1", "address_line2", "address_state", "address_zip", "applied_on", "comments", "computer_access", "county_id", "created_at", "current_employment_status", "data", "dob", "education_level", "email", "first_name", "gender", "grant_id", "id", "last_employed_on", "last_employer_city", "last_employer_line1", "last_employer_line2", "last_employer_manager_email", "last_employer_manager_name", "last_employer_manager_phone_no", "last_employer_name", "last_employer_state", "last_employer_zip", "last_job_title", "last_name", "last_wages", "legal_status", "mobile_phone_no", "navigator_id", "race_id", "resume", "salary_expected", "sector_id", "signature", "source", "status", "trainee_id", "transportation", "unemployment_proof", "updated_at", "veteran"]
+  end
+
   def init
     self.address_state ||= Account.current_account.states.first.code
   end
