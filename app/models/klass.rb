@@ -140,6 +140,10 @@ class Klass < ApplicationRecord
     klass_schedules.where(scheduled: true)
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["account_id", "college_id", "created_at", "credits", "description", "end_date", "grant_id", "id", "klass_category_id", "name", "program_id", "start_date", "training_hours", "updated_at"]
+  end
+
   private
 
   def create_events

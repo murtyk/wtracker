@@ -17,6 +17,10 @@ class JobSearchProfile < ApplicationRecord
                       2 => 'No longer looking for work',
                       3 => 'Moved out of the area' }.freeze
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["account_id", "company_name", "created_at", "distance", "id", "key", "location", "opt_out_reason", "opt_out_reason_code", "opted_out", "salary", "skills", "start_date", "title", "trainee_id", "updated_at", "zip"]
+  end
+
   def trainee
     Trainee.unscoped.find(trainee_id)
   end
