@@ -9,7 +9,8 @@ Bundler.require(*Rails.groups)
 module WTracker
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.0
+    config.load_defaults 7.0
+    # config.autoloader = :zeitwerk
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -22,6 +23,9 @@ end
 Rails.application.configure do
   config.autoload_paths += [Rails.root.join('lib')]
   config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
+  config.eager_load_paths += [Rails.root.join('lib')]
+  config.eager_load_paths += Dir["#{config.root}/lib/**/"]
 
   config.before_configuration do
     env_file = File.join(Rails.root, 'config', 'local_env.yml')

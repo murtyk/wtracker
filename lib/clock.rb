@@ -4,7 +4,7 @@ require 'clockwork'
 require './config/boot'
 require './config/environment'
 
-module Clockwork
+module Clock
   # configure do |config|
   #   config[:sleep_timeout] = 300  # wakes up every 5 minutes
   # end
