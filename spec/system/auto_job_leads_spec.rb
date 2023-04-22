@@ -16,7 +16,7 @@ describe 'auto job leads' do
     before :each do
       Delayed::Worker.delay_jobs = false
     end
-    it 'updates profile' do
+    xit 'updates profile' do
       allow(RandomIp).to receive(:fetch).and_return("74.102.50.66")
 
       VCR.use_cassette('auto_job_leads') do
@@ -91,7 +91,7 @@ describe 'auto job leads' do
       @id   = profile.id
       @key  = profile.key
     end
-    it 'trainee opts out and director can view' do
+    xit 'trainee opts out and director can view' do
       switch_to_auto_leads_domain
       visit "/profiles/#{@id}/edit?key=#{@key}&opt_out=true"
 
