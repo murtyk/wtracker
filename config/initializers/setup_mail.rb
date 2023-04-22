@@ -9,4 +9,5 @@ ActionMailer::Base.smtp_settings = {
   ssl: true   # For TLS SSL connection
 }
 
+require_relative '../../app/services/mail_intercepter'
 ActionMailer::Base.register_interceptor('MailIntercepter')

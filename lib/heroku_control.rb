@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'platform-api'
-
 # Simple class to interact with Heroku's platform API, allowing
 # you to start and stop worker dynos.
 class HerokuControl

@@ -15,7 +15,7 @@ gem 'mongo'
 gem 'mongoid'
 gem 'pg'
 gem 'puma', '~> 5.0'
-gem 'rails', '~> 6.1.0'
+gem 'rails', '~> 7.0.0'
 
 gem 'attr_encrypted'
 gem 'aws-sdk-s3', '~> 1'
@@ -52,7 +52,8 @@ gem 'bootstrap-datepicker-rails'
 gem 'bootstrap-sass', '~> 2.3.0.0'
 gem 'coffee-rails'
 gem 'font-awesome-sass-rails'
-gem 'sass-rails'
+# gem 'sass-rails'
+gem 'sassc-rails'
 
 gem 'uglifier', '>= 1.3.0'
 # gem 'jquery-ui-rails'
@@ -77,7 +78,7 @@ group :development do
   # gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -115,3 +116,6 @@ gem 'bcrypt-ruby'
 
 # To use Jbuilder templates for JSON
 gem 'jbuilder', '~> 2.5'
+
+# rails 7 does not include sprockets anymore
+gem "sprockets-rails"
