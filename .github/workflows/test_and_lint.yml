@@ -46,11 +46,10 @@ jobs:
       - name: Run tests
         run: bundle exec rspec
         env:
-          ADMIN_EMAIL: admin@example.com
-          GMAIL_USER_NAME: info@example.com
           RAILS_ENV: test
           RAILS_CI: 1
-          AWS_REGION: us-east-1
+          JOB_BOARD: Indeed
+          PUBLISHER: 5675970181406859
 
   lint:
     runs-on: ubuntu-latest
